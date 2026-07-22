@@ -1,49 +1,46 @@
-# ⚽ TuCancha
+# TuCancha
 
 TuCancha es una plataforma web que permite a los usuarios buscar, reservar y pagar canchas deportivas de manera rápida y segura.
 
-## Objetivo
+# Objetivo
 
 Facilitar la gestión de reservas deportivas para jugadores y administradores de complejos deportivos mediante una plataforma digital.
 
-##  Integrantes
+#  Integrantes
 
-- Dilsia Judith Lamadrid Torres
-- Paula Melissa Rodríguez Beltrán
-- Jonathan David Paul Caraballo
-- Miguel Ángel Ospina Rua
-- Oscar Sebastián Rincón Camargo
-- Jairo Henao
+Dilsia Judith Lamadrid Torres
+Paula Melissa Rodríguez Beltrán
+Jonathan David Paul Caraballo
+Miguel Ángel Ospina Rua
+Oscar Sebastián Rincón Camargo
 
-## Tecnologías
+# Tecnologías
 
-- HTML5
-- CSS3
-- JavaScript
-- Java
-- Spring Boot
-- MySQL
-- Git
-- GitHub
+HTML5
+CSS3
+JavaScript
+Java
+Spring Boot
+MySQL
+Git
+GitHub
 
-##  Estructura del proyecto
+#  Estructura del proyecto
 
+TuCancha
 
-TuCancha/
-│
-├── backend/
-├── frontend/
-├── database/
-└── README.md
+backend
+frontend
+database
+README.md
 
+# Funcionalidades
 
-## Funcionalidades
+Buscar canchas
+Reservar horarios
+Registro de usuarios
+Inicio de sesión
+Carrito de reservas
+Panel de administrador
 
-- Buscar canchas
-- Reservar horarios
-- Registro de usuarios
-- Inicio de sesión
-- Carrito de reservas
-- Panel de administrador
-
-## Estado del proyecto:  En desarrollo.
+# Estado del proyecto:  En desarrollo.

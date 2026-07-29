@@ -1,0 +1,61 @@
+:root {
+            --bs-primary: #FF5500;
+            --bs-primary-rgb:#171A17;
+            --bs-dark:#171A17;
+            --bs-primary-hover-bg: #FF5500;
+            --bs-primary-hover-border-color: #FF5500;
+        }
+
+
+.btn-outline-primary {
+            --bs-btn-color: #FF5500;
+            --bs-btn-border-color: #FF5500;
+            --bs-btn-hover-bg: #FF5500;
+            --bs-btn-hover-border-color: #FF5500;
+            --bs-btn-active-bg: #FF5500;
+        }
+
+.btn-primary {
+            --bs-btn-bg: #FF5500;
+            --bs-btn-border-color: #FF5500;
+            --bs-btn-hover-bg: #FF5500;
+            --bs-btn-hover-border-color: #FF5500;
+        }
+
+.navbar-toggler{
+    background-color: #FF5500;
+}
+
+small{
+    color:#9CA3AF;
+}
+a.nav-link{
+    color: white;
+    position: relative;
+    display: inline-block !important;
+}
+a.nav-link:hover{
+    color: #FF5500 !important;
+}
+a.nav-link.active{
+    color: #FF5500 !important;
+    font-weight: bold;
+}
+
+a.nav-link::after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 75%;
+    transform: translateX(-75%);
+    width: 0%;
+    height: 1px;
+    background-color: #FF5500;
+    border-radius: 2px;
+    transition: width 0.3s ease-in-out;
+}
+
+a.nav-link.active::after,
+a.nav-link:hover::after{
+    width: 75%;
+}

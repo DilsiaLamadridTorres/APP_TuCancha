@@ -21,12 +21,18 @@
             --bs-btn-hover-bg: #FF5500;
             --bs-btn-hover-border-color: #FF5500;
         }
+
+.navbar-toggler{
+    background-color: #FF5500;
+}
+
 small{
     color:#9CA3AF;
 }
 a.nav-link{
     color: white;
     position: relative;
+    display: inline-block !important;
 }
 a.nav-link:hover{
     color: #FF5500 !important;

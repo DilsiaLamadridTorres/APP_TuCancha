@@ -53,3 +53,43 @@ a.nav-link.active::after,
 a.nav-link:hover::after{
     width: 75%;
 }
+
+.footer-title{
+
+    color: #ff5500;;
+    font-weight:700;
+    position: relative;
+    display: inline-block;
+
+}
+
+
+.footer-title::after{
+
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-8px;
+
+    width:50px;
+    height:3px;
+
+    background:#ff5500;
+    border-radius:5px;
+
+}
+
+html,
+body{
+    height:100%;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+main{
+    flex:1;
+}

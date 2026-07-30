@@ -99,3 +99,31 @@ body{
 main{
     flex:1;
 }
+
+/*MISION Y VISION*/
+.valor-card{
+    background-color: #0d0d0d;
+    border: 2px solid #FF6A00;
+    border-radius: 20px;
+}
+
+.valor-icono{
+    width: 120px;
+    box-shadow: none;
+    background: transparent;
+}
+
+.valor-titulo{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.valor-texto{
+    font-family: 'Poppins', sans-serif;
+    color: #FFFFFF;
+    text-align: justify;
+    line-height: 1.8;
+}
+
+/*FIN*/

@@ -1,0 +1,103 @@
+/*======================================
+    DESIGN SYSTEM
+======================================*/
+
+:root {
+
+  /*==========================
+      BRAND COLORS
+  ==========================*/
+
+  --primary-900: #0E4165;
+  --primary-800: #15527B;
+  --primary-700: #1E6492;
+  --primary-600: #297AB7;
+  --primary-500: #3B8DCC;
+  --primary-400: #5FA5DA;
+  --primary-300: #82BCE6;
+  --primary-200: #A8D2F0;
+  --primary-100: #D6ECFA;
+
+  /*==========================
+      ACCENT COLORS
+  ==========================*/
+
+  --accent: #B8E64A;
+  --accent-dark: #8CC63F;
+  --accent-light: #D8F58A;
+
+  /*==========================
+      SECONDARY COLORS
+  ==========================*/
+
+  --danger: #E63B3B;
+  --warning: #F5B942;
+  --success: #58C27D;
+
+  /*==========================
+      BACKGROUND COLORS
+  ==========================*/
+
+  --background: #FFFFFF;
+  --background-secondary: #F8F9FA;
+  --background-tertiary: #EEF2F5;
+
+  /*==========================
+      TEXT COLORS
+  ==========================*/
+
+  --text-primary: #1F1E20;
+  --text-secondary: #5B6670;
+  --text-light: #FFFFFF;
+  --text-muted: #A0A7AF;
+
+  /*==========================
+      BORDERS
+  ==========================*/
+
+  --border-light: #ECECEC;
+  --border: #D9DEE3;
+  --border-dark: #B8C1C8;
+
+  /*==========================
+      SHADOWS
+  ==========================*/
+
+  --shadow-sm: 0 2px 8px rgba(0,0,0,.08);
+  --shadow-md: 0 8px 20px rgba(0,0,0,.12);
+  --shadow-lg: 0 20px 45px rgba(0,0,0,.18);
+
+  /*==========================
+      BORDER RADIUS
+  ==========================*/
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+  --radius-round: 999px;
+
+  /*==========================
+      TRANSITIONS
+  ==========================*/
+
+  --transition: .3s ease;
+
+  /*==========================
+      GRADIENTS
+  ==========================*/
+
+  --gradient-primary: linear-gradient(
+      135deg,
+      #0E4165 0%,
+      #297AB7 50%,
+      #74A3C6 100%
+  );
+
+  --gradient-accent: linear-gradient(
+      135deg,
+      #B8E64A,
+      #8CC63F
+  );
+
+}

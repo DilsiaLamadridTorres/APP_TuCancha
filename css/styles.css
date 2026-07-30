@@ -1,42 +1,54 @@
+/*VARIABLES DE COLOR*/
 :root {
-            --bs-primary: #FF5500;
-            --bs-primary-rgb:#171A17;
-            --bs-dark:#171A17;
-            --bs-primary-hover-bg: #FF5500;
-            --bs-primary-hover-border-color: #FF5500;
-        }
+    --bs-primary: #FF5500;
+    --bs-primary-rgb: #171A17;
+    --bs-dark: #171A17;
+    --bs-primary-hover-bg: #FF5500;
+    --bs-primary-hover-border-color: #FF5500;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 
 
 .btn-outline-primary {
-            --bs-btn-color: #FF5500;
-            --bs-btn-border-color: #FF5500;
-            --bs-btn-hover-bg: #FF5500;
-            --bs-btn-hover-border-color: #FF5500;
-            --bs-btn-active-bg: #FF5500;
-        }
+    --bs-btn-color: #FF5500;
+    --bs-btn-border-color: #FF5500;
+    --bs-btn-hover-bg: #FF5500;
+    --bs-btn-hover-border-color: #FF5500;
+    --bs-btn-active-bg: #FF5500;
+}
 
 .btn-primary {
-            --bs-btn-bg: #FF5500;
-            --bs-btn-border-color: #FF5500;
-            --bs-btn-hover-bg: #FF5500;
-            --bs-btn-hover-border-color: #FF5500;
-        }
-small{
-    color:#9CA3AF;
+    --bs-btn-bg: #FF5500;
+    --bs-btn-border-color: #FF5500;
+    --bs-btn-hover-bg: #FF5500;
+    --bs-btn-hover-border-color: #FF5500;
 }
-a.nav-link{
+
+small {
+    color: #9CA3AF;
+}
+
+a.nav-link {
     color: white;
     position: relative;
 }
-a.nav-link:hover{
+
+a.nav-link:hover {
     color: #FF5500 !important;
 }
-a.nav-link.active{
+
+a.nav-link.active {
     color: #FF5500 !important;
     font-weight: bold;
 }
 
-a.nav-link::after{
+a.nav-link::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -50,6 +62,194 @@ a.nav-link::after{
 }
 
 a.nav-link.active::after,
-a.nav-link:hover::after{
+a.nav-link:hover::after {
     width: 75%;
+}
+
+/*
+Acerca de nosotros
+*/
+
+.team {
+    background-color: #0d0d0d;
+    padding: 80PX 40PX;
+}
+
+.team-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 60px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.team-title span {
+    color: #FF6A00;
+}
+
+.team-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    position: relative;
+    width: 260px;
+    background: #1D1D1D;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease;
+}
+
+/* Borde animado */
+
+.card::before {
+    content: "";
+    position: absolute;
+
+    width: 180%;
+    height: 180%;
+
+    top: -40%;
+    left: -40%;
+
+    background: conic-gradient(transparent 70%,
+            #FF6A00,
+            transparent);
+
+    animation: rotate 5s linear infinite;
+
+    z-index: 0;
+}
+
+/* Fondo de la tarjeta */
+
+.card::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 2px;
+
+    background: #1D1D1D;
+
+    border-radius: 18px;
+
+    z-index: 1;
+}
+
+/* Todo el contenido queda encima */
+
+.card>* {
+    position: relative;
+    z-index: 2;
+}
+
+/* Hover */
+
+.card:hover {
+    transform: translateY(-10px);
+
+    box-shadow: 0 20px 45px rgba(0, 0, 0, .6);
+}
+
+@keyframes rotate {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+.card-image {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    position: relative;
+
+    transition:
+        trasnform .10s ease,
+        filter .10s ease;
+}
+
+.card-imagen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            transparent 60%,
+            rgba(31, 31, 31, 1) 100%);
+}
+
+.card:hover .card-img {
+    transform: scale(1.08);
+    filter: brightness(.8);
+}
+
+.card-img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.card-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 4px;
+}
+
+.card-role {
+    font-size: .9rem;
+    color: #FF6A00;
+    font-weight: 600;
+}
+
+.card-description {
+    font-size: .85rem;
+    color: #B5B5B5;
+    line-height: 1.5;
+}
+
+.card-link {
+    margin-top: 12px;
+    padding: 12px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(90deg,
+            #FF6A00,
+            #FF8C1A);
+
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.card-link:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(255, 106, 0, .4);
 }

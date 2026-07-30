@@ -333,3 +333,338 @@ Acerca de nosotros
     transform: scale(1.03);
     box-shadow: 0 8px 20px rgba(255, 106, 0, .4);
 }
+
+
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    height: 100vh;
+    
+    background-image: url('../img/fotocancha.png');
+    background-size: cover;
+    background-position: center right;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 100%;
+    background-color: var(--bs-dark);
+    
+    clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
+    z-index: 1;
+}
+
+.hero-section::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60.5%;
+    height: 100%;
+    background-color: var(--bs-primary);
+    clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
+    z-index: 0; 
+}
+
+.hero-content {
+    position: relative;
+    z-index: 5;
+    padding-top: 80px; 
+}
+
+
+.hero-subtitle {
+    font-size: 4.2rem;
+    letter-spacing: 5px;
+    display: block;
+    line-height: 1;
+}
+
+.hero-title {
+    font-size: 5rem;
+    color: var(--bs-primary);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+.hero-text {
+    color: #E5E7EB; 
+    font-size: 3.15rem;
+    max-width: 100%;
+    line-height: 2.5;
+}
+
+.decorative-steps {
+    display: flex;
+    flex-column: row;
+    gap: 8px;
+    margin-top: 2rem;
+    margin-left: auto;
+    width: fit-content;
+    transform: translateX(40px);
+}
+
+.step-line {
+    width: 20px;
+    height: 8px;
+    background-color: var(--bs-primary);
+    display: inline-block;
+    border-radius: 1px;
+}
+
+.step-line:nth-child(2) { transform: translateY(8px); }
+.step-line:nth-child(3) { transform: translateY(16px); }
+
+@media (max-width: 768px) {
+    .hero-section {
+        height: auto;
+        padding: 5rem 0;
+    }
+    
+    .hero-section::before {
+        width: 100%;
+        clip-path: none;
+        background-color: rgba(5, 5, 5, 0.85); 
+    }
+    
+    .hero-section::after {
+        display: none; 
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .hero-text {
+        max-width: 100%;
+    }
+}
+.gestion-section {
+    background-color: var(--bs-dark) !important;
+}
+
+.gestion-title {
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+.btn-contactanos {
+    font-weight: bold;
+    font-size: 0.9rem;
+   
+}
+
+.badge-admin {
+    border: 1px solid var(--bs-primary);
+    color: #ffffff;
+    padding: 6px 24px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    display: inline-block;
+}
+
+.subtitle-revolucionando {
+    font-size: 0.95rem;
+    letter-spacing: 1.5px;
+}
+
+.feature-icon-box {
+    width: 70px;
+    height: 70px;
+    border: 2px solid var(--bs-primary);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    background-color: rgba(255, 85, 0, 0.03);
+}
+
+.text-secondary-light {
+    color: #9CA3AF;
+    font-size: 0.95rem;
+}
+
+.cancha-contenedor {
+    width: 100%;
+    max-width: 380px;
+    height: 520px;
+    border: 2px solid var(--bs-primary);
+    border-radius: 40px; 
+    position: relative;
+    background-color: transparent;
+    overflow: hidden; 
+}
+
+.cancha-mitad {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--bs-primary);
+    transform: translateY(-50%);
+}
+
+
+.cancha-circulo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--bs-primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.area-superior {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 180px;
+    height: 80px;
+    border-left: 2px solid var(--bs-primary);
+    border-right: 2px solid var(--bs-primary);
+    border-bottom: 2px solid var(--bs-primary);
+    transform: translateX(-50%);
+}
+
+
+.area-inferior {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 180px;
+    height: 80px;
+    border-left: 2px solid var(--bs-primary);
+    border-right: 2px solid var(--bs-primary);
+    border-bottom: 0;
+    border-top: 2px solid var(--bs-primary);
+    transform: translateX(-50%);
+}
+
+
+@media (max-width: 991px) {
+    .cancha-contenedor {
+        height: 450px;
+        max-width: 320px;
+        margin-top: 2rem;
+    }
+    .cancha-circulo {
+        width: 100px;
+        height: 100px;
+    }
+    .area-superior, .area-inferior {
+        width: 150px;
+        height: 65px;
+    }
+}
+
+
+
+.partido-section {
+    background-color: var(--bs-dark) !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.partido-title {
+    font-size: 2.4rem;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+.partido-intro {
+    font-size: 0.95rem;
+    color: #9CA3AF;
+    max-width: 90%;
+}
+
+.beneficio-icon-box {
+    width: 48px;
+    height: 48px;
+    border: 1.5px solid var(--bs-primary);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    background-color: rgba(255, 85, 0, 0.02);
+}
+
+
+.btn-jugadores-top {
+    background-color: var(--bs-primary) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-jugadores-top:hover {
+    background-color: #e04b00 !important; 
+    box-shadow: 0 6px 20px rgba(255, 85, 0, 0.5);
+    transform: translateY(-1px);
+}
+
+
+.balon-contenedor {
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.balon-svg {
+    width: 100%;
+    height: 100%;
+}
+
+
+.balon-linea {
+    stroke: var(--bs-primary);
+    stroke-width: 3.5px;
+    fill: none;
+    stroke-linecap: round; 
+    stroke-linejoin: round;
+}
+
+
+@media (max-width: 991px) {
+    .partido-section {
+        min-height: auto;
+        padding-top: 4rem !important;
+        padding-bottom: 4rem !important;
+    }
+    .partido-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .balon-contenedor {
+        max-width: 280px;
+        margin-bottom: 2rem;
+    }
+}
+
+
+

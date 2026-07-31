@@ -1,61 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-            crossorigin="anonymous"/>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="stylesheet" href="/APP_TuCancha/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
+
 <body>
 
     <header>
         <!-- NAVBAR - SEBASTIAN -->
-    <nav class="navbar navbar-expand-lg bg-dark shadow-sm fixed-top">
-        <div class="container-fluid">
-                <img src="/APP_TuCancha/img/Logo.png" alt="Logo" width="100" height="100" class="me-2 rounded-circle object-fit-cover">
-                    <div class="d-flex flex-column">
-                        <span class="fw-bold text-white lh-1 fs-2">TuCancha</span>
-                        <small class="fst-italic fs-6">Agenda Tu Cancha</small>
-                    </div>
-            <button class="navbar-toggler   " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-        <div class="collapse navbar-collapse text-center" id="navbarNav">
-            <ul class="navbar-nav mx-auto text-center">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Canchas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Reservas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Precios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Nosotros</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contacto</a>
-                </li>               
-            </ul>
-            <div class=""></div>
-                <button type="button" class="btn btn-outline-primary m-1">Iniciar Sesión</button>
-                <button type="button" class="btn btn-primary m-1">Registrarse</button>
+        <nav class="navbar navbar-expand-lg bg-dark shadow-sm">
+            <div class="container-fluid">
+                <img src="../img/logo/Logo.png" alt="Logo" width="100" height="100"
+                    class="me-2 rounded-circle object-fit-cover">
+                <div class="d-flex flex-column">
+                    <span class="fw-bold text-white lh-1 fs-2">TuCancha</span>
+                    <small class="fst-italic fs-6">Agenda Tu Cancha</small>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Canchas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Reservas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Precios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contacto</a>
+                        </li>
+                    </ul>
+                    <button type="button" class="btn btn-outline-primary d-flex m-1">Iniciar Sesión</button>
+                    <button type="button" class="btn btn-primary d-flex m-1">Registrarse</button>
+                </div>
             </div>
-        </div>
-    </div>
-</nav>
+        </nav>
     </header>
-    
+
     <main>
         <!-- HERO - PAULA -->
         <section>
@@ -64,7 +63,124 @@
 
 
         <!-- Conoce el equipo - Miguel  -->
-        <section>
+        <section class="team" id="equipo">
+
+            <h2 class="team-title">
+                Conoce a nuestro
+                <span>Equipo</span>
+            </h2>
+
+            <div class="team-container">
+
+                <!-- Tarjeta 1 -->
+                <article class="card">
+
+                    <div class="card-image">
+                        <img class="card-img" src="../img/team/perfil-paul.png" alt="Jonathan David Paul">
+                    </div>
+
+
+                    <div class="card-content">
+                        <h3 class="card-name">Jonathan Paul</h3>
+
+                        <p class="card-role">CEO</p>
+
+                        <p class="card-description">
+                            Apasionado por el fútbol
+                        </p>
+
+                        <a class="card-link" href="#">
+                            LinkedIn
+                        </a>
+                    </div>
+
+                </article>
+
+                <!-- Tarjeta 2 -->
+                <article class="card">
+
+                    <img class="card-img" src="../img/team/perfil-dilsia.png" alt="Dilsia Lamadrid">
+
+                    <div class="card-content">
+                        <h3 class="card-name">Dilsia Lamadrid</h3>
+
+                        <p class="card-role">Diseñadora UX/UI</p>
+
+                        <p class="card-description">
+                            Apasionada por el diseño
+                        </p>
+
+                        <a class="card-link" href="#">
+                            LinkedIn
+                        </a>
+                    </div>
+
+                </article>
+
+                <!-- Tarjeta 3 -->
+                <article class="card">
+
+                    <img class="card-img" src="../img/team/perfil-sebas.png" alt="Sebastián Rincón">
+
+                    <div class="card-content">
+                        <h3 class="card-name">Sebastián Rincón</h3>
+
+                        <p class="card-role">Desarrollador Java</p>
+
+                        <p class="card-description">
+                            Apasionado por el backend
+                        </p>
+
+                        <a class="card-link" href="#">
+                            LinkedIn
+                        </a>
+                    </div>
+
+                </article>
+
+                <!-- Tarjeta 4 -->
+                <article class="card">
+
+                    <img class="card-img" src="../img/team/perfil-paula.png" alt="Paula Rodríguez">
+
+                    <div class="card-content">
+                        <h3 class="card-name">Paula Rodríguez</h3>
+
+                        <p class="card-role">CSS y HTML</p>
+
+                        <p class="card-description">
+                            Apasionada por el estilo
+                        </p>
+
+                        <a class="card-link" href="#">
+                            LinkedIn
+                        </a>
+                    </div>
+
+                </article>
+
+                <!-- Tarjeta 5 -->
+                <article class="card">
+
+                    <img class="card-img" src="../img/team/perfil-miguel.png" alt="Miguel Ospina">
+
+                    <div class="card-content">
+                        <h3 class="card-name">Miguel Ospina</h3>
+
+                        <p class="card-role">Desarrollador JavaScript</p>
+
+                        <p class="card-description">
+                            Apasionado por el frontend
+                        </p>
+
+                        <a class="card-link" href="#">
+                            LinkedIn
+                        </a>
+                    </div>
+
+                </article>
+
+            </div>
 
         </section>
 
@@ -80,10 +196,9 @@
     <footer>
 
     </footer>
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"
-    ></script>
+        crossorigin="anonymous"></script>
 </body>
+
 </html>

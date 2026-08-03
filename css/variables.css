@@ -1,0 +1,19 @@
+/* ==========================================================
+   VARIABLES
+========================================================== */
+
+:root {
+    --bs-primary: #FF5500;
+    --bs-primary-rgb: #171A17;
+    --bs-dark: #171A17;
+    --bs-primary-hover-bg: #FF5500;
+    --bs-primary-hover-border-color: #FF5500;
+
+    --color-white: #FFFFFF;
+    --color-light: #E5E7EB;
+    --color-gray: #9CA3AF;
+    --color-card: #1D1D1D;
+    --color-card-text: #B5B5B5;
+    --color-orange-light: #FF6A00;
+    --color-orange-gradient: #FF8C1A;
+}

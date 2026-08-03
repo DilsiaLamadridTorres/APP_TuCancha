@@ -1,0 +1,18 @@
+/* ==========================================================
+   BOTONES BOOTSTRAP
+========================================================== */
+
+.btn-primary {
+    --bs-btn-bg: #FF5500;
+    --bs-btn-border-color: #FF5500;
+    --bs-btn-hover-bg: #FF5500;
+    --bs-btn-hover-border-color: #FF5500;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: #FF5500;
+    --bs-btn-border-color: #FF5500;
+    --bs-btn-hover-bg: #FF5500;
+    --bs-btn-hover-border-color: #FF5500;
+    --bs-btn-active-bg: #FF5500;
+}

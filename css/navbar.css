@@ -1,0 +1,54 @@
+/* ==========================================================
+   NAVBAR
+========================================================== */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar-toggler {
+    background-color: #FF5500;
+}
+
+a.nav-link {
+    position: relative;
+    display: inline-block !important;
+    color: var(--color-white);
+    transition: color .3s ease;
+}
+
+a.nav-link:hover {
+    color: var(--bs-primary) !important;
+}
+
+a.nav-link.active {
+    color: var(--bs-primary) !important;
+    font-weight: 700;
+}
+
+a.nav-link::after {
+    content: "";
+
+    position: absolute;
+
+    left: 75%;
+    bottom: 0;
+
+    width: 0;
+    height: 1px;
+
+    transform: translateX(-75%);
+    transition: width .3s ease-in-out;
+
+    background-color: var(--bs-primary);
+    border-radius: 2px;
+}
+
+a.nav-link:hover::after,
+a.nav-link.active::after {
+    width: 75%;
+}

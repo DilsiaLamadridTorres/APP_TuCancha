@@ -1,0 +1,26 @@
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.footer-title {
+    position: relative;
+    display: inline-block;
+
+    color: var(--bs-primary);
+    font-weight: 700;
+}
+
+.footer-title::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -8px;
+
+    width: 50px;
+    height: 3px;
+
+    background: var(--bs-primary);
+    border-radius: 5px;
+}

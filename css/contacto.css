@@ -1,6 +1,75 @@
 /* ==========================================================
    HERO
 ========================================================== */
+.hero-cont{
+   position: relative;
+   min-height: 80vh;
+   background-image: url('../img/Banner-Contacto.jpeg');
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   overflow: hidden;
+}
+.hero-cont .overlay{
+   position:absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.7) 50%, rgba(0, 0, 0, 0) 100%);
+   z-index: 1;
+}
+.hero-cont .container{
+   z-index: 2;
+}
+.hero-cont .container span{
+   color: #FF5500;
+}
+.support-badge{
+   border: 1px solid #FF5500;
+   color: #FF5500;
+   padding: 8px 16px;
+   border-radius: 50px;
+   letter-spacing: 1px;
+}
+
+.card-container{
+   /* background-color: #0B0D0C; */
+   border-radius: 16px;
+}
+.custom-card{
+   background-color: #0B0D0C;
+   border: 1px solid #0B0D0C;
+   border-radius: 16px;
+   height: 100%;
+   transition: all 0.3s ease-in-out;
+   height: 100%;
+}
+
+.custom-card:hover {
+  transform: translateY(-8px);
+  border-color: #FF5500;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.card-icon{
+   color: #FF5500;
+   font-size: 3.5rem;
+   line-height: 1;
+}
+
+.btn-link{
+   background-color: #FF5500;
+   color: #ffffff;
+   font-weight: bold;
+   width: 44px;
+   height: 44px;
+   font-size: 1.4rem;
+}
+.custom-card:hover .btn-link {
+  background-color: #FF5500;
+  transform: scale(1.1);
+}
 
 /* ==========================================================
    FIN HERO
@@ -18,6 +87,68 @@
    Formularios de contactoERO
 ========================================================== */
 
+.bg-black{
+   background-color: #0B0D0C !important;
+}
+.emphasis{
+   color: #FF5500;
+}
+.form-card{
+   background-color: #0B0D0C;
+   border-radius: 20px;
+   height: 90%;
+}
+
+.fs-7 {
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+.custom-input-group {
+  
+  border: 1px solid #2a2a2a;
+  border-radius: 12px !important;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+.custom-input-group:focus-within {
+  border-color: #FF5500; 
+}
+.custom-input-group .input-group-text {
+  background-color: transparent;
+  border: none;
+  padding-left: 1rem;
+  padding-right: 0.5rem;
+}
+.custom-input-group .form-control,
+.custom-input-group .form-select {
+  background-color: transparent !important;
+  border: none !important;
+  color: #ffffff !important;
+  padding: 0.75rem 0.75rem 0.75rem 0;
+  box-shadow: none !important;
+}
+.custom-input-group .form-control::placeholder {
+  color: #888888;
+  font-size: 0.9rem;
+}
+.custom-input-group .form-select {
+  color: #888888 !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23888888'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+}
+.custom-input-group .form-select option {
+  background-color: #2a2a2a;
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background-color: var(--orange-hover);
+  color: #FF5500;
+  font-weight: bolder;
+  transform: translateY(-2px);
+}
+
+.form-card:hover{
+   border: 1px solid #FF5500;
+}
 /* ==========================================================
    FIN Formularios de contacto
 ========================================================== */

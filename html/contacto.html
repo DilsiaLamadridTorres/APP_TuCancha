@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="../css/bootstrap-custom.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/footer.css">
-    <link rel="stylesheet" href="../css/contacto.css">
+    <link rel="stylesheet" href="../css/contacto.css"> 
 </head>
 
 <body>
@@ -166,47 +166,285 @@
             </div>
         </section>
 
+
         <!-- PQR - Miguel -->
-        <section class="fap-section">
+        <section class="faq-section hidden" >
+
+            <!-- Balón decorativo -->
+            <div class="faq-decoration">
+                <svg class="faq-ball">
+                    <use href="../img/icons/sprite.svg#icon-soccer-ball"></use>
+                </svg>
+            </div>
+            <!-- puntos -->
+            <div class="faq-dots">
+
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
 
             <div class="container">
-                <!-- encabezado-->
-                <div class="text-center">
 
-                    <small>
-                        PREGUNTAS PRECUENTES
-                    </small>
+                <!-- Encabezado -->
+                <div class="faq-header text-center">
 
-                    <h2>
-                        Resolvemos tus
-                        <span>dudas</span>
+                    <p class="faq-subtitle">
+                        PREGUNTAS FRECUENTES
+                    </p>
+
+                    <h2 class="faq-title">
+                        Resolvemos tus <span>dudas</span>
                     </h2>
 
-                    <p>
+                    <p class="faq-description">
                         Encuentra respuestas a las preguntas más comunes sobre TuCancha.
                         Si no encuentras lo que buscas, contáctanos.
                     </p>
 
-                    <div class="row">
+                </div>
 
-                        <div class="col-lg-6">
+                <!-- Dos columnas -->
+                <div class="row g-4 align-items-start">
 
-                        </div>
+                    <!-- ==========================================
+                 COLUMNA IZQUIERDA
+            =========================================== -->
 
+                    <div class="col-lg-6">
 
-                        <div class="col-lg-6">
+                        <div class="accordion" id="faqLeft">
+
+                            <!-- Pregunta 1 -->
+                            <div class="accordion-item">
+
+                                <h2 class="accordion-header">
+
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pregunta1">
+
+                                        <span class="faq-text">
+                                            ¿Cómo puedo reservar una cancha?
+                                        </span>
+
+                                        <span class="faq-icon"></span>
+
+                                    </button>
+
+                                </h2>
+
+                                <div id="pregunta1" class="accordion-collapse collapse show" data-bs-parent="#faqLeft">
+
+                                    <div class="accordion-body">
+
+                                        Solo debes buscar el complejo deportivo,
+                                        seleccionar la fecha y la hora disponible
+                                        y confirmar tu reserva.
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Pregunta 2 -->
+
+                            <div class="accordion-item">
+
+                                <h2 class="accordion-header">
+
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pregunta2">
+
+                                        <span class="faq-text">
+                                            ¿Puedo cancelar o modificar una reserva?
+                                        </span>
+
+                                        <span class="faq-icon"></span>
+
+                                    </button>
+
+                                </h2>
+
+                                <div id="pregunta2" class="accordion-collapse collapse" data-bs-parent="#faqLeft">
+
+                                    <div class="accordion-body">
+
+                                        Sí. Puedes modificar o cancelar tu reserva
+                                        desde tu perfil según las políticas del complejo.
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Pregunta 3 -->
+
+                            <div class="accordion-item">
+
+                                <h2 class="accordion-header">
+
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pregunta3">
+
+                                        <span class="faq-text">
+                                            ¿Qué métodos de pago aceptan?
+                                        </span>
+
+                                        <span class="faq-icon"></span>
+
+                                    </button>
+
+                                </h2>
+
+                                <div id="pregunta3" class="accordion-collapse collapse" data-bs-parent="#faqLeft">
+
+                                    <div class="accordion-body">
+
+                                        Puedes pagar con tarjeta débito,
+                                        crédito y otros medios electrónicos
+                                        disponibles en la plataforma.
+
+                                    </div>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
                     </div>
-                    
+
+                    <!-- ==========================================
+                 COLUMNA DERECHA
+            =========================================== -->
+
+                    <div class="col-lg-6">
+
+                        <div class="accordion" id="faqRight">
+
+                            <!-- Pregunta 4 -->
+
+                            <div class="accordion-item">
+
+                                <h2 class="accordion-header">
+
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pregunta4">
+
+                                        <span class="faq-text">
+                                            ¿Cómo encuentro canchas cerca de mí?
+                                        </span>
+
+                                        <span class="faq-icon"></span>
+
+                                    </button>
+
+                                </h2>
+
+                                <div id="pregunta4" class="accordion-collapse collapse" data-bs-parent="#faqRight">
+
+                                    <div class="accordion-body">
+
+                                        Utiliza el buscador y los filtros para
+                                        encontrar complejos deportivos cercanos
+                                        a tu ubicación.
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Pregunta 5 -->
+
+                            <div class="accordion-item">
+
+                                <h2 class="accordion-header">
+
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pregunta5">
+
+                                        <span class="faq-text">
+                                            Soy propietario de un complejo,
+                                            ¿cómo me registro?
+                                        </span>
+
+                                        <span class="faq-icon"></span>
+
+                                    </button>
+
+                                </h2>
+
+                                <div id="pregunta5" class="accordion-collapse collapse" data-bs-parent="#faqRight">
+
+                                    <div class="accordion-body">
+
+                                        Regístrate como propietario y completa
+                                        la información de tu complejo deportivo
+                                        para comenzar a recibir reservas.
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Pregunta 6 -->
+
+                            <div class="accordion-item">
+
+                                <h2 class="accordion-header">
+
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pregunta6">
+
+                                        <span class="faq-text">
+                                            ¿Qué pasa si el clima no permite jugar?
+                                        </span>
+
+                                        <span class="faq-icon"></span>
+
+                                    </button>
+
+                                </h2>
+
+                                <div id="pregunta6" class="accordion-collapse collapse" data-bs-parent="#faqRight">
+
+                                    <div class="accordion-body">
+
+                                        Dependiendo del complejo deportivo,
+                                        podrás reprogramar la reserva o solicitar
+                                        la devolución correspondiente.
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
-
 
             </div>
 
         </section>
+
 
         <!-- Formularios de contacto - Sebas -->
         <section class="bg-black py-5" id="contactanos">
@@ -502,6 +740,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+        
     <script src="../main.js"></script>
 </body>
 

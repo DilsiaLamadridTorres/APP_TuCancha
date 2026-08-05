@@ -20,7 +20,7 @@ class MiFooter extends HTMLElement {
                     Síguenos
                 </h5>
                 <div class="d-flex flex-column gap-2 mt-3">
-                    <a href="https://www.instagram.com/_tucancha_?igsh=bDN0c2VodzN1aGsy&utm_source=qr" class="footer-link">
+                    <a href="https://www.instagram.com/_tucancha_?igsh=bDN0c2VodzN1aGsy&utm_source=qr" target="_blank" class="footer-link">
                         <i class="bi bi-instagram me-2"></i>Instagram
                     </a>
                     <a href="https://www.facebook.com/share/1EoRjqjRus/?mibextid=wwXIfr" target="_blank" class="footer-link">

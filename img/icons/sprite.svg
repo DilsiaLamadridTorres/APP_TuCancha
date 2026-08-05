@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+
+    <!-- =====================================================
+         BALÓN
+    ====================================================== -->
+
+    <symbol id="icon-soccer-ball" viewBox="0 0 400 400">
+
+        <circle
+            cx="200"
+            cy="200"
+            r="190"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+        <polygon
+            points="200,140 257,181 235,249 165,249 143,181"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+        <line
+            x1="200"
+            y1="140"
+            x2="200"
+            y2="10"
+            stroke="currentColor"
+            stroke-width="4"/>
+
+        <line
+            x1="257"
+            y1="181"
+            x2="381"
+            y2="141"
+            stroke="currentColor"
+            stroke-width="4"/>
+
+        <line
+            x1="235"
+            y1="249"
+            x2="312"
+            y2="355"
+            stroke="currentColor"
+            stroke-width="4"/>
+
+        <line
+            x1="165"
+            y1="249"
+            x2="88"
+            y2="355"
+            stroke="currentColor"
+            stroke-width="4"/>
+
+        <line
+            x1="143"
+            y1="181"
+            x2="19"
+            y2="141"
+            stroke="currentColor"
+            stroke-width="4"/>
+
+    </symbol>
+
+</svg>

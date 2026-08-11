@@ -16,7 +16,7 @@ class MiNavbar extends HTMLElement {
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse text-center" id="navbarNav">
-                    <ul class="navbar-nav mx-auto text-center mb-4">
+                    <ul class="navbar-nav mx-auto text-center my-auto">
                         <li class="nav-item">
                             <a class="nav-link ${rutaActual === 'index.html' || rutaActual === '' ? 'active' : ''}" href="index.html">Inicio</a>
                         </li>
@@ -37,8 +37,7 @@ class MiNavbar extends HTMLElement {
                         </li>
                     </ul>
                     <div class=""></div>
-                    <button type="button" class="btn btn-outline-primary m-1">Iniciar Sesión</button>
-                    <button type="button" class="btn btn-primary m-1">Registrarse</button>
+                    <button type="button" class="btn btn-primary mx-5">Únete</button>
                 </div>
             </div>
             </div>

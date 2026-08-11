@@ -44,3 +44,7 @@ Carrito de reservas
 Panel de administrador
 
 # Estado del proyecto:  En desarrollo.
+
+## Registro de usuarios
+
+El formulario está disponible en `html/registro.html`. La propuesta de base de datos y las instrucciones para conectarlo a Supabase están en [`database/README.md`](database/README.md).

@@ -13,6 +13,7 @@ create table if not exists public.usuarios (
 
 alter table public.usuarios enable row level security;
 
+drop policy if exists "Usuarios pueden ver su propio perfil" on public.usuarios;
 create policy "Usuarios pueden ver su propio perfil"
 on public.usuarios for select
 to authenticated

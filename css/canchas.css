@@ -1,13 +1,237 @@
+/* ==========================================================
+   PÁGINA DE CANCHAS
+========================================================== */
+
 .canchas-hero {
-background-image: ;
-background-size: cover;
-background-position: center;
-display: flex;
-min-height: 380px;
-color: white;
+    display: flex;
+    align-items: center;
+    min-height: 380px;
+    padding: 4.5rem 1.5rem;
+    color: var(--color-white);
+    background-image:
+        linear-gradient(90deg, rgba(10, 16, 12, 0.88) 0%, rgba(10, 16, 12, 0.62) 52%, rgba(10, 16, 12, 0.28) 100%),
+        url('../img/foto.canchas.jpg');
+    background-position: center;
+    background-size: cover;
+}
 
+.canchas-hero__content {
+    width: min(100%, 720px);
+    margin-left: max(0px, calc((100vw - 1140px) / 2));
+}
 
+.canchas-hero h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+}
 
+.canchas-hero p {
+    margin: 0.75rem 0 1.5rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+}
 
+.canchas-search {
+    display: flex;
+    overflow: hidden;
+    width: min(100%, 650px);
+    min-height: 54px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.65rem;
+    background: var(--color-white);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+}
 
+.canchas-search input {
+    width: 100%;
+    min-width: 0;
+    padding: 0.85rem 1rem;
+    color: var(--bs-dark);
+    border: 0;
+    outline: 0;
+}
+
+.canchas-search input::placeholder {
+    color: #6b7280;
+}
+
+.canchas-search button,
+.btn-ver-mas {
+    border: 0;
+    background: var(--bs-primary);
+    color: var(--color-white);
+    font-weight: 700;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.canchas-search button {
+    padding: 0.75rem 1.5rem;
+}
+
+.canchas-search button:hover,
+.btn-ver-mas:hover {
+    background: var(--color-orange-light);
+    transform: translateY(-2px);
+}
+
+.canchas-search input:focus-visible,
+.canchas-search button:focus-visible,
+.canchas-filter:focus-visible,
+.btn-ver-mas:focus-visible {
+    outline: 3px solid var(--color-orange-gradient);
+    outline-offset: 3px;
+}
+
+.canchas-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.25rem;
+}
+
+.canchas-filter {
+    padding: 0.55rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 2rem;
+    background: rgba(23, 26, 23, 0.58);
+    color: var(--color-white);
+    font: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.canchas-filter:hover {
+    border-color: var(--bs-primary);
+    background: var(--bs-primary);
+}
+
+.canchas-list {
+    width: min(100% - 3rem, 1140px);
+    margin: 0 auto;
+    padding: 4rem 0;
+}
+
+.canchas-list__header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.canchas-list__header h2 {
+    margin: 0;
+    color: var(--bs-dark);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+}
+
+.canchas-list__header h2 span {
+    color: var(--bs-primary);
+}
+
+.canchas-list__header p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.canchas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Estilos para las tarjetas que se agreguen dinámicamente en #lista-canchas. */
+.cancha-card {
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: var(--color-white);
+    box-shadow: 0 5px 18px rgba(23, 26, 23, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cancha-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(23, 26, 23, 0.18);
+}
+
+.cancha-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+}
+
+.cancha-card__body {
+    padding: 1.25rem;
+}
+
+.cancha-card__body h3 {
+    margin: 0 0 0.5rem;
+    color: var(--bs-dark);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.cancha-card__body p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.canchas-list__more {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+}
+
+.btn-ver-mas {
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+@media (max-width: 767.98px) {
+    .canchas-hero {
+        min-height: 430px;
+        padding: 3.5rem 1.25rem;
+        background-image:
+            linear-gradient(rgba(10, 16, 12, 0.78), rgba(10, 16, 12, 0.65)),
+            url('../img/foto.canchas.jpg');
+    }
+
+    .canchas-hero__content {
+        margin: 0;
+    }
+
+    .canchas-search {
+        flex-direction: column;
+        overflow: visible;
+        background: transparent;
+        box-shadow: none;
+        border: 0;
+        gap: 0.75rem;
+    }
+
+    .canchas-search input,
+    .canchas-search button {
+        min-height: 52px;
+        border-radius: 0.55rem;
+    }
+
+    .canchas-search input {
+        background: var(--color-white);
+    }
+
+    .canchas-list {
+        width: min(100% - 2rem, 1140px);
+        padding: 3rem 0;
+    }
+
+    .canchas-list__header {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+    }
 }

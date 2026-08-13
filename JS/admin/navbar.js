@@ -1,13 +1,20 @@
 class MiNavbar extends HTMLElement {
     connectedCallback() {
         const rutaActual = (window.location.pathname.split('/').pop() || "Index.html").toLowerCase();
-    this.innerHTML = `<nav class="navbar navbar-expand-lg bg-dark shadow-sm">
+        const estaEnHtml = window.location.pathname.includes('/html/');
+        const enlace = (archivo) => {
+            if (archivo === 'index.html') return estaEnHtml ? '../index.html' : 'index.html';
+            return estaEnHtml ? archivo : `html/${archivo}`;
+        };
+        const rutaLogo = estaEnHtml ? './img/logo/Logo.png' : 'img/logo/Logo.png';
+
+        this.innerHTML = `<nav class="navbar navbar-expand-lg bg-dark shadow-sm">
             <div class="container-fluid">
-                <img src="../img/logo/Logo.png" alt="Logo" width="100" height="100" href="#"
+                <img src="${rutaLogo}" alt="Logo" width="100" height="100"
                     class="me-2 rounded-circle object-fit-cover">
                 <div class="d-flex flex-column ">
-                    <a href="Index.html" class="text-decoration-none d-flex flex-column">
-                        <span class="fw-bold text-white lh-1 fs-2" href="#" >TuCancha</span>
+                    <a href="${enlace('index.html')}" class="text-decoration-none d-flex flex-column">
+                        <span class="fw-bold text-white lh-1 fs-2">TuCancha</span>
                         <small class="fst-italic fs-6">¡Arma tu parche y juégatela!</small>
                     </a>
                 </div>
@@ -18,22 +25,22 @@ class MiNavbar extends HTMLElement {
                 <div class="collapse navbar-collapse text-center" id="navbarNav">
                     <ul class="navbar-nav mx-auto text-center my-auto">
                         <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'index.html' || rutaActual === '' ? 'active' : ''}" href="Index.html">Inicio</a>
+                            <a class="nav-link ${rutaActual === 'index.html' ? 'active' : ''}" href="${enlace('index.html')}">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'canchas.html' || rutaActual === '' ? 'active' : ''}" href="canchas.html">Canchas</a>
+                            <a class="nav-link ${rutaActual === 'canchas.html' ? 'active' : ''}" href="${enlace('canchas.html')}">Canchas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'reservas.html' || rutaActual === '' ? 'active' : ''}" href="reservas.html">Reservas</a>
+                            <a class="nav-link ${rutaActual === 'reservas.html' ? 'active' : ''}" href="${enlace('reservas.html')}">Reservas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'precios.html' || rutaActual === '' ? 'active' : ''}" href="precios.html">Precios</a>
+                            <a class="nav-link ${rutaActual === 'precios.html' ? 'active' : ''}" href="${enlace('precios.html')}">Precios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'nosotros.html' || rutaActual === '' ? 'active' : ''}" href="nosotros.html">Nosotros</a>
+                            <a class="nav-link ${rutaActual === 'nosotros.html' ? 'active' : ''}" href="${enlace('nosotros.html')}">Nosotros</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'contacto.html' || rutaActual === '' ? 'active' : ''}" href="contacto.html">Contacto</a>
+                            <a class="nav-link ${rutaActual === 'contacto.html' ? 'active' : ''}" href="${enlace('contacto.html')}">Contacto</a>
                         </li>
                     </ul>
                     <div class=""></div>

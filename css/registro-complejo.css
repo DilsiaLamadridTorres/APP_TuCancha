@@ -398,3 +398,76 @@ body {
 .step-form .form-floating > .form-control:focus ~ label {
     color: #FF6A00;
 }
+
+/* =========================================================
+   CAMPO DE TELÉFONO
+   ========================================================= */
+
+/* Contenedor del código + número */
+.phone-field {
+    display: flex;
+    align-items: center;
+
+    height: 58px;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    transition: 0.2s ease;
+}
+
+
+/* Código del país */
+.country-code {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 16px;
+
+    color: #6B6B6B;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    border-right: 1px solid #D9D9D9;
+
+    white-space: nowrap;
+}
+
+
+/* Input del número */
+.phone-field .form-control {
+    height: 100%;
+
+    flex: 1;
+
+    border: none;
+    border-radius: 0;
+
+    box-shadow: none;
+
+    color: #1F1F1F;
+
+    font-size: 14px;
+}
+
+
+/* Elimina el borde azul de Bootstrap */
+.phone-field .form-control:focus {
+    border: none;
+    box-shadow: none;
+}
+
+
+/* Estado activo del contenedor */
+.phone-field:focus-within {
+    border-color: #FF6A00;
+
+    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
+}

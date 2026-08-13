@@ -689,3 +689,51 @@ body {
     color: #FF6A00;
     font-weight: 600;
 }
+
+/* =========================================================
+   BOTÓN VOLVER
+   ========================================================= */
+
+.btn-back {
+    /* Eliminamos los estilos predeterminados */
+    border: none;
+    background-color: transparent;
+
+    /* Color secundario */
+    color: #6B7280;
+
+    /* Tipografía */
+    font-size: 14px;
+    font-weight: 600;
+
+    /* Espacio interno */
+    padding: 10px 16px;
+
+    /* Flexbox para alinear la flecha y el texto */
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    /* Cursor */
+    cursor: pointer;
+
+    /* Transición */
+    transition: 0.2s ease;
+}
+
+
+/* Flecha del botón */
+.btn-back span {
+    font-size: 18px;
+    line-height: 1;
+}
+
+
+/* Estado hover */
+.btn-back:hover {
+    color: #1F1F1F;
+
+    /* Pequeño desplazamiento hacia la izquierda */
+    transform: translateX(-2px);
+}

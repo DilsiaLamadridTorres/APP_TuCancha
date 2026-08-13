@@ -625,3 +625,67 @@ body {
 
     color: #6B7280;
 }
+
+/* =========================================================
+   GRID DE PRESTACIONES
+   ========================================================= */
+
+.prestations-grid {
+    /* Distribuye las prestaciones en varias columnas */
+    display: grid;
+
+    /* Tres opciones por fila */
+    grid-template-columns: repeat(3, 1fr);
+
+    /* Espacio entre las opciones */
+    gap: 12px;
+}
+
+
+/* =========================================================
+   OPCIÓN DE PRESTACIÓN
+   ========================================================= */
+
+.prestation {
+    /* Altura de cada opción */
+    min-height: 44px;
+
+    /* Espacio interno */
+    padding: 10px 14px;
+
+    /* Fondo */
+    background-color: #FFFFFF;
+
+    /* Borde */
+    border: 1px solid #D9D9D9;
+
+    /* Bordes redondeados */
+    border-radius: 8px;
+
+    /* Texto */
+    color: #6B6B6B;
+    font-size: 13px;
+    font-weight: 500;
+
+    /* Cursor */
+    cursor: pointer;
+
+    /* Transición */
+    transition: 0.2s ease;
+}
+
+
+/* Estado hover */
+.prestation:hover {
+    border-color: #FF6A00;
+    color: #FF6A00;
+}
+
+
+/* Estado seleccionado */
+.prestation.active {
+    background-color: #FFF3EB;
+    border-color: #FF6A00;
+    color: #FF6A00;
+    font-weight: 600;
+}

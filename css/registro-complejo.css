@@ -45,3 +45,27 @@ body {
 .sidebar-footer {
     margin-top: auto;
 }
+
+/* =========================================================
+   ENCABEZADO DEL SIDEBAR
+   ========================================================= */
+
+.sidebar-header {
+    /* Separa el encabezado de los elementos siguientes */
+    margin-bottom: 32px;
+}
+
+/* Título principal del sidebar */
+.sidebar-header h1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 8px;
+}
+
+/* Texto secundario del encabezado */
+.sidebar-header p {
+    font-size: 13px;
+    font-weight: 400;
+    color: #A0A0A0;
+}

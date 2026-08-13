@@ -496,7 +496,7 @@ body {
     height: 48px;
 
     /* Espacio interno */
-    padding: 0 24px;
+    padding: 0 20px;
 
     /* Color principal */
     background-color: #FF6A00;
@@ -549,4 +549,18 @@ body {
 /* Efecto al hacer clic */
 .btn-continue:active {
     transform: translateY(0);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 991px) {
+
+    .registration-sidebar {
+        width: 100%;
+        min-height: auto;
+    }
+
 }

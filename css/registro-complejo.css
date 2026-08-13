@@ -1,11 +1,23 @@
 /* =========================================================
-   CUERPO DE LA PÁGINA
+   CONFIGURACIÓN GENERAL
    ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
 
 body {
     font-family: Arial, sans-serif;
     background-color: #f8f9fa;
 }
+
 
 /* =========================================================
    CONTENEDOR PRINCIPAL
@@ -15,9 +27,6 @@ body {
     min-height: 100vh;
 }
 
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
 
 /* =========================================================
    SIDEBAR
@@ -31,31 +40,21 @@ body {
 
     padding: 32px;
 
-    /* Permite organizar los elementos internos */
+    /* Organización vertical */
     display: flex;
-
-    /* Coloca los elementos uno debajo del otro */
     flex-direction: column;
 }
 
-/* =========================================================
-   FOOTER DEL SIDEBAR
-   ========================================================= */
-
-.sidebar-footer {
-    margin-top: auto;
-}
 
 /* =========================================================
    ENCABEZADO DEL SIDEBAR
    ========================================================= */
 
 .sidebar-header {
-    /* Separa el encabezado de los elementos siguientes */
     margin-bottom: 32px;
 }
 
-/* Título principal del sidebar */
+/* Título principal */
 .sidebar-header h1 {
     font-size: 16px;
     font-weight: 700;
@@ -63,123 +62,168 @@ body {
     margin-bottom: 8px;
 }
 
-/* Texto secundario del encabezado */
+/* Texto secundario */
 .sidebar-header p {
     font-size: 13px;
     font-weight: 400;
     color: #A0A0A0;
 }
 
+
 /* =========================================================
    INFORMACIÓN DEL PROGRESO
    ========================================================= */
 
 .progress-info {
-    /* Coloca la barra y el porcentaje en una misma fila */
     display: flex;
-
-    /* Centra verticalmente los elementos */
     align-items: center;
-
-    /* Espacio entre la barra y el porcentaje */
     gap: 12px;
 
-    /* Separa el progreso de los pasos */
     margin-bottom: 32px;
 }
 
-
-/* Contenedor de la barra de Bootstrap */
+/* Contenedor de la barra */
 .progress-info .progress {
-    /* Ocupa todo el espacio disponible */
     flex: 1;
 
-    /* Altura de la barra */
     height: 6px;
 
-    /* Fondo de la barra sin completar */
     background-color: #3A3A3A;
-
-    /* Bordes redondeados */
     border-radius: 10px;
 }
 
-
-/* Parte completada de la barra */
+/* Barra completada */
 .progress-info .progress-bar {
-    /* Color principal de TuCancha */
     background-color: #FF6A00;
-
-    /* Bordes redondeados */
     border-radius: 10px;
 }
 
-
-/* Porcentaje del progreso */
+/* Porcentaje */
 .progress-info span {
     font-size: 12px;
     font-weight: 600;
+
     color: #FFFFFF;
 
-    /* Evita que el porcentaje se divida en varias líneas */
     white-space: nowrap;
 }
+
 
 /* =========================================================
    PASOS DEL FORMULARIO
    ========================================================= */
 
 .form-steps {
-    /* Organiza los pasos verticalmente */
     display: flex;
-
-    /* Coloca cada botón debajo del anterior */
     flex-direction: column;
 
-    /* Espacio entre los pasos */
     gap: 12px;
 }
 
 
-/* Estilo general de cada paso */
+/* Cada paso */
 .form-steps .step {
-    /* Elimina el borde predeterminado */
     border: none;
-
-    /* Elimina el fondo predeterminado */
     background: transparent;
 
-    /* Color de los pasos inactivos */
     color: #8A8A8A;
 
-    /* Tamaño del texto */
     font-size: 14px;
-
-    /* Grosor del texto */
     font-weight: 500;
 
-    /* Alinea el texto hacia la izquierda */
     text-align: left;
 
-    /* Espacio interno */
-    padding: 10px 12px;
+    /* Espacio para el indicador */
+    padding: 10px 12px 10px 36px;
 
-    /* Indica que el elemento es interactivo */
     cursor: pointer;
 
-    /* Suaviza los cambios visuales */
     transition: 0.2s ease;
+
+    /* Referencia para los pseudo-elementos */
+    position: relative;
 }
 
 
-/* Paso actualmente activo */
+/* Paso activo */
 .form-steps .step.active {
     color: #FFFFFF;
     font-weight: 700;
 }
 
 
-/* Efecto al pasar el mouse */
+/* Hover */
 .form-steps .step:hover {
     color: #FFFFFF;
+}
+
+
+/* =========================================================
+   CÍRCULO DE CADA PASO
+   ========================================================= */
+
+.form-steps .step::before {
+    content: "";
+
+    width: 20px;
+    height: 20px;
+
+    border: 2px solid #6B6B6B;
+    border-radius: 50%;
+
+    background-color: #1F1F1F;
+
+    /* Posicionamiento */
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    /* Mantiene el círculo por encima de la línea */
+    z-index: 2;
+}
+
+
+/* Círculo del paso activo */
+.form-steps .step.active::before {
+    border-color: #FF6A00;
+    background-color: #FF6A00;
+}
+
+
+/* =========================================================
+   LÍNEA VERTICAL ENTRE LOS PASOS
+   ========================================================= */
+
+.form-steps .step:not(:last-child)::after {
+    content: "";
+
+    width: 2px;
+
+    background-color: #3A3A3A;
+
+    /* Posicionamiento respecto al botón */
+    position: absolute;
+
+    left: 9px;
+
+    /* Comienza debajo del círculo */
+    top: 30px;
+
+    /* Se extiende hasta el siguiente paso */
+    height: calc(100% + 12px);
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   FOOTER DEL SIDEBAR
+   ========================================================= */
+
+.sidebar-footer {
+    /* Empuja el footer hacia abajo */
+    margin-top: auto;
 }

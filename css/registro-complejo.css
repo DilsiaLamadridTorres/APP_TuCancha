@@ -336,3 +336,16 @@ body {
 
     color: #6B6B6B;
 }
+
+/* =========================================================
+   CONTENEDOR DEL FORMULARIO
+   ========================================================= */
+
+.step-form {
+    /* Limita el ancho de los campos */
+    max-width: 700px;
+
+    /* Organiza los elementos verticalmente */
+    display: flex;
+    flex-direction: column;
+}

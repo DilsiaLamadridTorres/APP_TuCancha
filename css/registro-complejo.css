@@ -349,3 +349,52 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+/* =========================================================
+   CAMPOS DEL FORMULARIO
+   ========================================================= */
+
+/* Contenedor de cada campo */
+.step-form .form-floating {
+    margin-bottom: 24px !important;
+}
+
+
+/* Input */
+.step-form .form-control {
+    height: 58px;
+
+    /* Fondo y borde */
+    background-color: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    /* Texto */
+    color: #1F1F1F;
+    font-size: 14px;
+
+    /* Elimina la sombra predeterminada */
+    box-shadow: none;
+}
+
+
+/* Estado cuando el usuario selecciona el campo */
+.step-form .form-control:focus {
+    border-color: #FF6A00;
+
+    /* Evitamos la sombra azul de Bootstrap */
+    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
+}
+
+
+/* Texto de las etiquetas */
+.step-form .form-floating > label {
+    color: #777777;
+    font-size: 14px;
+}
+
+
+/* Color de la etiqueta cuando el campo está activo */
+.step-form .form-floating > .form-control:focus ~ label {
+    color: #FF6A00;
+}

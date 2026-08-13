@@ -388,14 +388,14 @@ body {
 
 
 /* Texto de las etiquetas */
-.step-form .form-floating > label {
+.step-form .form-floating>label {
     color: #777777;
     font-size: 14px;
 }
 
 
 /* Color de la etiqueta cuando el campo está activo */
-.step-form .form-floating > .form-control:focus ~ label {
+.step-form .form-floating>.form-control:focus~label {
     color: #FF6A00;
 }
 
@@ -470,4 +470,83 @@ body {
     border-color: #FF6A00;
 
     box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
+}
+
+/* =========================================================
+   ACCIONES DEL FORMULARIO
+   ========================================================= */
+
+.form-actions {
+    /* Coloca el botón hacia la derecha */
+    display: flex;
+    justify-content: flex-end;
+
+    /* Separación respecto al último campo */
+    margin-top: 8px;
+}
+
+
+/* =========================================================
+   BOTÓN CONTINUAR
+   ========================================================= */
+
+.btn-continue {
+    /* Tamaño del botón */
+    min-width: 150px;
+    height: 48px;
+
+    /* Espacio interno */
+    padding: 0 24px;
+
+    /* Color principal */
+    background-color: #FF6A00;
+    color: #FFFFFF;
+
+    /* Eliminamos el borde */
+    border: none;
+
+    /* Bordes redondeados */
+    border-radius: 10px;
+
+    /* Tipografía */
+    font-size: 14px;
+    font-weight: 600;
+
+    /* Flexbox para alinear texto y flecha */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    /* Cursor */
+    cursor: pointer;
+
+    /* Transición */
+    transition: 0.2s ease;
+}
+
+
+/* Flecha del botón */
+.btn-continue span {
+    font-size: 18px;
+    line-height: 1;
+}
+
+
+/* Efecto hover */
+.btn-continue:hover {
+    background-color: #E85D00;
+
+    /* Pequeño desplazamiento hacia arriba */
+    transform: translateY(-2px);
+
+    /* Sombra */
+    box-shadow: 0 6px 15px rgba(255, 106, 0, 0.25);
+}
+
+
+/* Efecto al hacer clic */
+.btn-continue:active {
+    transform: translateY(0);
 }

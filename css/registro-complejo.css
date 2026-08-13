@@ -69,3 +69,58 @@ body {
     font-weight: 400;
     color: #A0A0A0;
 }
+
+/* =========================================================
+   INFORMACIÓN DEL PROGRESO
+   ========================================================= */
+
+.progress-info {
+    /* Coloca la barra y el porcentaje en una misma fila */
+    display: flex;
+
+    /* Centra verticalmente los elementos */
+    align-items: center;
+
+    /* Espacio entre la barra y el porcentaje */
+    gap: 12px;
+
+    /* Separa el progreso de los pasos */
+    margin-bottom: 32px;
+}
+
+
+/* Contenedor de la barra de Bootstrap */
+.progress-info .progress {
+    /* Ocupa todo el espacio disponible */
+    flex: 1;
+
+    /* Altura de la barra */
+    height: 6px;
+
+    /* Fondo de la barra sin completar */
+    background-color: #3A3A3A;
+
+    /* Bordes redondeados */
+    border-radius: 10px;
+}
+
+
+/* Parte completada de la barra */
+.progress-info .progress-bar {
+    /* Color principal de TuCancha */
+    background-color: #FF6A00;
+
+    /* Bordes redondeados */
+    border-radius: 10px;
+}
+
+
+/* Porcentaje del progreso */
+.progress-info span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #FFFFFF;
+
+    /* Evita que el porcentaje se divida en varias líneas */
+    white-space: nowrap;
+}

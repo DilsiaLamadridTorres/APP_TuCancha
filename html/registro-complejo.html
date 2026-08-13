@@ -422,13 +422,430 @@
         </section>
 
 
-        <!-- ==============================
-         PASO 3 - CANCHAS
-         ============================== -->
+        <!-- =====================================================
+     PASO 3 - CANCHAS
+     ===================================================== -->
 
         <section class="form-step-content" id="step-canchas">
 
-            <!-- Lo construiremos después -->
+            <!-- Encabezado -->
+            <header class="step-header">
+
+                <span class="step-indicator">
+                    PASO 3 DE 4
+                </span>
+
+                <h2>
+                    Configuración de canchas
+                </h2>
+
+                <p>
+                    Definí las canchas que tenés en tu complejo.
+                    A medida que cargues canchas, el precio se actualiza automáticamente.
+                </p>
+
+            </header>
+
+
+            <!-- =================================================
+         CONTENEDOR DE CANCHAS
+         ================================================= -->
+
+            <div class="courts-container" id="courtsContainer">
+
+
+                <!-- =================================================
+             ESTADO VACÍO
+             Se mostrará mientras no existan canchas.
+             ================================================= -->
+
+                <div class="empty-courts" id="emptyCourts">
+
+                    <h3>
+                        Todavía no agregaste canchas
+                    </h3>
+
+                    <p>
+                        Empezá agregando la primera cancha de tu complejo.
+                    </p>
+
+                    <button type="button" class="btn-add-court" id="btnAddCourt">
+                        <span>⊕</span>
+                        Agregar cancha
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+             FORMULARIO PARA AGREGAR CANCHA
+             Inicialmente oculto.
+             ================================================= -->
+
+                <div class="court-form-card d-none" id="courtFormCard">
+
+                    <h3>
+                        Cancha 1
+                    </h3>
+
+
+                    <!-- =============================================
+                 DEPORTE Y TIPO DE PISO
+                 ============================================= -->
+
+                    <div class="row g-3 mb-4">
+
+                        <!-- Deporte -->
+                        <div class="col-md-6">
+
+                            <div class="form-floating">
+
+                                <select class="form-select" id="courtSport" name="courtSport">
+
+                                    <option value="" selected disabled>
+                                        Seleccioná un deporte
+                                    </option>
+
+                                    <option value="futbol-5">
+                                        Fútbol 5
+                                    </option>
+
+                                    <option value="futbol-8">
+                                        Fútbol 8
+                                    </option>
+
+                                    <option value="futbol-11">
+                                        Fútbol 11
+                                    </option>
+
+                                </select>
+
+                                <label for="courtSport">
+                                    Deporte
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Tipo de piso -->
+                        <div class="col-md-6">
+
+                            <div class="form-floating">
+
+                                <select class="form-select" id="courtFloor" name="courtFloor">
+
+                                    <option value="" selected disabled>
+                                        Seleccioná el tipo de piso
+                                    </option>
+
+                                    <option value="sintetico">
+                                        Sintético
+                                    </option>
+
+                                    <option value="cemento">
+                                        Cemento
+                                    </option>
+
+                                    <option value="natural">
+                                        Natural
+                                    </option>
+
+                                </select>
+
+                                <label for="courtFloor">
+                                    Tipo de piso
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================================
+                 DIMENSIONES
+                 ============================================= -->
+
+                    <div class="row g-3 mb-4">
+
+                        <div class="col-md-6">
+
+                            <div class="form-floating">
+
+                                <input type="number" class="form-control" id="courtLength" name="courtLength"
+                                    placeholder="Largo" min="1">
+
+                                <label for="courtLength">
+                                    Largo (m)
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-floating">
+
+                                <input type="number" class="form-control" id="courtWidth" name="courtWidth"
+                                    placeholder="Ancho" min="1">
+
+                                <label for="courtWidth">
+                                    Ancho (m)
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================================
+                 DURACIÓN DEL TURNO
+                 ============================================= -->
+
+                    <div class="court-field-group">
+
+                        <label class="court-label">
+                            Duración del turno
+                        </label>
+
+                        <div class="duration-options">
+
+                            <button type="button" class="duration-option" data-duration="60">
+                                1 hora
+                            </button>
+
+                            <button type="button" class="duration-option" data-duration="90">
+                                1 hora y 30 min
+                            </button>
+
+                            <button type="button" class="duration-option" data-duration="120">
+                                2 horas
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================================
+                 OPCIONES
+                 ============================================= -->
+
+                    <div class="court-options">
+
+                        <!-- Techada -->
+                        <div class="court-option-card">
+
+                            <div class="form-check form-switch">
+
+                                <input class="form-check-input" type="checkbox" id="courtCovered" name="courtCovered">
+
+                                <label class="form-check-label" for="courtCovered">
+                                    Techada
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Otros deportes -->
+                        <div class="court-option-card">
+
+                            <div class="form-check form-switch">
+
+                                <input class="form-check-input" type="checkbox" id="otherSports" name="otherSports">
+
+                                <label class="form-check-label" for="otherSports">
+                                    Permite otros deportes
+                                </label>
+
+                            </div>
+
+                            <small>
+                                Aceptá reservas de otros deportes en esta cancha.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================================
+                 FOTOS DE LA CANCHA
+                 ============================================= -->
+
+                    <div class="court-photos">
+
+                        <div class="court-field-group">
+
+                            <label class="court-label">
+                                Fotos de la cancha
+                            </label>
+
+                            <p class="court-help-text">
+                                Agregá fotos para que los jugadores puedan conocer
+                                mejor la cancha.
+                            </p>
+
+                        </div>
+
+
+                        <!-- Input de imágenes -->
+                        <label for="courtPhotos" class="photo-upload">
+
+                            <span class="photo-upload-icon">
+                                +
+                            </span>
+
+                            <span>
+                                Agregar fotos
+                            </span>
+
+                            <small>
+                                JPG, PNG o WEBP
+                            </small>
+
+                        </label>
+
+                        <input type="file" id="courtPhotos" name="courtPhotos" accept="image/jpeg,image/png,image/webp"
+                            multiple hidden>
+
+
+                        <!-- Vista previa -->
+                        <div class="photo-preview" id="photoPreview">
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================================
+                 ACCIONES DE LA CANCHA
+                 ============================================= -->
+
+                    <div class="court-form-actions">
+
+                        <button type="button" class="btn-delete-court" id="btnDeleteCourt">
+                            Eliminar
+                        </button>
+
+                        <button type="button" class="btn-cancel-court" id="btnCancelCourt">
+                            Cancelar
+                        </button>
+
+                        <button type="button" class="btn-save-court" id="btnSaveCourt">
+                            Guardar cancha
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+             CANCHA GUARDADA
+             Ejemplo de cómo quedará después de guardar.
+             ================================================= -->
+
+                <div class="saved-court-card d-none" id="savedCourtCard">
+
+                    <div class="saved-court-info">
+
+                        <div class="saved-court-title">
+
+                            <h3>
+                                Cancha 1
+                            </h3>
+
+                            <span class="sport-badge">
+                                Fútbol 5
+                            </span>
+
+                        </div>
+
+                        <p>
+                            Cemento
+                        </p>
+
+                        <div class="saved-court-tags">
+
+                            <span>
+                                Techada
+                            </span>
+
+                            <span>
+                                Permite otros deportes
+                            </span>
+
+                            <span>
+                                1 hora
+                            </span>
+
+                            <span>
+                                1 hora y 30 min
+                            </span>
+
+                            <span>
+                                2 horas
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="saved-court-actions">
+
+                        <button type="button" class="btn-edit-court" title="Editar cancha">
+                            ✎
+                        </button>
+
+                        <button type="button" class="btn-remove-court" title="Eliminar cancha">
+                            🗑
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+             AGREGAR OTRA CANCHA
+             ================================================= -->
+
+                <button type="button" class="btn-add-another-court d-none" id="btnAddAnotherCourt">
+                    <span>+</span>
+                    Agregar otra cancha
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+         ACCIONES DEL PASO
+         ================================================= -->
+
+            <div class="form-actions">
+
+                <button type="button" class="btn-back" id="btnBackCourt">
+                    <span>←</span>
+                    Volver
+                </button>
+
+
+                <button type="button" class="btn-continue" id="btnContinueCourt" disabled>
+                    Continuar
+                    <span>→</span>
+                </button>
+
+            </div>
 
         </section>
 

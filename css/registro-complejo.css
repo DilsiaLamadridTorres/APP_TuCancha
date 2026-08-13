@@ -764,3 +764,557 @@ body {
     }
 
 }
+
+/* =========================================================
+   PASO 3 - CANCHAS
+   ========================================================= */
+
+
+/* =========================================================
+   CONTENEDOR
+   ========================================================= */
+
+.courts-container {
+    width: 100%;
+}
+
+
+/* =========================================================
+   ESTADO VACÍO
+   ========================================================= */
+
+.empty-courts {
+    min-height: 190px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    border: 1px dashed #D9DEE5;
+    border-radius: 16px;
+
+    padding: 40px 24px;
+
+    background-color: #FFFFFF;
+}
+
+.empty-courts h3 {
+    margin: 0 0 10px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    color: #1F1F1F;
+}
+
+.empty-courts p {
+    margin: 0 0 22px;
+
+    font-size: 13px;
+
+    color: #6B7280;
+}
+
+
+/* =========================================================
+   BOTÓN AGREGAR CANCHA
+   ========================================================= */
+
+.btn-add-court {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 14px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #1F2933;
+    color: #FFFFFF;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-add-court:hover {
+    background-color: #111820;
+}
+
+.btn-add-court span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+
+/* =========================================================
+   FORMULARIO DE CANCHA
+   ========================================================= */
+
+.court-form-card {
+    padding: 28px 32px;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #E1E5E8;
+    border-radius: 16px;
+}
+
+.court-form-card h3 {
+    margin: 0 0 24px;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #1F1F1F;
+}
+
+
+/* =========================================================
+   LABELS
+   ========================================================= */
+
+.court-label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #1F1F1F;
+}
+
+.court-help-text {
+    margin: -4px 0 16px;
+
+    font-size: 13px;
+
+    color: #6B7280;
+}
+
+
+/* =========================================================
+   DURACIÓN
+   ========================================================= */
+
+.court-field-group {
+    margin-bottom: 24px;
+}
+
+.duration-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.duration-option {
+    padding: 8px 14px;
+
+    border: 1px solid #D8E0E8;
+    border-radius: 8px;
+
+    background-color: #FFFFFF;
+
+    color: #1F2933;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.duration-option:hover,
+.duration-option.active {
+    border-color: #1683FF;
+
+    background-color: #EAF4FF;
+
+    color: #1683FF;
+}
+
+
+/* =========================================================
+   OPCIONES
+   ========================================================= */
+
+.court-options {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 28px;
+}
+
+.court-option-card {
+    padding: 20px 16px;
+
+    border: 1px solid #E1E5E8;
+    border-radius: 14px;
+}
+
+.court-option-card .form-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.court-option-card .form-check-label {
+    font-size: 14px;
+    color: #1F2933;
+}
+
+.court-option-card small {
+    display: block;
+
+    margin-top: 12px;
+
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: #6B7280;
+}
+
+
+/* =========================================================
+   FOTOS
+   ========================================================= */
+
+.court-photos {
+    margin-bottom: 28px;
+}
+
+.photo-upload {
+    min-height: 110px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    border: 1px dashed #C8D0D9;
+    border-radius: 12px;
+
+    background-color: #FAFBFC;
+
+    color: #1F2933;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.photo-upload:hover {
+    border-color: #1683FF;
+
+    background-color: #F5FAFF;
+}
+
+.photo-upload-icon {
+    font-size: 24px;
+    font-weight: 300;
+
+    color: #1683FF;
+}
+
+.photo-upload span {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.photo-upload small {
+    font-size: 11px;
+    color: #7B8794;
+}
+
+
+/* =========================================================
+   PREVISUALIZACIÓN DE FOTOS
+   ========================================================= */
+
+.photo-preview {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 10px;
+
+    margin-top: 14px;
+}
+
+.photo-preview:empty {
+    display: none;
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+
+    border: 1px solid #E1E5E8;
+}
+
+
+/* =========================================================
+   ACCIONES DEL FORMULARIO
+   ========================================================= */
+
+.court-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 20px;
+
+    padding-top: 8px;
+}
+
+.btn-delete-court,
+.btn-cancel-court {
+    border: none;
+
+    background-color: transparent;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.btn-delete-court {
+    color: #FF3B30;
+}
+
+.btn-cancel-court {
+    color: #1F2933;
+}
+
+.btn-delete-court:hover,
+.btn-cancel-court:hover {
+    opacity: 0.7;
+}
+
+
+.btn-save-court {
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #1F2933;
+    color: #FFFFFF;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-save-court:hover {
+    background-color: #111820;
+}
+
+
+/* =========================================================
+   CANCHA GUARDADA
+   ========================================================= */
+
+.saved-court-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px;
+
+    border: 1px solid #E1E5E8;
+    border-radius: 14px;
+
+    background-color: #FFFFFF;
+}
+
+.saved-court-title {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.saved-court-title h3 {
+    margin: 0;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    color: #1F1F1F;
+}
+
+.saved-court-info p {
+    margin: 8px 0 10px;
+
+    font-size: 13px;
+
+    color: #6B7280;
+}
+
+
+/* =========================================================
+   BADGE DEL DEPORTE
+   ========================================================= */
+
+.sport-badge {
+    padding: 4px 8px;
+
+    border-radius: 6px;
+
+    background-color: #EAF4FF;
+
+    color: #1683FF;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   ETIQUETAS DE CANCHA
+   ========================================================= */
+
+.saved-court-tags {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 6px;
+}
+
+.saved-court-tags span {
+    padding: 4px 8px;
+
+    border: 1px solid #D9DEE5;
+    border-radius: 6px;
+
+    background-color: #F8F9FA;
+
+    color: #1F2933;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   ACCIONES DE CANCHA GUARDADA
+   ========================================================= */
+
+.saved-court-actions {
+    display: flex;
+
+    gap: 18px;
+}
+
+.btn-edit-court,
+.btn-remove-court {
+    border: none;
+
+    background-color: transparent;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+.btn-edit-court {
+    color: #607080;
+}
+
+.btn-remove-court {
+    color: #FF3B30;
+}
+
+
+/* =========================================================
+   AGREGAR OTRA CANCHA
+   ========================================================= */
+
+.btn-add-another-court {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    margin-top: 16px;
+    padding: 14px;
+
+    border: 1px dashed #1683FF;
+    border-radius: 10px;
+
+    background-color: #FFFFFF;
+
+    color: #1683FF;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.btn-add-another-court span {
+    margin-right: 6px;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .court-options {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-preview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .court-form-actions {
+        flex-wrap: wrap;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .court-form-card {
+        padding: 22px 18px;
+    }
+
+    .photo-preview {
+        grid-template-columns: 1fr;
+    }
+
+    .court-form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+}

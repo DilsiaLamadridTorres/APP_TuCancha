@@ -283,3 +283,56 @@ body {
     /* Fondo principal */
     background-color: #FFFFFF;
 }
+
+/* =========================================================
+   ENCABEZADO DEL CONTENIDO
+   ========================================================= */
+
+.step-header {
+    /* Limita el ancho para que el texto no se extienda demasiado */
+    max-width: 700px;
+
+    /* Separa el encabezado del formulario */
+    margin-bottom: 40px;
+}
+
+
+/* Indicador del paso actual */
+.step-indicator {
+    display: inline-block;
+
+    /* Tamaño pequeño para que sea información secundaria */
+    font-size: 12px;
+    font-weight: 700;
+
+    /* Color principal */
+    color: #FF6A00;
+
+    /* Espacio entre letras */
+    letter-spacing: 0.08em;
+
+    /* Separa el indicador del título */
+    margin-bottom: 12px;
+}
+
+
+/* Título del paso */
+.step-header h2 {
+    font-size: 32px;
+    font-weight: 700;
+
+    color: #1F1F1F;
+
+    /* Separación entre título y descripción */
+    margin-bottom: 12px;
+}
+
+
+/* Descripción del paso */
+.step-header p {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+
+    color: #6B6B6B;
+}

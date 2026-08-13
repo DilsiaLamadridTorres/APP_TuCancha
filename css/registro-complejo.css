@@ -124,3 +124,62 @@ body {
     /* Evita que el porcentaje se divida en varias líneas */
     white-space: nowrap;
 }
+
+/* =========================================================
+   PASOS DEL FORMULARIO
+   ========================================================= */
+
+.form-steps {
+    /* Organiza los pasos verticalmente */
+    display: flex;
+
+    /* Coloca cada botón debajo del anterior */
+    flex-direction: column;
+
+    /* Espacio entre los pasos */
+    gap: 12px;
+}
+
+
+/* Estilo general de cada paso */
+.form-steps .step {
+    /* Elimina el borde predeterminado */
+    border: none;
+
+    /* Elimina el fondo predeterminado */
+    background: transparent;
+
+    /* Color de los pasos inactivos */
+    color: #8A8A8A;
+
+    /* Tamaño del texto */
+    font-size: 14px;
+
+    /* Grosor del texto */
+    font-weight: 500;
+
+    /* Alinea el texto hacia la izquierda */
+    text-align: left;
+
+    /* Espacio interno */
+    padding: 10px 12px;
+
+    /* Indica que el elemento es interactivo */
+    cursor: pointer;
+
+    /* Suaviza los cambios visuales */
+    transition: 0.2s ease;
+}
+
+
+/* Paso actualmente activo */
+.form-steps .step.active {
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+
+/* Efecto al pasar el mouse */
+.form-steps .step:hover {
+    color: #FFFFFF;
+}

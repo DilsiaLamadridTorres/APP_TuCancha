@@ -737,3 +737,30 @@ body {
     /* Pequeño desplazamiento hacia la izquierda */
     transform: translateX(-2px);
 }
+
+/* =========================================================
+   RESPONSIVE - PRESTACIONES
+   ========================================================= */
+
+/* Pantallas medianas */
+@media (max-width: 768px) {
+
+    .prestations-grid {
+        /* Reducimos a dos columnas */
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+/* =========================================================
+   RESPONSIVE - CELULARES
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .prestations-grid {
+        /* Una prestación por fila */
+        grid-template-columns: 1fr;
+    }
+
+}

@@ -21,9 +21,16 @@
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/registro-complejo.css">
 
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/bootstrap-custom.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/footer.css">
+
 </head>
 
 <body>
+
+    <header> <mi-navbar></mi-navbar> </header>
     <!-- Encargado: Miguel -->
     <main class="registration-content">
 
@@ -850,17 +857,312 @@
         </section>
 
 
-        <!-- ==============================
-         PASO 4 - REVISIÓN
-         ============================== -->
+        <!-- =====================================================
+     PASO 4 - REVISIÓN
+     ===================================================== -->
 
         <section class="form-step-content" id="step-revision">
 
-            <!-- Lo construiremos después -->
+            <!-- =================================================
+         ENCABEZADO
+         ================================================= -->
+
+            <header class="step-header">
+
+                <span class="step-indicator">
+                    PASO 4 DE 4
+                </span>
+
+                <h2>
+                    Finalizá el registro
+                </h2>
+
+                <p>
+                    Revisá los datos antes de enviar.
+                    Nuestro equipo verificará la información y te contactará
+                    para completar el alta.
+                </p>
+
+            </header>
+
+
+            <!-- =================================================
+         DATOS DEL TITULAR
+         ================================================= -->
+
+            <div class="review-card">
+
+                <div class="review-card-header">
+
+                    <h3>
+                        Titular
+                    </h3>
+
+                </div>
+
+
+                <div class="review-data">
+
+                    <div class="review-row">
+
+                        <span>
+                            Nombre y apellido del titular
+                        </span>
+
+                        <strong id="reviewOwnerName">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>
+                            Teléfono del propietario
+                        </span>
+
+                        <strong id="reviewOwnerPhone">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>
+                            Correo electrónico
+                        </span>
+
+                        <strong id="reviewOwnerEmail">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+         DATOS DEL COMPLEJO
+         ================================================= -->
+
+            <div class="review-card">
+
+                <div class="review-card-header">
+
+                    <h3>
+                        Complejo
+                    </h3>
+
+                </div>
+
+
+                <div class="review-data">
+
+                    <div class="review-row">
+
+                        <span>
+                            Nombre del complejo
+                        </span>
+
+                        <strong id="reviewComplexName">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>
+                            Provincia
+                        </span>
+
+                        <strong id="reviewProvince">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>
+                            Ciudad
+                        </span>
+
+                        <strong id="reviewCity">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>
+                            Dirección
+                        </span>
+
+                        <strong id="reviewAddress">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>
+                            Teléfono del complejo
+                        </span>
+
+                        <strong id="reviewComplexPhone">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="review-row">
+
+                        <span>
+                            Prestaciones
+                        </span>
+
+                        <strong id="reviewAmenities">
+                            Sin prestaciones cargadas
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+         CANCHAS
+         ================================================= -->
+
+            <div class="review-card">
+
+                <div class="review-card-header">
+
+                    <h3>
+                        Canchas
+                    </h3>
+
+                </div>
+
+
+                <!--
+            JavaScript agregará aquí las canchas
+            registradas durante el paso 3.
+        -->
+
+                <div class="review-courts" id="reviewCourts">
+
+                    <div class="review-court-row">
+
+                        <span>
+                            Cancha 1
+                        </span>
+
+                        <strong>
+                            Fútbol 5 · Cemento
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+         ¿CÓMO NOS CONOCISTE?
+         ================================================= -->
+
+            <div class="review-card">
+
+                <div class="review-card-header">
+
+                    <h3>
+                        ¿Cómo nos conociste?
+                    </h3>
+
+                </div>
+
+
+                <div class="review-select">
+
+                    <select id="howFoundUs" name="howFoundUs">
+
+                        <option value="" selected disabled>
+                            Seleccioná una opción
+                        </option>
+
+                        <option value="redes-sociales">
+                            Redes sociales
+                        </option>
+
+                        <option value="google">
+                            Google
+                        </option>
+
+                        <option value="recomendacion">
+                            Recomendación
+                        </option>
+
+                        <option value="publicidad">
+                            Publicidad
+                        </option>
+
+                        <option value="otro">
+                            Otro
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+         ACCIONES
+         ================================================= -->
+
+            <div class="form-actions review-actions">
+
+                <button type="button" class="btn-back" id="btnBackReview">
+                    <span>←</span>
+                    Volver
+                </button>
+
+
+                <button type="button" class="btn-submit-request" id="btnSubmitRequest">
+                    Enviar solicitud
+                    <span>→</span>
+                </button>
+
+            </div>
 
         </section>
 
     </main>
+
+    <footer>
+        <mi-footer></mi-footer>
+    </footer>
+
+    <script src="../JS/admin/navbar.js"></script>
+    <script src="../JS/admin/footer.js"></script>
 
 </body>
 

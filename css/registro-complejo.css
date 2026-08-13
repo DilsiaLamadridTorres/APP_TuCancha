@@ -264,3 +264,22 @@ body {
 .sidebar-footer button:hover {
     color: #FFFFFF;
 }
+
+/* =========================================================
+   CONTENIDO PRINCIPAL DEL REGISTRO
+   ========================================================= */
+
+.registration-content {
+    /* Ocupa todo el espacio disponible junto al sidebar */
+    flex: 1;
+
+    /* Permite organizar su contenido verticalmente */
+    display: flex;
+    flex-direction: column;
+
+    /* Espacio interno del contenido */
+    padding: 60px 80px;
+
+    /* Fondo principal */
+    background-color: #FFFFFF;
+}

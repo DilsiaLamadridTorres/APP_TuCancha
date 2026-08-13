@@ -564,3 +564,24 @@ body {
     }
 
 }
+
+/* =========================================================
+   TARJETAS DEL FORMULARIO
+   ========================================================= */
+
+.form-card {
+    /* Fondo de la tarjeta */
+    background-color: #FFFFFF;
+
+    /* Borde sutil */
+    border: 1px solid #E1E5E8;
+
+    /* Bordes redondeados */
+    border-radius: 16px;
+
+    /* Espacio interno */
+    padding: 30px 32px;
+
+    /* Separa las tarjetas entre sí */
+    margin-bottom: 24px;
+}

@@ -25,148 +25,423 @@
 
 <body>
     <!-- Encargado: Miguel -->
-    <main class="registration container-fluid">
+    <main class="registration-content">
 
-        <div class="row min-vh-100">
+        <!-- ==============================
+         PASO 1 - ORGANIZACIÓN
+         ============================== -->
 
-            <!-- sidebar -->
-            <aside class="col-md-3 col-lg-2 registration-sidebar">
+        <section class="form-step-content active" id="step-organizacion">
 
-                <!-- encabezado sidebar -->
+            <div class="row min-vh-100">
 
-                <div class="sidebar-header">
-                    <h1>REGISTRO COMPLEJO REPORTIVO</h1>
+                <!-- sidebar -->
+                <aside class="col-md-3 col-lg-2 registration-sidebar">
 
-                    <p>Progreso de carga</p>
-                </div>
+                    <!-- encabezado sidebar -->
 
-                <!-- bloque de progreso -->
+                    <div class="sidebar-header">
+                        <h1>REGISTRO COMPLEJO REPORTIVO</h1>
 
-                <div class="progress-info">
-
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 25%;"></div>
+                        <p>Progreso de carga</p>
                     </div>
 
-                    <span>25%</span>
+                    <!-- bloque de progreso -->
 
-                </div>
+                    <div class="progress-info">
 
-
-                <nav class="form-steps">
-
-                    <button class="step active" type="button">
-                        Organización
-                    </button>
-
-                    <button class="step" type="button">
-                        Complejo
-                    </button>
-
-                    <button class="step" type="button">
-                        Canchas
-                    </button>
-
-                    <button class="step" type="button">
-                        Revisión
-                    </button>
-
-                </nav>
-
-                <!-- Pie del sidebar -->
-                <div class="sidebar-footer">
-                    <!-- Boton para reiniciar el formulario -->
-
-                    <button type="button" class="btn-outline-secondary">
-                        Empezar de nuevo
-                    </button>
-
-                </div>
-
-
-
-
-            </aside>
-
-            <!-- Contenido -->
-            <section class="col-md-9 col-lg-10 registration-content">
-                <!-- Encabezado del paso actual -->
-                <div class="step-header">
-
-
-                    <!-- Indica en qué paso del proceso nos encontramos -->
-                    <span class="step-indicator">PASO 1 DE 4</span>
-
-                    <!-- Título principal del paso -->
-                    <h2>Datos del titular</h2>
-
-                    <!-- Explicación de la información que debe ingresar el usuario -->
-                    <p>
-                        Completá la información del titular del complejo deportivo.
-                    </p>
-
-
-                </div>
-
-
-                <!-- Formulario del paso actual -->
-                <div class="step-form">
-
-                    <!-- Campo para el nombre del titular -->
-                    <div class="form-floating mb-4">
-
-                        <input type="text" , class="form-control" , id="nombreTitular" ,
-                            placeholder="Nombre y apellido">
-
-                        <label for="nombreTitular">
-                            Nombre y Apellido del titular
-                        </label>
-
-                    </div>
-
-
-                    <!-- Campo de teléfono -->
-                    <div class="phone-field mb-4">
-
-                        <!-- Código de país -->
-                        <div class="country-code">
-                            +57
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 25%;"></div>
                         </div>
 
-                        <!-- Número de teléfono -->
-                        <input type="tel" class="form-control" id="telefonoTitular" placeholder="Número de teléfono">
+                        <span>25%</span>
 
                     </div>
 
-                    <!-- Campo para el correo electrónico -->
+
+                    <nav class="form-steps">
+
+                        <button class="step active" type="button">
+                            Organización
+                        </button>
+
+                        <button class="step" type="button">
+                            Complejo
+                        </button>
+
+                        <button class="step" type="button">
+                            Canchas
+                        </button>
+
+                        <button class="step" type="button">
+                            Revisión
+                        </button>
+
+                    </nav>
+
+                    <!-- Pie del sidebar -->
+                    <div class="sidebar-footer">
+                        <!-- Boton para reiniciar el formulario -->
+
+                        <button type="button" class="btn-outline-secondary">
+                            Empezar de nuevo
+                        </button>
+
+                    </div>
+
+
+
+
+                </aside>
+
+                <!-- Contenido -->
+                <section class="col-md-9 col-lg-10 registration-content">
+                    <!-- Encabezado del paso actual -->
+                    <div class="step-header">
+
+
+                        <!-- Indica en qué paso del proceso nos encontramos -->
+                        <span class="step-indicator">PASO 1 DE 4</span>
+
+                        <!-- Título principal del paso -->
+                        <h2>Datos del titular</h2>
+
+                        <!-- Explicación de la información que debe ingresar el usuario -->
+                        <p>
+                            Completá la información del titular del complejo deportivo.
+                        </p>
+
+
+                    </div>
+
+
+                    <!-- Formulario del paso actual -->
+                    <div class="step-form">
+
+                        <!-- Campo para el nombre del titular -->
+                        <div class="form-floating mb-4">
+
+                            <input type="text" , class="form-control" , id="nombreTitular" ,
+                                placeholder="Nombre y apellido">
+
+                            <label for="nombreTitular">
+                                Nombre y Apellido del titular
+                            </label>
+
+                        </div>
+
+
+                        <!-- Campo de teléfono -->
+                        <div class="phone-field mb-4">
+
+                            <!-- Código de país -->
+                            <div class="country-code">
+                                +57
+                            </div>
+
+                            <!-- Número de teléfono -->
+                            <input type="tel" class="form-control" id="telefonoTitular"
+                                placeholder="Número de teléfono">
+
+                        </div>
+
+                        <!-- Campo para el correo electrónico -->
+                        <div class="form-floating mb-4">
+
+                            <input type="email" class="form-control" id="correoTitular"
+                                placeholder="Correo electrónico">
+
+                            <label for="correoTitular">
+                                Correo electrónico
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Contenedor de las acciones del formulario -->
+                    <div class="form-actions">
+
+                        <!-- Botón para avanzar al siguiente paso -->
+                        <button type="button" class="btn btn-continue">
+                            Continuar
+                            <span>→</span>
+                        </button>
+
+                    </div>
+
+
+
+                </section>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+         PASO 2 - COMPLEJO
+         ============================== -->
+
+        <section class="form-step-content" id="step-complejo">
+
+            <!-- =========================================================
+     CONTENIDO PRINCIPAL
+     ========================================================= -->
+
+            <!-- Encabezado del paso -->
+            <header class="step-header">
+
+                <span class="step-indicator">
+                    PASO 2 DE 4
+                </span>
+
+                <h2>
+                    Datos del complejo
+                </h2>
+
+                <p>
+                    Contanos sobre tu complejo deportivo. Esta información será visible para los jugadores.
+                </p>
+
+            </header>
+
+
+            <!-- =====================================================
+         FORMULARIO DE DATOS DEL COMPLEJO
+         ===================================================== -->
+
+            <form class="step-form" id="complex-form">
+
+                <!-- Tarjeta de información general -->
+                <div class="form-card">
+
+                    <!-- Nombre del complejo -->
                     <div class="form-floating mb-4">
 
-                        <input type="email" class="form-control" id="correoTitular" placeholder="Correo electrónico">
+                        <input type="text" class="form-control" id="nombreComplejo" name="nombreComplejo"
+                            placeholder="Nombre del complejo" required>
 
-                        <label for="correoTitular">
-                            Correo electrónico
+                        <label for="nombreComplejo">
+                            Nombre del complejo
                         </label>
+
+                    </div>
+
+
+                    <!-- Provincia y ciudad -->
+                    <div class="row g-3 mb-4">
+
+                        <!-- Provincia -->
+                        <div class="col-md-6">
+
+                            <div class="form-floating">
+
+                                <select class="form-select" id="provincia" name="provincia" required>
+                                    <option value="" selected disabled>
+                                        Selecciona una provincia
+                                    </option>
+
+                                    <option value="antioquia">
+                                        Antioquia
+                                    </option>
+
+                                    <option value="cundinamarca">
+                                        Cundinamarca
+                                    </option>
+
+                                    <option value="valle">
+                                        Valle del Cauca
+                                    </option>
+
+                                </select>
+
+                                <label for="provincia">
+                                    Provincia
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Ciudad -->
+                        <div class="col-md-6">
+
+                            <div class="form-floating">
+
+                                <select class="form-select" id="ciudad" name="ciudad" required>
+                                    <option value="" selected disabled>
+                                        Selecciona una ciudad
+                                    </option>
+
+                                    <option value="medellin">
+                                        Medellín
+                                    </option>
+
+                                    <option value="bogota">
+                                        Bogotá
+                                    </option>
+
+                                    <option value="cali">
+                                        Cali
+                                    </option>
+
+                                </select>
+
+                                <label for="ciudad">
+                                    Ciudad
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Dirección y teléfono -->
+                    <div class="row g-3">
+
+                        <!-- Dirección -->
+                        <div class="col-md-6">
+
+                            <div class="form-floating">
+
+                                <input type="text" class="form-control" id="direccion" name="direccion"
+                                    placeholder="Dirección" required>
+
+                                <label for="direccion">
+                                    Dirección
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Teléfono -->
+                        <div class="col-md-6">
+
+                            <div class="phone-field">
+
+                                <div class="country-code">
+                                    +57
+                                </div>
+
+                                <input type="tel" class="form-control" id="telefonoComplejo" name="telefonoComplejo"
+                                    placeholder="Teléfono del complejo" required>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
                 </div>
 
-                <!-- Contenedor de las acciones del formulario -->
+
+                <!-- =================================================
+             PRESTACIONES
+             ================================================= -->
+
+                <div class="form-card prestations-card">
+
+                    <div class="section-title">
+
+                        <h3>
+                            Prestaciones
+                        </h3>
+
+                        <p>
+                            Seleccioná las prestaciones que ofrece tu complejo.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Opciones de prestaciones -->
+                    <div class="prestations-grid">
+
+                        <button type="button" class="prestation" data-value="Estacionamiento">
+                            Estacionamiento
+                        </button>
+
+                        <button type="button" class="prestation" data-value="Vestuario">
+                            Vestuario
+                        </button>
+
+                        <button type="button" class="prestation" data-value="Asador">
+                            Asador
+                        </button>
+
+                        <button type="button" class="prestation" data-value="Bar">
+                            Bar
+                        </button>
+
+                        <button type="button" class="prestation" data-value="Duchas">
+                            Duchas
+                        </button>
+
+                        <button type="button" class="prestation" data-value="TV">
+                            TV
+                        </button>
+
+                        <button type="button" class="prestation" data-value="Bufet">
+                            Bufet
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+             ACCIONES
+             ================================================= -->
+
                 <div class="form-actions">
 
-                    <!-- Botón para avanzar al siguiente paso -->
-                    <button type="button" class="btn btn-continue">
+                    <!-- Regresar al paso anterior -->
+                    <button type="button" class="btn-back" id="btnBack">
+                        <span>←</span>
+                        Volver
+                    </button>
+
+
+                    <!-- Continuar al siguiente paso -->
+                    <button type="submit" class="btn btn-continue" id="btnContinue">
                         Continuar
                         <span>→</span>
                     </button>
 
                 </div>
 
+            </form>
+
+        </section>
 
 
-            </section>
+        <!-- ==============================
+         PASO 3 - CANCHAS
+         ============================== -->
 
-        </div>
+        <section class="form-step-content" id="step-canchas">
+
+            <!-- Lo construiremos después -->
+
+        </section>
+
+
+        <!-- ==============================
+         PASO 4 - REVISIÓN
+         ============================== -->
+
+        <section class="form-step-content" id="step-revision">
+
+            <!-- Lo construiremos después -->
+
+        </section>
 
     </main>
 

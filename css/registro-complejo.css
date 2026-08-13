@@ -224,6 +224,43 @@ body {
    ========================================================= */
 
 .sidebar-footer {
-    /* Empuja el footer hacia abajo */
+    /* Empuja el footer hacia la parte inferior */
     margin-top: auto;
+
+    /* Separa el footer de los pasos */
+    padding-top: 32px;
+}
+
+
+/* Botón para reiniciar el formulario */
+.sidebar-footer button {
+    /* Ocupa todo el ancho disponible */
+    width: 100%;
+
+    /* Eliminamos estilos predeterminados */
+    border: none;
+    background: transparent;
+
+    /* Estilos del texto */
+    color: #A0A0A0;
+    font-size: 13px;
+    font-weight: 500;
+
+    /* Alineamos el texto a la izquierda */
+    text-align: left;
+
+    /* Espacio interno */
+    padding: 10px 0;
+
+    /* Indica que es interactivo */
+    cursor: pointer;
+
+    /* Transición suave */
+    transition: color 0.2s ease;
+}
+
+
+/* Cambio de color al pasar el mouse */
+.sidebar-footer button:hover {
+    color: #FFFFFF;
 }

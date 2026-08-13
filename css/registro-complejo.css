@@ -1,0 +1,47 @@
+/* =========================================================
+   CUERPO DE LA PÁGINA
+   ========================================================= */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.registration {
+    min-height: 100vh;
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.registration-sidebar {
+    width: 320px;
+    min-height: 100vh;
+
+    background-color: #1F1F1F;
+
+    padding: 32px;
+
+    /* Permite organizar los elementos internos */
+    display: flex;
+
+    /* Coloca los elementos uno debajo del otro */
+    flex-direction: column;
+}
+
+/* =========================================================
+   FOOTER DEL SIDEBAR
+   ========================================================= */
+
+.sidebar-footer {
+    margin-top: auto;
+}

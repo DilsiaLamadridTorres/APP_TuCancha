@@ -5,11 +5,20 @@
 
 
 /* ============================================================
-   1. CONFIGURACIÓN
+   1. CONFIGURACIÓN DE LOCAL STORAGE
    ============================================================ */
 
+/*
+    Guarda el borrador mientras el propietario
+    está llenando el formulario.
+*/
 const STORAGE_KEY = "tucancha_registro_complejo";
 
+
+/*
+    Guarda las solicitudes que ya fueron enviadas
+    y que posteriormente verá el administrador.
+*/
 const SOLICITUDES_KEY = "tucancha_solicitudes_complejos";
 
 
@@ -22,18 +31,22 @@ function crearEstadoInicial() {
     return {
 
         organizacion: {
+
             nombreTitular: "",
             telefono: "",
             correo: ""
+
         },
 
         complejo: {
+
             nombre: "",
             provincia: "",
             ciudad: "",
             direccion: "",
             telefono: "",
             prestaciones: []
+
         },
 
         canchas: [],
@@ -43,22 +56,29 @@ function crearEstadoInicial() {
         pasoActual: 1,
 
         pasoMaximo: 1
+
     };
 
 }
 
 
 /* ============================================================
-   3. ESTADO DEL FORMULARIO
+   3. ESTADO PRINCIPAL
    ============================================================ */
 
 let registroComplejo = crearEstadoInicial();
 
-let canchaEditandoId = null;
 
 /*
-    Aquí guardaremos temporalmente las fotos
-    de la cancha que estamos creando/editando.
+    Guarda temporalmente el ID de la cancha
+    que se está editando.
+*/
+let canchaEditandoId = null;
+
+
+/*
+    Guarda las fotos seleccionadas mientras
+    estamos creando/editando una cancha.
 */
 let fotosTemporales = [];
 
@@ -79,7 +99,9 @@ function obtenerValor(id) {
     const elemento = obtenerElemento(id);
 
     if (!elemento) {
+
         return "";
+
     }
 
     return elemento.value.trim();
@@ -88,7 +110,195 @@ function obtenerValor(id) {
 
 
 /* ============================================================
-   5. LOCAL STORAGE
+   5. ALERTAS PERSONALIZADAS
+   ============================================================ */
+
+function mostrarAlerta(
+    mensaje,
+    tipo = "info",
+    titulo = ""
+) {
+
+    const container =
+        obtenerElemento("formAlertContainer");
+
+
+    if (!container) {
+
+        console.log(mensaje);
+
+        return;
+
+    }
+
+
+    /*
+        Evitamos que se acumulen demasiadas alertas.
+    */
+    const alertasActuales =
+        container.querySelectorAll(".form-alert");
+
+
+    if (alertasActuales.length >= 4) {
+
+        alertasActuales[0].remove();
+
+    }
+
+
+    const tiposPermitidos = [
+        "success",
+        "error",
+        "warning",
+        "info"
+    ];
+
+
+    if (!tiposPermitidos.includes(tipo)) {
+
+        tipo = "info";
+
+    }
+
+
+    const iconos = {
+
+        success: "bi-check-lg",
+
+        error: "bi-x-lg",
+
+        warning: "bi-exclamation-lg",
+
+        info: "bi-info-lg"
+
+    };
+
+
+    const titulos = {
+
+        success: "¡Listo!",
+
+        error: "Revisa la información",
+
+        warning: "Atención",
+
+        info: "Información"
+
+    };
+
+
+    const alerta =
+        document.createElement("div");
+
+
+    alerta.className =
+        `form-alert ${tipo}`;
+
+
+    alerta.innerHTML = `
+
+        <div class="form-alert-icon">
+
+            <i class="bi ${iconos[tipo]}"></i>
+
+        </div>
+
+
+        <div class="form-alert-content">
+
+            <h4 class="form-alert-title">
+                ${titulo || titulos[tipo]}
+            </h4>
+
+            <p class="form-alert-message">
+                ${mensaje}
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="form-alert-close"
+            aria-label="Cerrar alerta"
+        >
+            ×
+        </button>
+
+    `;
+
+
+    container.appendChild(alerta);
+
+
+    const btnCerrar =
+        alerta.querySelector(
+            ".form-alert-close"
+        );
+
+
+    btnCerrar.addEventListener(
+        "click",
+        () => {
+
+            cerrarAlerta(alerta);
+
+        }
+    );
+
+
+    /*
+        La alerta desaparece automáticamente.
+    */
+    setTimeout(
+        () => {
+
+            cerrarAlerta(alerta);
+
+        },
+        4000
+    );
+
+}
+
+
+/* ============================================================
+   6. CERRAR ALERTA
+   ============================================================ */
+
+function cerrarAlerta(alerta) {
+
+    if (
+        !alerta ||
+        !alerta.isConnected
+    ) {
+
+        return;
+
+    }
+
+
+    alerta.classList.add("hide");
+
+
+    setTimeout(
+        () => {
+
+            if (alerta.isConnected) {
+
+                alerta.remove();
+
+            }
+
+        },
+        250
+    );
+
+}
+
+
+/* ============================================================
+   7. GUARDAR BORRADOR EN LOCAL STORAGE
    ============================================================ */
 
 function guardarLocalStorage() {
@@ -103,7 +313,7 @@ function guardarLocalStorage() {
     } catch (error) {
 
         console.error(
-            "No se pudo guardar el formulario en localStorage:",
+            "Error guardando el formulario:",
             error
         );
 
@@ -113,7 +323,7 @@ function guardarLocalStorage() {
 
 
 /* ============================================================
-   6. RECUPERAR LOCAL STORAGE
+   8. RECUPERAR BORRADOR
    ============================================================ */
 
 function recuperarLocalStorage() {
@@ -138,33 +348,68 @@ function recuperarLocalStorage() {
             JSON.parse(datosGuardados);
 
 
+        const estadoInicial =
+            crearEstadoInicial();
+
+
         registroComplejo = {
 
-            ...crearEstadoInicial(),
+            ...estadoInicial,
 
             ...datos,
 
             organizacion: {
-                ...crearEstadoInicial().organizacion,
+
+                ...estadoInicial.organizacion,
+
                 ...(datos.organizacion || {})
+
             },
 
             complejo: {
-                ...crearEstadoInicial().complejo,
+
+                ...estadoInicial.complejo,
+
                 ...(datos.complejo || {})
+
             },
 
-            canchas: Array.isArray(datos.canchas)
-                ? datos.canchas
-                : []
+            canchas:
+                Array.isArray(datos.canchas)
+                    ? datos.canchas
+                    : []
 
         };
+
+
+        /*
+            Evitamos pasos inválidos.
+        */
+
+        registroComplejo.pasoActual =
+            Math.min(
+                Math.max(
+                    Number(registroComplejo.pasoActual) || 1,
+                    1
+                ),
+                4
+            );
+
+
+        registroComplejo.pasoMaximo =
+            Math.min(
+                Math.max(
+                    Number(registroComplejo.pasoMaximo) || 1,
+                    registroComplejo.pasoActual
+                ),
+                4
+            );
 
 
     } catch (error) {
 
         console.error(
-            "No se pudo recuperar el formulario:",
+            "Error recuperando el formulario:",
             error
         );
 
@@ -178,18 +423,18 @@ function recuperarLocalStorage() {
 
 
 /* ============================================================
-   7. MOSTRAR PASO
+   9. MOSTRAR PASO
    ============================================================ */
 
 function mostrarPaso(numeroPaso) {
 
-    const pasosContenido =
+    const pasos =
         document.querySelectorAll(
             ".form-step-content"
         );
 
 
-    pasosContenido.forEach(
+    pasos.forEach(
         (paso, index) => {
 
             paso.classList.toggle(
@@ -204,6 +449,11 @@ function mostrarPaso(numeroPaso) {
     registroComplejo.pasoActual =
         numeroPaso;
 
+
+    /*
+        Registramos cuál ha sido el paso
+        más avanzado alcanzado.
+    */
 
     if (
         numeroPaso >
@@ -222,8 +472,8 @@ function mostrarPaso(numeroPaso) {
 
 
     /*
-        Si llegamos a revisión,
-        cargamos la información.
+        Al entrar a revisión actualizamos
+        los datos automáticamente.
     */
 
     if (numeroPaso === 4) {
@@ -235,22 +485,32 @@ function mostrarPaso(numeroPaso) {
 
     guardarLocalStorage();
 
+
+    /*
+        Volvemos arriba del formulario.
+    */
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
 }
 
 
 /* ============================================================
-   8. ACTUALIZAR SIDEBAR
+   10. ACTUALIZAR SIDEBAR
    ============================================================ */
 
 function actualizarSidebar() {
 
-    const pasosSidebar =
+    const botones =
         document.querySelectorAll(
             ".form-steps .step"
         );
 
 
-    pasosSidebar.forEach(
+    botones.forEach(
         boton => {
 
             const numero =
@@ -282,7 +542,7 @@ function actualizarSidebar() {
 
 
             /*
-                Paso completado.
+                Pasos anteriores completados.
             */
 
             if (
@@ -303,7 +563,7 @@ function actualizarSidebar() {
 
 
 /* ============================================================
-   9. ACTUALIZAR PROGRESO
+   11. ACTUALIZAR PROGRESO
    ============================================================ */
 
 function actualizarProgreso() {
@@ -313,9 +573,7 @@ function actualizarProgreso() {
 
 
     const barra =
-        obtenerElemento(
-            "progressBar"
-        );
+        obtenerElemento("progressBar");
 
 
     const texto =
@@ -343,7 +601,7 @@ function actualizarProgreso() {
 
 
 /* ============================================================
-   10. ERRORES DE VALIDACIÓN
+   12. MOSTRAR ERROR DE CAMPO
    ============================================================ */
 
 function mostrarError(
@@ -352,7 +610,9 @@ function mostrarError(
 ) {
 
     if (!elemento) {
+
         return;
+
     }
 
 
@@ -365,9 +625,7 @@ function mostrarError(
 
 
     const error =
-        document.createElement(
-            "small"
-        );
+        document.createElement("small");
 
 
     error.className =
@@ -382,18 +640,26 @@ function mostrarError(
         mensaje;
 
 
+    /*
+        Buscamos dónde colocar el error.
+    */
+
+    const formFloating =
+        elemento.closest(".form-floating");
+
+
+    const phoneField =
+        elemento.closest(".phone-field");
+
+
+    const reviewSelect =
+        elemento.closest(".review-select");
+
+
     const contenedor =
-        elemento.closest(
-            ".form-floating"
-        )
-        ||
-        elemento.closest(
-            ".phone-field"
-        )
-        ||
-        elemento.closest(
-            ".review-select"
-        );
+        formFloating ||
+        phoneField ||
+        reviewSelect;
 
 
     if (contenedor) {
@@ -416,13 +682,15 @@ function mostrarError(
 
 
 /* ============================================================
-   11. LIMPIAR ERROR
+   13. LIMPIAR ERROR DE CAMPO
    ============================================================ */
 
 function limpiarError(elemento) {
 
     if (!elemento) {
+
         return;
+
     }
 
 
@@ -447,7 +715,7 @@ function limpiarError(elemento) {
 
 
 /* ============================================================
-   12. VALIDAR CAMPO REQUERIDO
+   14. VALIDAR CAMPO OBLIGATORIO
    ============================================================ */
 
 function validarRequerido(
@@ -462,7 +730,7 @@ function validarRequerido(
     if (!elemento) {
 
         console.warn(
-            `No existe el elemento #${id}`
+            `No existe #${id}`
         );
 
         return false;
@@ -490,7 +758,7 @@ function validarRequerido(
 
 
 /* ============================================================
-   13. VALIDAR TELÉFONO
+   15. VALIDAR TELÉFONO
    ============================================================ */
 
 function validarTelefono(
@@ -503,9 +771,15 @@ function validarTelefono(
 
 
     if (!input) {
+
         return false;
+
     }
 
+
+    /*
+        Dejamos únicamente números.
+    */
 
     const telefono =
         input.value.replace(
@@ -513,10 +787,6 @@ function validarTelefono(
             ""
         );
 
-
-    /*
-        Permitimos de 7 a 10 números.
-    */
 
     if (
         telefono.length < 7 ||
@@ -541,7 +811,7 @@ function validarTelefono(
 
 
 /* ============================================================
-   14. VALIDAR CORREO
+   16. VALIDAR CORREO
    ============================================================ */
 
 function validarCorreo() {
@@ -553,7 +823,9 @@ function validarCorreo() {
 
 
     if (!input) {
+
         return false;
+
     }
 
 
@@ -585,7 +857,7 @@ function validarCorreo() {
 
 
 /* ============================================================
-   15. CAPTURAR ORGANIZACIÓN
+   17. CAPTURAR ORGANIZACIÓN
    ============================================================ */
 
 function capturarOrganizacion() {
@@ -616,7 +888,7 @@ function capturarOrganizacion() {
 
 
 /* ============================================================
-   16. VALIDAR ORGANIZACIÓN
+   18. VALIDAR ORGANIZACIÓN
    ============================================================ */
 
 function validarOrganizacion() {
@@ -648,7 +920,7 @@ function validarOrganizacion() {
     } else if (
         !validarTelefono(
             "telefonoTitular",
-            "Ingresa un teléfono válido."
+            "Ingresa un número de teléfono válido."
         )
     ) {
 
@@ -675,20 +947,27 @@ function validarOrganizacion() {
     }
 
 
-    if (valido) {
+    if (!valido) {
 
-        capturarOrganizacion();
+        mostrarAlerta(
+            "Completa correctamente los datos del titular antes de continuar.",
+            "error"
+        );
+
+        return false;
 
     }
 
 
-    return valido;
+    capturarOrganizacion();
+
+    return true;
 
 }
 
 
 /* ============================================================
-   17. CAPTURAR COMPLEJO
+   19. CAPTURAR COMPLEJO
    ============================================================ */
 
 function capturarComplejo() {
@@ -748,7 +1027,7 @@ function capturarComplejo() {
 
 
 /* ============================================================
-   18. VALIDAR COMPLEJO
+   20. VALIDAR COMPLEJO
    ============================================================ */
 
 function validarComplejo() {
@@ -816,7 +1095,7 @@ function validarComplejo() {
     } else if (
         !validarTelefono(
             "telefonoComplejo",
-            "Ingresa un teléfono válido."
+            "Ingresa un número de teléfono válido."
         )
     ) {
 
@@ -825,77 +1104,78 @@ function validarComplejo() {
     }
 
 
-    if (valido) {
+    if (!valido) {
 
-        capturarComplejo();
+        mostrarAlerta(
+            "Completa correctamente los datos del complejo antes de continuar.",
+            "error"
+        );
+
+        return false;
 
     }
 
 
-    return valido;
+    capturarComplejo();
+
+    return true;
 
 }
 
 
 /* ============================================================
-   19. RESTAURAR CAMPOS GUARDADOS
+   21. RESTAURAR DATOS GUARDADOS
    ============================================================ */
 
 function restaurarFormulario() {
 
-    /* ------------------------------
+    /* ========================================================
        ORGANIZACIÓN
-       ------------------------------ */
+       ======================================================== */
 
-    const nombreTitular =
-        obtenerElemento(
-            "nombreTitular"
-        );
+    const camposOrganizacion = {
 
-    const telefonoTitular =
-        obtenerElemento(
-            "telefonoTitular"
-        );
-
-    const correoTitular =
-        obtenerElemento(
-            "correoTitular"
-        );
-
-
-    if (nombreTitular) {
-
-        nombreTitular.value =
+        nombreTitular:
             registroComplejo
                 .organizacion
-                .nombreTitular;
+                .nombreTitular,
 
-    }
-
-
-    if (telefonoTitular) {
-
-        telefonoTitular.value =
+        telefonoTitular:
             registroComplejo
                 .organizacion
-                .telefono;
+                .telefono,
 
-    }
-
-
-    if (correoTitular) {
-
-        correoTitular.value =
+        correoTitular:
             registroComplejo
                 .organizacion
-                .correo;
+                .correo
 
-    }
+    };
 
 
-    /* ------------------------------
+    Object.entries(
+        camposOrganizacion
+    ).forEach(
+        ([id, valor]) => {
+
+            const elemento =
+                obtenerElemento(id);
+
+
+            if (elemento) {
+
+                elemento.value =
+                    valor || "";
+
+            }
+
+        }
+    );
+
+
+    /* ========================================================
        COMPLEJO
-       ------------------------------ */
+       ======================================================== */
 
     const camposComplejo = {
 
@@ -930,7 +1210,6 @@ function restaurarFormulario() {
     Object.entries(
         camposComplejo
     ).forEach(
-
         ([id, valor]) => {
 
             const elemento =
@@ -945,20 +1224,18 @@ function restaurarFormulario() {
             }
 
         }
-
     );
 
 
-    /* ------------------------------
+    /* ========================================================
        PRESTACIONES
-       ------------------------------ */
+       ======================================================== */
 
     document
         .querySelectorAll(
             ".prestation"
         )
         .forEach(
-
             boton => {
 
                 boton.classList.toggle(
@@ -975,13 +1252,12 @@ function restaurarFormulario() {
                 );
 
             }
-
         );
 
 
-    /* ------------------------------
+    /* ========================================================
        CÓMO NOS CONOCISTE
-       ------------------------------ */
+       ======================================================== */
 
     const howFoundUs =
         obtenerElemento(
@@ -1001,7 +1277,7 @@ function restaurarFormulario() {
 
 
 /* ============================================================
-   20. ABRIR FORMULARIO DE CANCHA
+   22. ABRIR FORMULARIO DE CANCHA
    ============================================================ */
 
 function abrirFormularioCancha(
@@ -1044,15 +1320,15 @@ function abrirFormularioCancha(
 
 
     /*
-        Limpiamos primero.
+        Limpiamos los campos antes de abrir.
     */
 
     limpiarFormularioCancha();
 
 
-    /*
-        Estamos editando.
-    */
+    /* ========================================================
+       EDITAR CANCHA
+       ======================================================== */
 
     if (idCancha !== null) {
 
@@ -1066,7 +1342,9 @@ function abrirFormularioCancha(
 
 
         if (!cancha) {
+
             return;
+
         }
 
 
@@ -1088,44 +1366,92 @@ function abrirFormularioCancha(
         }
 
 
-        obtenerElemento(
-            "courtSport"
-        ).value =
-            cancha.deporte;
+        const sport =
+            obtenerElemento(
+                "courtSport"
+            );
 
 
-        obtenerElemento(
-            "courtFloor"
-        ).value =
-            cancha.tipoPiso;
+        const floor =
+            obtenerElemento(
+                "courtFloor"
+            );
 
 
-        obtenerElemento(
-            "courtLength"
-        ).value =
-            cancha.largo;
+        const largo =
+            obtenerElemento(
+                "courtLength"
+            );
 
 
-        obtenerElemento(
-            "courtWidth"
-        ).value =
-            cancha.ancho;
+        const ancho =
+            obtenerElemento(
+                "courtWidth"
+            );
 
 
-        obtenerElemento(
-            "courtCovered"
-        ).checked =
-            cancha.techada;
+        if (sport) {
+
+            sport.value =
+                cancha.deporte;
+
+        }
 
 
-        obtenerElemento(
-            "otherSports"
-        ).checked =
-            cancha.permiteOtrosDeportes;
+        if (floor) {
+
+            floor.value =
+                cancha.tipoPiso;
+
+        }
+
+
+        if (largo) {
+
+            largo.value =
+                cancha.largo;
+
+        }
+
+
+        if (ancho) {
+
+            ancho.value =
+                cancha.ancho;
+
+        }
+
+
+        const cubierta =
+            obtenerElemento(
+                "courtCovered"
+            );
+
+
+        if (cubierta) {
+
+            cubierta.checked =
+                cancha.techada;
+
+        }
+
+
+        const otros =
+            obtenerElemento(
+                "otherSports"
+            );
+
+
+        if (otros) {
+
+            otros.checked =
+                cancha.permiteOtrosDeportes;
+
+        }
 
 
         /*
-            Duraciones.
+            Restauramos duraciones.
         */
 
         document
@@ -1133,26 +1459,25 @@ function abrirFormularioCancha(
                 ".duration-option"
             )
             .forEach(
-
                 boton => {
 
                     boton.classList.toggle(
 
                         "active",
 
-                        cancha.duraciones.includes(
-                            boton.dataset.duration
-                        )
+                        cancha.duraciones
+                            ?.includes(
+                                boton.dataset.duration
+                            )
 
                     );
 
                 }
-
             );
 
 
         /*
-            Fotos existentes.
+            Restauramos fotografías.
         */
 
         fotosTemporales =
@@ -1180,6 +1505,10 @@ function abrirFormularioCancha(
 
     } else {
 
+        /* ====================================================
+           NUEVA CANCHA
+           ==================================================== */
+
         const titulo =
             obtenerElemento(
                 "courtFormTitle"
@@ -1200,36 +1529,37 @@ function abrirFormularioCancha(
     }
 
 
+    /*
+        Ocultamos elementos innecesarios.
+    */
+
     vacio
         ?.classList
-        .add(
-            "d-none"
-        );
+        .add("d-none");
 
 
     agregarOtra
         ?.classList
-        .add(
-            "d-none"
-        );
-
-
-    formulario
-        .classList
-        .remove(
-            "d-none"
-        );
+        .add("d-none");
 
 
     /*
-        Mientras está editando/agregando,
-        no permitimos continuar.
+        Mostramos formulario.
+    */
+
+    formulario
+        .classList
+        .remove("d-none");
+
+
+    /*
+        Mientras estamos agregando/editando,
+        bloqueamos Continuar.
     */
 
     if (continuar) {
 
-        continuar.disabled =
-            true;
+        continuar.disabled = true;
 
     }
 
@@ -1237,7 +1567,7 @@ function abrirFormularioCancha(
 
 
 /* ============================================================
-   21. CERRAR FORMULARIO DE CANCHA
+   23. CERRAR FORMULARIO DE CANCHA
    ============================================================ */
 
 function cerrarFormularioCancha() {
@@ -1263,89 +1593,88 @@ function cerrarFormularioCancha() {
 
 
 /* ============================================================
-   22. LIMPIAR FORMULARIO DE CANCHA
+   24. LIMPIAR FORMULARIO DE CANCHA
    ============================================================ */
 
 function limpiarFormularioCancha() {
 
-    const sport =
-        obtenerElemento(
-            "courtSport"
-        );
+    const campos = [
 
-    const floor =
-        obtenerElemento(
-            "courtFloor"
-        );
+        "courtSport",
+        "courtFloor",
+        "courtLength",
+        "courtWidth"
 
-    const length =
-        obtenerElemento(
-            "courtLength"
-        );
-
-    const width =
-        obtenerElemento(
-            "courtWidth"
-        );
+    ];
 
 
-    if (sport) {
-        sport.value = "";
-    }
+    campos.forEach(
+        id => {
 
-    if (floor) {
-        floor.value = "";
-    }
-
-    if (length) {
-        length.value = "";
-    }
-
-    if (width) {
-        width.value = "";
-    }
+            const campo =
+                obtenerElemento(id);
 
 
-    const covered =
+            if (campo) {
+
+                campo.value = "";
+
+                limpiarError(campo);
+
+            }
+
+        }
+    );
+
+
+    const cubierta =
         obtenerElemento(
             "courtCovered"
         );
 
-    const otherSports =
+
+    if (cubierta) {
+
+        cubierta.checked = false;
+
+    }
+
+
+    const otros =
         obtenerElemento(
             "otherSports"
         );
 
 
-    if (covered) {
+    if (otros) {
 
-        covered.checked =
-            false;
-
-    }
-
-
-    if (otherSports) {
-
-        otherSports.checked =
-            false;
+        otros.checked = false;
 
     }
 
+
+    /*
+        Limpiar duraciones.
+    */
 
     document
         .querySelectorAll(
             ".duration-option"
         )
         .forEach(
+            boton => {
 
-            boton =>
                 boton.classList.remove(
                     "active"
-                )
+                );
 
+            }
         );
 
+
+    /*
+        Limpiar input de fotos.
+    */
 
     const inputFotos =
         obtenerElemento(
@@ -1355,19 +1684,19 @@ function limpiarFormularioCancha() {
 
     if (inputFotos) {
 
-        inputFotos.value =
-            "";
+        inputFotos.value = "";
 
     }
 
 
-    fotosTemporales =
-        [];
+    fotosTemporales = [];
+
+    canchaEditandoId = null;
 
 
-    canchaEditandoId =
-        null;
-
+    /*
+        Ocultamos botón eliminar.
+    */
 
     obtenerElemento(
         "btnDeleteCourt"
@@ -1378,6 +1707,10 @@ function limpiarFormularioCancha() {
         );
 
 
+    /*
+        Limpiar preview.
+    */
+
     const preview =
         obtenerElemento(
             "photoPreview"
@@ -1386,37 +1719,14 @@ function limpiarFormularioCancha() {
 
     if (preview) {
 
-        preview.innerHTML =
-            "";
+        preview.innerHTML = "";
 
     }
 
 
     /*
-        Limpiar errores.
+        Limpiar error de duración.
     */
-
-    [
-        sport,
-        floor,
-        length,
-        width
-    ].forEach(
-
-        elemento => {
-
-            if (elemento) {
-
-                limpiarError(
-                    elemento
-                );
-
-            }
-
-        }
-
-    );
-
 
     const errorDuracion =
         obtenerElemento(
@@ -1434,7 +1744,7 @@ function limpiarFormularioCancha() {
 
 
 /* ============================================================
-   23. CONVERTIR FOTO A BASE64
+   25. CONVERTIR FOTO A BASE64
    ============================================================ */
 
 function convertirFotoBase64(file) {
@@ -1479,26 +1789,28 @@ function convertirFotoBase64(file) {
 
 
 /* ============================================================
-   24. CAPTURAR FOTOS
+   26. PROCESAR FOTOS
    ============================================================ */
 
-async function procesarFotos(
-    archivos
-) {
+async function procesarFotos(archivos) {
+
+    /*
+        Como estamos trabajando con localStorage,
+        limitamos fotos y tamaño.
+    */
 
     const MAX_FOTOS = 4;
 
     const MAX_SIZE =
-        700 * 1024;
+        600 * 1024;
 
 
     for (
-        const archivo
-        of archivos
+        const archivo of archivos
     ) {
 
         /*
-            Máximo cuatro fotos.
+            Máximo 4 fotos.
         */
 
         if (
@@ -1506,8 +1818,9 @@ async function procesarFotos(
             MAX_FOTOS
         ) {
 
-            alert(
-                "Puedes agregar máximo 4 fotos por cancha."
+            mostrarAlerta(
+                "Puedes agregar máximo 4 fotos por cancha.",
+                "warning"
             );
 
             break;
@@ -1516,17 +1829,27 @@ async function procesarFotos(
 
 
         /*
-            Validar tipo.
+            Validar formato.
         */
 
+        const formatosPermitidos = [
+
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+
+        ];
+
+
         if (
-            !archivo.type.startsWith(
-                "image/"
+            !formatosPermitidos.includes(
+                archivo.type
             )
         ) {
 
-            alert(
-                `${archivo.name} no es una imagen válida.`
+            mostrarAlerta(
+                `${archivo.name} no tiene un formato permitido.`,
+                "error"
             );
 
             continue;
@@ -1535,8 +1858,7 @@ async function procesarFotos(
 
 
         /*
-            Evitamos llenar localStorage
-            con imágenes demasiado grandes.
+            Validar peso.
         */
 
         if (
@@ -1544,8 +1866,9 @@ async function procesarFotos(
             MAX_SIZE
         ) {
 
-            alert(
-                `${archivo.name} pesa demasiado. El máximo temporal es 700 KB.`
+            mostrarAlerta(
+                `${archivo.name} pesa más de 600 KB. Usa una imagen más liviana.`,
+                "warning"
             );
 
             continue;
@@ -1553,24 +1876,39 @@ async function procesarFotos(
         }
 
 
-        const base64 =
-            await convertirFotoBase64(
-                archivo
+        try {
+
+            const base64 =
+                await convertirFotoBase64(
+                    archivo
+                );
+
+
+            fotosTemporales.push({
+
+                nombre:
+                    archivo.name,
+
+                tipo:
+                    archivo.type,
+
+                dataUrl:
+                    base64
+
+            });
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            mostrarAlerta(
+                `No se pudo cargar ${archivo.name}.`,
+                "error"
             );
 
-
-        fotosTemporales.push({
-
-            nombre:
-                archivo.name,
-
-            tipo:
-                archivo.type,
-
-            dataUrl:
-                base64
-
-        });
+        }
 
     }
 
@@ -1581,7 +1919,7 @@ async function procesarFotos(
 
 
 /* ============================================================
-   25. RENDERIZAR PREVIEW DE FOTOS
+   27. MOSTRAR PREVIEW DE FOTOS
    ============================================================ */
 
 function renderizarPreviewFotos() {
@@ -1593,12 +1931,13 @@ function renderizarPreviewFotos() {
 
 
     if (!preview) {
+
         return;
+
     }
 
 
-    preview.innerHTML =
-        "";
+    preview.innerHTML = "";
 
 
     fotosTemporales.forEach(
@@ -1618,8 +1957,9 @@ function renderizarPreviewFotos() {
 
                 <img
                     src="${foto.dataUrl}"
-                    alt="Foto de cancha"
+                    alt="Foto de la cancha"
                 >
+
 
                 <button
                     type="button"
@@ -1644,7 +1984,7 @@ function renderizarPreviewFotos() {
 
 
 /* ============================================================
-   26. ELIMINAR FOTO DEL PREVIEW
+   28. ELIMINAR FOTO DEL PREVIEW
    ============================================================ */
 
 function eliminarFotoPreview(index) {
@@ -1661,13 +2001,12 @@ function eliminarFotoPreview(index) {
 
 
 /* ============================================================
-   27. VALIDAR CANCHA
+   29. VALIDAR CANCHA
    ============================================================ */
 
 function validarCancha() {
 
-    let valido =
-        true;
+    let valido = true;
 
 
     if (
@@ -1685,7 +2024,7 @@ function validarCancha() {
     if (
         !validarRequerido(
             "courtFloor",
-            "Selecciona el tipo de piso."
+            "Selecciona un tipo de piso."
         )
     ) {
 
@@ -1693,6 +2032,10 @@ function validarCancha() {
 
     }
 
+
+    /* ========================================================
+       LARGO
+       ======================================================== */
 
     if (
         !validarRequerido(
@@ -1713,7 +2056,10 @@ function validarCancha() {
             );
 
 
-        if (largo <= 0) {
+        if (
+            !Number.isFinite(largo) ||
+            largo <= 0
+        ) {
 
             mostrarError(
                 obtenerElemento(
@@ -1722,13 +2068,16 @@ function validarCancha() {
                 "El largo debe ser mayor que 0."
             );
 
-            valido =
-                false;
+            valido = false;
 
         }
 
     }
 
+
+    /* ========================================================
+       ANCHO
+       ======================================================== */
 
     if (
         !validarRequerido(
@@ -1749,7 +2098,10 @@ function validarCancha() {
             );
 
 
-        if (ancho <= 0) {
+        if (
+            !Number.isFinite(ancho) ||
+            ancho <= 0
+        ) {
 
             mostrarError(
                 obtenerElemento(
@@ -1758,17 +2110,16 @@ function validarCancha() {
                 "El ancho debe ser mayor que 0."
             );
 
-            valido =
-                false;
+            valido = false;
 
         }
 
     }
 
 
-    /* ------------------------------
-       VALIDAR DURACIÓN
-       ------------------------------ */
+    /* ========================================================
+       DURACIÓN
+       ======================================================== */
 
     const duraciones =
         document.querySelectorAll(
@@ -1819,17 +2170,25 @@ function validarCancha() {
                 "Selecciona al menos una duración.";
 
 
-            contenedor
-                .insertAdjacentElement(
-                    "afterend",
-                    error
-                );
+            contenedor.insertAdjacentElement(
+                "afterend",
+                error
+            );
 
         }
 
 
-        valido =
-            false;
+        valido = false;
+
+    }
+
+
+    if (!valido) {
+
+        mostrarAlerta(
+            "Completa los datos obligatorios de la cancha.",
+            "error"
+        );
 
     }
 
@@ -1840,14 +2199,12 @@ function validarCancha() {
 
 
 /* ============================================================
-   28. GUARDAR CANCHA
+   30. GUARDAR CANCHA
    ============================================================ */
 
 function guardarCancha() {
 
-    if (
-        !validarCancha()
-    ) {
+    if (!validarCancha()) {
 
         return;
 
@@ -1915,9 +2272,9 @@ function guardarCancha() {
     };
 
 
-    /* ====================================================
-       EDITAR CANCHA
-       ==================================================== */
+    /* ========================================================
+       EDITAR CANCHA EXISTENTE
+       ======================================================== */
 
     if (
         canchaEditandoId !== null
@@ -1927,11 +2284,9 @@ function guardarCancha() {
             registroComplejo
                 .canchas
                 .findIndex(
-
                     cancha =>
                         cancha.id ===
                         canchaEditandoId
-
                 );
 
 
@@ -1949,11 +2304,19 @@ function guardarCancha() {
 
         }
 
+
+        mostrarAlerta(
+            "Los cambios de la cancha fueron guardados.",
+            "success",
+            "Cancha actualizada"
+        );
+
+
     } else {
 
-        /* =================================================
+        /* ====================================================
            CREAR NUEVA CANCHA
-           ================================================= */
+           ==================================================== */
 
         registroComplejo
             .canchas
@@ -1973,6 +2336,13 @@ function guardarCancha() {
 
             });
 
+
+        mostrarAlerta(
+            "La cancha fue agregada correctamente.",
+            "success",
+            "Cancha guardada"
+        );
+
     }
 
 
@@ -1984,7 +2354,7 @@ function guardarCancha() {
 
 
 /* ============================================================
-   29. ELIMINAR CANCHA
+   31. ELIMINAR CANCHA
    ============================================================ */
 
 function eliminarCancha(id) {
@@ -1996,7 +2366,9 @@ function eliminarCancha(id) {
 
 
     if (!confirmar) {
+
         return;
+
     }
 
 
@@ -2005,15 +2377,13 @@ function eliminarCancha(id) {
         registroComplejo
             .canchas
             .filter(
-
                 cancha =>
                     cancha.id !== id
-
             );
 
 
     /*
-        Renumeramos las canchas.
+        Renumeramos.
     */
 
     registroComplejo
@@ -2030,15 +2400,31 @@ function eliminarCancha(id) {
 
     guardarLocalStorage();
 
-    cerrarFormularioCancha();
+
+    obtenerElemento(
+        "courtFormCard"
+    )
+        ?.classList
+        .add(
+            "d-none"
+        );
+
+
+    limpiarFormularioCancha();
 
     renderizarCanchas();
+
+
+    mostrarAlerta(
+        "La cancha fue eliminada.",
+        "info"
+    );
 
 }
 
 
 /* ============================================================
-   30. TEXTO DEL DEPORTE
+   32. OBTENER NOMBRE DEL DEPORTE
    ============================================================ */
 
 function obtenerNombreDeporte(valor) {
@@ -2057,14 +2443,13 @@ function obtenerNombreDeporte(valor) {
     };
 
 
-    return deportes[valor]
-        || valor;
+    return deportes[valor] || valor;
 
 }
 
 
 /* ============================================================
-   31. TEXTO DEL PISO
+   33. OBTENER NOMBRE DEL PISO
    ============================================================ */
 
 function obtenerNombrePiso(valor) {
@@ -2083,14 +2468,13 @@ function obtenerNombrePiso(valor) {
     };
 
 
-    return pisos[valor]
-        || valor;
+    return pisos[valor] || valor;
 
 }
 
 
 /* ============================================================
-   32. TEXTO DURACIÓN
+   34. OBTENER NOMBRE DE DURACIÓN
    ============================================================ */
 
 function obtenerNombreDuracion(valor) {
@@ -2109,14 +2493,13 @@ function obtenerNombreDuracion(valor) {
     };
 
 
-    return duraciones[valor]
-        || valor;
+    return duraciones[valor] || valor;
 
 }
 
 
 /* ============================================================
-   33. RENDERIZAR CANCHAS
+   35. RENDERIZAR CANCHAS GUARDADAS
    ============================================================ */
 
 function renderizarCanchas() {
@@ -2152,12 +2535,13 @@ function renderizarCanchas() {
 
 
     if (!lista) {
+
         return;
+
     }
 
 
-    lista.innerHTML =
-        "";
+    lista.innerHTML = "";
 
 
     const formularioVisible =
@@ -2169,9 +2553,9 @@ function renderizarCanchas() {
             );
 
 
-    /* ====================================================
+    /* ========================================================
        SIN CANCHAS
-       ==================================================== */
+       ======================================================== */
 
     if (
         registroComplejo
@@ -2199,8 +2583,7 @@ function renderizarCanchas() {
 
         if (continuar) {
 
-            continuar.disabled =
-                true;
+            continuar.disabled = true;
 
         }
 
@@ -2210,9 +2593,9 @@ function renderizarCanchas() {
     }
 
 
-    /* ====================================================
+    /* ========================================================
        CON CANCHAS
-       ==================================================== */
+       ======================================================== */
 
     vacio
         ?.classList
@@ -2236,12 +2619,14 @@ function renderizarCanchas() {
                     "saved-court-card";
 
 
+                /* =================================================
+                   TAGS
+                   ================================================= */
+
                 const tags = [];
 
 
-                if (
-                    cancha.techada
-                ) {
+                if (cancha.techada) {
 
                     tags.push(
                         "Techada"
@@ -2261,34 +2646,81 @@ function renderizarCanchas() {
                 }
 
 
-                cancha.duraciones
-                    .forEach(
-                        duracion => {
-
-                            tags.push(
-                                obtenerNombreDuracion(
-                                    duracion
-                                )
-                            );
-
-                        }
-                    );
-
-
                 if (
-                    cancha.fotos.length > 0
+                    Array.isArray(
+                        cancha.duraciones
+                    )
                 ) {
 
-                    tags.push(
-                        `${cancha.fotos.length} foto(s)`
-                    );
+                    cancha.duraciones
+                        .forEach(
+                            duracion => {
+
+                                tags.push(
+                                    obtenerNombreDuracion(
+                                        duracion
+                                    )
+                                );
+
+                            }
+                        );
 
                 }
 
 
+                /* =================================================
+                   FOTOS
+                   ================================================= */
+
+                let fotosHTML = "";
+
+
+                if (
+                    Array.isArray(
+                        cancha.fotos
+                    )
+                    &&
+                    cancha.fotos.length > 0
+                ) {
+
+                    fotosHTML = `
+
+                        <div class="saved-court-photos">
+
+                            ${
+                                cancha.fotos
+                                    .map(
+                                        (foto, index) => `
+
+                                            <div class="saved-court-photo">
+
+                                                <img
+                                                    src="${foto.dataUrl}"
+                                                    alt="Foto ${index + 1} de ${cancha.nombre}"
+                                                >
+
+                                            </div>
+
+                                        `
+                                    )
+                                    .join("")
+                            }
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                /* =================================================
+                   TARJETA
+                   ================================================= */
+
                 tarjeta.innerHTML = `
 
                     <div class="saved-court-info">
+
 
                         <div class="saved-court-title">
 
@@ -2296,35 +2728,54 @@ function renderizarCanchas() {
                                 ${cancha.nombre}
                             </h3>
 
+
                             <span class="sport-badge">
-                                ${obtenerNombreDeporte(cancha.deporte)}
+
+                                ${obtenerNombreDeporte(
+                                    cancha.deporte
+                                )}
+
                             </span>
 
                         </div>
 
 
                         <p>
-                            ${obtenerNombrePiso(cancha.tipoPiso)}
+
+                            ${obtenerNombrePiso(
+                                cancha.tipoPiso
+                            )}
+
                             ·
-                            ${cancha.largo}m x ${cancha.ancho}m
+
+                            ${cancha.largo}m x
+                            ${cancha.ancho}m
+
                         </p>
 
 
                         <div class="saved-court-tags">
 
                             ${
-                                tags.map(
-                                    tag =>
-                                        `<span>${tag}</span>`
-                                ).join("")
+                                tags
+                                    .map(
+                                        tag =>
+                                            `<span>${tag}</span>`
+                                    )
+                                    .join("")
                             }
 
                         </div>
+
+
+                        ${fotosHTML}
+
 
                     </div>
 
 
                     <div class="saved-court-actions">
+
 
                         <button
                             type="button"
@@ -2332,7 +2783,9 @@ function renderizarCanchas() {
                             data-id="${cancha.id}"
                             title="Editar cancha"
                         >
+
                             <i class="bi bi-pencil"></i>
+
                         </button>
 
 
@@ -2342,8 +2795,11 @@ function renderizarCanchas() {
                             data-id="${cancha.id}"
                             title="Eliminar cancha"
                         >
+
                             <i class="bi bi-trash"></i>
+
                         </button>
+
 
                     </div>
 
@@ -2358,6 +2814,10 @@ function renderizarCanchas() {
         );
 
 
+    /*
+        Mostrar botón agregar otra.
+    */
+
     if (!formularioVisible) {
 
         agregarOtra
@@ -2368,6 +2828,11 @@ function renderizarCanchas() {
 
     }
 
+
+    /*
+        Habilitar continuar cuando
+        exista al menos una cancha.
+    */
 
     if (continuar) {
 
@@ -2380,136 +2845,7 @@ function renderizarCanchas() {
 
 
 /* ============================================================
-   34. ACTUALIZAR REVISIÓN
-   ============================================================ */
-
-function actualizarRevision() {
-
-    capturarOrganizacion();
-
-    capturarComplejo();
-
-
-    const nombreTitular =
-        obtenerElemento(
-            "reviewOwnerName"
-        );
-
-
-    const telefonoTitular =
-        obtenerElemento(
-            "reviewOwnerPhone"
-        );
-
-
-    const correoTitular =
-        obtenerElemento(
-            "reviewOwnerEmail"
-        );
-
-
-    if (nombreTitular) {
-
-        nombreTitular.textContent =
-            registroComplejo
-                .organizacion
-                .nombreTitular;
-
-    }
-
-
-    if (telefonoTitular) {
-
-        telefonoTitular.textContent =
-            `+57 ${registroComplejo.organizacion.telefono}`;
-
-    }
-
-
-    if (correoTitular) {
-
-        correoTitular.textContent =
-            registroComplejo
-                .organizacion
-                .correo;
-
-    }
-
-
-    /* ====================================================
-       COMPLEJO
-       ==================================================== */
-
-    const datos = {
-
-        reviewComplexName:
-            registroComplejo
-                .complejo
-                .nombre,
-
-        reviewProvince:
-            obtenerTextoSelect(
-                "provincia"
-            ),
-
-        reviewCity:
-            obtenerTextoSelect(
-                "ciudad"
-            ),
-
-        reviewAddress:
-            registroComplejo
-                .complejo
-                .direccion,
-
-        reviewComplexPhone:
-            `+57 ${registroComplejo.complejo.telefono}`,
-
-        reviewAmenities:
-            registroComplejo
-                .complejo
-                .prestaciones
-                .length
-
-                ? registroComplejo
-                    .complejo
-                    .prestaciones
-                    .join(", ")
-
-                : "Sin prestaciones cargadas"
-
-    };
-
-
-    Object.entries(
-        datos
-    ).forEach(
-
-        ([id, valor]) => {
-
-            const elemento =
-                obtenerElemento(id);
-
-
-            if (elemento) {
-
-                elemento.textContent =
-                    valor || "—";
-
-            }
-
-        }
-
-    );
-
-
-    renderizarCanchasRevision();
-
-}
-
-
-/* ============================================================
-   35. OBTENER TEXTO DEL SELECT
+   36. OBTENER TEXTO DEL SELECT
    ============================================================ */
 
 function obtenerTextoSelect(id) {
@@ -2536,7 +2872,139 @@ function obtenerTextoSelect(id) {
 
 
 /* ============================================================
-   36. RENDERIZAR CANCHAS EN REVISIÓN
+   37. ACTUALIZAR REVISIÓN
+   ============================================================ */
+
+function actualizarRevision() {
+
+    capturarOrganizacion();
+
+    capturarComplejo();
+
+
+    /* ========================================================
+       TITULAR
+       ======================================================== */
+
+    const datosTitular = {
+
+        reviewOwnerName:
+            registroComplejo
+                .organizacion
+                .nombreTitular,
+
+        reviewOwnerPhone:
+            `+57 ${
+                registroComplejo
+                    .organizacion
+                    .telefono
+            }`,
+
+        reviewOwnerEmail:
+            registroComplejo
+                .organizacion
+                .correo
+
+    };
+
+
+    Object.entries(
+        datosTitular
+    ).forEach(
+        ([id, valor]) => {
+
+            const elemento =
+                obtenerElemento(id);
+
+
+            if (elemento) {
+
+                elemento.textContent =
+                    valor || "—";
+
+            }
+
+        }
+    );
+
+
+    /* ========================================================
+       COMPLEJO
+       ======================================================== */
+
+    const datosComplejo = {
+
+        reviewComplexName:
+            registroComplejo
+                .complejo
+                .nombre,
+
+        reviewProvince:
+            obtenerTextoSelect(
+                "provincia"
+            ),
+
+        reviewCity:
+            obtenerTextoSelect(
+                "ciudad"
+            ),
+
+        reviewAddress:
+            registroComplejo
+                .complejo
+                .direccion,
+
+        reviewComplexPhone:
+            `+57 ${
+                registroComplejo
+                    .complejo
+                    .telefono
+            }`,
+
+        reviewAmenities:
+
+            registroComplejo
+                .complejo
+                .prestaciones
+                .length > 0
+
+                ? registroComplejo
+                    .complejo
+                    .prestaciones
+                    .join(", ")
+
+                : "Sin prestaciones cargadas"
+
+    };
+
+
+    Object.entries(
+        datosComplejo
+    ).forEach(
+        ([id, valor]) => {
+
+            const elemento =
+                obtenerElemento(id);
+
+
+            if (elemento) {
+
+                elemento.textContent =
+                    valor || "—";
+
+            }
+
+        }
+    );
+
+
+    renderizarCanchasRevision();
+
+}
+
+
+/* ============================================================
+   38. RENDERIZAR CANCHAS EN REVISIÓN
    ============================================================ */
 
 function renderizarCanchasRevision() {
@@ -2548,12 +3016,13 @@ function renderizarCanchasRevision() {
 
 
     if (!contenedor) {
+
         return;
+
     }
 
 
-    contenedor.innerHTML =
-        "";
+    contenedor.innerHTML = "";
 
 
     registroComplejo
@@ -2577,10 +3046,19 @@ function renderizarCanchasRevision() {
                         ${cancha.nombre}
                     </span>
 
+
                     <strong>
-                        ${obtenerNombreDeporte(cancha.deporte)}
+
+                        ${obtenerNombreDeporte(
+                            cancha.deporte
+                        )}
+
                         ·
-                        ${obtenerNombrePiso(cancha.tipoPiso)}
+
+                        ${obtenerNombrePiso(
+                            cancha.tipoPiso
+                        )}
+
                     </strong>
 
                 `;
@@ -2597,7 +3075,7 @@ function renderizarCanchasRevision() {
 
 
 /* ============================================================
-   37. GUARDAR SOLICITUD PARA ADMIN
+   39. GUARDAR SOLICITUD PARA ADMIN
    ============================================================ */
 
 function guardarSolicitudFinal(
@@ -2616,10 +3094,11 @@ function guardarSolicitudFinal(
                 )
             ) || [];
 
-    } catch {
+    } catch (error) {
 
-        solicitudes =
-            [];
+        console.error(error);
+
+        solicitudes = [];
 
     }
 
@@ -2629,25 +3108,49 @@ function guardarSolicitudFinal(
     );
 
 
-    localStorage.setItem(
-        SOLICITUDES_KEY,
-        JSON.stringify(
-            solicitudes
-        )
-    );
+    try {
+
+        localStorage.setItem(
+            SOLICITUDES_KEY,
+            JSON.stringify(
+                solicitudes
+            )
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Error guardando solicitud:",
+            error
+        );
+
+
+        mostrarAlerta(
+            "No fue posible guardar la solicitud. Puede que las imágenes ocupen demasiado espacio.",
+            "error"
+        );
+
+
+        return false;
+
+    }
 
 }
 
 
 /* ============================================================
-   38. ENVIAR SOLICITUD
+   40. ENVIAR SOLICITUD
    ============================================================ */
 
 function enviarSolicitud() {
 
-    if (
-        !validarOrganizacion()
-    ) {
+    /*
+        Validamos nuevamente todo.
+    */
+
+    if (!validarOrganizacion()) {
 
         mostrarPaso(1);
 
@@ -2656,9 +3159,7 @@ function enviarSolicitud() {
     }
 
 
-    if (
-        !validarComplejo()
-    ) {
+    if (!validarComplejo()) {
 
         mostrarPaso(2);
 
@@ -2673,9 +3174,11 @@ function enviarSolicitud() {
             .length === 0
     ) {
 
-        alert(
-            "Debes agregar al menos una cancha."
+        mostrarAlerta(
+            "Debes agregar al menos una cancha antes de enviar la solicitud.",
+            "warning"
         );
+
 
         mostrarPaso(3);
 
@@ -2683,6 +3186,10 @@ function enviarSolicitud() {
 
     }
 
+
+    /* ========================================================
+       CÓMO NOS CONOCISTE
+       ======================================================== */
 
     const howFoundUs =
         obtenerElemento(
@@ -2697,8 +3204,15 @@ function enviarSolicitud() {
 
         mostrarError(
             howFoundUs,
-            "Selecciona cómo nos conociste."
+            "Selecciona una opción."
         );
+
+
+        mostrarAlerta(
+            "Selecciona cómo conociste TuCancha.",
+            "warning"
+        );
+
 
         return;
 
@@ -2715,26 +3229,49 @@ function enviarSolicitud() {
         howFoundUs.value;
 
 
-    /* ====================================================
+    /* ========================================================
        CREAR SOLICITUD
-       ==================================================== */
+       ======================================================== */
 
     const solicitud = {
 
         id:
             `SOL-${Date.now()}`,
 
-        organizacion:
-            registroComplejo
-                .organizacion,
+        organizacion: {
+            ...registroComplejo.organizacion
+        },
 
-        complejo:
-            registroComplejo
-                .complejo,
+        complejo: {
+
+            ...registroComplejo.complejo,
+
+            prestaciones: [
+                ...registroComplejo
+                    .complejo
+                    .prestaciones
+            ]
+
+        },
 
         canchas:
             registroComplejo
-                .canchas,
+                .canchas
+                .map(
+                    cancha => ({
+
+                        ...cancha,
+
+                        duraciones: [
+                            ...(cancha.duraciones || [])
+                        ],
+
+                        fotos: [
+                            ...(cancha.fotos || [])
+                        ]
+
+                    })
+                ),
 
         comoNosConociste:
             registroComplejo
@@ -2750,18 +3287,31 @@ function enviarSolicitud() {
     };
 
 
-    /* ====================================================
-       GUARDAMOS PARA EL FUTURO PANEL ADMIN
-       ==================================================== */
+    /* ========================================================
+       GUARDAR PARA ADMINISTRADOR
+       ======================================================== */
 
-    guardarSolicitudFinal(
-        solicitud
-    );
+    const guardado =
+        guardarSolicitudFinal(
+            solicitud
+        );
 
 
-    /* ====================================================
+    if (!guardado) {
+
+        return;
+
+    }
+
+
+    /* ========================================================
        JSON PARA CONSOLA
-       ==================================================== */
+       ======================================================== */
+
+    /*
+        Para la consola quitamos los Base64
+        gigantes de las imágenes.
+    */
 
     const solicitudConsola =
         JSON.parse(
@@ -2770,12 +3320,6 @@ function enviarSolicitud() {
             )
         );
 
-
-    /*
-        Para no imprimir miles de caracteres Base64,
-        reemplazamos solamente el contenido de la imagen
-        en la salida de consola.
-    */
 
     solicitudConsola
         .canchas
@@ -2803,15 +3347,15 @@ function enviarSolicitud() {
 
 
     console.log(
-        "======================================="
+        "=========================================="
     );
 
     console.log(
-        "NUEVA SOLICITUD TUCANCHA"
+        "TUCANCHA - NUEVA SOLICITUD"
     );
 
     console.log(
-        "======================================="
+        "=========================================="
     );
 
 
@@ -2825,34 +3369,43 @@ function enviarSolicitud() {
 
 
     console.log(
-        "Objeto completo:",
+        "Solicitud completa:",
         solicitud
     );
 
 
-    /*
-        Eliminamos borrador.
-    */
+    /* ========================================================
+       ELIMINAR BORRADOR
+       ======================================================== */
 
     localStorage.removeItem(
         STORAGE_KEY
     );
 
 
-    alert(
-        "Solicitud enviada correctamente. Quedará pendiente de revisión."
+    /* ========================================================
+       ALERTA
+       ======================================================== */
+
+    mostrarAlerta(
+        "La solicitud fue enviada correctamente y quedó pendiente de revisión.",
+        "success",
+        "Solicitud enviada"
     );
 
 
-    reiniciarFormulario(
-        false
-    );
+    /*
+        Reiniciamos visualmente el formulario,
+        pero la solicitud enviada permanece guardada.
+    */
+
+    reiniciarFormulario(false);
 
 }
 
 
 /* ============================================================
-   39. REINICIAR FORMULARIO
+   41. REINICIAR FORMULARIO
    ============================================================ */
 
 function reiniciarFormulario(
@@ -2863,7 +3416,7 @@ function reiniciarFormulario(
 
         const confirmar =
             confirm(
-                "¿Seguro que deseas empezar de nuevo? Se eliminarán los datos guardados."
+                "¿Seguro que deseas empezar de nuevo? Se eliminará el borrador actual."
             );
 
 
@@ -2876,18 +3429,18 @@ function reiniciarFormulario(
     }
 
 
-    /* ====================================================
-       BORRAR LOCAL STORAGE
-       ==================================================== */
+    /* ========================================================
+       BORRAR BORRADOR
+       ======================================================== */
 
     localStorage.removeItem(
         STORAGE_KEY
     );
 
 
-    /* ====================================================
-       RESTAURAR ESTADO
-       ==================================================== */
+    /* ========================================================
+       REINICIAR ESTADO
+       ======================================================== */
 
     registroComplejo =
         crearEstadoInicial();
@@ -2901,9 +3454,9 @@ function reiniciarFormulario(
         [];
 
 
-    /* ====================================================
-       RESETEAR FORMULARIOS
-       ==================================================== */
+    /* ========================================================
+       RESET FORMS
+       ======================================================== */
 
     obtenerElemento(
         "organizationForm"
@@ -2915,69 +3468,43 @@ function reiniciarFormulario(
     )?.reset();
 
 
-    obtenerElemento(
-        "howFoundUs"
-    ).value =
-        "";
+    const howFoundUs =
+        obtenerElemento(
+            "howFoundUs"
+        );
 
+
+    if (howFoundUs) {
+
+        howFoundUs.value = "";
+
+    }
+
+
+    /* ========================================================
+       PRESTACIONES
+       ======================================================== */
 
     document
         .querySelectorAll(
             ".prestation.active"
         )
         .forEach(
-            boton =>
+            boton => {
+
                 boton.classList.remove(
                     "active"
-                )
+                );
+
+            }
         );
 
+
+    /* ========================================================
+       LIMPIAR CANCHA
+       ======================================================== */
 
     limpiarFormularioCancha();
-
-
-    /* ====================================================
-       LIMPIAR ERRORES
-       ==================================================== */
-
-    document
-        .querySelectorAll(
-            ".field-error"
-        )
-        .forEach(
-            error =>
-                error.remove()
-        );
-
-
-    document
-        .querySelectorAll(
-            ".input-error"
-        )
-        .forEach(
-            campo =>
-                campo.classList.remove(
-                    "input-error"
-                )
-        );
-
-
-    /* ====================================================
-       LIMPIAR CANCHAS
-       ==================================================== */
-
-    const lista =
-        obtenerElemento(
-            "savedCourtsList"
-        );
-
-
-    if (lista) {
-
-        lista.innerHTML =
-            "";
-
-    }
 
 
     obtenerElemento(
@@ -2989,23 +3516,92 @@ function reiniciarFormulario(
         );
 
 
+    /* ========================================================
+       LIMPIAR CANCHAS
+       ======================================================== */
+
+    const lista =
+        obtenerElemento(
+            "savedCourtsList"
+        );
+
+
+    if (lista) {
+
+        lista.innerHTML = "";
+
+    }
+
+
+    /* ========================================================
+       LIMPIAR ERRORES
+       ======================================================== */
+
+    document
+        .querySelectorAll(
+            ".field-error"
+        )
+        .forEach(
+            error => {
+
+                error.remove();
+
+            }
+        );
+
+
+    document
+        .querySelectorAll(
+            ".input-error"
+        )
+        .forEach(
+            campo => {
+
+                campo.classList.remove(
+                    "input-error"
+                );
+
+            }
+        );
+
+
+    /* ========================================================
+       VOLVER AL PASO 1
+       ======================================================== */
+
     mostrarPaso(1);
 
     renderizarCanchas();
+
+
+    if (preguntar) {
+
+        mostrarAlerta(
+            "El formulario fue reiniciado correctamente.",
+            "info"
+        );
+
+    }
 
 }
 
 
 /* ============================================================
-   40. AUTOGUARDADO
+   42. AUTOGUARDADO
    ============================================================ */
 
 function configurarAutoguardado() {
 
+    /* ========================================================
+       ORGANIZACIÓN
+       ======================================================== */
+
     const camposOrganizacion = [
 
         "nombreTitular",
+
         "telefonoTitular",
+
         "correoTitular"
 
     ];
@@ -3014,22 +3610,40 @@ function configurarAutoguardado() {
     camposOrganizacion.forEach(
         id => {
 
-            obtenerElemento(id)
+            const elemento =
+                obtenerElemento(id);
+
+
+            elemento
                 ?.addEventListener(
                     "input",
-                    capturarOrganizacion
+                    () => {
+
+                        capturarOrganizacion();
+
+                        limpiarError(elemento);
+
+                    }
                 );
 
         }
     );
 
 
+    /* ========================================================
+       COMPLEJO
+       ======================================================== */
+
     const camposComplejo = [
 
         "nombreComplejo",
+
         "provincia",
+
         "ciudad",
+
         "direccion",
+
         "telefonoComplejo"
 
     ];
@@ -3045,19 +3659,35 @@ function configurarAutoguardado() {
             elemento
                 ?.addEventListener(
                     "input",
-                    capturarComplejo
+                    () => {
+
+                        capturarComplejo();
+
+                        limpiarError(elemento);
+
+                    }
                 );
 
 
             elemento
                 ?.addEventListener(
                     "change",
-                    capturarComplejo
+                    () => {
+
+                        capturarComplejo();
+
+                        limpiarError(elemento);
+
+                    }
                 );
 
         }
     );
 
+
+    /* ========================================================
+       CÓMO NOS CONOCISTE
+       ======================================================== */
 
     obtenerElemento(
         "howFoundUs"
@@ -3071,6 +3701,11 @@ function configurarAutoguardado() {
                     event.target.value;
 
 
+                limpiarError(
+                    event.target
+                );
+
+
                 guardarLocalStorage();
 
             }
@@ -3080,14 +3715,14 @@ function configurarAutoguardado() {
 
 
 /* ============================================================
-   41. CONFIGURAR EVENTOS
+   43. CONFIGURAR EVENTOS
    ============================================================ */
 
 function configurarEventos() {
 
-    /* ====================================================
+    /* ========================================================
        PASO 1 → PASO 2
-       ==================================================== */
+       ======================================================== */
 
     obtenerElemento(
         "btnContinueOrganization"
@@ -3111,9 +3746,9 @@ function configurarEventos() {
         );
 
 
-    /* ====================================================
-       VOLVER PASO 2 → PASO 1
-       ==================================================== */
+    /* ========================================================
+       PASO 2 → PASO 1
+       ======================================================== */
 
     obtenerElemento(
         "btnBackComplex"
@@ -3130,9 +3765,9 @@ function configurarEventos() {
         );
 
 
-    /* ====================================================
+    /* ========================================================
        PASO 2 → PASO 3
-       ==================================================== */
+       ======================================================== */
 
     obtenerElemento(
         "btnContinueComplex"
@@ -3152,13 +3787,15 @@ function configurarEventos() {
 
                 mostrarPaso(3);
 
+                renderizarCanchas();
+
             }
         );
 
 
-    /* ====================================================
-       VOLVER PASO 3 → PASO 2
-       ==================================================== */
+    /* ========================================================
+       PASO 3 → PASO 2
+       ======================================================== */
 
     obtenerElemento(
         "btnBackCourt"
@@ -3173,9 +3810,9 @@ function configurarEventos() {
         );
 
 
-    /* ====================================================
+    /* ========================================================
        PASO 3 → PASO 4
-       ==================================================== */
+       ======================================================== */
 
     obtenerElemento(
         "btnContinueCourt"
@@ -3190,8 +3827,9 @@ function configurarEventos() {
                         .length === 0
                 ) {
 
-                    alert(
-                        "Debes agregar al menos una cancha."
+                    mostrarAlerta(
+                        "Debes agregar al menos una cancha para continuar.",
+                        "warning"
                     );
 
                     return;
@@ -3205,9 +3843,9 @@ function configurarEventos() {
         );
 
 
-    /* ====================================================
-       VOLVER PASO 4 → PASO 3
-       ==================================================== */
+    /* ========================================================
+       PASO 4 → PASO 3
+       ======================================================== */
 
     obtenerElemento(
         "btnBackReview"
@@ -3218,13 +3856,15 @@ function configurarEventos() {
 
                 mostrarPaso(3);
 
+                renderizarCanchas();
+
             }
         );
 
 
-    /* ====================================================
+    /* ========================================================
        EMPEZAR DE NUEVO
-       ==================================================== */
+       ======================================================== */
 
     obtenerElemento(
         "btnRestartRegistration"
@@ -3233,17 +3873,15 @@ function configurarEventos() {
             "click",
             () => {
 
-                reiniciarFormulario(
-                    true
-                );
+                reiniciarFormulario(true);
 
             }
         );
 
 
-    /* ====================================================
+    /* ========================================================
        PRESTACIONES
-       ==================================================== */
+       ======================================================== */
 
     document
         .querySelectorAll(
@@ -3256,11 +3894,9 @@ function configurarEventos() {
                     "click",
                     () => {
 
-                        boton
-                            .classList
-                            .toggle(
-                                "active"
-                            );
+                        boton.classList.toggle(
+                            "active"
+                        );
 
 
                         capturarComplejo();
@@ -3272,9 +3908,9 @@ function configurarEventos() {
         );
 
 
-    /* ====================================================
+    /* ========================================================
        DURACIONES
-       ==================================================== */
+       ======================================================== */
 
     document
         .querySelectorAll(
@@ -3287,11 +3923,9 @@ function configurarEventos() {
                     "click",
                     () => {
 
-                        boton
-                            .classList
-                            .toggle(
-                                "active"
-                            );
+                        boton.classList.toggle(
+                            "active"
+                        );
 
 
                         const error =
@@ -3313,9 +3947,9 @@ function configurarEventos() {
         );
 
 
-    /* ====================================================
+    /* ========================================================
        AGREGAR PRIMERA CANCHA
-       ==================================================== */
+       ======================================================== */
 
     obtenerElemento(
         "btnAddCourt"
@@ -3330,9 +3964,9 @@ function configurarEventos() {
         );
 
 
-    /* ====================================================
+    /* ========================================================
        AGREGAR OTRA CANCHA
-       ==================================================== */
+       ======================================================== */
 
     obtenerElemento(
         "btnAddAnotherCourt"
@@ -3347,35 +3981,43 @@ function configurarEventos() {
         );
 
 
-    /* ====================================================
+    /* ========================================================
        CANCELAR CANCHA
-       ==================================================== */
+       ======================================================== */
 
     obtenerElemento(
         "btnCancelCourt"
     )
         ?.addEventListener(
             "click",
-            cerrarFormularioCancha
+            () => {
+
+                cerrarFormularioCancha();
+
+            }
         );
 
 
-    /* ====================================================
+    /* ========================================================
        GUARDAR CANCHA
-       ==================================================== */
+       ======================================================== */
 
     obtenerElemento(
         "btnSaveCourt"
     )
         ?.addEventListener(
             "click",
-            guardarCancha
+            () => {
+
+                guardarCancha();
+
+            }
         );
 
 
-    /* ====================================================
-       ELIMINAR CANCHA DESDE FORMULARIO
-       ==================================================== */
+    /* ========================================================
+       ELIMINAR DESDE FORMULARIO
+       ======================================================== */
 
     obtenerElemento(
         "btnDeleteCourt"
@@ -3401,9 +4043,9 @@ function configurarEventos() {
         );
 
 
-    /* ====================================================
-       FOTOS
-       ==================================================== */
+    /* ========================================================
+       CARGAR FOTOS
+       ======================================================== */
 
     obtenerElemento(
         "courtPhotos"
@@ -3412,23 +4054,31 @@ function configurarEventos() {
             "change",
             async event => {
 
-                await procesarFotos(
+                const archivos =
                     Array.from(
                         event.target.files
-                    )
+                    );
+
+
+                await procesarFotos(
+                    archivos
                 );
 
 
-                event.target.value =
-                    "";
+                /*
+                    Permitimos volver a seleccionar
+                    la misma imagen posteriormente.
+                */
+
+                event.target.value = "";
 
             }
         );
 
 
-    /* ====================================================
-       ELIMINAR FOTO DE PREVIEW
-       ==================================================== */
+    /* ========================================================
+       ELIMINAR FOTO DEL PREVIEW
+       ======================================================== */
 
     obtenerElemento(
         "photoPreview"
@@ -3460,10 +4110,9 @@ function configurarEventos() {
         );
 
 
-    /* ====================================================
-       EDITAR / ELIMINAR CANCHAS
-       Delegación de eventos
-       ==================================================== */
+    /* ========================================================
+       EDITAR / ELIMINAR CANCHA GUARDADA
+       ======================================================== */
 
     obtenerElemento(
         "savedCourtsList"
@@ -3513,25 +4162,26 @@ function configurarEventos() {
         );
 
 
-    /* ====================================================
+    /* ========================================================
        ENVIAR SOLICITUD
-       ==================================================== */
+       ======================================================== */
 
     obtenerElemento(
         "btnSubmitRequest"
     )
         ?.addEventListener(
             "click",
-            enviarSolicitud
+            () => {
+
+                enviarSolicitud();
+
+            }
         );
 
 
-    /* ====================================================
-       NAVEGACIÓN SIDEBAR
-
-       Solo permitimos visitar pasos
-       que ya hayan sido alcanzados.
-       ==================================================== */
+    /* ========================================================
+       SIDEBAR
+       ======================================================== */
 
     document
         .querySelectorAll(
@@ -3550,14 +4200,25 @@ function configurarEventos() {
                             );
 
 
+                        /*
+                            Solo puede regresar o visitar
+                            pasos que ya alcanzó.
+                        */
+
                         if (
                             paso <=
-                            registroComplejo.pasoMaximo
+                            registroComplejo
+                                .pasoMaximo
                         ) {
 
-                            mostrarPaso(
-                                paso
-                            );
+                            mostrarPaso(paso);
+
+
+                            if (paso === 3) {
+
+                                renderizarCanchas();
+
+                            }
 
                         }
 
@@ -3568,13 +4229,17 @@ function configurarEventos() {
         );
 
 
+    /* ========================================================
+       AUTOGUARDADO
+       ======================================================== */
+
     configurarAutoguardado();
 
 }
 
 
 /* ============================================================
-   42. INICIAR APLICACIÓN
+   44. INICIAR APLICACIÓN
    ============================================================ */
 
 document.addEventListener(
@@ -3596,14 +4261,14 @@ document.addEventListener(
 
 
         /* ====================================================
-           CONFIGURAR BOTONES
+           CONFIGURAR EVENTOS
            ==================================================== */
 
         configurarEventos();
 
 
         /* ====================================================
-           MOSTRAR CANCHAS GUARDADAS
+           RENDERIZAR CANCHAS
            ==================================================== */
 
         renderizarCanchas();
@@ -3620,7 +4285,7 @@ document.addEventListener(
 
 
         console.log(
-            "Registro de complejo iniciado correctamente."
+            "TuCancha: registro de complejo iniciado correctamente."
         );
 
     }

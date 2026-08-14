@@ -50,3 +50,7 @@ Panel de administrador
 El formulario está disponible en `html/registro.html`. La propuesta de base de datos y las instrucciones para conectarlo a Supabase están en [`database/README.md`](database/README.md).
 
 link GitHub page: https://dilsialamadridtorres.github.io/APP_TuCancha/
+    
+     ####SI TIENES macOS :" Solo haz CMD + CLIC sobre la url y veras nuestro gran proyecto"
+     ####SI TIENES Windows :" Solo haz CTRL + CLIC sobre la url y veras nuestro gran proyecto"
+     

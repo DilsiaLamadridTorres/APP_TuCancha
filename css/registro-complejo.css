@@ -1,21 +1,21 @@
 /* =========================================================
+   TUCANCHA
+   REGISTRO DE COMPLEJO DEPORTIVO
+   ========================================================= */
+
+
+/* =========================================================
    CONFIGURACIÓN GENERAL
    ========================================================= */
 
-* {
-    margin: 0;
-    padding: 0;
+.registration,
+.registration * {
     box-sizing: border-box;
 }
 
-html,
 body {
-    height: 100%;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+    background-color: #F8F9FA;
 }
 
 
@@ -25,6 +25,7 @@ body {
 
 .registration {
     min-height: 100vh;
+    background-color: #FFFFFF;
 }
 
 
@@ -33,14 +34,12 @@ body {
    ========================================================= */
 
 .registration-sidebar {
-    width: 320px;
     min-height: 100vh;
-
-    background-color: #1F1F1F;
 
     padding: 32px;
 
-    /* Organización vertical */
+    background-color: #1F1F1F;
+
     display: flex;
     flex-direction: column;
 }
@@ -54,63 +53,72 @@ body {
     margin-bottom: 32px;
 }
 
-/* Título principal */
 .sidebar-header h1 {
+    margin-bottom: 8px;
+
+    color: #FFFFFF;
+
     font-size: 16px;
     font-weight: 700;
-    color: #FFFFFF;
-    margin-bottom: 8px;
+
+    line-height: 1.4;
 }
 
-/* Texto secundario */
 .sidebar-header p {
+    margin: 0;
+
+    color: #A0A0A0;
+
     font-size: 13px;
     font-weight: 400;
-    color: #A0A0A0;
 }
 
 
 /* =========================================================
-   INFORMACIÓN DEL PROGRESO
+   PROGRESO
    ========================================================= */
 
 .progress-info {
     display: flex;
     align-items: center;
+
     gap: 12px;
 
     margin-bottom: 32px;
 }
 
-/* Contenedor de la barra */
 .progress-info .progress {
     flex: 1;
 
     height: 6px;
 
+    overflow: hidden;
+
     background-color: #3A3A3A;
+
     border-radius: 10px;
 }
 
-/* Barra completada */
 .progress-info .progress-bar {
     background-color: #FF6A00;
+
     border-radius: 10px;
+
+    transition: width 0.3s ease;
 }
 
-/* Porcentaje */
 .progress-info span {
+    color: #FFFFFF;
+
     font-size: 12px;
     font-weight: 600;
-
-    color: #FFFFFF;
 
     white-space: nowrap;
 }
 
 
 /* =========================================================
-   PASOS DEL FORMULARIO
+   PASOS DEL SIDEBAR
    ========================================================= */
 
 .form-steps {
@@ -120,100 +128,91 @@ body {
     gap: 12px;
 }
 
-
-/* Cada paso */
 .form-steps .step {
+    position: relative;
+
+    width: 100%;
+
+    padding: 10px 12px 10px 36px;
+
     border: none;
-    background: transparent;
+
+    background-color: transparent;
 
     color: #8A8A8A;
 
+    font-family: inherit;
     font-size: 14px;
     font-weight: 500;
 
     text-align: left;
 
-    /* Espacio para el indicador */
-    padding: 10px 12px 10px 36px;
-
     cursor: pointer;
 
-    transition: 0.2s ease;
-
-    /* Referencia para los pseudo-elementos */
-    position: relative;
+    transition: color 0.2s ease;
 }
 
-
-/* Paso activo */
-.form-steps .step.active {
-    color: #FFFFFF;
-    font-weight: 700;
-}
-
-
-/* Hover */
 .form-steps .step:hover {
     color: #FFFFFF;
 }
 
+.form-steps .step.active {
+    color: #FFFFFF;
+
+    font-weight: 700;
+}
+
 
 /* =========================================================
-   CÍRCULO DE CADA PASO
+   CÍRCULOS DE LOS PASOS
    ========================================================= */
 
 .form-steps .step::before {
     content: "";
 
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
     width: 20px;
     height: 20px;
+
+    transform: translateY(-50%);
 
     border: 2px solid #6B6B6B;
     border-radius: 50%;
 
     background-color: #1F1F1F;
 
-    /* Posicionamiento */
-    position: absolute;
-
-    left: 0;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    /* Mantiene el círculo por encima de la línea */
     z-index: 2;
+
+    transition: 0.2s ease;
 }
 
-
-/* Círculo del paso activo */
 .form-steps .step.active::before {
     border-color: #FF6A00;
+
     background-color: #FF6A00;
 }
 
 
 /* =========================================================
-   LÍNEA VERTICAL ENTRE LOS PASOS
+   LÍNEA ENTRE PASOS
    ========================================================= */
 
 .form-steps .step:not(:last-child)::after {
     content: "";
 
-    width: 2px;
-
-    background-color: #3A3A3A;
-
-    /* Posicionamiento respecto al botón */
     position: absolute;
 
     left: 9px;
-
-    /* Comienza debajo del círculo */
     top: 30px;
 
-    /* Se extiende hasta el siguiente paso */
+    width: 2px;
     height: calc(100% + 12px);
+
+    background-color: #3A3A3A;
 
     z-index: 1;
 }
@@ -224,204 +223,209 @@ body {
    ========================================================= */
 
 .sidebar-footer {
-    /* Empuja el footer hacia la parte inferior */
     margin-top: auto;
 
-    /* Separa el footer de los pasos */
     padding-top: 32px;
 }
 
-
-/* Botón para reiniciar el formulario */
 .sidebar-footer button {
-    /* Ocupa todo el ancho disponible */
     width: 100%;
 
-    /* Eliminamos estilos predeterminados */
-    border: none;
-    background: transparent;
+    padding: 10px 0;
 
-    /* Estilos del texto */
+    border: none;
+
+    background-color: transparent;
+
     color: #A0A0A0;
+
+    font-family: inherit;
     font-size: 13px;
     font-weight: 500;
 
-    /* Alineamos el texto a la izquierda */
     text-align: left;
 
-    /* Espacio interno */
-    padding: 10px 0;
-
-    /* Indica que es interactivo */
     cursor: pointer;
 
-    /* Transición suave */
     transition: color 0.2s ease;
 }
 
+.sidebar-footer button i {
+    margin-right: 7px;
+}
 
-/* Cambio de color al pasar el mouse */
 .sidebar-footer button:hover {
     color: #FFFFFF;
 }
 
+
 /* =========================================================
-   CONTENIDO PRINCIPAL DEL REGISTRO
+   CONTENIDO PRINCIPAL
    ========================================================= */
 
 .registration-content {
-    /* Ocupa todo el espacio disponible junto al sidebar */
-    flex: 1;
+    min-width: 0;
 
-    /* Permite organizar su contenido verticalmente */
-    display: flex;
-    flex-direction: column;
-
-    /* Espacio interno del contenido */
     padding: 60px 80px;
 
-    /* Fondo principal */
     background-color: #FFFFFF;
 }
 
+
 /* =========================================================
-   ENCABEZADO DEL CONTENIDO
+   CONTROL DE LOS PASOS
+   ========================================================= */
+
+.form-step-content {
+    display: none;
+
+    width: 100%;
+    max-width: 760px;
+
+    animation: stepFadeIn 0.25s ease;
+}
+
+.form-step-content.active {
+    display: block;
+}
+
+@keyframes stepFadeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   ENCABEZADO DEL PASO
    ========================================================= */
 
 .step-header {
-    /* Limita el ancho para que el texto no se extienda demasiado */
     max-width: 700px;
 
-    /* Separa el encabezado del formulario */
     margin-bottom: 40px;
 }
 
-
-/* Indicador del paso actual */
 .step-indicator {
     display: inline-block;
 
-    /* Tamaño pequeño para que sea información secundaria */
+    margin-bottom: 12px;
+
+    color: #FF6A00;
+
     font-size: 12px;
     font-weight: 700;
 
-    /* Color principal */
-    color: #FF6A00;
-
-    /* Espacio entre letras */
     letter-spacing: 0.08em;
-
-    /* Separa el indicador del título */
-    margin-bottom: 12px;
 }
 
-
-/* Título del paso */
 .step-header h2 {
-    font-size: 32px;
-    font-weight: 700;
+    margin-bottom: 12px;
 
     color: #1F1F1F;
 
-    /* Separación entre título y descripción */
-    margin-bottom: 12px;
+    font-size: 32px;
+    font-weight: 700;
+
+    line-height: 1.2;
 }
 
-
-/* Descripción del paso */
 .step-header p {
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 1.6;
+    margin: 0;
 
     color: #6B6B6B;
+
+    font-size: 15px;
+    font-weight: 400;
+
+    line-height: 1.6;
 }
 
+
 /* =========================================================
-   CONTENEDOR DEL FORMULARIO
+   FORMULARIOS
    ========================================================= */
 
 .step-form {
-    /* Limita el ancho de los campos */
+    width: 100%;
     max-width: 700px;
 
-    /* Organiza los elementos verticalmente */
     display: flex;
     flex-direction: column;
 }
 
+
 /* =========================================================
-   CAMPOS DEL FORMULARIO
+   INPUTS Y SELECTS
    ========================================================= */
 
-/* Contenedor de cada campo */
-.step-form .form-floating {
-    margin-bottom: 24px !important;
-}
-
-
-/* Input */
-.step-form .form-control {
+.form-step-content .form-floating .form-control,
+.form-step-content .form-floating .form-select {
     height: 58px;
 
-    /* Fondo y borde */
     background-color: #FFFFFF;
+
     border: 1px solid #D9D9D9;
     border-radius: 10px;
 
-    /* Texto */
     color: #1F1F1F;
+
+    font-family: inherit;
     font-size: 14px;
 
-    /* Elimina la sombra predeterminada */
     box-shadow: none;
-}
-
-
-/* Estado cuando el usuario selecciona el campo */
-.step-form .form-control:focus {
-    border-color: #FF6A00;
-
-    /* Evitamos la sombra azul de Bootstrap */
-    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
-}
-
-
-/* Texto de las etiquetas */
-.step-form .form-floating>label {
-    color: #777777;
-    font-size: 14px;
-}
-
-
-/* Color de la etiqueta cuando el campo está activo */
-.step-form .form-floating>.form-control:focus~label {
-    color: #FF6A00;
-}
-
-/* =========================================================
-   CAMPO DE TELÉFONO
-   ========================================================= */
-
-/* Contenedor del código + número */
-.phone-field {
-    display: flex;
-    align-items: center;
-
-    height: 58px;
-
-    background-color: #FFFFFF;
-
-    border: 1px solid #D9D9D9;
-    border-radius: 10px;
-
-    overflow: hidden;
 
     transition: 0.2s ease;
 }
 
+.form-step-content .form-floating .form-control:focus,
+.form-step-content .form-floating .form-select:focus {
+    border-color: #FF6A00;
 
-/* Código del país */
+    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
+}
+
+.form-step-content .form-floating > label {
+    color: #777777;
+
+    font-size: 14px;
+}
+
+.form-step-content .form-floating > .form-control:focus ~ label,
+.form-step-content .form-floating > .form-select:focus ~ label {
+    color: #FF6A00;
+}
+
+
+/* =========================================================
+   TELÉFONO
+   ========================================================= */
+
+.phone-field {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: 58px;
+
+    overflow: hidden;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    transition: 0.2s ease;
+}
+
 .country-code {
     height: 100%;
 
@@ -430,59 +434,83 @@ body {
 
     padding: 0 16px;
 
+    border-right: 1px solid #D9D9D9;
+
     color: #6B6B6B;
 
     font-size: 14px;
     font-weight: 500;
 
-    border-right: 1px solid #D9D9D9;
-
     white-space: nowrap;
 }
 
-
-/* Input del número */
 .phone-field .form-control {
-    height: 100%;
-
     flex: 1;
 
-    border: none;
+    height: 100%;
+
+    padding-left: 14px;
+
+    border: none !important;
     border-radius: 0;
 
-    box-shadow: none;
+    background-color: transparent;
 
     color: #1F1F1F;
 
+    font-family: inherit;
     font-size: 14px;
+
+    box-shadow: none !important;
 }
 
-
-/* Elimina el borde azul de Bootstrap */
 .phone-field .form-control:focus {
-    border: none;
-    box-shadow: none;
+    outline: none;
 }
 
-
-/* Estado activo del contenedor */
 .phone-field:focus-within {
     border-color: #FF6A00;
 
     box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
 }
 
+
 /* =========================================================
-   ACCIONES DEL FORMULARIO
+   TARJETAS DEL FORMULARIO
+   ========================================================= */
+
+.form-card {
+    width: 100%;
+
+    margin-bottom: 24px;
+
+    padding: 30px 32px;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #E1E5E8;
+    border-radius: 16px;
+}
+
+
+/* =========================================================
+   ACCIONES GENERALES
    ========================================================= */
 
 .form-actions {
-    /* Coloca el botón hacia la derecha */
+    width: 100%;
+
     display: flex;
+    align-items: center;
     justify-content: flex-end;
 
-    /* Separación respecto al último campo */
-    margin-top: 8px;
+    gap: 16px;
+
+    margin-top: 24px;
+}
+
+.form-actions .btn-back {
+    margin-right: auto;
 }
 
 
@@ -491,287 +519,202 @@ body {
    ========================================================= */
 
 .btn-continue {
-    /* Tamaño del botón */
     min-width: 150px;
     height: 48px;
 
-    /* Espacio interno */
     padding: 0 20px;
 
-    /* Color principal */
-    background-color: #FF6A00;
-    color: #FFFFFF;
-
-    /* Eliminamos el borde */
-    border: none;
-
-    /* Bordes redondeados */
-    border-radius: 10px;
-
-    /* Tipografía */
-    font-size: 14px;
-    font-weight: 600;
-
-    /* Flexbox para alinear texto y flecha */
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
     gap: 10px;
 
-    /* Cursor */
+    border: none;
+    border-radius: 10px;
+
+    background-color: #FF6A00;
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
     cursor: pointer;
 
-    /* Transición */
     transition: 0.2s ease;
 }
 
-
-/* Flecha del botón */
 .btn-continue span {
     font-size: 18px;
+
     line-height: 1;
 }
 
-
-/* Efecto hover */
-.btn-continue:hover {
+.btn-continue:hover:not(:disabled) {
     background-color: #E85D00;
 
-    /* Pequeño desplazamiento hacia arriba */
+    color: #FFFFFF;
+
     transform: translateY(-2px);
 
-    /* Sombra */
     box-shadow: 0 6px 15px rgba(255, 106, 0, 0.25);
 }
 
-
-/* Efecto al hacer clic */
-.btn-continue:active {
+.btn-continue:active:not(:disabled) {
     transform: translateY(0);
 }
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-/* Tablets y pantallas medianas */
-@media (max-width: 991px) {
-
-    .registration-sidebar {
-        width: 100%;
-        min-height: auto;
-    }
-
-}
 
 /* =========================================================
-   TARJETAS DEL FORMULARIO
+   BOTÓN CONTINUAR DESHABILITADO
    ========================================================= */
 
-.form-card {
-    /* Fondo de la tarjeta */
-    background-color: #FFFFFF;
+.btn-continue:disabled {
+    background-color: #D1D5DB;
 
-    /* Borde sutil */
-    border: 1px solid #E1E5E8;
+    color: #FFFFFF;
 
-    /* Bordes redondeados */
-    border-radius: 16px;
+    cursor: not-allowed;
 
-    /* Espacio interno */
-    padding: 30px 32px;
+    opacity: 0.8;
 
-    /* Separa las tarjetas entre sí */
-    margin-bottom: 24px;
+    transform: none;
+
+    box-shadow: none;
 }
 
-.form-step-content {
-    display: none;
+.btn-continue:disabled:hover {
+    background-color: #D1D5DB;
+
+    transform: none;
+
+    box-shadow: none;
 }
 
-.form-step-content.active {
-    display: block;
-}
-
-/* =========================================================
-   TÍTULO DE LA SECCIÓN DE PRESTACIONES
-   ========================================================= */
-
-.section-title {
-    /* Separa el título de las opciones */
-    margin-bottom: 20px;
-}
-
-
-/* Título principal de la sección */
-.section-title h3 {
-    margin-bottom: 6px;
-
-    font-size: 16px;
-    font-weight: 700;
-
-    color: #1F1F1F;
-}
-
-
-/* Descripción de la sección */
-.section-title p {
-    margin: 0;
-
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 1.5;
-
-    color: #6B7280;
-}
-
-/* =========================================================
-   GRID DE PRESTACIONES
-   ========================================================= */
-
-.prestations-grid {
-    /* Distribuye las prestaciones en varias columnas */
-    display: grid;
-
-    /* Tres opciones por fila */
-    grid-template-columns: repeat(3, 1fr);
-
-    /* Espacio entre las opciones */
-    gap: 12px;
-}
-
-
-/* =========================================================
-   OPCIÓN DE PRESTACIÓN
-   ========================================================= */
-
-.prestation {
-    /* Altura de cada opción */
-    min-height: 44px;
-
-    /* Espacio interno */
-    padding: 10px 14px;
-
-    /* Fondo */
-    background-color: #FFFFFF;
-
-    /* Borde */
-    border: 1px solid #D9D9D9;
-
-    /* Bordes redondeados */
-    border-radius: 8px;
-
-    /* Texto */
-    color: #6B6B6B;
-    font-size: 13px;
-    font-weight: 500;
-
-    /* Cursor */
-    cursor: pointer;
-
-    /* Transición */
-    transition: 0.2s ease;
-}
-
-
-/* Estado hover */
-.prestation:hover {
-    border-color: #FF6A00;
-    color: #FF6A00;
-}
-
-
-/* Estado seleccionado */
-.prestation.active {
-    background-color: #FFF3EB;
-    border-color: #FF6A00;
-    color: #FF6A00;
-    font-weight: 600;
-}
 
 /* =========================================================
    BOTÓN VOLVER
    ========================================================= */
 
 .btn-back {
-    /* Eliminamos los estilos predeterminados */
-    border: none;
-    background-color: transparent;
-
-    /* Color secundario */
-    color: #6B7280;
-
-    /* Tipografía */
-    font-size: 14px;
-    font-weight: 600;
-
-    /* Espacio interno */
     padding: 10px 16px;
 
-    /* Flexbox para alinear la flecha y el texto */
-    display: flex;
+    display: inline-flex;
     align-items: center;
 
     gap: 8px;
 
-    /* Cursor */
+    border: none;
+
+    background-color: transparent;
+
+    color: #6B7280;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
     cursor: pointer;
 
-    /* Transición */
     transition: 0.2s ease;
 }
 
-
-/* Flecha del botón */
 .btn-back span {
     font-size: 18px;
+
     line-height: 1;
 }
 
-
-/* Estado hover */
 .btn-back:hover {
     color: #1F1F1F;
 
-    /* Pequeño desplazamiento hacia la izquierda */
     transform: translateX(-2px);
 }
 
+
 /* =========================================================
-   RESPONSIVE - PRESTACIONES
+   TÍTULOS INTERNOS
    ========================================================= */
 
-/* Pantallas medianas */
-@media (max-width: 768px) {
-
-    .prestations-grid {
-        /* Reducimos a dos columnas */
-        grid-template-columns: repeat(2, 1fr);
-    }
-
+.section-title {
+    margin-bottom: 20px;
 }
 
-/* =========================================================
-   RESPONSIVE - CELULARES
-   ========================================================= */
+.section-title h3 {
+    margin-bottom: 6px;
 
-@media (max-width: 480px) {
+    color: #1F1F1F;
 
-    .prestations-grid {
-        /* Una prestación por fila */
-        grid-template-columns: 1fr;
-    }
-
+    font-size: 16px;
+    font-weight: 700;
 }
 
+.section-title p {
+    margin: 0;
+
+    color: #6B7280;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
 /* =========================================================
-   PASO 3 - CANCHAS
+   PRESTACIONES
    ========================================================= */
 
+.prestations-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 12px;
+}
+
+.prestation {
+    min-height: 44px;
+
+    padding: 10px 14px;
+
+    border: 1px solid #D9D9D9;
+    border-radius: 8px;
+
+    background-color: #FFFFFF;
+
+    color: #6B6B6B;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.prestation:hover {
+    border-color: #FF6A00;
+
+    color: #FF6A00;
+}
+
+.prestation.active {
+    border-color: #FF6A00;
+
+    background-color: #FFF3EB;
+
+    color: #FF6A00;
+
+    font-weight: 600;
+}
+
 
 /* =========================================================
-   CONTENEDOR
+   PASO 3
+   CONTENEDOR DE CANCHAS
    ========================================================= */
 
 .courts-container {
@@ -784,38 +727,39 @@ body {
    ========================================================= */
 
 .empty-courts {
+    width: 100%;
     min-height: 190px;
+
+    padding: 40px 24px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    text-align: center;
-
     border: 1px dashed #D9DEE5;
     border-radius: 16px;
 
-    padding: 40px 24px;
-
     background-color: #FFFFFF;
+
+    text-align: center;
 }
 
 .empty-courts h3 {
     margin: 0 0 10px;
 
+    color: #1F1F1F;
+
     font-size: 15px;
     font-weight: 700;
-
-    color: #1F1F1F;
 }
 
 .empty-courts p {
     margin: 0 0 22px;
 
-    font-size: 13px;
-
     color: #6B7280;
+
+    font-size: 13px;
 }
 
 
@@ -824,18 +768,21 @@ body {
    ========================================================= */
 
 .btn-add-court {
+    padding: 9px 14px;
+
     display: inline-flex;
     align-items: center;
-    gap: 8px;
 
-    padding: 9px 14px;
+    gap: 8px;
 
     border: none;
     border-radius: 8px;
 
     background-color: #1F2933;
+
     color: #FFFFFF;
 
+    font-family: inherit;
     font-size: 13px;
     font-weight: 600;
 
@@ -850,6 +797,7 @@ body {
 
 .btn-add-court span {
     font-size: 20px;
+
     line-height: 1;
 }
 
@@ -859,26 +807,28 @@ body {
    ========================================================= */
 
 .court-form-card {
-    padding: 28px 32px;
+    width: 100%;
 
-    background-color: #FFFFFF;
+    padding: 28px 32px;
 
     border: 1px solid #E1E5E8;
     border-radius: 16px;
+
+    background-color: #FFFFFF;
 }
 
-.court-form-card h3 {
+.court-form-card > h3 {
     margin: 0 0 24px;
+
+    color: #1F1F1F;
 
     font-size: 16px;
     font-weight: 700;
-
-    color: #1F1F1F;
 }
 
 
 /* =========================================================
-   LABELS
+   CAMPOS DE LA CANCHA
    ========================================================= */
 
 .court-label {
@@ -886,32 +836,35 @@ body {
 
     margin-bottom: 10px;
 
+    color: #1F1F1F;
+
     font-size: 14px;
     font-weight: 600;
-
-    color: #1F1F1F;
 }
 
 .court-help-text {
     margin: -4px 0 16px;
 
+    color: #6B7280;
+
     font-size: 13px;
 
-    color: #6B7280;
+    line-height: 1.5;
 }
-
-
-/* =========================================================
-   DURACIÓN
-   ========================================================= */
 
 .court-field-group {
     margin-bottom: 24px;
 }
 
+
+/* =========================================================
+   DURACIONES
+   ========================================================= */
+
 .duration-options {
     display: flex;
     flex-wrap: wrap;
+
     gap: 10px;
 }
 
@@ -925,6 +878,7 @@ body {
 
     color: #1F2933;
 
+    font-family: inherit;
     font-size: 13px;
 
     cursor: pointer;
@@ -932,18 +886,25 @@ body {
     transition: 0.2s ease;
 }
 
-.duration-option:hover,
+.duration-option:hover {
+    border-color: #FF6A00;
+
+    color: #FF6A00;
+}
+
 .duration-option.active {
-    border-color: #1683FF;
+    border-color: #FF6A00;
 
-    background-color: #EAF4FF;
+    background-color: #FFF3EB;
 
-    color: #1683FF;
+    color: #FF6A00;
+
+    font-weight: 600;
 }
 
 
 /* =========================================================
-   OPCIONES
+   OPCIONES DE LA CANCHA
    ========================================================= */
 
 .court-options {
@@ -961,17 +922,21 @@ body {
 
     border: 1px solid #E1E5E8;
     border-radius: 14px;
+
+    background-color: #FFFFFF;
 }
 
 .court-option-card .form-check {
     display: flex;
     align-items: center;
+
     gap: 8px;
 }
 
 .court-option-card .form-check-label {
-    font-size: 14px;
     color: #1F2933;
+
+    font-size: 14px;
 }
 
 .court-option-card small {
@@ -979,15 +944,37 @@ body {
 
     margin-top: 12px;
 
-    font-size: 12px;
-    line-height: 1.5;
-
     color: #6B7280;
+
+    font-size: 12px;
+
+    line-height: 1.5;
 }
 
 
 /* =========================================================
-   FOTOS
+   SWITCH DE BOOTSTRAP
+   ========================================================= */
+
+.court-option-card .form-check-input {
+    cursor: pointer;
+}
+
+.court-option-card .form-check-input:focus {
+    border-color: #FF6A00;
+
+    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
+}
+
+.court-option-card .form-check-input:checked {
+    border-color: #FF6A00;
+
+    background-color: #FF6A00;
+}
+
+
+/* =========================================================
+   FOTOS DE LA CANCHA
    ========================================================= */
 
 .court-photos {
@@ -995,7 +982,10 @@ body {
 }
 
 .photo-upload {
+    width: 100%;
     min-height: 110px;
+
+    padding: 18px;
 
     display: flex;
     flex-direction: column;
@@ -1017,16 +1007,16 @@ body {
 }
 
 .photo-upload:hover {
-    border-color: #1683FF;
+    border-color: #FF6A00;
 
-    background-color: #F5FAFF;
+    background-color: #FFF8F3;
 }
 
 .photo-upload-icon {
+    color: #FF6A00;
+
     font-size: 24px;
     font-weight: 300;
-
-    color: #1683FF;
 }
 
 .photo-upload span {
@@ -1035,8 +1025,9 @@ body {
 }
 
 .photo-upload small {
-    font-size: 11px;
     color: #7B8794;
+
+    font-size: 11px;
 }
 
 
@@ -1062,16 +1053,51 @@ body {
     width: 100%;
     height: 100px;
 
+    display: block;
+
     object-fit: cover;
 
-    border-radius: 10px;
-
     border: 1px solid #E1E5E8;
+    border-radius: 10px;
+}
+
+
+/* Preparado para el JS */
+
+.photo-preview-item {
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+}
+
+.photo-preview-remove {
+    position: absolute;
+
+    top: 6px;
+    right: 6px;
+
+    width: 26px;
+    height: 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: rgba(31, 31, 31, 0.8);
+
+    color: #FFFFFF;
+
+    cursor: pointer;
 }
 
 
 /* =========================================================
-   ACCIONES DEL FORMULARIO
+   ACCIONES DEL FORMULARIO DE CANCHA
    ========================================================= */
 
 .court-form-actions {
@@ -1086,18 +1112,23 @@ body {
 
 .btn-delete-court,
 .btn-cancel-court {
+    padding: 8px;
+
     border: none;
 
     background-color: transparent;
 
+    font-family: inherit;
     font-size: 13px;
     font-weight: 600;
 
     cursor: pointer;
+
+    transition: 0.2s ease;
 }
 
 .btn-delete-court {
-    color: #FF3B30;
+    color: #DC3545;
 }
 
 .btn-cancel-court {
@@ -1109,7 +1140,6 @@ body {
     opacity: 0.7;
 }
 
-
 .btn-save-court {
     padding: 10px 16px;
 
@@ -1117,8 +1147,10 @@ body {
     border-radius: 8px;
 
     background-color: #1F2933;
+
     color: #FFFFFF;
 
+    font-family: inherit;
     font-size: 13px;
     font-weight: 600;
 
@@ -1133,25 +1165,60 @@ body {
 
 
 /* =========================================================
+   LISTA DE CANCHAS GUARDADAS
+   ========================================================= */
+
+.saved-courts-list {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+.saved-courts-list:not(:empty) {
+    margin-bottom: 16px;
+}
+
+
+/* =========================================================
    CANCHA GUARDADA
    ========================================================= */
 
 .saved-court-card {
+    width: 100%;
+
+    padding: 20px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    padding: 20px;
+    gap: 20px;
 
     border: 1px solid #E1E5E8;
     border-radius: 14px;
 
     background-color: #FFFFFF;
+
+    transition: 0.2s ease;
+}
+
+.saved-court-card:hover {
+    border-color: #D3D8DE;
+
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.saved-court-info {
+    min-width: 0;
 }
 
 .saved-court-title {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 
     gap: 10px;
 }
@@ -1159,18 +1226,18 @@ body {
 .saved-court-title h3 {
     margin: 0;
 
+    color: #1F1F1F;
+
     font-size: 15px;
     font-weight: 700;
-
-    color: #1F1F1F;
 }
 
 .saved-court-info p {
     margin: 8px 0 10px;
 
-    font-size: 13px;
-
     color: #6B7280;
+
+    font-size: 13px;
 }
 
 
@@ -1183,9 +1250,9 @@ body {
 
     border-radius: 6px;
 
-    background-color: #EAF4FF;
+    background-color: #FFF3EB;
 
-    color: #1683FF;
+    color: #FF6A00;
 
     font-size: 11px;
     font-weight: 600;
@@ -1193,7 +1260,7 @@ body {
 
 
 /* =========================================================
-   ETIQUETAS DE CANCHA
+   ETIQUETAS DE LA CANCHA
    ========================================================= */
 
 .saved-court-tags {
@@ -1223,27 +1290,50 @@ body {
 
 .saved-court-actions {
     display: flex;
+    align-items: center;
 
-    gap: 18px;
+    gap: 12px;
+
+    flex-shrink: 0;
 }
 
 .btn-edit-court,
 .btn-remove-court {
+    width: 36px;
+    height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     border: none;
+    border-radius: 8px;
 
     background-color: transparent;
 
-    font-size: 18px;
+    font-size: 17px;
 
     cursor: pointer;
+
+    transition: 0.2s ease;
 }
 
 .btn-edit-court {
     color: #607080;
 }
 
+.btn-edit-court:hover {
+    background-color: #F1F3F5;
+
+    color: #1F2933;
+}
+
 .btn-remove-court {
-    color: #FF3B30;
+    color: #DC3545;
+}
+
+.btn-remove-court:hover {
+    background-color: #FFF1F2;
 }
 
 
@@ -1252,26 +1342,33 @@ body {
    ========================================================= */
 
 .btn-add-another-court {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
     width: 100%;
 
     margin-top: 16px;
     padding: 14px;
 
-    border: 1px dashed #1683FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px dashed #FF6A00;
     border-radius: 10px;
 
     background-color: #FFFFFF;
 
-    color: #1683FF;
+    color: #FF6A00;
 
+    font-family: inherit;
     font-size: 13px;
     font-weight: 600;
 
     cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-add-another-court:hover {
+    background-color: #FFF8F3;
 }
 
 .btn-add-another-court span {
@@ -1282,50 +1379,8 @@ body {
 
 
 /* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-    .court-options {
-        grid-template-columns: 1fr;
-    }
-
-    .photo-preview {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .court-form-actions {
-        flex-wrap: wrap;
-    }
-
-}
-
-
-@media (max-width: 480px) {
-
-    .court-form-card {
-        padding: 22px 18px;
-    }
-
-    .photo-preview {
-        grid-template-columns: 1fr;
-    }
-
-    .court-form-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-}
-
-/* =========================================================
-   PASO 4 - REVISIÓN
-   ========================================================= */
-
-
-/* =========================================================
-   TARJETA DE REVISIÓN
+   PASO 4
+   TARJETAS DE REVISIÓN
    ========================================================= */
 
 .review-card {
@@ -1334,16 +1389,11 @@ body {
     margin-bottom: 18px;
     padding: 20px 16px;
 
-    background-color: #FFFFFF;
-
     border: 1px solid #E1E5E8;
     border-radius: 14px;
+
+    background-color: #FFFFFF;
 }
-
-
-/* =========================================================
-   ENCABEZADO DE LA TARJETA
-   ========================================================= */
 
 .review-card-header {
     margin-bottom: 14px;
@@ -1352,17 +1402,19 @@ body {
 .review-card-header h3 {
     margin: 0;
 
+    color: #52677A;
+
     font-size: 12px;
     font-weight: 700;
-    text-transform: uppercase;
+
     letter-spacing: 0.4px;
 
-    color: #52677A;
+    text-transform: uppercase;
 }
 
 
 /* =========================================================
-   DATOS
+   DATOS DE REVISIÓN
    ========================================================= */
 
 .review-data {
@@ -1371,9 +1423,6 @@ body {
 
     gap: 10px;
 }
-
-
-/* Cada fila de información */
 
 .review-row {
     display: flex;
@@ -1385,28 +1434,24 @@ body {
     font-size: 12px;
 }
 
-
-/* Nombre del dato */
-
 .review-row span {
     color: #52677A;
 }
 
-
-/* Valor del dato */
-
 .review-row strong {
-    text-align: right;
-
     color: #1F2933;
 
     font-size: 12px;
     font-weight: 500;
+
+    text-align: right;
+
+    word-break: break-word;
 }
 
 
 /* =========================================================
-   CANCHAS
+   CANCHAS EN REVISIÓN
    ========================================================= */
 
 .review-courts {
@@ -1416,15 +1461,21 @@ body {
     gap: 10px;
 }
 
-
 .review-court-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    padding: 2px 0;
+    gap: 20px;
+
+    padding: 6px 0;
 }
 
+.review-court-row:not(:last-child) {
+    border-bottom: 1px solid #F0F1F3;
+
+    padding-bottom: 12px;
+}
 
 .review-court-row span {
     color: #1F2933;
@@ -1433,22 +1484,22 @@ body {
     font-weight: 500;
 }
 
-
 .review-court-row strong {
     color: #607080;
 
     font-size: 12px;
     font-weight: 400;
+
+    text-align: right;
 }
 
 
 /* =========================================================
-   SELECT
+   ¿CÓMO NOS CONOCISTE?
    ========================================================= */
 
 .review-select select {
     width: 100%;
-
     height: 50px;
 
     padding: 0 14px;
@@ -1460,6 +1511,7 @@ body {
 
     color: #52677A;
 
+    font-family: inherit;
     font-size: 13px;
 
     outline: none;
@@ -1469,11 +1521,10 @@ body {
     transition: 0.2s ease;
 }
 
-
 .review-select select:focus {
-    border-color: #1683FF;
+    border-color: #FF6A00;
 
-    box-shadow: 0 0 0 3px rgba(22, 131, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.10);
 }
 
 
@@ -1482,13 +1533,13 @@ body {
    ========================================================= */
 
 .btn-submit-request {
+    padding: 12px 18px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
     gap: 10px;
-
-    padding: 12px 18px;
 
     border: none;
     border-radius: 8px;
@@ -1497,6 +1548,7 @@ body {
 
     color: #FFFFFF;
 
+    font-family: inherit;
     font-size: 13px;
     font-weight: 600;
 
@@ -1505,23 +1557,17 @@ body {
     transition: 0.2s ease;
 }
 
-
 .btn-submit-request:hover {
     background-color: #111820;
 
     transform: translateY(-1px);
 }
 
-
 .btn-submit-request span {
     font-size: 18px;
+
     line-height: 1;
 }
-
-
-/* =========================================================
-   ACCIONES DEL PASO
-   ========================================================= */
 
 .review-actions {
     margin-top: 28px;
@@ -1529,10 +1575,274 @@ body {
 
 
 /* =========================================================
-   RESPONSIVE
+   VALIDACIONES
    ========================================================= */
 
-@media (max-width: 600px) {
+.form-control.input-error,
+.form-select.input-error,
+.review-select select.input-error {
+    border-color: #DC3545 !important;
+
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.10) !important;
+}
+
+
+/* Error en campos de teléfono */
+
+.phone-field:has(.input-error) {
+    border-color: #DC3545;
+
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.10);
+}
+
+
+/* Mensaje de error */
+
+.field-error {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #DC3545;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 991.98px) {
+
+    .registration-sidebar {
+        padding: 28px 22px;
+    }
+
+    .registration-content {
+        padding: 50px 40px;
+    }
+
+    .step-header h2 {
+        font-size: 28px;
+    }
+
+    .form-card {
+        padding: 26px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - MÓVILES
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .registration-sidebar {
+        min-height: auto;
+
+        padding: 24px;
+    }
+
+
+    /* En móvil los pasos aparecen horizontalmente */
+
+    .form-steps {
+        display: grid;
+
+        grid-template-columns: repeat(4, 1fr);
+
+        gap: 8px;
+
+        margin-bottom: 10px;
+    }
+
+    .form-steps .step {
+        padding: 32px 2px 4px;
+
+        font-size: 11px;
+
+        text-align: center;
+    }
+
+    .form-steps .step::before {
+        left: 50%;
+        top: 4px;
+
+        transform: translateX(-50%);
+    }
+
+    .form-steps .step:not(:last-child)::after {
+        left: calc(50% + 10px);
+        top: 13px;
+
+        width: calc(100% - 12px);
+        height: 2px;
+    }
+
+
+    /* Footer del sidebar */
+
+    .sidebar-footer {
+        margin-top: 20px;
+
+        padding-top: 0;
+    }
+
+
+    /* Contenido */
+
+    .registration-content {
+        padding: 40px 24px;
+    }
+
+    .step-header {
+        margin-bottom: 30px;
+    }
+
+    .step-header h2 {
+        font-size: 26px;
+    }
+
+    .step-header p {
+        font-size: 14px;
+    }
+
+
+    /* Tarjetas */
+
+    .form-card {
+        padding: 24px 20px;
+    }
+
+
+    /* Prestaciones */
+
+    .prestations-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    /* Opciones de cancha */
+
+    .court-options {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Fotos */
+
+    .photo-preview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    /* Cancha guardada */
+
+    .saved-court-card {
+        align-items: flex-start;
+    }
+
+
+    /* Acciones */
+
+    .form-actions {
+        margin-top: 24px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - CELULARES PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .registration-content {
+        padding: 32px 18px;
+    }
+
+    .sidebar-header h1 {
+        font-size: 14px;
+    }
+
+    .step-header h2 {
+        font-size: 24px;
+    }
+
+
+    /* Prestaciones */
+
+    .prestations-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Formulario cancha */
+
+    .court-form-card {
+        padding: 22px 18px;
+    }
+
+
+    /* Duraciones */
+
+    .duration-options {
+        flex-direction: column;
+    }
+
+    .duration-option {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    /* Fotos */
+
+    .photo-preview {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-preview img {
+        height: 180px;
+    }
+
+
+    /* Acciones cancha */
+
+    .court-form-actions {
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 10px;
+    }
+
+    .btn-save-court {
+        width: 100%;
+    }
+
+
+    /* Cancha guardada */
+
+    .saved-court-card {
+        flex-direction: column;
+    }
+
+    .saved-court-actions {
+        width: 100%;
+
+        justify-content: flex-end;
+    }
+
+
+    /* Revisión */
 
     .review-row {
         flex-direction: column;
@@ -1541,11 +1851,9 @@ body {
         gap: 3px;
     }
 
-
     .review-row strong {
         text-align: left;
     }
-
 
     .review-court-row {
         flex-direction: column;
@@ -1554,12 +1862,31 @@ body {
         gap: 4px;
     }
 
+    .review-court-row strong {
+        text-align: left;
+    }
+
+
+    /* Botones inferiores */
+
+    .form-actions {
+        flex-wrap: wrap;
+
+        gap: 10px;
+    }
 
     .review-actions {
         flex-direction: column;
         align-items: stretch;
     }
 
+    .review-actions .btn-back {
+        width: 100%;
+
+        justify-content: center;
+
+        margin-right: 0;
+    }
 
     .btn-submit-request {
         width: 100%;

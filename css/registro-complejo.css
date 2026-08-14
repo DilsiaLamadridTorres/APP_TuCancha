@@ -1,0 +1,2320 @@
+/* =========================================================
+   TUCANCHA
+   REGISTRO DE COMPLEJO DEPORTIVO
+   ========================================================= */
+
+
+/* =========================================================
+   CONFIGURACIÓN GENERAL
+   ========================================================= */
+
+.registration,
+.registration * {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F8F9FA;
+}
+
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.registration {
+    min-height: 100vh;
+
+    background-color: #FFFFFF;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.registration-sidebar {
+    min-height: 100vh;
+
+    padding: 32px;
+
+    background-color: #1F1F1F;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   ENCABEZADO DEL SIDEBAR
+   ========================================================= */
+
+.sidebar-header {
+    margin-bottom: 32px;
+}
+
+.sidebar-header h1 {
+    margin-bottom: 8px;
+
+    color: #FFFFFF;
+
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.sidebar-header p {
+    margin: 0;
+
+    color: #A0A0A0;
+
+    font-size: 13px;
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   PROGRESO
+   ========================================================= */
+
+.progress-info {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 32px;
+}
+
+.progress-info .progress {
+    flex: 1;
+
+    height: 6px;
+
+    overflow: hidden;
+
+    background-color: #3A3A3A;
+
+    border-radius: 10px;
+}
+
+.progress-info .progress-bar {
+    background-color: #FF6A00;
+
+    border-radius: 10px;
+
+    transition: width 0.3s ease;
+}
+
+.progress-info span {
+    color: #FFFFFF;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   PASOS DEL SIDEBAR
+   ========================================================= */
+
+.form-steps {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.form-steps .step {
+    position: relative;
+
+    width: 100%;
+
+    padding: 10px 12px 10px 36px;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #8A8A8A;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.form-steps .step:hover {
+    color: #FFFFFF;
+}
+
+.form-steps .step.active {
+    color: #FFFFFF;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CÍRCULOS DE LOS PASOS
+   ========================================================= */
+
+.form-steps .step::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 20px;
+    height: 20px;
+
+    transform: translateY(-50%);
+
+    border: 2px solid #6B6B6B;
+    border-radius: 50%;
+
+    background-color: #1F1F1F;
+
+    z-index: 2;
+
+    transition: 0.2s ease;
+}
+
+
+/* Paso actual */
+
+.form-steps .step.active::before {
+    border-color: #FF6A00;
+
+    background-color: #FF6A00;
+}
+
+
+/* =========================================================
+   PASOS COMPLETADOS
+   ========================================================= */
+
+.form-steps .step.completed {
+    color: #FFFFFF;
+}
+
+.form-steps .step.completed::before {
+    content: "✓";
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-color: #FF6A00;
+
+    background-color: #FF6A00;
+
+    color: #FFFFFF;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   LÍNEA ENTRE PASOS
+   ========================================================= */
+
+.form-steps .step:not(:last-child)::after {
+    content: "";
+
+    position: absolute;
+
+    left: 9px;
+    top: 30px;
+
+    width: 2px;
+    height: calc(100% + 12px);
+
+    background-color: #3A3A3A;
+
+    z-index: 1;
+
+    transition: background-color 0.2s ease;
+}
+
+.form-steps .step.completed::after {
+    background-color: #FF6A00;
+}
+
+
+/* =========================================================
+   FOOTER SIDEBAR
+   ========================================================= */
+
+.sidebar-footer {
+    margin-top: auto;
+
+    padding-top: 32px;
+}
+
+.sidebar-footer button {
+    width: 100%;
+
+    padding: 10px 0;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #A0A0A0;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.sidebar-footer button i {
+    margin-right: 7px;
+}
+
+.sidebar-footer button:hover {
+    color: #FFFFFF;
+}
+
+
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
+
+.registration-content {
+    min-width: 0;
+
+    padding: 60px 80px;
+
+    background-color: #FFFFFF;
+}
+
+
+/* =========================================================
+   CONTROL DE LOS PASOS
+   ========================================================= */
+
+.form-step-content {
+    display: none;
+
+    width: 100%;
+    max-width: 760px;
+
+    animation: stepFadeIn 0.25s ease;
+}
+
+.form-step-content.active {
+    display: block;
+}
+
+
+@keyframes stepFadeIn {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   ENCABEZADO DE CADA PASO
+   ========================================================= */
+
+.step-header {
+    max-width: 700px;
+
+    margin-bottom: 40px;
+}
+
+.step-indicator {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    color: #FF6A00;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+}
+
+.step-header h2 {
+    margin-bottom: 12px;
+
+    color: #1F1F1F;
+
+    font-size: 32px;
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+.step-header p {
+    margin: 0;
+
+    color: #6B6B6B;
+
+    font-size: 15px;
+    font-weight: 400;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORMULARIOS
+   ========================================================= */
+
+.step-form {
+    width: 100%;
+    max-width: 700px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   INPUTS Y SELECTS
+   ========================================================= */
+
+.form-step-content .form-floating .form-control,
+.form-step-content .form-floating .form-select {
+    height: 58px;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    color: #1F1F1F;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    box-shadow: none;
+
+    transition: 0.2s ease;
+}
+
+.form-step-content .form-floating .form-control:focus,
+.form-step-content .form-floating .form-select:focus {
+    border-color: #FF6A00;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 106, 0, 0.12);
+}
+
+.form-step-content .form-floating>label {
+    color: #777777;
+
+    font-size: 14px;
+}
+
+.form-step-content .form-floating>.form-control:focus~label,
+.form-step-content .form-floating>.form-select:focus~label {
+    color: #FF6A00;
+}
+
+
+/* =========================================================
+   TELÉFONO
+   ========================================================= */
+
+.phone-field {
+    width: 100%;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    transition: 0.2s ease;
+}
+
+.country-code {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 16px;
+
+    border-right: 1px solid #D9D9D9;
+
+    color: #6B6B6B;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+.phone-field .form-control {
+    flex: 1;
+
+    height: 100%;
+
+    padding-left: 14px;
+
+    border: none !important;
+
+    border-radius: 0;
+
+    background-color: transparent;
+
+    color: #1F1F1F;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    box-shadow: none !important;
+}
+
+.phone-field .form-control:focus {
+    outline: none;
+}
+
+.phone-field:focus-within {
+    border-color: #FF6A00;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 106, 0, 0.12);
+}
+
+
+/* =========================================================
+   TARJETAS DEL FORMULARIO
+   ========================================================= */
+
+.form-card {
+    width: 100%;
+
+    margin-bottom: 24px;
+
+    padding: 30px 32px;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #E1E5E8;
+
+    border-radius: 16px;
+}
+
+
+/* =========================================================
+   ACCIONES GENERALES
+   ========================================================= */
+
+.form-actions {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 16px;
+
+    margin-top: 24px;
+}
+
+.form-actions .btn-back {
+    margin-right: auto;
+}
+
+
+/* =========================================================
+   BOTÓN CONTINUAR
+   ========================================================= */
+
+.btn-continue {
+    min-width: 150px;
+    height: 48px;
+
+    padding: 0 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background-color: #FF6A00;
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-continue span {
+    font-size: 18px;
+
+    line-height: 1;
+}
+
+.btn-continue:hover:not(:disabled) {
+    background-color: #E85D00;
+
+    color: #FFFFFF;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 15px rgba(255, 106, 0, 0.25);
+}
+
+.btn-continue:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   BOTÓN DESHABILITADO
+   ========================================================= */
+
+.btn-continue:disabled {
+    background-color: #D1D5DB;
+
+    color: #FFFFFF;
+
+    cursor: not-allowed;
+
+    opacity: 0.8;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+.btn-continue:disabled:hover {
+    background-color: #D1D5DB;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   BOTÓN VOLVER
+   ========================================================= */
+
+.btn-back {
+    padding: 10px 16px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #6B7280;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-back span {
+    font-size: 18px;
+
+    line-height: 1;
+}
+
+.btn-back:hover {
+    color: #1F1F1F;
+
+    transform: translateX(-2px);
+}
+
+
+/* =========================================================
+   TÍTULOS INTERNOS
+   ========================================================= */
+
+.section-title {
+    margin-bottom: 20px;
+}
+
+.section-title h3 {
+    margin-bottom: 6px;
+
+    color: #1F1F1F;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.section-title p {
+    margin: 0;
+
+    color: #6B7280;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   PRESTACIONES
+   ========================================================= */
+
+.prestations-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+}
+
+.prestation {
+    min-height: 44px;
+
+    padding: 10px 14px;
+
+    border:
+        1px solid #D9D9D9;
+
+    border-radius: 8px;
+
+    background-color: #FFFFFF;
+
+    color: #6B6B6B;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.prestation:hover {
+    border-color: #FF6A00;
+
+    color: #FF6A00;
+}
+
+.prestation.active {
+    border-color: #FF6A00;
+
+    background-color: #FFF3EB;
+
+    color: #FF6A00;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   PASO 3 - CONTENEDOR DE CANCHAS
+   ========================================================= */
+
+.courts-container {
+    width: 100%;
+}
+
+
+/* =========================================================
+   ESTADO VACÍO
+   ========================================================= */
+
+.empty-courts {
+    width: 100%;
+    min-height: 190px;
+
+    padding: 40px 24px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px dashed #D9DEE5;
+
+    border-radius: 16px;
+
+    background-color: #FFFFFF;
+
+    text-align: center;
+}
+
+.empty-courts h3 {
+    margin:
+        0 0 10px;
+
+    color: #1F1F1F;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.empty-courts p {
+    margin:
+        0 0 22px;
+
+    color: #6B7280;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   BOTÓN AGREGAR CANCHA
+   ========================================================= */
+
+.btn-add-court {
+    padding: 9px 14px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: #1F2933;
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-add-court:hover {
+    background-color: #111820;
+}
+
+.btn-add-court span {
+    font-size: 20px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   FORMULARIO DE CANCHA
+   ========================================================= */
+
+.court-form-card {
+    width: 100%;
+
+    padding: 28px 32px;
+
+    border:
+        1px solid #E1E5E8;
+
+    border-radius: 16px;
+
+    background-color: #FFFFFF;
+}
+
+.court-form-card>h3 {
+    margin:
+        0 0 24px;
+
+    color: #1F1F1F;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CAMPOS DE CANCHA
+   ========================================================= */
+
+.court-label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #1F1F1F;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.court-help-text {
+    margin:
+        -4px 0 16px;
+
+    color: #6B7280;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.court-field-group {
+    margin-bottom: 24px;
+}
+
+
+/* =========================================================
+   DURACIONES
+   ========================================================= */
+
+.duration-options {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+.duration-option {
+    padding: 8px 14px;
+
+    border:
+        1px solid #D8E0E8;
+
+    border-radius: 8px;
+
+    background-color: #FFFFFF;
+
+    color: #1F2933;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.duration-option:hover {
+    border-color: #FF6A00;
+
+    color: #FF6A00;
+}
+
+.duration-option.active {
+    border-color: #FF6A00;
+
+    background-color: #FFF3EB;
+
+    color: #FF6A00;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   OPCIONES DE CANCHA
+   ========================================================= */
+
+.court-options {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 28px;
+}
+
+.court-option-card {
+    padding: 20px 16px;
+
+    border:
+        1px solid #E1E5E8;
+
+    border-radius: 14px;
+
+    background-color: #FFFFFF;
+}
+
+.court-option-card .form-check {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.court-option-card .form-check-label {
+    color: #1F2933;
+
+    font-size: 14px;
+}
+
+.court-option-card small {
+    display: block;
+
+    margin-top: 12px;
+
+    color: #6B7280;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   SWITCHES
+   ========================================================= */
+
+.court-option-card .form-check-input {
+    cursor: pointer;
+}
+
+.court-option-card .form-check-input:focus {
+    border-color: #FF6A00;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 106, 0, 0.12);
+}
+
+.court-option-card .form-check-input:checked {
+    border-color: #FF6A00;
+
+    background-color: #FF6A00;
+}
+
+
+/* =========================================================
+   CARGA DE FOTOS
+   ========================================================= */
+
+.court-photos {
+    margin-bottom: 28px;
+}
+
+.photo-upload {
+    width: 100%;
+    min-height: 110px;
+
+    padding: 18px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    border:
+        1px dashed #C8D0D9;
+
+    border-radius: 12px;
+
+    background-color: #FAFBFC;
+
+    color: #1F2933;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.photo-upload:hover {
+    border-color: #FF6A00;
+
+    background-color: #FFF8F3;
+}
+
+.photo-upload-icon {
+    color: #FF6A00;
+
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.photo-upload span {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.photo-upload small {
+    color: #7B8794;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   PREVIEW ANTES DE GUARDAR
+   ========================================================= */
+
+.photo-preview {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 10px;
+
+    margin-top: 14px;
+}
+
+.photo-preview:empty {
+    display: none;
+}
+
+.photo-preview-item {
+    position: relative;
+
+    width: 100%;
+    height: 100px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background-color: #F8F9FA;
+}
+
+.photo-preview-item img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+.photo-preview-remove {
+    position: absolute;
+
+    top: 6px;
+    right: 6px;
+
+    width: 26px;
+    height: 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background-color:
+        rgba(31, 31, 31, 0.82);
+
+    color: #FFFFFF;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.photo-preview-remove:hover {
+    background-color: #DC3545;
+}
+
+
+/* =========================================================
+   ACCIONES DEL FORMULARIO CANCHA
+   ========================================================= */
+
+.court-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 20px;
+
+    padding-top: 8px;
+}
+
+.btn-delete-court,
+.btn-cancel-court {
+    padding: 8px;
+
+    border: none;
+
+    background-color: transparent;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-delete-court {
+    color: #DC3545;
+}
+
+.btn-cancel-court {
+    color: #1F2933;
+}
+
+.btn-delete-court:hover,
+.btn-cancel-court:hover {
+    opacity: 0.7;
+}
+
+.btn-save-court {
+    padding: 10px 16px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: #1F2933;
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-save-court:hover {
+    background-color: #111820;
+}
+
+
+/* =========================================================
+   LISTA DE CANCHAS GUARDADAS
+   ========================================================= */
+
+.saved-courts-list {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+.saved-courts-list:not(:empty) {
+    margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   TARJETA DE CANCHA GUARDADA
+   ========================================================= */
+
+.saved-court-card {
+    width: 100%;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border:
+        1px solid #E1E5E8;
+
+    border-radius: 14px;
+
+    background-color: #FFFFFF;
+
+    transition: 0.2s ease;
+}
+
+.saved-court-card:hover {
+    border-color: #D3D8DE;
+
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.saved-court-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.saved-court-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+.saved-court-title h3 {
+    margin: 0;
+
+    color: #1F1F1F;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.saved-court-info>p {
+    margin:
+        8px 0 10px;
+
+    color: #6B7280;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   BADGE DEPORTE
+   ========================================================= */
+
+.sport-badge {
+    padding: 4px 8px;
+
+    border-radius: 6px;
+
+    background-color: #FFF3EB;
+
+    color: #FF6A00;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   TAGS CANCHA
+   ========================================================= */
+
+.saved-court-tags {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 6px;
+}
+
+.saved-court-tags span {
+    padding: 4px 8px;
+
+    border:
+        1px solid #D9DEE5;
+
+    border-radius: 6px;
+
+    background-color: #F8F9FA;
+
+    color: #1F2933;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   FOTOS DE LA CANCHA YA GUARDADA
+   ========================================================= */
+
+.saved-court-photos {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin-top: 16px;
+}
+
+.saved-court-photo {
+    position: relative;
+
+    width: 100%;
+    height: 105px;
+
+    overflow: hidden;
+
+    border:
+        1px solid #E1E5E8;
+
+    border-radius: 10px;
+
+    background-color: #F8F9FA;
+}
+
+.saved-court-photo img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.25s ease;
+}
+
+.saved-court-photo:hover img {
+    transform: scale(1.05);
+}
+
+
+/* =========================================================
+   EDITAR / ELIMINAR CANCHA
+   ========================================================= */
+
+.saved-court-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    flex-shrink: 0;
+}
+
+.btn-edit-court,
+.btn-remove-court {
+    width: 36px;
+    height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: transparent;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-edit-court {
+    color: #607080;
+}
+
+.btn-edit-court:hover {
+    background-color: #F1F3F5;
+
+    color: #1F2933;
+}
+
+.btn-remove-court {
+    color: #DC3545;
+}
+
+.btn-remove-court:hover {
+    background-color: #FFF1F2;
+}
+
+
+/* =========================================================
+   AGREGAR OTRA CANCHA
+   ========================================================= */
+
+.btn-add-another-court {
+    width: 100%;
+
+    margin-top: 16px;
+
+    padding: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px dashed #FF6A00;
+
+    border-radius: 10px;
+
+    background-color: #FFFFFF;
+
+    color: #FF6A00;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-add-another-court:hover {
+    background-color: #FFF8F3;
+}
+
+.btn-add-another-court span {
+    margin-right: 6px;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   PASO 4 - REVISIÓN
+   ========================================================= */
+
+.review-card {
+    width: 100%;
+
+    margin-bottom: 18px;
+
+    padding: 20px 16px;
+
+    border:
+        1px solid #E1E5E8;
+
+    border-radius: 14px;
+
+    background-color: #FFFFFF;
+}
+
+.review-card-header {
+    margin-bottom: 14px;
+}
+
+.review-card-header h3 {
+    margin: 0;
+
+    color: #52677A;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.4px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   DATOS DE REVISIÓN
+   ========================================================= */
+
+.review-data {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.review-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    font-size: 12px;
+}
+
+.review-row span {
+    color: #52677A;
+}
+
+.review-row strong {
+    color: #1F2933;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    text-align: right;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   CANCHAS EN REVISIÓN
+   ========================================================= */
+
+.review-courts {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.review-court-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 6px 0;
+}
+
+.review-court-row:not(:last-child) {
+    padding-bottom: 12px;
+
+    border-bottom:
+        1px solid #F0F1F3;
+}
+
+.review-court-row span {
+    color: #1F2933;
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.review-court-row strong {
+    color: #607080;
+
+    font-size: 12px;
+    font-weight: 400;
+
+    text-align: right;
+}
+
+
+/* =========================================================
+   ¿CÓMO NOS CONOCISTE?
+   ========================================================= */
+
+.review-select select {
+    width: 100%;
+    height: 50px;
+
+    padding: 0 14px;
+
+    border:
+        1px solid #D8E0E8;
+
+    border-radius: 8px;
+
+    background-color: #FFFFFF;
+
+    color: #52677A;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    outline: none;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.review-select select:focus {
+    border-color: #FF6A00;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 106, 0, 0.10);
+}
+
+
+/* =========================================================
+   BOTÓN ENVIAR SOLICITUD
+   ========================================================= */
+
+.btn-submit-request {
+    padding: 12px 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: #1F2933;
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-submit-request:hover {
+    background-color: #111820;
+
+    transform: translateY(-1px);
+}
+
+.btn-submit-request span {
+    font-size: 18px;
+
+    line-height: 1;
+}
+
+.review-actions {
+    margin-top: 28px;
+}
+
+
+/* =========================================================
+   VALIDACIONES
+   ========================================================= */
+
+.form-control.input-error,
+.form-select.input-error,
+.review-select select.input-error {
+    border-color:
+        #DC3545 !important;
+
+    box-shadow:
+        0 0 0 3px rgba(220, 53, 69, 0.10) !important;
+}
+
+.phone-field:has(.input-error) {
+    border-color: #DC3545;
+
+    box-shadow:
+        0 0 0 3px rgba(220, 53, 69, 0.10);
+}
+
+.field-error {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    margin-top: 7px;
+
+    color: #DC3545;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    line-height: 1.4;
+}
+
+.field-error::before {
+    content: "⚠";
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ALERTAS PERSONALIZADAS DEL FORMULARIO
+   ========================================================= */
+
+.form-alert-container {
+    position: fixed;
+
+    top: 90px;
+    right: 24px;
+
+    width: min(390px, calc(100% - 40px));
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    z-index: 9999;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   ALERTA
+   ========================================================= */
+
+.form-alert {
+    width: 100%;
+
+    padding: 16px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    border:
+        1px solid #E1E5E8;
+
+    border-left:
+        4px solid #FF6A00;
+
+    border-radius: 12px;
+
+    background-color: #FFFFFF;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.12);
+
+    pointer-events: auto;
+
+    animation:
+        alertEnter 0.3s ease;
+}
+
+
+/* =========================================================
+   ICONO
+   ========================================================= */
+
+.form-alert-icon {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: #FFF3EB;
+
+    color: #FF6A00;
+
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DE LA ALERTA
+   ========================================================= */
+
+.form-alert-content {
+    flex: 1;
+}
+
+.form-alert-title {
+    margin:
+        0 0 3px;
+
+    color: #1F2933;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.form-alert-message {
+    margin: 0;
+
+    color: #6B7280;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   CERRAR ALERTA
+   ========================================================= */
+
+.form-alert-close {
+    width: 28px;
+    height: 28px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: transparent;
+
+    color: #9CA3AF;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.form-alert-close:hover {
+    background-color: #F3F4F6;
+
+    color: #1F2933;
+}
+
+
+/* =========================================================
+   ALERTA DE ERROR
+   ========================================================= */
+
+.form-alert.error {
+    border-left-color: #DC3545;
+}
+
+.form-alert.error .form-alert-icon {
+    background-color: #FFF1F2;
+
+    color: #DC3545;
+}
+
+
+/* =========================================================
+   ALERTA DE ÉXITO
+   ========================================================= */
+
+.form-alert.success {
+    border-left-color: #198754;
+}
+
+.form-alert.success .form-alert-icon {
+    background-color: #EAF8F0;
+
+    color: #198754;
+}
+
+
+/* =========================================================
+   ALERTA DE INFORMACIÓN
+   ========================================================= */
+
+.form-alert.info {
+    border-left-color: #FF6A00;
+}
+
+.form-alert.info .form-alert-icon {
+    background-color: #FFF3EB;
+
+    color: #FF6A00;
+}
+
+
+/* =========================================================
+   ALERTA DE ADVERTENCIA
+   ========================================================= */
+
+.form-alert.warning {
+    border-left-color: #F59E0B;
+}
+
+.form-alert.warning .form-alert-icon {
+    background-color: #FFF7E6;
+
+    color: #F59E0B;
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE ALERTA
+   ========================================================= */
+
+@keyframes alertEnter {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateX(0);
+    }
+
+}
+
+
+/* =========================================================
+   ALERTA AL SALIR
+   ========================================================= */
+
+.form-alert.hide {
+    opacity: 0;
+
+    transform:
+        translateX(30px);
+
+    transition:
+        0.25s ease;
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLET
+   ========================================================= */
+
+@media (max-width: 991.98px) {
+
+    .registration-sidebar {
+        padding: 28px 22px;
+    }
+
+    .registration-content {
+        padding: 50px 40px;
+    }
+
+    .step-header h2 {
+        font-size: 28px;
+    }
+
+    .form-card {
+        padding: 26px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE MÓVILES
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .registration-sidebar {
+        min-height: auto;
+
+        padding: 24px;
+    }
+
+
+    /* Navegación horizontal */
+
+    .form-steps {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 8px;
+
+        margin-bottom: 10px;
+    }
+
+    .form-steps .step {
+        padding:
+            32px 2px 4px;
+
+        font-size: 11px;
+
+        text-align: center;
+    }
+
+    .form-steps .step::before {
+        left: 50%;
+        top: 4px;
+
+        transform:
+            translateX(-50%);
+    }
+
+    .form-steps .step:not(:last-child)::after {
+        left:
+            calc(50% + 10px);
+
+        top: 13px;
+
+        width:
+            calc(100% - 12px);
+
+        height: 2px;
+    }
+
+
+    /* Footer */
+
+    .sidebar-footer {
+        margin-top: 20px;
+
+        padding-top: 0;
+    }
+
+
+    /* Contenido */
+
+    .registration-content {
+        padding:
+            40px 24px;
+    }
+
+    .step-header {
+        margin-bottom: 30px;
+    }
+
+    .step-header h2 {
+        font-size: 26px;
+    }
+
+    .step-header p {
+        font-size: 14px;
+    }
+
+
+    /* Formularios */
+
+    .form-card {
+        padding:
+            24px 20px;
+    }
+
+
+    /* Prestaciones */
+
+    .prestations-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    /* Canchas */
+
+    .court-options {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    /* Fotos */
+
+    .photo-preview {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .saved-court-photos {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    /* Alertas */
+
+    .form-alert-container {
+        top: 20px;
+
+        right: 20px;
+        left: 20px;
+
+        width: auto;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE CELULARES PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .registration-content {
+        padding:
+            32px 18px;
+    }
+
+    .sidebar-header h1 {
+        font-size: 14px;
+    }
+
+    .step-header h2 {
+        font-size: 24px;
+    }
+
+
+    /* Prestaciones */
+
+    .prestations-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    /* Cancha */
+
+    .court-form-card {
+        padding:
+            22px 18px;
+    }
+
+
+    /* Duraciones */
+
+    .duration-options {
+        flex-direction: column;
+    }
+
+    .duration-option {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    /* Preview fotos */
+
+    .photo-preview {
+        grid-template-columns:
+            1fr;
+    }
+
+    .photo-preview-item {
+        height: 180px;
+    }
+
+
+    /* Fotos guardadas */
+
+    .saved-court-photos {
+        grid-template-columns:
+            1fr;
+    }
+
+    .saved-court-photo {
+        height: 180px;
+    }
+
+
+    /* Acciones formulario cancha */
+
+    .court-form-actions {
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 10px;
+    }
+
+    .btn-save-court {
+        width: 100%;
+    }
+
+
+    /* Tarjeta guardada */
+
+    .saved-court-card {
+        flex-direction: column;
+    }
+
+    .saved-court-actions {
+        width: 100%;
+
+        justify-content: flex-end;
+    }
+
+
+    /* Revisión */
+
+    .review-row {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 3px;
+    }
+
+    .review-row strong {
+        text-align: left;
+    }
+
+    .review-court-row {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 4px;
+    }
+
+    .review-court-row strong {
+        text-align: left;
+    }
+
+
+    /* Acciones */
+
+    .form-actions {
+        flex-wrap: wrap;
+
+        gap: 10px;
+    }
+
+    .review-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .review-actions .btn-back {
+        width: 100%;
+
+        justify-content: center;
+
+        margin-right: 0;
+    }
+
+    .btn-submit-request {
+        width: 100%;
+    }
+
+}
+

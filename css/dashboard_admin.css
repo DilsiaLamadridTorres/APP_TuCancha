@@ -1,0 +1,260 @@
+/* ==========================================================================
+   VARIABLES Y REGLA DE COLOR 60-30-10
+   ========================================================================== */
+:root {
+    /* 60% Dominante (Negros / Grises oscuros de fondo) */
+    --color-fondo-principal: #121519;
+    --color-superficie-panel: #181b20;
+    --color-tarjeta-bg: #1f232b;
+    --color-borde-divisor: #2a2e38;
+
+    /* 30% Secundario (Gris claro / Textos blancos) */
+    --color-texto-blanco: #ffffff;
+    --color-texto-secundario: #9ca3af;
+    --color-texto-deshabilitado: #6b7280;
+
+    /* 10% Acento (Naranja vibrante para acciones principales) */
+    --color-acento-naranja: #ff5500;
+    --color-acento-naranja-hover: #e04b00;
+
+    /* Paleta de Estados */
+    --color-estado-pendiente: #ff9800;
+    --color-estado-revision: #2196f3;
+    --color-estado-aprobada: #10b981;
+    --color-estado-rechazada: #ef4444;
+
+    --fuente-global: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --radio-borde: 8px;
+}
+
+/* Base de la vista */
+body {
+    background-color: var(--color-fondo-principal);
+    color: var(--color-texto-blanco);
+    font-family: var(--fuente-global);
+    margin: 0;
+    padding: 0;
+}
+
+.contenedor-panel-administrador {
+    padding: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* ENCABEZADO Y FILTROS */
+.encabezado-panel {
+    margin-bottom: 1.5rem;
+}
+
+.titulo-seccion {
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.subtitulo-seccion {
+    color: var(--color-texto-secundario);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+.contenedor-filtros-estado {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.boton-filtro-estado {
+    background-color: var(--color-superficie-panel);
+    color: var(--color-texto-secundario);
+    border: 1px solid var(--color-borde-divisor);
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radio-borde);
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.boton-filtro-estado:hover,
+.boton-filtro-estado.activo {
+    background-color: var(--color-acento-naranja);
+    color: var(--color-texto-blanco);
+    border-color: var(--color-acento-naranja);
+}
+
+.contador-badget {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.1rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+}
+
+/* GRID PRINCIPAL */
+.grid-panel-administrador {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 1.5rem;
+}
+
+/* TABLA DE SOLICITUDES */
+.contenedor-tabla-solicitudes {
+    background-color: var(--color-superficie-panel);
+    border: 1px solid var(--color-borde-divisor);
+    border-radius: var(--radio-borde);
+    overflow: hidden;
+}
+
+.tabla-solicitudes {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabla-solicitudes th {
+    background-color: var(--color-tarjeta-bg);
+    padding: 1rem;
+    font-size: 0.85rem;
+    color: var(--color-texto-secundario);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--color-borde-divisor);
+}
+
+.tabla-solicitudes td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-borde-divisor);
+    font-size: 0.9rem;
+}
+
+.celda-cancha-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.imagen-miniatura-cancha {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+/* INSIGNIAS DE ESTADO */
+.insignia-estado {
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.insignia-estado.pendiente { background-color: rgba(255, 152, 0, 0.15); color: var(--color-estado-pendiente); }
+.insignia-estado.en-revision { background-color: rgba(33, 150, 243, 0.15); color: var(--color-estado-revision); }
+.insignia-estado.publicada { background-color: rgba(16, 185, 129, 0.15); color: var(--color-estado-aprobada); }
+.insignia-estado.rechazada { background-color: rgba(239, 68, 68, 0.15); color: var(--color-estado-rechazada); }
+
+.boton-ver-solicitud {
+    background: none;
+    border: 1px solid var(--color-borde-divisor);
+    color: var(--color-texto-blanco);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radio-borde);
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.2s;
+}
+
+.boton-ver-solicitud:hover {
+    background-color: var(--color-borde-divisor);
+}
+
+/* PANEL DERECHO DE DETALLE */
+.panel-detalle-solicitud {
+    background-color: var(--color-superficie-panel);
+    border: 1px solid var(--color-borde-divisor);
+    border-radius: var(--radio-borde);
+    padding: 1.25rem;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+.encabezado-detalle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-borde-divisor);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.titulo-detalle {
+    font-size: 1.1rem;
+}
+
+.boton-cerrar-detalle {
+    background: none;
+    border: none;
+    color: var(--color-texto-secundario);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.imagen-visor-principal {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radio-borde);
+    margin-bottom: 1rem;
+}
+
+.lista-informacion-general {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+.lista-informacion-general li {
+    font-size: 0.88rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-texto-secundario);
+}
+
+.lista-informacion-general strong {
+    color: var(--color-texto-blanco);
+}
+
+/* ACCIONES DE APROBACIÓN Y CAMBIO DE ESTADO */
+.contenedor-acciones-estado {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-borde-divisor);
+}
+
+.boton-accion-estado {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: var(--radio-borde);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: opacity 0.2s;
+}
+
+.boton-accion-estado:hover {
+    opacity: 0.9;
+}
+
+.boton-marcar-revision { background-color: rgba(33, 150, 243, 0.2); color: var(--color-estado-revision); }
+.boton-aprobar-publicar { background-color: var(--color-acento-naranja); color: var(--color-texto-blanco); }
+.boton-rechazar-solicitud { background-color: rgba(239, 68, 68, 0.2); color: var(--color-estado-rechazada); }
+
+.mensaje-vacio {
+    text-align: center;
+    color: var(--color-texto-secundario);
+    padding: 3rem 1rem;
+}

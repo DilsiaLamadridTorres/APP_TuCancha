@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TuCancha - Panel de Administración</title>
+    <!-- VÍNCULO A LA HOJA DE ESTILOS -->
+    <link rel="stylesheet" href="../css/dashboard_admin.css">
+</head>
+<body>
+
+    <main class="contenedor-panel-administrador">
+
+        <!-- CABECERA DEL PANEL -->
+        <header class="encabezado-panel">
+            <div class="informacion-panel">
+                <h1 class="titulo-seccion">Solicitudes de canchas</h1>
+                <p class="subtitulo-seccion">Revisa, aprueba y publica nuevas canchas en la plataforma.</p>
+            </div>
+
+            <!-- FILTROS DE ESTADO -->
+            <div class="contenedor-filtros-estado">
+                <button class="boton-filtro-estado activo" data-estado="todos">Todas <span class="contador-badget" id="contador-todas">0</span></button>
+                <button class="boton-filtro-estado" data-estado="Pendiente">Pendientes <span class="contador-badget" id="contador-pendientes">0</span></button>
+                <button class="boton-filtro-estado" data-estado="En revisión">En revisión <span class="contador-badget" id="contador-revision">0</span></button>
+                <button class="boton-filtro-estado" data-estado="Publicada">Aprobadas <span class="contador-badget" id="contador-aprobadas">0</span></button>
+                <button class="boton-filtro-estado" data-estado="Rechazada">Rechazadas <span class="contador-badget" id="contador-rechazadas">0</span></button>
+            </div>
+        </header>
+
+        <!-- GRID PRINCIPAL DE ADMINISTRACIÓN -->
+        <section class="grid-panel-administrador">
+
+            <!-- TABLA CON LISTADO DE SOLICITUDES -->
+            <article class="contenedor-tabla-solicitudes">
+                <table class="tabla-solicitudes">
+                    <thead>
+                        <tr>
+                            <th>Cancha</th>
+                            <th>Propietario</th>
+                            <th>Ciudad</th>
+                            <th>Fecha de envío</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-tabla-solicitudes">
+                        <!-- Carga dinámica con JavaScript -->
+                    </tbody>
+                </table>
+            </article>
+
+            <!-- PANEL DE DETALLE DE SOLICITUD (VISTA DERECHA) -->
+            <aside class="panel-detalle-solicitud" id="panel-detalle-solicitud">
+                <header class="encabezado-detalle">
+                    <h2 class="titulo-detalle">Detalle de la solicitud</h2>
+                    <button class="boton-cerrar-detalle" id="boton-cerrar-detalle">&times;</button>
+                </header>
+
+                <!-- CONTENIDO DE DETALLE GENERADO DINÁMICAMENTE -->
+                <div class="contenido-detalle-dinamico" id="contenido-detalle-dinamico">
+                    <div class="mensaje-vacio">
+                        <p>Selecciona una solicitud de la lista para ver los detalles completos.</p>
+                    </div>
+                </div>
+            </aside>
+
+        </section>
+
+    </main>
+
+    <!-- JS DE LÓGICA DE LOCALSTORAGE Y PANEL -->
+    <script src="dashboard_admin.js"></script>
+</body>
+</html>

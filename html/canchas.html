@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/footer.css">
     <link rel="stylesheet" href="../css/animation.css">
+    <link rel="stylesheet" href="../css/canchas.css">
 </head>
 
 <body>
@@ -36,20 +37,74 @@
         <mi-navbar></mi-navbar>
     </header>
 
-    <main>
 
+    <main>
+        <section class="canchas-hero">
+
+            <!-- Hero -->
+
+            <div class="canchas-hero__content">
+                <h1>ENCUENTRA TU CANCHA</h1>
+                <p>Elige dónde jugar y arma tu parche</p>
+                <form class="canchas-search">
+                    <label class="visually-hidden" for="buscar-cancha">Buscar canchas</label>
+
+                    <!-- Buscar y boton buscar -->
+
+                    <input type="search" id="buscar-cancha" name="busqueda" placeholder="Busca por nombre o por ubicación">
+
+                    <button type="submit">Buscar</button>
+                </form>
+
+                <!-- filtros -->
+
+                <div class="canchas-filters">
+                    <button type="button" class="canchas-filter">Ubicación</button>
+                    <button type="button" class="canchas-filter">Precio</button>
+                    <button type="button" class="canchas-filter">Disponibilidad</button>
+                </div>
+            </div>
+
+        </section>
+
+
+<!-- Listado de canchas disponibles -->
+
+        <section class="canchas-list">
+            <div class="canchas-list__header">
+                <h2>Canchas disponibles: <span>0</span></h2>
+                <p>Resultados encontrados</p>             
+
+            </div>
+
+            <!--Aquí JS inserta las cards dinámicamente-->
+
+<div
+    class="canchas-grid"
+    id="lista-canchas">
+</div>
+
+<!--Boton al final de la página "Ver más canchas"-->
+
+<div class="canchas-list__more">
+    <button type="button" class="btn-ver-mas">Ver más canchas</button>
+</div>
+
+        </section>
+    
+    
     </main>
 
-    <!-- FOOTER - PAUL -->
-    <footer>
-        <mi-footer></mi-footer>
-    </footer>
-    <!-- SCRIPTS -->
-     <script src="../JS/admin/navbar.js"></script>
-     <script src="../JS/admin/footer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
+            <!-- FOOTER - PAUL -->
+            <footer>
+                <mi-footer></mi-footer>
+            </footer>
+            <!-- SCRIPTS -->
+            <script src="../JS/admin/navbar.js"></script>
+            <script src="../JS/admin/footer.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+                crossorigin="anonymous"></script>
 </body>
 
 </html>

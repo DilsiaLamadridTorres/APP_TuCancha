@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión | TuCancha</title>
+    <link rel="icon" type="image/png" href="../img/logo/logo corto.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/bootstrap-custom.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+    <header><mi-navbar></mi-navbar></header>
+    <main class="auth-page">
+        <section class="auth-card" aria-labelledby="login-title">
+            <i class="bi bi-box-arrow-in-right auth-card__icon" aria-hidden="true"></i>
+            <h1 id="login-title">Qué bueno verte</h1>
+            <p class="auth-card__intro">Ingresa para continuar organizando tus partidos.</p>
+            <form id="login-form" class="mt-4" novalidate>
+                <div class="mb-3">
+                    <label class="form-label" for="correo">Correo electrónico</label>
+                    <input class="form-control" type="email" id="correo" name="correo" autocomplete="email" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label" for="contrasena">Contraseña</label>
+                    <input class="form-control" type="password" id="contrasena" name="contrasena" autocomplete="current-password" required>
+                </div>
+                <button class="btn btn-primary w-100 py-2" type="submit">Iniciar sesión</button>
+                <p id="login-status" class="auth-status" role="alert" aria-live="polite"></p>
+            </form>
+            <p class="auth-card__footer mt-4 mb-0">¿Aún no tienes cuenta? <a href="registro.html">Regístrate</a></p>
+        </section>
+    </main>
+    <script src="../JS/admin/navbar.js"></script>
+    <script src="../JS/services/config.js"></script>
+    <script src="../JS/services/api.js"></script>
+    <script type="module" src="../JS/auth/login.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

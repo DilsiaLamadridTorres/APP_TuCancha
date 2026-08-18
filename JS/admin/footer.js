@@ -5,7 +5,7 @@ class MiFooter extends HTMLElement {
         <div class="row gy-5">
             <!-- Logo -->
             <div class="col-lg-5 col-md-12 text-center text-lg-start">
-                <img src="../img/logo/logo corto.png" alt="Logo TuCancha" width="160" class="footer-logo mb-3">
+                <img src="./img/logo/logo corto.png" alt="Logo TuCancha" width="160" class="footer-logo mb-3">
                 <h3 class="fw-bold">
                     Arma tu parche y juégatela
                 </h3>

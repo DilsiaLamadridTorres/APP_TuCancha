@@ -1,6 +1,6 @@
 // const canchas es la variable
 // [] este es un Array, el array se llama canchas y dentro del array hay un objeto {}
-const canchas = [{
+let canchas = [{
     id: 1, // id es el nombre de la propiedad / 1 es el valor de la propiedad 
     nombre: "Cancha el Golazo",
     empresa: "Complejo deportivo el mono",
@@ -93,6 +93,98 @@ const canchas = [{
 }
 ]
 
+// ============================================================
+// CANCHAS PUBLICADAS DESDE EL DASHBOARD ADMINISTRATIVO
+// ============================================================
+
+const CANCHAS_PUBLICADAS_KEY =
+    "tucancha_canchas_publicadas";
+
+let canchasPublicadas = [];
+
+try {
+
+    const datosPublicados =
+        localStorage.getItem(
+            CANCHAS_PUBLICADAS_KEY
+        );
+
+    if (datosPublicados) {
+
+        const publicaciones =
+            JSON.parse(
+                datosPublicados
+            );
+
+        if (Array.isArray(publicaciones)) {
+
+            canchasPublicadas =
+                publicaciones
+                    .filter(
+                        cancha =>
+                            cancha.publicada === true
+                    )
+                    .map(
+                        cancha => ({
+
+                            id:
+                                cancha.id,
+
+                            nombre:
+                                cancha.nombre,
+
+                            empresa:
+                                cancha.complejo?.nombre
+                                || "Complejo deportivo",
+
+                            ubicacion:
+                                `${cancha.complejo?.ciudad || ""}${
+                                    cancha.complejo?.provincia
+                                        ? ", " + cancha.complejo.provincia
+                                        : ""
+                                }`,
+
+                            calificacion:
+                                "Nueva",
+
+                            precio:
+                                cancha.precioPorHora
+                                || null,
+
+                            imagen:
+                                cancha.fotos?.[0]
+                                || "https://via.placeholder.com/400x250?text=TuCancha",
+
+                            publicada:
+                                true,
+
+                            solicitudId:
+                                cancha.solicitudId
+
+                        })
+                    );
+
+        }
+
+    }
+
+} catch (error) {
+
+    console.error(
+        "Error leyendo canchas publicadas:",
+        error
+    );
+
+}
+
+
+// Agregamos las canchas publicadas
+// a las canchas que ya existían.
+canchas.push(
+    ...canchasPublicadas
+);
+
+
 // traer lista-canchas del HTML y lo guarda en la variable listaCanchas
 const listaCanchas = document.getElementById("lista-canchas");
 const cantidadCanchas = document.querySelector(".canchas-list__header h2 span");
@@ -160,9 +252,28 @@ for (let i = 0; i < canchas.length; i++) {
 
 
     const precio = document.createElement("p");
-    precio.classList.add("cancha-card__price");
-    precio.textContent = `$${canchas[i].precio.toLocaleString("es-CO")} / hora`;
-    contenido.appendChild(precio);
+
+precio.classList.add(
+    "cancha-card__price"
+);
+
+if (
+    typeof canchas[i].precio === "number"
+) {
+
+    precio.textContent =
+        `$${canchas[i].precio.toLocaleString("es-CO")} / hora`;
+
+} else {
+
+    precio.textContent =
+        "Precio no especificado";
+
+}
+
+contenido.appendChild(
+    precio
+);
 
     card.appendChild(contenido);
 

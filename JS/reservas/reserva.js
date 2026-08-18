@@ -1,21 +1,25 @@
-                    //CONTROLADOR DE RESERVAS//
+////////////////////////// CONTROLADOR DE RESERVAS
 
 document.addEventListener('DOMContentLoaded', () => {
+
   const bookingForm = document.getElementById('booking-form');
   const formMessage = document.getElementById('form-message');
   const fechaInput = document.getElementById('fecha');
 
-  if (!bookingForm) return;
+  if (!bookingForm || !formMessage || !fechaInput) {
+    console.warn('Formulario de reservas no encontrado.');
+    return;
+  }
 
-  // 1. Restringir fechas pasadas en el selector de fecha
+  // Restringir fechas pasadas
   const hoy = new Date().toISOString().split('T')[0];
   fechaInput.setAttribute('min', hoy);
 
-  // 2. Manejo del evento de envío (Submit)
+  // Manejo del envío
   bookingForm.addEventListener('submit', async (e) => {
+
     e.preventDefault();
 
-    // Captura de valores
     const cancha = document.getElementById('cancha-select').value;
     const fecha = fechaInput.value;
     const hora = document.getElementById('hora').value;
@@ -23,13 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const telefono = document.getElementById('telefono').value.trim();
     const email = document.getElementById('email').value.trim();
 
-    // Validación básica de campos
+    // Validación
     if (!cancha || !fecha || !hora || !nombre || !telefono || !email) {
-      mostrarMensaje('Por favor, completa todos los campos requeridos.', 'danger');
+      mostrarMensaje(
+        'Por favor, completa todos los campos requeridos.',
+        'danger'
+      );
       return;
     }
 
-    // Estructura del objeto Reserva
     const reservaData = {
       cancha,
       fecha,
@@ -44,28 +50,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('Datos de la reserva listos:', reservaData);
 
-    // Feedback al usuario mientras se procesa
-    mostrarMensaje('Procesando tu reserva...', 'info');
+    mostrarMensaje(
+      'Procesando tu reserva...',
+      'info'
+    );
 
     try {
-      // OK,AQUÍ IRÁ LA INTEGRACIÓN CON LA API / BASE DE DATOS
-      // Ejemplo simulado:
+
+      // Aquí posteriormente irá la API / Supabase
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      mostrarMensaje('¡Reserva confirmada con éxito! Nos vemos en la cancha.', 'success');
+      mostrarMensaje(
+        '¡Reserva confirmada con éxito! Nos vemos en la cancha.',
+        'success'
+      );
+
       bookingForm.reset();
+
+      // Mantener restricción de fecha después del reset
+      fechaInput.setAttribute('min', hoy);
+
     } catch (error) {
+
       console.error('Error al guardar reserva:', error);
-      mostrarMensaje('Ocurrió un error al procesar la reserva. Intenta de nuevo.', 'danger');
+
+      mostrarMensaje(
+        'Ocurrió un error al procesar la reserva. Intenta de nuevo.',
+        'danger'
+      );
     }
   });
 
-  // Función auxiliar para mostrar alertas de Bootstrap
   function mostrarMensaje(mensaje, tipo) {
+
     formMessage.innerHTML = `
-      <div class="alert alert-${tipo} alert-dismissible fade show text-center" role="alert">
+      <div class="alert alert-${tipo} text-center" role="alert">
         ${mensaje}
       </div>
     `;
   }
+
 });

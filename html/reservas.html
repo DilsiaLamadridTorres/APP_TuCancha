@@ -1,26 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservas</title>
+    <title>Reservas - TuCancha</title>
+
     <link class="icono" rel="icon" type="image/png" href="../img/logo/logo corto.png">
+
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+        crossorigin="anonymous">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+        rel="stylesheet">
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
-
-    <!-- css general -->
+    <!-- CSS general -->
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/bootstrap-custom.css">
@@ -36,7 +42,139 @@
         <mi-navbar></mi-navbar>
     </header>
 
-    <main>
+    <main class="container py-5">
+
+        <section class="row justify-content-center">
+
+            <div class="col-lg-8">
+
+                <div class="text-center mb-4">
+                    <h1>Reserva tu cancha</h1>
+                    <p class="text-muted">
+                        Completa los datos para realizar tu reserva.
+                    </p>
+                </div>
+
+                <form id="booking-form" class="card shadow-sm p-4">
+
+                    <!-- Cancha -->
+                    <div class="mb-3">
+                        <label for="cancha-select" class="form-label">
+                            Cancha
+                        </label>
+
+                        <select id="cancha-select"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Selecciona una cancha
+                            </option>
+
+                            <option value="Cancha Arena Pro">
+                                Cancha Arena Pro
+                            </option>
+
+                            <option value="Cancha El Campín">
+                                Cancha El Campín
+                            </option>
+
+                            <option value="Cancha La 70">
+                                Cancha La 70
+                            </option>
+
+                            <option value="Cancha La Floresta">
+                                Cancha La Floresta
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <!-- Fecha -->
+                    <div class="mb-3">
+                        <label for="fecha" class="form-label">
+                            Fecha
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fecha"
+                            class="form-control"
+                            required>
+                    </div>
+
+                    <!-- Hora -->
+                    <div class="mb-3">
+                        <label for="hora" class="form-label">
+                            Hora
+                        </label>
+
+                        <input
+                            type="time"
+                            id="hora"
+                            class="form-control"
+                            required>
+                    </div>
+
+                    <!-- Nombre -->
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">
+                            Nombre completo
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nombre"
+                            class="form-control"
+                            placeholder="Ingresa tu nombre"
+                            required>
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">
+                            Teléfono
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="telefono"
+                            class="form-control"
+                            placeholder="Ingresa tu teléfono"
+                            required>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            Correo electrónico
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-control"
+                            placeholder="correo@ejemplo.com"
+                            required>
+                    </div>
+
+                    <!-- Mensajes -->
+                    <div id="form-message" class="mb-3"></div>
+
+                    <!-- Botón -->
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100">
+
+                        Confirmar reserva
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
 
     </main>
 
@@ -44,12 +182,21 @@
     <footer>
         <mi-footer></mi-footer>
     </footer>
-    <!-- SCRIPTS -->
-     <script src="../JS/admin/navbar.js"></script>
-     <script src="../JS/admin/footer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
+
+    <!-- Scripts -->
+    <script src="../JS/admin/navbar.js"></script>
+    <script src="../JS/admin/footer.js"></script>
+
+    <!-- Controlador de reservas -->
+    <script type="module" src="../JS/reservas/reserva.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+    </script>
+
 </body>
 
 </html>

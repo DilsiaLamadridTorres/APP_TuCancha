@@ -6,7 +6,7 @@ class MiNavbar extends HTMLElement {
             if (archivo === 'index.html') return estaEnHtml ? '../index.html' : 'index.html';
             return estaEnHtml ? archivo : `html/${archivo}`;
         };
-        const rutaLogo = estaEnHtml ? './img/logo/Logo.png' : 'img/logo/Logo.png';
+        const rutaLogo = estaEnHtml ? '../img/logo/Logo.png' : 'img/logo/Logo.png';
 
         this.innerHTML = `<nav class="navbar navbar-expand-lg bg-dark shadow-sm">
             <div class="container-fluid">

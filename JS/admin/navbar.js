@@ -44,7 +44,7 @@ class MiNavbar extends HTMLElement {
                         </li>
                     </ul>
                     <div class=""></div>
-                    <button type="button" class="btn btn-primary mx-5">Únete</button>
+                    <button type="button" class="btn btn-primary mx-5"><a class="text-decoration-none text-white" href="registro.html">Únete</a></button>
                 </div>
             </div>
             </div>

@@ -277,3 +277,124 @@ a {
 .venue-address i {
     color: #ff6a00;
 }
+
+/* =========================================================
+   GALERÍA DE IMÁGENES
+   ========================================================= */
+
+.venue-gallery {
+    width: 100%;
+    height: 460px;
+
+    display: grid;
+
+    grid-template-columns: 1.4fr 1fr;
+
+    gap: 10px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background-color: #1f1f1f;
+}
+
+.gallery-main,
+.gallery-item {
+    position: relative;
+
+    overflow: hidden;
+
+    background-color: #202020;
+}
+
+.gallery-main img,
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.35s ease,
+        filter 0.35s ease;
+}
+
+.gallery-main:hover img,
+.gallery-item:hover img {
+    transform: scale(1.04);
+
+    filter: brightness(0.9);
+}
+
+
+/* =========================================================
+   GALERÍA SECUNDARIA
+   ========================================================= */
+
+.gallery-secondary {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   ÚLTIMA FOTO
+   ========================================================= */
+
+.gallery-last::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background-color: rgba(0, 0, 0, 0.28);
+}
+
+
+/* =========================================================
+   BOTÓN VER FOTOS
+   ========================================================= */
+
+.btn-view-photos {
+    position: absolute;
+
+    right: 15px;
+    bottom: 15px;
+
+    z-index: 2;
+
+    padding: 10px 14px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 9px;
+
+    background-color: rgba(18, 18, 18, 0.92);
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-view-photos:hover {
+    background-color: #ff6a00;
+
+    border-color: #ff6a00;
+}

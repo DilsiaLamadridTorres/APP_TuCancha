@@ -1,0 +1,108 @@
+/* =========================================================
+   TUCANCHA
+   VISTA DETALLE Y RESERVA DE CANCHA
+   ========================================================= */
+
+
+/* =========================================================
+   CONFIGURACIÓN GENERAL
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+
+    font-family: 'Poppins', sans-serif;
+
+    background-color: #121212;
+
+    color: #ffffff;
+}
+
+img {
+    max-width: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+button,
+a {
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   CONTENIDO GENERAL
+   ========================================================= */
+
+.venue-page {
+    min-height: 100vh;
+
+    padding: 45px 0 80px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #181818 0%,
+            #121212 45%,
+            #121212 100%
+        );
+}
+
+.venue-container {
+    width: min(1180px, calc(100% - 40px));
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   BREADCRUMB
+   ========================================================= */
+
+.venue-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 30px;
+
+    font-size: 13px;
+}
+
+.venue-breadcrumb a {
+    color: #a0a0a0;
+
+    transition: color 0.2s ease;
+}
+
+.venue-breadcrumb a:hover {
+    color: #ff6a00;
+}
+
+.venue-breadcrumb i {
+    color: #555555;
+
+    font-size: 10px;
+}
+
+.venue-breadcrumb span {
+    color: #888888;
+}
+
+.venue-breadcrumb strong {
+    color: #ffffff;
+
+    font-weight: 500;
+}

@@ -560,3 +560,58 @@ a {
 
     font-size: 11px;
 }
+
+/* =========================================================
+   SERVICIOS DEL COMPLEJO
+   ========================================================= */
+
+.services-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+}
+
+.service-item {
+    min-height: 55px;
+
+    padding: 15px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    border: 1px solid #2b2b2b;
+    border-radius: 10px;
+
+    background-color: #191919;
+
+    color: #c5c5c5;
+
+    font-size: 12px;
+
+    transition: 0.2s ease;
+}
+
+.service-item:hover {
+    border-color: #444444;
+
+    background-color: #1f1f1f;
+}
+
+.service-item i {
+    width: 28px;
+
+    color: #ff6a00;
+
+    font-size: 18px;
+
+    text-align: center;
+}
+
+.service-item span {
+    font-weight: 500;
+}

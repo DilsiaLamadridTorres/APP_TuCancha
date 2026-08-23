@@ -1,12 +1,4 @@
 class MiNavbar extends HTMLElement {
-    connectedCallback() {
-        const rutaActual = (window.location.pathname.split('/').pop() || "Index.html").toLowerCase();
-        const estaEnHtml = window.location.pathname.includes('/html/');
-        const enlace = (archivo) => {
-            if (archivo === 'index.html') return estaEnHtml ? '../index.html' : 'index.html';
-            return estaEnHtml ? archivo : `html/${archivo}`;
-        };
-        const rutaLogo = estaEnHtml ? '../img/logo/Logo.png' : 'img/logo/Logo.png';
 
     connectedCallback() {
 

@@ -1,9 +1,17 @@
 /* ==========================================================
    HERO
 ========================================================== */
+:root {
+--color-negro-fondo: #000000;
+--color-blanco-secundario: #FFFFFF;
+--color-naranjatono: #FF5500;
+--color-containers: #171A17;
+
+}
+
 .hero-cont {
    position: relative;
-   min-height: 80vh;
+   min-height: 100vh;
    background-image: url('../img/Banner-Contacto.jpeg');
    background-size: cover;
    background-position: center;
@@ -26,25 +34,26 @@
 }
 
 .hero-cont .container span {
-   color: #FF5500;
+   color: #FFFFFF;
 }
 
 .support-badge {
-   border: 1px solid #FF5500;
-   color: #FF5500;
+   border: 1px solid #FFFFFF;
+   color: #fcfcfc;
    padding: 8px 16px;
    border-radius: 50px;
    letter-spacing: 1px;
 }
 
 .card-container {
-   /* background-color: #0B0D0C; */
-   border-radius: 16px;
+   /* background-color: #171A17; */
+   border-radius: 13px;
+   margin-top: 200px;
 }
 
 .custom-card {
-   background-color: #0B0D0C;
-   border: 1px solid #0B0D0C;
+   background-color: #171A17;
+   border: 1px solid #171A17;
    border-radius: 16px;
    height: 100%;
    transition: all 0.3s ease-in-out;
@@ -58,22 +67,26 @@
 }
 
 .card-icon {
-   color: #FF5500;
+   color: hsl(0, 6%, 97%);
    font-size: 3.5rem;
    line-height: 1;
 }
 
 .btn-link {
-   background-color: #FF5500;
-   color: #ffffff;
+   background-color: var(--color-containers);
+   color: var(--color-blanco-secundario);
+   border: 2px solid var(--color-blanco-secundario);
+   border-radius: 50% ;
    font-weight: bold;
+
    width: 44px;
    height: 44px;
    font-size: 1.4rem;
+   display: inline-flex;
 }
 
 .custom-card:hover .btn-link {
-   background-color: #FF5500;
+   background-color: #ff5703ab;
    transform: scale(1.1);
 }
 
@@ -86,10 +99,10 @@
 ========================================================== */
 
 .accordion-item {
-   background: #121212;
+   background: #171A17;
 
    border: none;
-   border-radius: 18px;
+   border-radius: 1px;
 
    overflow: hidden;
 
@@ -102,13 +115,9 @@
 
     transform:translateY(-5px);
 
-    border-color:var(--bs-primary);
+    border-color:var(--color-naranjatono);
 
-    box-shadow:
-
-        0 18px 40px rgba(0,0,0,.35),
-
-        0 0 18px rgba(255,85,0,.08);
+ 
 
 }
 
@@ -132,9 +141,9 @@
 
    gap: 20px;
 
-   background: #121212;
+   background: #171A17;
 
-   color: #fff;
+   color: #FFFFFF;
 
    padding: 24px 28px;
 
@@ -147,7 +156,7 @@
 
    box-shadow: none;
 
-   border-radius: 18px;
+   border-radius: 30px;
 
    transition: all .3s ease;
 }
@@ -162,7 +171,7 @@
 
 .accordion-button:not(.collapsed) {
 
-   background: #121212;
+   background: #171A17;
 
    color: #fff;
 
@@ -205,11 +214,11 @@
 
    flex-shrink: 0;
 
-   border: 2px solid var(--bs-primary);
+   border: 2px solid var(--color-blanco-secundario);
 
    border-radius: 50%;
 
-   color: var(--bs-primary);
+   color: var(--color-blanco-secundario);
 
    font-size: 1.3rem;
 
@@ -226,7 +235,7 @@
 
 .accordion-button:not(.collapsed) .faq-icon {
 
-   background: var(--bs-primary);
+   background: var(--color-containers);
 
    color: #fff;
 
@@ -246,9 +255,9 @@
 
 .accordion-body {
 
-   background: #121212;
+   background: var(--color-containers);
 
-   color: #c8c8c8;
+   color: hsl(0, 0%, 100%);
 
    font-size: .95rem;
 
@@ -264,7 +273,7 @@
 
 .faq-subtitle {
 
-   color: var(--bs-primary);
+   color: var(--color-blanco-secundario);
 
    text-transform: uppercase;
 
@@ -290,7 +299,7 @@
 
 .faq-title span {
 
-   color: var(--bs-primary);
+   color: var(--color-blanco-secundario);
    
 
 }
@@ -315,9 +324,9 @@
 
    position: relative;
 
-   padding: 100px 0;
+   padding: 120px 0;
 
-   background: #0b0b0b;
+   background: var(--color-negro-fondo);
 
    overflow: hidden;
 
@@ -325,7 +334,7 @@
 
 .faq-header {
 
-   margin-bottom: 70px;
+   margin-bottom: 80px;
    
 
 }
@@ -376,7 +385,7 @@
 
 .faq-decoration {
 
-   color: var(--bs-primary);
+   color: var(--color-blanco-secundario);
 
 }
 
@@ -400,16 +409,8 @@
 
     padding:100px 0;
 
-    background:
-        radial-gradient(circle at left,
-            rgba(255,85,0,.05),
-            transparent 40%),
-
-        linear-gradient(
-            180deg,
-            #090909,
-            #131313);
-
+    background: var(--color-negro-fondo)
+        
 }
 
 .faq-section .container {
@@ -513,15 +514,15 @@
 ========================================================== */
 
 .bg-black {
-   background-color: #0B0D0C !important;
+   background: var(--color-negro-fondo)
 }
 
 .emphasis {
-   color: #FF5500;
+   color: var(--color-blanco-secundarioñ)
 }
 
 .form-card {
-   background-color: #0B0D0C;
+   background-color: #000000;
    border-radius: 20px;
    height: 90%;
 }
@@ -575,8 +576,8 @@
 }
 
 .btn-primary:hover {
-   background-color: var(--orange-hover);
-   color: #FF5500;
+   background-color: var(--color-negro-fondo);
+   color: var(--color-blanco-secundario);
    font-weight: bolder;
    transform: translateY(-2px);
 }

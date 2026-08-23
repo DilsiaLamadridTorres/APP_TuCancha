@@ -2,6 +2,13 @@
    FOOTER
 ========================================================== */
 
+:root {
+--color-negro-fondo: #000000;
+--color-blanco-secundario: #FFFFFF;
+--color-naranjatono: #FF5500;
+--color-containers: #171A17;
+
+}
 .footer-title {
     position: relative;
     display: inline-block;
@@ -21,6 +28,6 @@
     width: 50px;
     height: 3px;
 
-    background: var(--bs-primary);
+    background: var(--color-containers);
     border-radius: 5px;
 }

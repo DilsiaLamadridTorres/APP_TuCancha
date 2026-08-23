@@ -1089,9 +1089,7 @@ a {
     display: grid;
 
     grid-template-columns:
-        minmax(0, 1fr)
-        minmax(0, 1fr)
-        320px;
+        minmax(0, 1fr) minmax(0, 1fr) 320px;
 
     gap: 18px;
 
@@ -1124,7 +1122,7 @@ a {
     margin-bottom: 20px;
 }
 
-.reservation-block-header > div {
+.reservation-block-header>div {
     display: flex;
     align-items: center;
 
@@ -1213,4 +1211,245 @@ a {
 
 .summary-placeholder {
     height: 245px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+
+/* =========================================================
+   PANTALLAS MEDIANAS
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .venue-layout {
+        grid-template-columns:
+            minmax(0, 1fr) 310px;
+
+        gap: 30px;
+    }
+
+
+    .reservation-workspace {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .reservation-summary {
+        grid-column: 1 / -1;
+    }
+
+}
+
+
+/* =========================================================
+   TABLETS
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .venue-gallery {
+        height: 380px;
+    }
+
+
+    .venue-layout {
+        grid-template-columns: 1fr;
+    }
+
+
+    .venue-sidebar {
+        order: -1;
+    }
+
+
+    .booking-card {
+        position: static;
+    }
+
+
+    .services-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   MÓVILES
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .venue-page {
+        padding-top: 25px;
+    }
+
+
+    .venue-container {
+        width: min(calc(100% - 28px),
+                1180px);
+    }
+
+
+    /* Encabezado */
+
+    .venue-title-row {
+        flex-direction: column;
+
+        gap: 20px;
+    }
+
+
+    .btn-share {
+        width: 100%;
+    }
+
+
+    /* Galería */
+
+    .venue-gallery {
+        height: auto;
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .gallery-main {
+        height: 300px;
+    }
+
+
+    .gallery-secondary {
+        height: 250px;
+    }
+
+
+    /* Información rápida */
+
+    .quick-info-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    /* Servicios */
+
+    .services-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    /* Cancha */
+
+    .court-detail-card {
+        grid-template-columns: 1fr;
+    }
+
+
+    .court-detail-image {
+        height: 240px;
+    }
+
+
+    /* Reserva Dilsia */
+
+    .reservation-workspace {
+        grid-template-columns: 1fr;
+    }
+
+
+    .reservation-summary {
+        grid-column: auto;
+    }
+
+}
+
+
+/* =========================================================
+   CELULARES PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .venue-title-row h1 {
+        font-size: 29px;
+    }
+
+
+    .venue-rating {
+        flex-wrap: wrap;
+    }
+
+
+    /* Galería */
+
+    .gallery-main {
+        height: 250px;
+    }
+
+
+    .gallery-secondary {
+        height: 210px;
+    }
+
+
+    /* Información rápida */
+
+    .quick-info-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .quick-info-card {
+        min-height: 120px;
+
+        padding: 14px;
+    }
+
+
+    /* Servicios */
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Cancha */
+
+    .court-detail-header {
+        flex-direction: column;
+    }
+
+
+    .court-price {
+        text-align: left;
+    }
+
+
+    .court-specifications {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Ubicación */
+
+    .location-map {
+        height: 220px;
+    }
+
+
+    /* Reserva */
+
+    .reservation-block,
+    .reservation-summary {
+        padding: 18px;
+    }
+
 }

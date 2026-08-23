@@ -615,3 +615,171 @@ a {
 .service-item span {
     font-weight: 500;
 }
+
+/* =========================================================
+   DETALLE DE LA CANCHA
+   ========================================================= */
+
+.court-detail-card {
+    overflow: hidden;
+
+    display: grid;
+
+    grid-template-columns: 240px 1fr;
+
+    border: 1px solid #2d2d2d;
+    border-radius: 16px;
+
+    background-color: #191919;
+
+    transition: 0.2s ease;
+}
+
+.court-detail-card:hover {
+    border-color: #3b3b3b;
+}
+
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
+
+.court-detail-image {
+    position: relative;
+
+    min-height: 230px;
+
+    overflow: hidden;
+}
+
+.court-detail-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition: transform 0.3s ease;
+}
+
+.court-detail-card:hover
+.court-detail-image img {
+    transform: scale(1.03);
+}
+
+
+/* =========================================================
+   BADGE DEL DEPORTE
+   ========================================================= */
+
+.court-sport-badge {
+    position: absolute;
+
+    left: 14px;
+    bottom: 14px;
+
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    background-color: #ff6a00;
+
+    color: #ffffff;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   INFORMACIÓN
+   ========================================================= */
+
+.court-detail-content {
+    padding: 26px;
+}
+
+.court-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.court-detail-header h3 {
+    margin: 0 0 4px;
+
+    color: #ffffff;
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.court-detail-header p {
+    margin: 0;
+
+    color: #888888;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   PRECIO
+   ========================================================= */
+
+.court-price {
+    display: flex;
+    flex-direction: column;
+
+    text-align: right;
+}
+
+.court-price span {
+    color: #777777;
+
+    font-size: 10px;
+}
+
+.court-price strong {
+    color: #ff6a00;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CARACTERÍSTICAS
+   ========================================================= */
+
+.court-specifications {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 14px;
+
+    margin-top: 30px;
+}
+
+.court-specifications div {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #aaaaaa;
+
+    font-size: 11px;
+}
+
+.court-specifications i {
+    color: #ff6a00;
+
+    font-size: 15px;
+}
+

@@ -93,6 +93,7 @@ let canchas = [{
 }
 ]
 
+
 // ============================================================
 // CANCHAS PUBLICADAS DESDE EL DASHBOARD ADMINISTRATIVO
 // ============================================================
@@ -189,13 +190,14 @@ canchas.push(
 const listaCanchas = document.getElementById("lista-canchas");
 const cantidadCanchas = document.querySelector(".canchas-list__header h2 span");
 const resultados = document.querySelector(".canchas-list__header p");
+
 resultados.textContent = `${canchas.length} resultados encontrados`;
 cantidadCanchas.textContent = canchas.length;
 
 
-
 // El for recorre el array canchas utilizando i como contador. Empieza en 0 porque los arrays empiezan en la posición 0, continúa mientras i sea menor que la cantidad de elementos del array y después de cada vuelta incrementa i en 1.
 for (let i = 0; i < canchas.length; i++) {
+
     // canchas[i] obtiene la cancha que se está recorriendo en ese momento, y el for hace que esto se repita hasta recorrer e imprimir las 10 canchas.
     console.log(canchas[i]);
     console.log(canchas[i].nombre);
@@ -205,87 +207,155 @@ for (let i = 0; i < canchas.length; i++) {
     console.log(canchas[i].precio);
     console.log(canchas[i].imagen);
 
-    /// Esta línea crea un elemento <article> en HTML y lo guarda en la variable card.
+
+    // Esta línea crea un elemento <article> en HTML y lo guarda en la variable card.
     // Está dentro del for para crear una card nueva en cada vuelta.
     const card = document.createElement("article");
+
     // A la card que acabamos de crear le agregamos la clase CSS "cancha-card".
     card.classList.add("cancha-card");
+
+
     const imagen = document.createElement("img");
+
     imagen.src = canchas[i].imagen;
     imagen.alt = canchas[i].nombre;
+
     // Agrega una imagen dentro de card, es una clase hijo.
     card.appendChild(imagen);
 
+
     // Se crea un <div> para guardar la información de la cancha
     const contenido = document.createElement("div");
+
     contenido.classList.add("cancha-card__body");
 
 
-
     const nombre = document.createElement("h3");
+
     nombre.classList.add("cancha-card__title");
     nombre.textContent = canchas[i].nombre;
+
     contenido.appendChild(nombre);
 
+
     const empresa = document.createElement("p");
+
     empresa.classList.add("cancha-card__company");
     empresa.textContent = canchas[i].empresa;
+
     contenido.appendChild(empresa);
 
+
     const ubicacion = document.createElement("p");
+
     ubicacion.classList.add("cancha-card__location");
+
+
     const iconoUbicacion = document.createElement("i");
-    iconoUbicacion.classList.add("bi", "bi-geo-alt-fill");
+
+    iconoUbicacion.classList.add(
+        "bi",
+        "bi-geo-alt-fill"
+    );
+
+
     ubicacion.appendChild(iconoUbicacion);
-    ubicacion.append(" " + canchas[i].ubicacion);
+
+    ubicacion.append(
+        " " + canchas[i].ubicacion
+    );
+
     contenido.appendChild(ubicacion);
 
+
     const calificacion = document.createElement("span");
+
     calificacion.classList.add("cancha-card__rating");
+
+
     const estrella = document.createElement("span");
+
     estrella.textContent = "⭐️";
+
     calificacion.appendChild(estrella);
+
+
     const numeroCalificacion = document.createElement("span");
+
     numeroCalificacion.textContent = canchas[i].calificacion;
+
     calificacion.appendChild(numeroCalificacion);
+
     contenido.appendChild(calificacion);
 
 
     const precio = document.createElement("p");
 
-precio.classList.add(
-    "cancha-card__price"
-);
+    precio.classList.add(
+        "cancha-card__price"
+    );
 
-if (
-    typeof canchas[i].precio === "number"
-) {
 
-    precio.textContent =
-        `$${canchas[i].precio.toLocaleString("es-CO")} / hora`;
+    if (
+        typeof canchas[i].precio === "number"
+    ) {
 
-} else {
+        precio.textContent =
+            `$${canchas[i].precio.toLocaleString("es-CO")} / hora`;
 
-    precio.textContent =
-        "Precio no especificado";
+    } else {
 
-}
+        precio.textContent =
+            "Precio no especificado";
 
-contenido.appendChild(
-    precio
-);
+    }
+
+
+    contenido.appendChild(
+        precio
+    );
+
 
     card.appendChild(contenido);
 
-const botonReservar = document.createElement("button");
-botonReservar.textContent = "Reservar";
-botonReservar.classList.add("cancha-card__button");
-contenido.appendChild(botonReservar);
 
-    listaCanchas.appendChild(card);
+    // ============================================================
+    // BOTÓN RESERVAR
+    // ============================================================
+
+    const botonReservar = document.createElement("button");
+
+    botonReservar.textContent = "Reservar";
+
+    botonReservar.classList.add(
+        "cancha-card__button"
+    );
+
+
+    // Solo la primera cancha lleva a la vista de reserva.
+    if (canchas[i].id === 1) {
+
+        botonReservar.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "../html/reservas-cancha.html";
+
+            }
+        );
+
+    }
+
+
+    contenido.appendChild(
+        botonReservar
+    );
+
+
+    listaCanchas.appendChild(
+        card
+    );
 
 }
-
-
-
-

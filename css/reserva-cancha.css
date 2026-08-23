@@ -398,3 +398,165 @@ a {
 
     border-color: #ff6a00;
 }
+
+/* =========================================================
+   LAYOUT PRINCIPAL
+   ========================================================= */
+
+.venue-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr) 350px;
+
+    gap: 50px;
+
+    margin-top: 55px;
+}
+
+.venue-content {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   SECCIONES
+   ========================================================= */
+
+.venue-section {
+    padding-bottom: 44px;
+
+    margin-bottom: 44px;
+
+    border-bottom: 1px solid #292929;
+}
+
+.venue-section:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+   TÍTULOS DE SECCIÓN
+   ========================================================= */
+
+.section-heading {
+    margin-bottom: 25px;
+}
+
+.section-eyebrow {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #ff6a00;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+}
+
+.section-heading h2 {
+    margin: 0 0 8px;
+
+    color: #ffffff;
+
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.section-heading p {
+    margin: 0;
+
+    color: #888888;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   DESCRIPCIÓN
+   ========================================================= */
+
+.venue-description {
+    max-width: 760px;
+
+    margin: 0;
+
+    color: #adadad;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   INFORMACIÓN RÁPIDA
+   ========================================================= */
+
+.quick-info-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.quick-info-card {
+    min-height: 135px;
+
+    padding: 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid #2c2c2c;
+    border-radius: 14px;
+
+    background-color: #1a1a1a;
+
+    transition: 0.2s ease;
+}
+
+.quick-info-card:hover {
+    border-color: rgba(255, 106, 0, 0.5);
+
+    transform: translateY(-2px);
+}
+
+.quick-info-icon {
+    width: 36px;
+    height: 36px;
+
+    margin-bottom: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background-color: rgba(255, 106, 0, 0.12);
+
+    color: #ff6a00;
+
+    font-size: 17px;
+}
+
+.quick-info-card strong {
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.quick-info-card span {
+    margin-top: 3px;
+
+    color: #777777;
+
+    font-size: 11px;
+}

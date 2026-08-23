@@ -50,12 +50,10 @@ a {
     padding: 45px 0 80px;
 
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             #181818 0%,
             #121212 45%,
-            #121212 100%
-        );
+            #121212 100%);
 }
 
 .venue-container {
@@ -105,4 +103,177 @@ a {
     color: #ffffff;
 
     font-weight: 500;
+}
+
+/* =========================================================
+   ENCABEZADO DEL COMPLEJO
+   ========================================================= */
+
+.venue-header {
+    margin-bottom: 28px;
+}
+
+.venue-heading {
+    width: 100%;
+}
+
+
+/* =========================================================
+   ESTADOS DEL COMPLEJO
+   ========================================================= */
+
+.venue-status {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-bottom: 16px;
+}
+
+.venue-badge {
+    padding: 7px 12px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    border-radius: 30px;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.venue-badge.verified {
+    border: 1px solid rgba(255, 106, 0, 0.35);
+
+    background-color: rgba(255, 106, 0, 0.1);
+
+    color: #ff7a1a;
+}
+
+.venue-badge.partner {
+    border: 1px solid #353535;
+
+    background-color: #222222;
+
+    color: #d0d0d0;
+}
+
+
+/* =========================================================
+   TÍTULO
+   ========================================================= */
+
+.venue-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+.venue-title-row h1 {
+    margin: 0 0 12px;
+
+    color: #ffffff;
+
+    font-size: clamp(30px, 4vw, 46px);
+    font-weight: 800;
+
+    letter-spacing: -1px;
+}
+
+
+/* =========================================================
+   CALIFICACIÓN
+   ========================================================= */
+
+.venue-rating {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    color: #a5a5a5;
+
+    font-size: 13px;
+}
+
+.rating-stars {
+    display: flex;
+
+    gap: 3px;
+
+    color: #ff6a00;
+}
+
+.venue-rating strong {
+    color: #ffffff;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   COMPARTIR
+   ========================================================= */
+
+.btn-share {
+    min-width: 125px;
+
+    padding: 10px 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border: 1px solid #343434;
+    border-radius: 10px;
+
+    background-color: #1d1d1d;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-share:hover {
+    border-color: #ff6a00;
+
+    color: #ff6a00;
+
+    background-color: #232323;
+}
+
+
+/* =========================================================
+   DIRECCIÓN
+   ========================================================= */
+
+.venue-address {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 15px;
+
+    color: #9a9a9a;
+
+    font-size: 14px;
+}
+
+.venue-address i {
+    color: #ff6a00;
 }

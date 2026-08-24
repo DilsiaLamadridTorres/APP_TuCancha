@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/footer.css">
     <link rel="stylesheet" href="../css/reserva-cancha.css">
+    <link rel="stylesheet" href="../css/agenda.css">
 </head>
 
 <body>
@@ -35,133 +36,72 @@
         <!-- NAVBAR - SEBASTIAN -->
         <mi-navbar></mi-navbar>
     </header>
-
     <main class="venue-page">
-
         <!-- =====================================================
              BREADCRUMB
              ===================================================== -->
-
         <section class="venue-container">
-
             <nav class="venue-breadcrumb" aria-label="breadcrumb">
-
                 <a href="canchas.html">
                     Canchas
                 </a>
-
                 <i class="bi bi-chevron-right"></i>
-
-                <span>
-                    Medellín
+                <span data-field="ubicacion">Ubicacion
                 </span>
-
                 <i class="bi bi-chevron-right"></i>
-
-                <strong>
-                    Complejo Deportivo La 80
+                <strong data-field="nombre">Nombre
                 </strong>
-
             </nav>
-
         </section>
-
-
-
         <!-- =====================================================
              INFORMACIÓN PRINCIPAL DEL COMPLEJO
              ===================================================== -->
 
         <section class="venue-container venue-header">
-
             <div class="venue-heading">
-
-
                 <!-- Estados del complejo -->
                 <div class="venue-status">
-
                     <span class="venue-badge verified">
-
                         <i class="bi bi-patch-check-fill"></i>
-
                         Complejo verificado
-
                     </span>
-
-
                     <span class="venue-badge partner">
-
                         <i class="bi bi-lightning-charge-fill"></i>
-
                         Partner TuCancha
-
                     </span>
-
                 </div>
-
-
-
                 <!-- Título -->
                 <div class="venue-title-row">
-
                     <div>
-
-                        <h1>
-                            Complejo Deportivo La 80
+                        <h1 data-field="nombre">Cargando...
                         </h1>
-
-
                         <div class="venue-rating">
-
                             <div class="rating-stars">
-
                                 <i class="bi bi-star-fill"></i>
                                 <i class="bi bi-star-fill"></i>
                                 <i class="bi bi-star-fill"></i>
                                 <i class="bi bi-star-fill"></i>
                                 <i class="bi bi-star-half"></i>
-
                             </div>
-
-                            <strong>
-                                4.8
+                            <strong data-field="calificacion">Cargando...
                             </strong>
-
                             <span>
                                 (36 reseñas)
                             </span>
-
                         </div>
-
                     </div>
-
-
                     <button type="button" class="btn-share">
-
                         <i class="bi bi-share"></i>
-
                         Compartir
-
                     </button>
-
                 </div>
-
-
-
                 <!-- Dirección -->
                 <div class="venue-address">
-
                     <i class="bi bi-geo-alt-fill"></i>
-
-                    <span>
-                        Carrera 80 # 45-20, Medellín, Antioquia
+                    <span data-field="ubicacion">Cargando...                        
                     </span>
-
                 </div>
-
-
             </div>
-
         </section>
 
         <!-- =====================================================
@@ -169,32 +109,17 @@
              ===================================================== -->
 
         <section class="venue-container">
-
             <div class="venue-gallery">
-
-
                 <!-- Imagen principal -->
                 <div class="gallery-main">
-
-                    <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg" alt="Cancha principal del complejo">
-
+                    <img data-field="imagen" src="https://via.placeholder.com/800x450?text=Cargando+imagen..." alt="Cancha principal del complejo">
                 </div>
-
-
-
                 <!-- Imágenes secundarias -->
                 <div class="gallery-secondary">
-
-
                     <div class="gallery-item">
-
                         <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg" alt="Cancha deportiva">
-
                     </div>
-
-
                     <div class="gallery-item">
-
                         <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg" alt="Instalaciones del complejo">
 
                     </div>
@@ -256,8 +181,8 @@
                             EL COMPLEJO
                         </span>
 
-                        <h2>
-                            Sobre Complejo Deportivo La 80
+                        <h2 data-field="nombre">
+                            Nombre
                         </h2>
 
                         <p>
@@ -267,14 +192,8 @@
                     </div>
 
 
-                    <p class="venue-description">
-
-                        Complejo deportivo ubicado en Medellín con espacios
-                        preparados para partidos de fútbol, encuentros entre
-                        amigos y eventos deportivos. Cuenta con iluminación,
-                        zonas de descanso y diferentes servicios para mejorar
-                        la experiencia de los jugadores.
-
+                    <p class="venue-description" data-field="descripcion">
+                       Cargando...
                     </p>
 
                 </section>
@@ -330,8 +249,8 @@
                                 <i class="bi bi-star"></i>
                             </div>
 
-                            <strong>
-                                4.8
+                            <strong data-field="calificacion">
+                                
                             </strong>
 
                             <span>
@@ -505,7 +424,7 @@
 
                         <div class="court-detail-image">
 
-                            <img src="../img/canchas/cancha-principal.jpg" alt="Cancha 1">
+                            <img data-field="imagen"src="../img/canchas/cancha-principal.jpg" alt="Cancha 1">
 
                             <span class="court-sport-badge">
                                 Fútbol 5
@@ -539,8 +458,8 @@
                                         Desde
                                     </span>
 
-                                    <strong>
-                                        $80.000
+                                    <strong data-field="precio">
+                                        Cargando...
                                     </strong>
 
                                 </div>
@@ -661,14 +580,12 @@
 
                             <div>
 
-                                <strong>
-                                    Complejo Deportivo La 80
+                                <strong data-field="nombre">
+                                    Cargando...
                                 </strong>
 
-                                <p>
-                                    Carrera 80 # 45-20
-                                    <br>
-                                    Medellín, Antioquia
+                                <p data-field="ubicacion">
+                                    Cargando...
                                 </p>
 
                                 <a href="#" class="location-link">
@@ -712,8 +629,8 @@
                                 Desde
                             </span>
 
-                            <strong>
-                                $80.000
+                            <strong data-field="precio">
+                                
                             </strong>
 
                             <small>
@@ -727,8 +644,8 @@
 
                             <i class="bi bi-star-fill"></i>
 
-                            <span>
-                                4.8
+                            <span data-field="calificacion">
+                                Cargando...
                             </span>
 
                             <small>
@@ -813,7 +730,7 @@
                 </span>
 
                 <h2>
-                    Elegí tu turno
+                    Escoge tu turno
                 </h2>
 
                 <p>
@@ -843,158 +760,50 @@
                  podrán ser utilizados desde JavaScript.
                  ================================================= -->
 
+        <section class="agenda">
+            <h2>Semana del <span id="fecha-inicio"></span> al <span id="fecha-fin"></span></h2>
+            <div class="navegacion-semana">
+            <button class="anterior">Anterior</button>
+            <button class="siguiente">Siguiente</button>
+        </div>
 
-            <div class="reservation-workspace">
+        <div class="turnos_disponibles">
+            <h2>Turnos disponibles: <span>0</span></h2>
+        </div>
 
+        <div class="canchas_disponibles">
+            <h2>Canchas disponibles: <span>0</span></h2>
+        </div>
 
-                <!-- =============================================
-                     FECHAS
-                     RESPONSABLE: DILSIA
-                     ============================================= -->
+        <div class="etiquetas">
+            <button class="Disponible"></button>
+            <span>Disponible</span>
+            <button class="Reservado"></button>
+            <span>Reservado</span>
+            <button class="tu_seleccion"></button>
+            <span>Tu selección</span>
+        </div>
 
-                <section class="reservation-block">
+        <div class="fechas-lista" id="fechas">
+        </div>
 
+        <div class="turnos-grid" id="turnos">
+        </div>
 
-                    <div class="reservation-block-header">
-
-                        <div>
-
-                            <span class="reservation-step-number">
-                                1
-                            </span>
-
-                            <h3>
-                                Selecciona una fecha
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-
-                    <!--
-                        DILSIA:
-                        Aquí se deben renderizar
-                        las fechas disponibles.
-                    -->
-
-                    <div class="reservation-dates" id="reservationDates">
-
-                        <div class="reservation-placeholder">
-
-                            <i class="bi bi-calendar3"></i>
-
-                            <span>
-                                Contenedor para fechas
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                </section>
-
-
-
-                <!-- =============================================
-                     HORARIOS
-                     RESPONSABLE: DILSIA
-                     ============================================= -->
-
-                <section class="reservation-block">
-
-
-                    <div class="reservation-block-header">
-
-                        <div>
-
-                            <span class="reservation-step-number">
-                                2
-                            </span>
-
-                            <h3>
-                                Selecciona un horario
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-
-                    <!--
-                        DILSIA:
-
-                        Aquí se deben renderizar los horarios.
-
-                        Estados:
-
-                        - Disponible
-                        - Reservado
-                        - Bloqueado
-                        - Pasado
-                        - Seleccionado
-                    -->
-
-                    <div class="reservation-schedule" id="reservationSchedule">
-
-                        <div class="reservation-placeholder">
-
-                            <i class="bi bi-clock"></i>
-
-                            <span>
-                                Contenedor para horarios
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                </section>
-
-
-
-                <!-- =============================================
-                     RESUMEN DE RESERVA
-                     RESPONSABLE: DILSIA
-                     ============================================= -->
-
-                <aside class="reservation-summary" id="reservationSummary">
-
-
-                    <!--
-                        DILSIA:
-
-                        Mostrar aquí:
-
-                        - Nombre de la cancha.
-                        - Fecha.
-                        - Hora inicial.
-                        - Hora final.
-                        - Duración.
-                        - Precio.
-                        - Total.
-                        - Cancelar.
-                        - Continuar.
-                    -->
-
-
-                    <div class="reservation-placeholder summary-placeholder">
-
-                        <i class="bi bi-receipt"></i>
-
-                        <span>
-                            Contenedor para resumen
-                        </span>
-
-                    </div>
-
-
-                </aside>
-
-
+        <section id="informacion_cancha">
+            <h2>Detalle de la reserva</h2>
+            <div id="detalle-cancha">
+                 <!-- Aquí JavaScript mostrará la información de la cancha -->
             </div>
+            <p> Fecha: <span id="fecha-reserva"></span></p>
+
+            <p>Horario:<span id="horario-reserva"></span></p>
+
+        </section>
+
+        <button class="reservar">
+            Reservar</button>
+        </section>
 
 
             <!-- =================================================
@@ -1004,9 +813,12 @@
 
         </section>
 
+        <footer>
+            <mi-footer></mi-footer>
+        </footer>
     </main>
-
     <!-- SCRIPTS -->
+    <script src="../JS/reservas/reserva.js"></script>
     <script src="../JS/admin/navbar.js"></script>
     <script src="../JS/admin/footer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

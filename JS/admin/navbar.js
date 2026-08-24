@@ -181,41 +181,7 @@ class MiNavbar extends HTMLElement {
                                     Canchas
                                 </a>
 
-                            </li>
-
-
-                            <!-- Reservas -->
-                            <li class="nav-item">
-
-                                <a
-                                    class="nav-link ${rutaActual === "reservas.html"
-                ? "active"
-                : ""
-            }"
-                                    href="${rutaPaginas}reservas.html"
-                                >
-                                    Reservas
-                                </a>
-
-                            </li>
-
-
-                            <!-- Precios -->
-                            <li class="nav-item">
-
-                                <a
-                                    class="nav-link ${rutaActual === "precios.html"
-                ? "active"
-                : ""
-            }"
-                                    href="${rutaPaginas}precios.html"
-                                >
-                                    Precios
-                                </a>
-
-                            </li>
-
-
+                            </li>                            
                             <!-- Nosotros -->
                             <li class="nav-item">
 

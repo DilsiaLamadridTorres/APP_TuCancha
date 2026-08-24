@@ -205,6 +205,12 @@
     cursor: pointer;
 }
 
+.cancha-card__company, .cancha-card__location {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
 @media (max-width: 767.98px) {
     .canchas-hero {
         min-height: 430px;

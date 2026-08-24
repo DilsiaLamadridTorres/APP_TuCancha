@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Cancha | TuCancha</title>
+    <link class="icono" rel="icon" type="image/png" href="../img/logo/logo corto.png">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
+    <!-- css general -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/bootstrap-custom.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/reserva-cancha.css">
+    <link rel="stylesheet" href="../css/agenda.css">
+</head>
+
+<body>
+
+    <header>
+        <!-- NAVBAR - SEBASTIAN -->
+        <mi-navbar></mi-navbar>
+    </header>
+    <main class="venue-page">
+        <!-- =====================================================
+             BREADCRUMB
+             ===================================================== -->
+        <section class="venue-container">
+            <nav class="venue-breadcrumb" aria-label="breadcrumb">
+                <a href="canchas.html">
+                    Canchas
+                </a>
+                <i class="bi bi-chevron-right"></i>
+                <span data-field="ubicacion">Ubicacion
+                </span>
+                <i class="bi bi-chevron-right"></i>
+                <strong data-field="nombre">Nombre
+                </strong>
+            </nav>
+        </section>
+        <!-- =====================================================
+             INFORMACIÓN PRINCIPAL DEL COMPLEJO
+             ===================================================== -->
+
+        <section class="venue-container venue-header">
+            <div class="venue-heading">
+                <!-- Estados del complejo -->
+                <div class="venue-status">
+                    <span class="venue-badge verified">
+                        <i class="bi bi-patch-check-fill"></i>
+                        Complejo verificado
+                    </span>
+                    <span class="venue-badge partner">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                        Partner TuCancha
+                    </span>
+                </div>
+                <!-- Título -->
+                <div class="venue-title-row">
+                    <div>
+                        <h1 data-field="nombre">Cargando...
+                        </h1>
+                        <div class="venue-rating">
+                            <div class="rating-stars">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <strong data-field="calificacion">Cargando...
+                            </strong>
+                            <span>
+                                (36 reseñas)
+                            </span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-share">
+                        <i class="bi bi-share"></i>
+                        Compartir
+                    </button>
+                </div>
+                <!-- Dirección -->
+                <div class="venue-address">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span data-field="ubicacion">Cargando...                        
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             GALERÍA DE IMÁGENES
+             ===================================================== -->
+
+        <section class="venue-container">
+            <div class="venue-gallery">
+                <!-- Imagen principal -->
+                <div class="gallery-main">
+                    <img data-field="imagen" src="https://via.placeholder.com/800x450?text=Cargando+imagen..." alt="Cancha principal del complejo">
+                </div>
+                <!-- Imágenes secundarias -->
+                <div class="gallery-secondary">
+                    <div class="gallery-item">
+                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg" alt="Cancha deportiva">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg" alt="Instalaciones del complejo">
+
+                    </div>
+
+
+                    <div class="gallery-item">
+
+                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg" alt="Cancha iluminada">
+
+                    </div>
+
+
+                    <div class="gallery-item gallery-last">
+
+                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg" alt="Vista adicional del complejo">
+
+
+                        <button type="button" class="btn-view-photos">
+
+                            <i class="bi bi-images"></i>
+
+                            Ver todas las fotos
+
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+             CONTENIDO PRINCIPAL
+             ===================================================== -->
+
+        <section class="venue-container venue-layout">
+
+
+            <!-- =================================================
+                 COLUMNA IZQUIERDA
+                 ================================================= -->
+
+            <div class="venue-content">
+
+
+                <!-- =============================================
+                     SOBRE EL COMPLEJO
+                     ============================================= -->
+
+                <section class="venue-section">
+
+                    <div class="section-heading">
+
+                        <span class="section-eyebrow">
+                            EL COMPLEJO
+                        </span>
+
+                        <h2 data-field="nombre">
+                            Nombre
+                        </h2>
+
+                        <p>
+                            Todo lo que necesitas saber antes de reservar.
+                        </p>
+
+                    </div>
+
+
+                    <p class="venue-description" data-field="descripcion">
+                       Cargando...
+                    </p>
+
+                </section>
+
+
+
+                <!-- =============================================
+                     INFORMACIÓN RÁPIDA
+                     ============================================= -->
+
+                <section class="venue-section">
+
+                    <div class="quick-info-grid">
+
+
+                        <article class="quick-info-card">
+
+                            <div class="quick-info-icon">
+                                <i class="bi bi-grid-3x3-gap"></i>
+                            </div>
+
+                            <strong>
+                                3
+                            </strong>
+
+                            <span>
+                                Canchas
+                            </span>
+
+                        </article>
+
+
+                        <article class="quick-info-card">
+
+                            <div class="quick-info-icon">
+                                <i class="bi bi-dribbble"></i>
+                            </div>
+
+                            <strong>
+                                Fútbol
+                            </strong>
+
+                            <span>
+                                Deporte
+                            </span>
+
+                        </article>
+
+
+                        <article class="quick-info-card">
+
+                            <div class="quick-info-icon">
+                                <i class="bi bi-star"></i>
+                            </div>
+
+                            <strong data-field="calificacion">
+                                
+                            </strong>
+
+                            <span>
+                                Calificación
+                            </span>
+
+                        </article>
+
+
+                        <article class="quick-info-card">
+
+                            <div class="quick-info-icon">
+                                <i class="bi bi-clock"></i>
+                            </div>
+
+                            <strong>
+                                24 h
+                            </strong>
+
+                            <span>
+                                Cancelación
+                            </span>
+
+                        </article>
+
+
+                    </div>
+
+                </section>
+
+
+                <!-- =============================================
+                     SERVICIOS
+                     ============================================= -->
+
+                <section class="venue-section">
+
+                    <div class="section-heading">
+
+                        <span class="section-eyebrow">
+                            COMODIDADES
+                        </span>
+
+                        <h2>
+                            Servicios del complejo
+                        </h2>
+
+                    </div>
+
+
+                    <div class="services-grid">
+
+
+                        <div class="service-item">
+
+                            <i class="bi bi-wifi"></i>
+
+                            <span>
+                                WiFi
+                            </span>
+
+                        </div>
+
+
+                        <div class="service-item">
+
+                            <i class="bi bi-p-square"></i>
+
+                            <span>
+                                Estacionamiento
+                            </span>
+
+                        </div>
+
+
+                        <div class="service-item">
+
+                            <i class="bi bi-person-standing"></i>
+
+                            <span>
+                                Vestuarios
+                            </span>
+
+                        </div>
+
+
+                        <div class="service-item">
+
+                            <i class="bi bi-cup-straw"></i>
+
+                            <span>
+                                Bar / Cafetería
+                            </span>
+
+                        </div>
+
+
+                        <div class="service-item">
+
+                            <i class="bi bi-lightbulb"></i>
+
+                            <span>
+                                Iluminación
+                            </span>
+
+                        </div>
+
+
+                        <div class="service-item">
+
+                            <i class="bi bi-shield-check"></i>
+
+                            <span>
+                                Zona segura
+                            </span>
+
+                        </div>
+
+
+                        <div class="service-item">
+
+                            <i class="bi bi-people"></i>
+
+                            <span>
+                                Gradas
+                            </span>
+
+                        </div>
+
+
+                        <div class="service-item">
+
+                            <i class="bi bi-universal-access"></i>
+
+                            <span>
+                                Accesible
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+                <!-- =============================================
+                     INFORMACIÓN DE LA CANCHA
+                     ============================================= -->
+
+                <section class="venue-section">
+
+                    <div class="section-heading">
+
+                        <span class="section-eyebrow">
+                            CANCHA
+                        </span>
+
+                        <h2>
+                            Cancha 1
+                        </h2>
+
+                        <p>
+                            Información del escenario deportivo.
+                        </p>
+
+                    </div>
+
+
+                    <article class="court-detail-card">
+
+
+                        <div class="court-detail-image">
+
+                            <img data-field="imagen"src="../img/canchas/cancha-principal.jpg" alt="Cancha 1">
+
+                            <span class="court-sport-badge">
+                                Fútbol 5
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="court-detail-content">
+
+
+                            <div class="court-detail-header">
+
+                                <div>
+
+                                    <h3>
+                                        Cancha 1
+                                    </h3>
+
+                                    <p>
+                                        Césped sintético
+                                    </p>
+
+                                </div>
+
+
+                                <div class="court-price">
+
+                                    <span>
+                                        Desde
+                                    </span>
+
+                                    <strong data-field="precio">
+                                        Cargando...
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="court-specifications">
+
+
+                                <div>
+
+                                    <i class="bi bi-arrows-angle-expand"></i>
+
+                                    <span>
+                                        40m x 20m
+                                    </span>
+
+                                </div>
+
+
+                                <div>
+
+                                    <i class="bi bi-house"></i>
+
+                                    <span>
+                                        Techada
+                                    </span>
+
+                                </div>
+
+
+                                <div>
+
+                                    <i class="bi bi-clock"></i>
+
+                                    <span>
+                                        60 / 90 / 120 min
+                                    </span>
+
+                                </div>
+
+
+                                <div>
+
+                                    <i class="bi bi-lightbulb"></i>
+
+                                    <span>
+                                        Iluminación nocturna
+                                    </span>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </article>
+
+                </section>
+
+                <!-- =============================================
+                     UBICACIÓN
+                     ============================================= -->
+
+                <section class="venue-section">
+
+                    <div class="section-heading">
+
+                        <span class="section-eyebrow">
+                            UBICACIÓN
+                        </span>
+
+                        <h2>
+                            ¿Dónde estamos?
+                        </h2>
+
+                    </div>
+
+
+                    <div class="location-card">
+
+
+                        <div class="location-map">
+
+                            <!--
+                                Espacio preparado para agregar
+                                posteriormente el mapa real.
+                            -->
+
+                            <div class="map-placeholder">
+
+                                <i class="bi bi-geo-alt-fill"></i>
+
+                                <span>
+                                    Ubicación del complejo
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="location-info">
+
+
+                            <div class="location-icon">
+
+                                <i class="bi bi-geo-alt-fill"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <strong data-field="nombre">
+                                    Cargando...
+                                </strong>
+
+                                <p data-field="ubicacion">
+                                    Cargando...
+                                </p>
+
+                                <a href="#" class="location-link">
+
+                                    Ver en Google Maps
+
+                                    <i class="bi bi-box-arrow-up-right"></i>
+
+                                </a>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 COLUMNA DERECHA
+                 ================================================= -->
+
+            <aside class="venue-sidebar">
+
+
+                <div class="booking-card">
+
+
+                    <div class="booking-price">
+
+
+                        <div>
+
+                            <span>
+                                Desde
+                            </span>
+
+                            <strong data-field="precio">
+                                
+                            </strong>
+
+                            <small>
+                                por turno
+                            </small>
+
+                        </div>
+
+
+                        <div class="booking-rating">
+
+                            <i class="bi bi-star-fill"></i>
+
+                            <span data-field="calificacion">
+                                Cargando...
+                            </span>
+
+                            <small>
+                                (36)
+                            </small>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <a href="#elegi-tu-turno" class="btn-book-now">
+
+                        Reservar ahora
+
+                        <i class="bi bi-arrow-down"></i>
+
+                    </a>
+
+
+
+                    <div class="booking-benefits">
+
+
+                        <div>
+
+                            <i class="bi bi-lightning-charge-fill"></i>
+
+                            <span>
+                                Confirmación inmediata
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <i class="bi bi-shield-check"></i>
+
+                            <span>
+                                Reserva segura
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <i class="bi bi-arrow-counterclockwise"></i>
+
+                            <span>
+                                Cancelación hasta 24 horas antes
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </aside>
+
+
+        </section>
+
+        <!-- =====================================================
+             ELEGÍ TU TURNO
+             ===================================================== -->
+
+        <section class="venue-container reservation-section" id="elegi-tu-turno">
+
+
+            <div class="section-heading reservation-heading">
+
+                <span class="section-eyebrow">
+                    RESERVA
+                </span>
+
+                <h2>
+                    Escoge tu turno
+                </h2>
+
+                <p>
+                    Selecciona la fecha y el horario en el que deseas jugar.
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 INICIO TRABAJO DILSIA
+
+                 RESPONSABLE: DILSIA
+
+                 Esta sección queda preparada para desarrollar:
+
+                 - Selección de fecha.
+                 - Horarios disponibles.
+                 - Horarios reservados.
+                 - Horario seleccionado.
+                 - Resumen de la reserva.
+                 - Botón continuar.
+
+                 IMPORTANTE:
+                 No cambiar los ID definidos porque luego
+                 podrán ser utilizados desde JavaScript.
+                 ================================================= -->
+
+        <section class="agenda">
+            <h2>Semana del <span id="fecha-inicio"></span> al <span id="fecha-fin"></span></h2>
+            <div class="navegacion-semana">
+            <button class="anterior">Anterior</button>
+            <button class="siguiente">Siguiente</button>
+        </div>
+
+        <div class="turnos_disponibles">
+            <h2>Turnos disponibles: <span>0</span></h2>
+        </div>
+
+        <div class="canchas_disponibles">
+            <h2>Canchas disponibles: <span>0</span></h2>
+        </div>
+
+        <div class="etiquetas">
+            <button class="Disponible"></button>
+            <span>Disponible</span>
+            <button class="Reservado"></button>
+            <span>Reservado</span>
+            <button class="tu_seleccion"></button>
+            <span>Tu selección</span>
+        </div>
+
+        <div class="fechas-lista" id="fechas">
+        </div>
+
+        <div class="turnos-grid" id="turnos">
+        </div>
+
+        <section id="informacion_cancha">
+            <h2>Detalle de la reserva</h2>
+            <div id="detalle-cancha">
+                 <!-- Aquí JavaScript mostrará la información de la cancha -->
+            </div>
+            <p> Fecha: <span id="fecha-reserva"></span></p>
+
+            <p>Horario:<span id="horario-reserva"></span></p>
+
+        </section>
+
+        <button class="reservar">
+            Reservar</button>
+        </section>
+
+
+            <!-- =================================================
+                 FIN TRABAJO DILSIA
+                 ================================================= -->
+
+
+        </section>
+
+        <footer>
+            <mi-footer></mi-footer>
+        </footer>
+    </main>
+    <!-- SCRIPTS -->
+    <script src="../JS/reservas/reserva.js"></script>
+    <script src="../JS/admin/navbar.js"></script>
+    <script src="../JS/admin/footer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

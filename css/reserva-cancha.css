@@ -1,0 +1,1455 @@
+/* =========================================================
+   TUCANCHA
+   VISTA DETALLE Y RESERVA DE CANCHA
+   ========================================================= */
+
+
+/* =========================================================
+   CONFIGURACIÓN GENERAL
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+
+    font-family: 'Poppins', sans-serif;
+
+    background-color: #121212;
+
+    color: #ffffff;
+}
+
+img {
+    max-width: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+button,
+a {
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   CONTENIDO GENERAL
+   ========================================================= */
+
+.venue-page {
+    min-height: 100vh;
+
+    padding: 45px 0 80px;
+
+    background:
+        linear-gradient(180deg,
+            #181818 0%,
+            #121212 45%,
+            #121212 100%);
+}
+
+.venue-container {
+    width: min(1180px, calc(100% - 40px));
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   BREADCRUMB
+   ========================================================= */
+
+.venue-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 30px;
+
+    font-size: 13px;
+}
+
+.venue-breadcrumb a {
+    color: #a0a0a0;
+
+    transition: color 0.2s ease;
+}
+
+.venue-breadcrumb a:hover {
+    color: #ff6a00;
+}
+
+.venue-breadcrumb i {
+    color: #555555;
+
+    font-size: 10px;
+}
+
+.venue-breadcrumb span {
+    color: #888888;
+}
+
+.venue-breadcrumb strong {
+    color: #ffffff;
+
+    font-weight: 500;
+}
+
+/* =========================================================
+   ENCABEZADO DEL COMPLEJO
+   ========================================================= */
+
+.venue-header {
+    margin-bottom: 28px;
+}
+
+.venue-heading {
+    width: 100%;
+}
+
+
+/* =========================================================
+   ESTADOS DEL COMPLEJO
+   ========================================================= */
+
+.venue-status {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-bottom: 16px;
+}
+
+.venue-badge {
+    padding: 7px 12px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    border-radius: 30px;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.venue-badge.verified {
+    border: 1px solid rgba(255, 106, 0, 0.35);
+
+    background-color: rgba(255, 106, 0, 0.1);
+
+    color: #ff7a1a;
+}
+
+.venue-badge.partner {
+    border: 1px solid #353535;
+
+    background-color: #222222;
+
+    color: #d0d0d0;
+}
+
+
+/* =========================================================
+   TÍTULO
+   ========================================================= */
+
+.venue-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+.venue-title-row h1 {
+    margin: 0 0 12px;
+
+    color: #ffffff;
+
+    font-size: clamp(30px, 4vw, 46px);
+    font-weight: 800;
+
+    letter-spacing: -1px;
+}
+
+
+/* =========================================================
+   CALIFICACIÓN
+   ========================================================= */
+
+.venue-rating {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    color: #a5a5a5;
+
+    font-size: 13px;
+}
+
+.rating-stars {
+    display: flex;
+
+    gap: 3px;
+
+    color: #ff6a00;
+}
+
+.venue-rating strong {
+    color: #ffffff;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   COMPARTIR
+   ========================================================= */
+
+.btn-share {
+    min-width: 125px;
+
+    padding: 10px 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border: 1px solid #343434;
+    border-radius: 10px;
+
+    background-color: #1d1d1d;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-share:hover {
+    border-color: #ff6a00;
+
+    color: #ff6a00;
+
+    background-color: #232323;
+}
+
+
+/* =========================================================
+   DIRECCIÓN
+   ========================================================= */
+
+.venue-address {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 15px;
+
+    color: #9a9a9a;
+
+    font-size: 14px;
+}
+
+.venue-address i {
+    color: #ff6a00;
+}
+
+/* =========================================================
+   GALERÍA DE IMÁGENES
+   ========================================================= */
+
+.venue-gallery {
+    width: 100%;
+    height: 460px;
+
+    display: grid;
+
+    grid-template-columns: 1.4fr 1fr;
+
+    gap: 10px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background-color: #1f1f1f;
+}
+
+.gallery-main,
+.gallery-item {
+    position: relative;
+
+    overflow: hidden;
+
+    background-color: #202020;
+}
+
+.gallery-main img,
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.35s ease,
+        filter 0.35s ease;
+}
+
+.gallery-main:hover img,
+.gallery-item:hover img {
+    transform: scale(1.04);
+
+    filter: brightness(0.9);
+}
+
+
+/* =========================================================
+   GALERÍA SECUNDARIA
+   ========================================================= */
+
+.gallery-secondary {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   ÚLTIMA FOTO
+   ========================================================= */
+
+.gallery-last::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background-color: rgba(0, 0, 0, 0.28);
+}
+
+
+/* =========================================================
+   BOTÓN VER FOTOS
+   ========================================================= */
+
+.btn-view-photos {
+    position: absolute;
+
+    right: 15px;
+    bottom: 15px;
+
+    z-index: 2;
+
+    padding: 10px 14px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 9px;
+
+    background-color: rgba(18, 18, 18, 0.92);
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-view-photos:hover {
+    background-color: #ff6a00;
+
+    border-color: #ff6a00;
+}
+
+/* =========================================================
+   LAYOUT PRINCIPAL
+   ========================================================= */
+
+.venue-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr) 350px;
+
+    gap: 50px;
+
+    margin-top: 55px;
+}
+
+.venue-content {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   SECCIONES
+   ========================================================= */
+
+.venue-section {
+    padding-bottom: 44px;
+
+    margin-bottom: 44px;
+
+    border-bottom: 1px solid #292929;
+}
+
+.venue-section:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+   TÍTULOS DE SECCIÓN
+   ========================================================= */
+
+.section-heading {
+    margin-bottom: 25px;
+}
+
+.section-eyebrow {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #ff6a00;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+}
+
+.section-heading h2 {
+    margin: 0 0 8px;
+
+    color: #ffffff;
+
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.section-heading p {
+    margin: 0;
+
+    color: #888888;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   DESCRIPCIÓN
+   ========================================================= */
+
+.venue-description {
+    max-width: 760px;
+
+    margin: 0;
+
+    color: #adadad;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   INFORMACIÓN RÁPIDA
+   ========================================================= */
+
+.quick-info-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.quick-info-card {
+    min-height: 135px;
+
+    padding: 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid #2c2c2c;
+    border-radius: 14px;
+
+    background-color: #1a1a1a;
+
+    transition: 0.2s ease;
+}
+
+.quick-info-card:hover {
+    border-color: rgba(255, 106, 0, 0.5);
+
+    transform: translateY(-2px);
+}
+
+.quick-info-icon {
+    width: 36px;
+    height: 36px;
+
+    margin-bottom: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background-color: rgba(255, 106, 0, 0.12);
+
+    color: #ff6a00;
+
+    font-size: 17px;
+}
+
+.quick-info-card strong {
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.quick-info-card span {
+    margin-top: 3px;
+
+    color: #777777;
+
+    font-size: 11px;
+}
+
+/* =========================================================
+   SERVICIOS DEL COMPLEJO
+   ========================================================= */
+
+.services-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+}
+
+.service-item {
+    min-height: 55px;
+
+    padding: 15px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    border: 1px solid #2b2b2b;
+    border-radius: 10px;
+
+    background-color: #191919;
+
+    color: #c5c5c5;
+
+    font-size: 12px;
+
+    transition: 0.2s ease;
+}
+
+.service-item:hover {
+    border-color: #444444;
+
+    background-color: #1f1f1f;
+}
+
+.service-item i {
+    width: 28px;
+
+    color: #ff6a00;
+
+    font-size: 18px;
+
+    text-align: center;
+}
+
+.service-item span {
+    font-weight: 500;
+}
+
+/* =========================================================
+   DETALLE DE LA CANCHA
+   ========================================================= */
+
+.court-detail-card {
+    overflow: hidden;
+
+    display: grid;
+
+    grid-template-columns: 240px 1fr;
+
+    border: 1px solid #2d2d2d;
+    border-radius: 16px;
+
+    background-color: #191919;
+
+    transition: 0.2s ease;
+}
+
+.court-detail-card:hover {
+    border-color: #3b3b3b;
+}
+
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
+
+.court-detail-image {
+    position: relative;
+
+    min-height: 230px;
+
+    overflow: hidden;
+}
+
+.court-detail-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition: transform 0.3s ease;
+}
+
+.court-detail-card:hover .court-detail-image img {
+    transform: scale(1.03);
+}
+
+
+/* =========================================================
+   BADGE DEL DEPORTE
+   ========================================================= */
+
+.court-sport-badge {
+    position: absolute;
+
+    left: 14px;
+    bottom: 14px;
+
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    background-color: #ff6a00;
+
+    color: #ffffff;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   INFORMACIÓN
+   ========================================================= */
+
+.court-detail-content {
+    padding: 26px;
+}
+
+.court-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.court-detail-header h3 {
+    margin: 0 0 4px;
+
+    color: #ffffff;
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.court-detail-header p {
+    margin: 0;
+
+    color: #888888;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   PRECIO
+   ========================================================= */
+
+.court-price {
+    display: flex;
+    flex-direction: column;
+
+    text-align: right;
+}
+
+.court-price span {
+    color: #777777;
+
+    font-size: 10px;
+}
+
+.court-price strong {
+    color: #ff6a00;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CARACTERÍSTICAS
+   ========================================================= */
+
+.court-specifications {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 14px;
+
+    margin-top: 30px;
+}
+
+.court-specifications div {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #aaaaaa;
+
+    font-size: 11px;
+}
+
+.court-specifications i {
+    color: #ff6a00;
+
+    font-size: 15px;
+}
+
+/* =========================================================
+   UBICACIÓN
+   ========================================================= */
+
+.location-card {
+    overflow: hidden;
+
+    border: 1px solid #2d2d2d;
+    border-radius: 16px;
+
+    background-color: #191919;
+}
+
+
+/* =========================================================
+   MAPA
+   ========================================================= */
+
+.location-map {
+    height: 280px;
+}
+
+.map-placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    background:
+        radial-gradient(circle at center,
+            #262626 0%,
+            #191919 70%);
+
+    color: #777777;
+
+    font-size: 12px;
+}
+
+.map-placeholder i {
+    color: #ff6a00;
+
+    font-size: 35px;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DE UBICACIÓN
+   ========================================================= */
+
+.location-info {
+    padding: 20px;
+
+    display: flex;
+
+    gap: 14px;
+
+    border-top: 1px solid #292929;
+}
+
+.location-icon {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background-color: rgba(255, 106, 0, 0.12);
+
+    color: #ff6a00;
+}
+
+.location-info strong {
+    color: #ffffff;
+
+    font-size: 13px;
+}
+
+.location-info p {
+    margin: 6px 0;
+
+    color: #898989;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+.location-link {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: #ff6a00;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    transition: color 0.2s ease;
+}
+
+.location-link:hover {
+    color: #ff8a3d;
+}
+
+/* =========================================================
+   TARJETA LATERAL DE RESERVA
+   ========================================================= */
+
+.venue-sidebar {
+    position: relative;
+}
+
+.booking-card {
+    position: sticky;
+
+    top: 25px;
+
+    padding: 24px;
+
+    border: 1px solid #333333;
+    border-radius: 17px;
+
+    background-color: #1b1b1b;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   PRECIO
+   ========================================================= */
+
+.booking-price {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.booking-price>div:first-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.booking-price span {
+    color: #808080;
+
+    font-size: 10px;
+}
+
+.booking-price strong {
+    color: #ffffff;
+
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.booking-price small {
+    color: #777777;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   RATING
+   ========================================================= */
+
+.booking-rating {
+    display: flex;
+    align-items: center;
+
+    gap: 4px;
+
+    padding-top: 8px;
+}
+
+.booking-rating i {
+    color: #ff6a00;
+
+    font-size: 12px;
+}
+
+.booking-rating span {
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.booking-rating small {
+    color: #777777;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   BOTÓN RESERVAR
+   ========================================================= */
+
+.btn-book-now {
+    width: 100%;
+    height: 50px;
+
+    margin: 24px 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    border-radius: 10px;
+
+    background-color: #ff6a00;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.btn-book-now:hover {
+    background-color: #e95f00;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 18px rgba(255, 106, 0, 0.2);
+}
+
+
+/* =========================================================
+   BENEFICIOS
+   ========================================================= */
+
+.booking-benefits {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+.booking-benefits div {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    color: #969696;
+
+    font-size: 10px;
+}
+
+.booking-benefits i {
+    width: 18px;
+
+    color: #ff6a00;
+
+    font-size: 14px;
+}
+
+/* =========================================================
+   ELEGÍ TU TURNO
+
+   SECCIÓN PREPARADA PARA EL TRABAJO DE DILSIA
+   ========================================================= */
+
+.reservation-section {
+    padding-top: 55px;
+
+    margin-top: 20px;
+
+    border-top: 1px solid #292929;
+}
+
+.reservation-heading {
+    margin-bottom: 30px;
+}
+
+
+/* =========================================================
+   ESPACIO DE TRABAJO
+   ========================================================= */
+
+.reservation-workspace {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr) minmax(0, 1fr) 320px;
+
+    gap: 18px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   BLOQUES
+   ========================================================= */
+
+.reservation-block,
+.reservation-summary {
+    min-height: 290px;
+
+    padding: 22px;
+
+    border: 1px solid #2d2d2d;
+    border-radius: 15px;
+
+    background-color: #191919;
+}
+
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+
+.reservation-block-header {
+    margin-bottom: 20px;
+}
+
+.reservation-block-header>div {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.reservation-step-number {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background-color: #ff6a00;
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.reservation-block-header h3 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   CONTENEDORES
+
+   RESPONSABLE FUNCIONAL: DILSIA
+   ========================================================= */
+
+.reservation-dates,
+.reservation-schedule {
+    width: 100%;
+
+    min-height: 205px;
+}
+
+.reservation-summary {
+    min-height: 290px;
+}
+
+
+/* =========================================================
+   PLACEHOLDERS TEMPORALES
+   DILSIA PUEDE REEMPLAZAR ESTE CONTENIDO
+   ========================================================= */
+
+.reservation-placeholder {
+    width: 100%;
+    height: 205px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: 1px dashed #3b3b3b;
+    border-radius: 10px;
+
+    background-color: #161616;
+
+    color: #666666;
+
+    font-size: 11px;
+}
+
+.reservation-placeholder i {
+    color: #ff6a00;
+
+    font-size: 24px;
+}
+
+.summary-placeholder {
+    height: 245px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+
+/* =========================================================
+   PANTALLAS MEDIANAS
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .venue-layout {
+        grid-template-columns:
+            minmax(0, 1fr) 310px;
+
+        gap: 30px;
+    }
+
+
+    .reservation-workspace {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .reservation-summary {
+        grid-column: 1 / -1;
+    }
+
+}
+
+
+/* =========================================================
+   TABLETS
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .venue-gallery {
+        height: 380px;
+    }
+
+
+    .venue-layout {
+        grid-template-columns: 1fr;
+    }
+
+
+    .venue-sidebar {
+        order: -1;
+    }
+
+
+    .booking-card {
+        position: static;
+    }
+
+
+    .services-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   MÓVILES
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .venue-page {
+        padding-top: 25px;
+    }
+
+
+    .venue-container {
+        width: min(calc(100% - 28px),
+                1180px);
+    }
+
+
+    /* Encabezado */
+
+    .venue-title-row {
+        flex-direction: column;
+
+        gap: 20px;
+    }
+
+
+    .btn-share {
+        width: 100%;
+    }
+
+
+    /* Galería */
+
+    .venue-gallery {
+        height: auto;
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .gallery-main {
+        height: 300px;
+    }
+
+
+    .gallery-secondary {
+        height: 250px;
+    }
+
+
+    /* Información rápida */
+
+    .quick-info-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    /* Servicios */
+
+    .services-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    /* Cancha */
+
+    .court-detail-card {
+        grid-template-columns: 1fr;
+    }
+
+
+    .court-detail-image {
+        height: 240px;
+    }
+
+
+    /* Reserva Dilsia */
+
+    .reservation-workspace {
+        grid-template-columns: 1fr;
+    }
+
+
+    .reservation-summary {
+        grid-column: auto;
+    }
+
+}
+
+
+/* =========================================================
+   CELULARES PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .venue-title-row h1 {
+        font-size: 29px;
+    }
+
+
+    .venue-rating {
+        flex-wrap: wrap;
+    }
+
+
+    /* Galería */
+
+    .gallery-main {
+        height: 250px;
+    }
+
+
+    .gallery-secondary {
+        height: 210px;
+    }
+
+
+    /* Información rápida */
+
+    .quick-info-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .quick-info-card {
+        min-height: 120px;
+
+        padding: 14px;
+    }
+
+
+    /* Servicios */
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Cancha */
+
+    .court-detail-header {
+        flex-direction: column;
+    }
+
+
+    .court-price {
+        text-align: left;
+    }
+
+
+    .court-specifications {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Ubicación */
+
+    .location-map {
+        height: 220px;
+    }
+
+
+    /* Reserva */
+
+    .reservation-block,
+    .reservation-summary {
+        padding: 18px;
+    }
+
+}

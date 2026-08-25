@@ -7,8 +7,11 @@ class MiNavbar extends HTMLElement {
            ===================================================== */
 
         const rutaActual =
-            (window.location.pathname.split('/').pop() || "index.html")
-                .toLowerCase();
+            (
+                window.location.pathname
+                    .split("/")
+                    .pop() || "index.html"
+            ).toLowerCase();
 
 
         /* =====================================================
@@ -18,21 +21,12 @@ class MiNavbar extends HTMLElement {
         const estaEnHtml =
             window.location.pathname
                 .toLowerCase()
-                .includes('/html/');
+                .includes("/html/");
 
 
         /* =====================================================
-           RUTAS SEGÚN UBICACIÓN
+           RUTAS
            ===================================================== */
-
-        /*
-            Si estamos dentro de /html:
-            Inicio debe subir un nivel.
-
-            html/canchas.html
-                    ↓
-            ../index.html
-        */
 
         const rutaInicio =
             estaEnHtml
@@ -40,30 +34,64 @@ class MiNavbar extends HTMLElement {
                 : "index.html";
 
 
-        /*
-            Las demás páginas están dentro de /html.
-
-            Desde una página en /html:
-            canchas.html
-
-            Desde index.html:
-            html/canchas.html
-        */
-
         const rutaPaginas =
             estaEnHtml
                 ? ""
                 : "html/";
 
 
-        /*
-            Lo mismo ocurre con las imágenes.
-        */
-
         const rutaLogo =
             estaEnHtml
                 ? "../img/logo/Logo.png"
                 : "img/logo/Logo.png";
+
+
+        /* =====================================================
+           OBTENER USUARIO
+           ===================================================== */
+
+        const usuarioGuardado =
+            sessionStorage.getItem("usuario");
+
+        let usuario = null;
+
+        if (usuarioGuardado) {
+
+            try {
+
+                usuario =
+                    JSON.parse(usuarioGuardado);
+
+            } catch (error) {
+
+                console.error(
+                    "Error leyendo usuario:",
+                    error
+                );
+
+                sessionStorage.removeItem("usuario");
+            }
+        }
+
+
+        /* =====================================================
+           CONFIGURAR BOTÓN DE USUARIO
+           ===================================================== */
+
+        let nombreUsuario = "Únete";
+
+        let rutaUsuario =
+            `${rutaPaginas}registro.html`;
+
+
+        if (usuario) {
+
+            nombreUsuario =
+                usuario.nombre || "Usuario";
+
+            rutaUsuario =
+                `${rutaPaginas}pagar-reserva.html`;
+        }
 
 
         /* =====================================================
@@ -108,7 +136,9 @@ class MiNavbar extends HTMLElement {
                             class="text-decoration-none d-flex flex-column"
                         >
 
-                            <span class="fw-bold text-white lh-1 fs-2">
+                            <span
+                                class="fw-bold text-white lh-1 fs-2"
+                            >
                                 TuCancha
                             </span>
 
@@ -135,7 +165,9 @@ class MiNavbar extends HTMLElement {
                         aria-label="Abrir navegación"
                     >
 
-                        <span class="navbar-toggler-icon"></span>
+                        <span
+                            class="navbar-toggler-icon"
+                        ></span>
 
                     </button>
 
@@ -149,17 +181,23 @@ class MiNavbar extends HTMLElement {
                         id="navbarNav"
                     >
 
-                        <ul class="navbar-nav mx-auto text-center my-auto">
+                        <ul
+                            class="navbar-nav mx-auto text-center my-auto"
+                        >
 
 
-                            <!-- Inicio -->
+                            <!-- =================================
+                                 INICIO
+                                 ================================= -->
+
                             <li class="nav-item">
 
                                 <a
-                                    class="nav-link ${rutaActual === "index.html"
-                ? "active"
-                : ""
-            }"
+                                    class="nav-link ${
+                                        rutaActual === "index.html"
+                                            ? "active"
+                                            : ""
+                                    }"
                                     href="${rutaInicio}"
                                 >
                                     Inicio
@@ -168,28 +206,38 @@ class MiNavbar extends HTMLElement {
                             </li>
 
 
-                            <!-- Canchas -->
+                            <!-- =================================
+                                 CANCHAS
+                                 ================================= -->
+
                             <li class="nav-item">
 
                                 <a
-                                    class="nav-link ${rutaActual === "canchas.html"
-                ? "active"
-                : ""
-            }"
+                                    class="nav-link ${
+                                        rutaActual === "canchas.html"
+                                            ? "active"
+                                            : ""
+                                    }"
                                     href="${rutaPaginas}canchas.html"
                                 >
                                     Canchas
                                 </a>
 
-                            </li>                            
-                            <!-- Nosotros -->
+                            </li>
+
+
+                            <!-- =================================
+                                 NOSOTROS
+                                 ================================= -->
+
                             <li class="nav-item">
 
                                 <a
-                                    class="nav-link ${rutaActual === "nosotros.html"
-                ? "active"
-                : ""
-            }"
+                                    class="nav-link ${
+                                        rutaActual === "nosotros.html"
+                                            ? "active"
+                                            : ""
+                                    }"
                                     href="${rutaPaginas}nosotros.html"
                                 >
                                     Nosotros
@@ -198,14 +246,18 @@ class MiNavbar extends HTMLElement {
                             </li>
 
 
-                            <!-- Contacto -->
+                            <!-- =================================
+                                 CONTACTO
+                                 ================================= -->
+
                             <li class="nav-item">
 
                                 <a
-                                    class="nav-link ${rutaActual === "contacto.html"
-                ? "active"
-                : ""
-            }"
+                                    class="nav-link ${
+                                        rutaActual === "contacto.html"
+                                            ? "active"
+                                            : ""
+                                    }"
                                     href="${rutaPaginas}contacto.html"
                                 >
                                     Contacto
@@ -217,16 +269,36 @@ class MiNavbar extends HTMLElement {
 
 
                         <!-- =====================================
-                             REGISTRO
+                             USUARIO
                              ===================================== -->
 
-                        <a
-                            href="${rutaPaginas}registro.html"
-                            class="btn btn-primary mx-5"
+                        <div
+                            class="d-flex align-items-center gap-2 mx-5"
                         >
-                            Únete
-                        </a>
 
+                            <a
+                                href="${rutaUsuario}"
+                                class="btn btn-primary"
+                            >
+                                ${nombreUsuario}
+                            </a>
+
+
+                            ${
+                                usuario
+                                    ? `
+                                        <button
+                                            type="button"
+                                            id="btn-logout"
+                                            class="btn btn-outline-light"
+                                        >
+                                            Cerrar sesión
+                                        </button>
+                                      `
+                                    : ""
+                            }
+
+                        </div>
 
                     </div>
 
@@ -235,6 +307,96 @@ class MiNavbar extends HTMLElement {
             </nav>
 
         `;
+
+
+        /* =====================================================
+           CERRAR SESIÓN
+           ===================================================== */
+
+        const btnLogout =
+            this.querySelector("#btn-logout");
+
+
+        if (btnLogout) {
+
+            btnLogout.addEventListener(
+                "click",
+                async () => {
+
+                    btnLogout.disabled = true;
+
+                    btnLogout.textContent =
+                        "Cerrando sesión...";
+
+
+                    try {
+
+                        const token =
+                            sessionStorage.getItem(
+                                "access_token"
+                            );
+
+
+                        /* =====================================
+                           CERRAR SESIÓN EN SUPABASE
+                           ===================================== */
+
+                        if (token) {
+
+                            await fetch(
+                                `${window.TuCanchaConfig.supabaseUrl}/auth/v1/logout`,
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "apikey":
+                                            window.TuCanchaConfig
+                                                .supabaseAnonKey,
+
+                                        "Authorization":
+                                            `Bearer ${token}`,
+
+                                        "Content-Type":
+                                            "application/json"
+                                    }
+                                }
+                            );
+                        }
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Error al cerrar sesión:",
+                            error
+                        );
+
+                    } finally {
+
+                        /* ===============================
+                           LIMPIAR SESIÓN LOCAL
+                           =============================== */
+
+                        sessionStorage.removeItem(
+                            "usuario"
+                        );
+
+                        sessionStorage.removeItem(
+                            "access_token"
+                        );
+
+
+                        /* ===============================
+                           VOLVER AL INICIO
+                           =============================== */
+
+                        window.location.href =
+                            rutaInicio;
+                    }
+
+                }
+            );
+        }
 
     }
 

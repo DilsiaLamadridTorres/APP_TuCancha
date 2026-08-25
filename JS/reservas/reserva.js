@@ -1,26 +1,26 @@
 
-document.addEventListener("DOMContentLoaded",()=>{
-    const canchaGuardada= localStorage.getItem("cancha_seleccionada");
+document.addEventListener("DOMContentLoaded", () => {
+    const canchaGuardada = localStorage.getItem("cancha_seleccionada");
     //console.log("Hola");
-    
-    if(canchaGuardada){
+
+    if (canchaGuardada) {
         // CONVERTIMOS EN JSON EL localStorage
-        const cancha= JSON.parse(canchaGuardada);
-        const elementosDinamicos=document.querySelectorAll("[data-field]");
-        elementosDinamicos.forEach(elemento=>{
-            const campo=elemento.getAttribute("data-field");
+        const cancha = JSON.parse(canchaGuardada);
+        const elementosDinamicos = document.querySelectorAll("[data-field]");
+        elementosDinamicos.forEach(elemento => {
+            const campo = elemento.getAttribute("data-field");
             if (elemento.tagName === "IMG") {
-                    elemento.src = cancha[campo]; // Inyecta la URL de la imagen
-                    
-                    if (cancha.nombre) {
-                        elemento.alt = `Imagen de ${cancha.nombre}`; // Alt dinámico opcional
-                    }
+                elemento.src = cancha[campo]; // Inyecta la URL de la imagen
+
+                if (cancha.nombre) {
+                    elemento.alt = `Imagen de ${cancha.nombre}`; // Alt dinámico opcional
                 }
-            if(campo==="precio"){
-                const precioNumerico=Number(cancha[campo]);
-                elemento.textContent=`$ ${precioNumerico.toLocaleString("es-CO")}`;
+            }
+            if (campo === "precio") {
+                const precioNumerico = Number(cancha[campo]);
+                elemento.textContent = `$ ${precioNumerico.toLocaleString("es-CO")}`;
             } else {
-                elemento.textContent=cancha[campo];
+                elemento.textContent = cancha[campo];
             }
         });
     } else {
@@ -326,32 +326,27 @@ botonSiguiente.addEventListener(
     }
 );
 
-botonReservar.addEventListener(
-    "click",
-    () => {
-        if (fechaSeleccionada === null) {
-            alert(
-                "Selecciona una fecha"
-            );
-
-            return;
-        }
-
-        if (horarioSeleccionado === null) {
-            alert(
-                "Selecciona un horario"
-            );
-
-            return;
-        }
-
-
-        console.log("Reserva lista:");
-        console.log("Cancha:", idCancha);
-        console.log("Fecha:", fechaSeleccionada);
-        console.log("Horario:", horarioSeleccionado);
-
+botonReservar.addEventListener("click", () => {
+    if (fechaSeleccionada === null) {
+        alert("Selecciona una fecha");
+        return;
     }
-);
+
+    if (horarioSeleccionado === null) {
+        alert("Selecciona un horario");
+        return;
+    }
+    const reserva = {
+        canchaId: idCancha,
+        fecha: fechaSeleccionada.toLocaleDateString("es-CO"),
+        horario: horarioSeleccionado
+    };
+
+    localStorage.setItem("reserva_seleccionada", JSON.stringify(reserva));
+
+    console.log("Reserva guardada:", reserva);
+
+    window.location.href = "registro.html";
+});
 
 mostrarSemana();

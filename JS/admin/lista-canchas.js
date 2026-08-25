@@ -89,5 +89,15 @@ export let canchas = [{
     calificacion: 4.3,
     precio: 80000,
     imagen: "https://images.unsplash.com/photo-1510526292299-20af3f62d453?q=80&w=1128&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+},
+{
+    id: 11,
+    nombre: "Cancha Rola FC",
+    empresa: "TuCancha",
+    ubicacion: "Bogotá",
+    calificacion: 5,
+    precio: 135000,
+    descripcion:"Esta es una cancha de prueba nueva que se usa para ver los cambios dinamicos en las cards",
+    imagen: "https://images.unsplash.com/photo-1510526292299-20af3f62d453?q=80&w=1128&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }
 ];

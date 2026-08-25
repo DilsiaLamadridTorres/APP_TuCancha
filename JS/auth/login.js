@@ -1,23 +1,138 @@
 const loginForm = document.querySelector("#login-form");
 
 if (loginForm) {
-    const loginStatus = document.querySelector("#login-status");
+
+    const loginStatus =
+        document.querySelector("#login-status");
+
     loginForm.addEventListener("submit", async (event) => {
+
         event.preventDefault();
-        const correo = loginForm.correo.value.trim();
-        const contrasena = loginForm.contrasena.value;
+
+        const correo =
+            loginForm.correo.value.trim();
+
+        const contrasena =
+            loginForm.contrasena.value;
+
+
+        /* =========================================
+           VALIDACIÓN
+           ========================================= */
+
         if (!correo || !contrasena) {
-            loginStatus.textContent = "Ingresa tu correo y contraseña.";
-            loginStatus.className = "auth-status auth-status--error";
+
+            loginStatus.textContent =
+                "Ingresa tu correo y contraseña.";
+
+            loginStatus.className =
+                "auth-status auth-status--error";
+
             return;
         }
+
+
+        /* =========================================
+           INICIAR SESIÓN
+           ========================================= */
+
         try {
-            await window.authService.login({ correo, contrasena });
-            loginStatus.textContent = "Inicio de sesión exitoso.";
-            loginStatus.className = "auth-status auth-status--success";
+
+            loginStatus.textContent =
+                "Iniciando sesión...";
+
+            loginStatus.className =
+                "auth-status";
+
+
+            const result =
+                await window.authService.login({
+                    correo,
+                    contrasena
+                });
+
+
+            console.log(
+                "Login exitoso:",
+                result
+            );
+
+
+            /* =====================================
+               OBTENER DATOS DEL USUARIO
+               ===================================== */
+
+            const usuario = {
+
+                nombre:
+                    result.user?.user_metadata
+                        ?.nombre_completo || correo,
+
+                correo:
+                    result.user?.email || correo
+            };
+
+
+            /* =====================================
+               GUARDAR USUARIO
+               ===================================== */
+
+            sessionStorage.setItem(
+                "usuario",
+                JSON.stringify(usuario)
+            );
+
+
+            /* =====================================
+               GUARDAR TOKEN DE SUPABASE
+               ===================================== */
+
+            if (result.access_token) {
+
+                sessionStorage.setItem(
+                    "access_token",
+                    result.access_token
+                );
+            }
+
+
+            /* =====================================
+               MENSAJE DE ÉXITO
+               ===================================== */
+
+            loginStatus.textContent =
+                "Inicio de sesión exitoso.";
+
+            loginStatus.className =
+                "auth-status auth-status--success";
+
+
+            /* =====================================
+               REDIRECCIÓN
+               ===================================== */
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "pagar-reserva.html";
+
+            }, 500);
+
+
         } catch (error) {
-            loginStatus.textContent = error.message || "No fue posible iniciar sesión.";
-            loginStatus.className = "auth-status auth-status--error";
+
+            console.error(
+                "Error al iniciar sesión:",
+                error
+            );
+
+            loginStatus.textContent =
+                error.message ||
+                "No fue posible iniciar sesión.";
+
+            loginStatus.className =
+                "auth-status auth-status--error";
         }
+
     });
 }

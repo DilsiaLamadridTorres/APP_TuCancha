@@ -74,6 +74,9 @@ window.authService.checkConnection().then((result) => {
     const indicator = document.querySelector("#connection-status");
     indicator.textContent = result.message;
     indicator.className = `connection-status connection-status--${result.mode}`;
+    setTimeout(()=>{
+        indicator.style.display="none";
+    },3000)
 }).catch((error) => {
     const indicator = document.querySelector("#connection-status");
     indicator.textContent = error.message;

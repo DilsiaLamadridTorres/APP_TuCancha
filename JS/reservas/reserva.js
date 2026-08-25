@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         console.warn("No se encontró ninguna cancha seleccionada en LocalStorage.");
     }
-})
+
 
 // DILSIA AGENDA DESDE ACA
 const parametros = new URLSearchParams(window.location.search);
@@ -336,8 +336,13 @@ botonReservar.addEventListener("click", () => {
         alert("Selecciona un horario");
         return;
     }
+    const cancha = JSON.parse(canchaGuardada);
     const reserva = {
-        canchaId: idCancha,
+        canchaId: cancha.id,
+        precio:cancha.precio,
+        nombre:cancha.nombre,
+        ubicacion:cancha.ubicacion,
+        imagen:cancha.imagen,
         fecha: fechaSeleccionada.toLocaleDateString("es-CO"),
         horario: horarioSeleccionado
     };
@@ -350,3 +355,4 @@ botonReservar.addEventListener("click", () => {
 });
 
 mostrarSemana();
+})

@@ -1,0 +1,248 @@
+.payment-hero {
+    padding: 5rem 1rem 3rem;
+    background: var(--bs-dark);
+    color: white;
+}
+
+.payment-section-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.15rem;
+    color: var(--bs-primary);
+    margin-bottom: 0.75rem;
+}
+
+.payment-hero h1 {
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.payment-hero__copy {
+    max-width: 650px;
+    margin: 1rem auto 0;
+    color: #adb5bd;
+}
+
+.payment-section {
+    background: #f8f9fa;
+}
+
+.payment-card {
+    background: white;
+    border-radius: 1.25rem;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.payment-card__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.payment-card__header h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.payment-card__label {
+    margin: 0 0 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12rem;
+    color: var(--bs-primary);
+}
+
+.payment-icon {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: 0.8rem;
+    background: rgba(var(--bs-primary-rgb), 0.1);
+    color: var(--bs-primary);
+    font-size: 1.4rem;
+}
+
+.reservation-court {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.reservation-court img {
+    width: 90px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 0.75rem;
+}
+
+.reservation-court span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #6c757d;
+}
+
+.reservation-court h3 {
+    margin: 0.2rem 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.reservation-court p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.reservation-detail {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.25rem 0;
+}
+
+.reservation-detail__icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 0.7rem;
+    background: rgba(var(--bs-primary-rgb), 0.1);
+    color: var(--bs-primary);
+}
+
+.reservation-detail small {
+    display: block;
+    color: #6c757d;
+    margin-bottom: 0.15rem;
+}
+
+.reservation-detail strong {
+    display: block;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.price-row--total {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #dee2e6;
+    font-size: 1.3rem;
+}
+
+.price-row--total strong {
+    color: var(--bs-primary);
+}
+
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.payment-method {
+    border: 1px solid #dee2e6;
+    border-radius: 0.8rem;
+    padding: 1rem;
+    transition: 0.2s ease;
+}
+
+.payment-method:has(input:checked) {
+    border-color: var(--bs-primary);
+    background: rgba(var(--bs-primary-rgb), 0.05);
+}
+
+.payment-method__label {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+}
+
+.payment-method__label > i {
+    font-size: 1.3rem;
+    color: var(--bs-primary);
+}
+
+.payment-method__label span {
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-method__label small {
+    color: #6c757d;
+}
+
+.payment-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: #f8f9fa;
+}
+
+.payment-total strong {
+    font-size: 1.4rem;
+    color: var(--bs-primary);
+}
+
+.payment-button {
+    padding: 0.9rem;
+    font-weight: 600;
+}
+
+.payment-button i {
+    margin-right: 0.5rem;
+}
+
+.payment-status {
+    text-align: center;
+    margin: 1rem 0 0;
+}
+
+.payment-security {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.payment-security > i {
+    font-size: 1.5rem;
+    color: #198754;
+}
+
+.payment-security div {
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-security span {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+@media (max-width: 991px) {
+
+    .payment-hero {
+        padding: 3.5rem 1rem 2.5rem;
+    }
+
+    .payment-card {
+        padding: 1.5rem;
+    }
+
+}

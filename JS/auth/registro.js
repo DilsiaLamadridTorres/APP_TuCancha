@@ -66,6 +66,8 @@ registroForm.addEventListener("submit", async (event) => {
         registroSubmit.disabled = false;
         registroSubmit.textContent = "Crear cuenta";
     }
+
+    window.location.href="canchas.html";
 });
 
 window.authService.checkConnection().then((result) => {

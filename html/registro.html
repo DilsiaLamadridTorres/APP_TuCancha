@@ -24,29 +24,29 @@
             <p id="connection-status" class="connection-status" role="status">Comprobando conexión…</p>
             <form id="registro-form" class="mt-4" novalidate>
                 <div class="mb-3">
-                    <label class="form-label" for="nombreCompleto">Nombre completo</label>
-                    <input class="form-control" id="nombreCompleto" name="nombreCompleto" autocomplete="name" required>
+                    <!-- <label class="form-label" for="nombreCompleto">Nombre completo</label> -->
+                    <input class="form-control" id="nombreCompleto" name="nombreCompleto" autocomplete="name" required placeholder="Nombre completo">
                     <div id="nombreCompleto-error" class="invalid-feedback"></div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="correo">Correo electrónico</label>
-                    <input class="form-control" type="email" id="correo" name="correo" autocomplete="email" required>
+                    <!-- <label class="form-label" for="correo">Correo electrónico</label> -->
+                    <input class="form-control" type="email" id="correo" name="correo" autocomplete="email" required placeholder="Correo electrónico">
                     <div id="correo-error" class="invalid-feedback"></div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="telefono">Teléfono <span class="fw-normal text-secondary">(opcional)</span></label>
-                    <input class="form-control" type="tel" id="telefono" name="telefono" autocomplete="tel">
+                    <!-- <label class="form-label" for="telefono">Teléfono <span class="fw-normal text-secondary">(opcional)</span></label> -->
+                    <input class="form-control" placeholder="Teléfono " type="tel" id="telefono" name="telefono" autocomplete="tel">
                     <div id="telefono-error" class="invalid-feedback"></div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="contrasena">Contraseña</label>
-                    <input class="form-control" type="password" id="contrasena" name="contrasena" autocomplete="new-password" required>
+                    <!-- <label class="form-label" for="contrasena">Contraseña</label> -->
+                    <input class="form-control" type="password" id="contrasena" name="contrasena" autocomplete="new-password" placeholder="Contraseña" required>
                     <div class="form-text">Mínimo 8 caracteres, una letra y un número.</div>
                     <div id="contrasena-error" class="invalid-feedback"></div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="confirmarContrasena">Confirma tu contraseña</label>
-                    <input class="form-control" type="password" id="confirmarContrasena" name="confirmarContrasena" autocomplete="new-password" required>
+                    <!-- <label class="form-label" for="confirmarContrasena">Confirma tu contraseña</label> -->
+                    <input class="form-control" type="password" id="confirmarContrasena" name="confirmarContrasena" autocomplete="new-password" placeholder="Confirma tu contraseña" required>
                     <div id="confirmarContrasena-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-check mb-4">
@@ -57,8 +57,9 @@
                 <button id="registro-submit" class="btn btn-primary w-100 py-2" type="submit">Crear cuenta</button>
                 <p id="registro-status" class="auth-status" role="alert" aria-live="polite"></p>
             </form>
-            <p class="auth-card__footer mt-4 mb-0">¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
+            <!-- <p class="auth-card__footer mt-4 mb-0">¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p> -->
         </section>
+
     </main>
     <script src="../JS/admin/navbar.js"></script>
     <script type="module" src="../JS/services/config.js"></script>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/auth.css">
 </head>
+
 <body>
     <header><mi-navbar></mi-navbar></header>
     <main class="auth-page">
@@ -25,28 +27,40 @@
             <form id="registro-form" class="mt-4" novalidate>
                 <div class="mb-3">
                     <!-- <label class="form-label" for="nombreCompleto">Nombre completo</label> -->
-                    <input class="form-control" id="nombreCompleto" name="nombreCompleto" autocomplete="name" required placeholder="Nombre completo">
+                    <input class="form-control" id="nombreCompleto" name="nombreCompleto" autocomplete="name" required
+                        placeholder="Nombre completo">
                     <div id="nombreCompleto-error" class="invalid-feedback"></div>
                 </div>
                 <div class="mb-3">
                     <!-- <label class="form-label" for="correo">Correo electrónico</label> -->
-                    <input class="form-control" type="email" id="correo" name="correo" autocomplete="email" required placeholder="Correo electrónico">
+                    <input class="form-control" type="email" id="correo" name="correo" autocomplete="email" required
+                        placeholder="Correo electrónico">
                     <div id="correo-error" class="invalid-feedback"></div>
                 </div>
                 <div class="mb-3">
                     <!-- <label class="form-label" for="telefono">Teléfono <span class="fw-normal text-secondary">(opcional)</span></label> -->
-                    <input class="form-control" placeholder="Teléfono " type="tel" id="telefono" name="telefono" autocomplete="tel">
+                    <input class="form-control" placeholder="Teléfono " type="tel" id="telefono" name="telefono"
+                        autocomplete="tel">
                     <div id="telefono-error" class="invalid-feedback"></div>
                 </div>
                 <div class="mb-3">
                     <!-- <label class="form-label" for="contrasena">Contraseña</label> -->
-                    <input class="form-control" type="password" id="contrasena" name="contrasena" autocomplete="new-password" placeholder="Contraseña" required>
+                    <div class="campo-password">
+                        <input class="form-control" type="password" id="contrasena" name="contrasena"
+                            autocomplete="new-password" placeholder="Contraseña" required>
+                        <i class="bi bi-eye" id="mostrar-contrasena"></i>
+                    </div>
                     <div class="form-text">Mínimo 8 caracteres, una letra y un número.</div>
                     <div id="contrasena-error" class="invalid-feedback"></div>
+
                 </div>
                 <div class="mb-3">
                     <!-- <label class="form-label" for="confirmarContrasena">Confirma tu contraseña</label> -->
-                    <input class="form-control" type="password" id="confirmarContrasena" name="confirmarContrasena" autocomplete="new-password" placeholder="Confirma tu contraseña" required>
+                    <div class="campo-password">
+                        <input class="form-control" type="password" id="confirmarContrasena" name="confirmarContrasena"
+                            autocomplete="new-password" placeholder="Confirma tu contraseña" required>
+                        <i class="bi bi-eye" id="mostrar-confirmar-contrasena"> </i>
+                    </div>
                     <div id="confirmarContrasena-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-check mb-4">
@@ -57,7 +71,7 @@
                 <button id="registro-submit" class="btn btn-primary w-100 py-2" type="submit">Crear cuenta</button>
                 <p id="registro-status" class="auth-status" role="alert" aria-live="polite"></p>
             </form>
-             <p class="auth-card__footer mt-4 mb-0">¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p> 
+            <p class="auth-card__footer mt-4 mb-0">¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
         </section>
 
     </main>
@@ -67,4 +81,5 @@
     <script type="module" src="../JS/auth/registro.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

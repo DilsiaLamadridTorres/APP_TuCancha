@@ -36,3 +36,20 @@
 .auth-status--error, .connection-status--error { color: #842029; background: #f8d7da; }
 .connection-status--demo { color: #664d03; background: #fff3cd; }
 .auth-status--hidden { display: none; }
+
+.campo-password {
+    position: relative;
+}
+
+.campo-password i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+
+
+
+

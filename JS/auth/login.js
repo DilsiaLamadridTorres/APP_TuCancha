@@ -136,3 +136,37 @@ if (loginForm) {
 
     });
 }
+
+// ============================================================
+// MOSTRAR / OCULTAR CONTRASEÑA
+// ============================================================
+
+const inputContrasena = document.getElementById("contrasena");
+
+const botonVERContrasena = document.getElementById("btn-ver-contrasena");
+
+const iconoContrasena = document.getElementById("icono-contrasena");
+
+botonVERContrasena.addEventListener("click", () => {
+
+    // Verificar si actualmente la contrasena esta oculta
+
+    const estaOculta = inputContrasena.type === "password";
+
+
+    // cambiamos entre password y text
+    inputContrasena.type = estaOculta ? "text" : "password";
+
+    // cambiamos el icono
+
+    iconoContrasena.classList.toggle("bi-eye", !estaOculta);
+
+
+    iconoContrasena.classList.toggle("bi-eye-slash", estaOculta);
+
+    //Cambiar descripcion del boton
+
+    botonVERContrasena.setAttribute("aria-label", estaOculta ? "Ocultar contraseña" : "Mostrar contrOcultar Ocultar contraseña");
+
+
+});

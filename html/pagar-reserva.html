@@ -106,6 +106,568 @@
     <main>
 
 
+        <!-- =====================================
+             ENCABEZADO
+             ===================================== -->
+
+        <section class="payment-hero">
+
+            <div class="container">
+
+                <div class="text-center">
+
+                    <p class="payment-section-label">
+                        RESERVA
+                    </p>
+
+                    <h1>
+                        Confirma y paga tu reserva
+                    </h1>
+
+                    <p class="payment-hero__copy">
+                        Revisa los datos de tu partido y completa
+                        el proceso para asegurar tu cancha.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             PAGO
+             ===================================== -->
+
+        <section class="payment-section py-5">
+
+            <div class="container">
+
+                <div class="row g-4 justify-content-center">
+
+
+                    <!-- =================================
+                         RESUMEN
+                         ================================= -->
+
+                    <div class="col-lg-5">
+
+                        <div class="payment-card h-100">
+
+                            <div class="payment-card__header">
+
+                                <div class="payment-icon">
+
+                                    <i class="bi bi-calendar-check"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <p class="payment-card__label">
+                                        TU RESERVA
+                                    </p>
+
+                                    <h2>
+                                        Resumen del partido
+                                    </h2>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CANCHA -->
+
+                            <div class="reservation-court">
+
+                                <img
+                                    src="../img/fotocancha.png"
+                                    alt="Cancha Arena Pro"
+                                >
+
+                                <div>
+
+                                    <span>
+                                        CANCHA
+                                    </span>
+
+                                    <h3 data-field="nombre">
+                                        
+                                    </h3>
+
+                                    <p>
+                                        Medellín, Antioquia
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <hr>
+
+
+                            <!-- FECHA -->
+
+                            <div class="reservation-detail">
+
+                                <div class="reservation-detail__icon">
+
+                                    <i class="bi bi-calendar3"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <small>
+                                        Fecha
+                                    </small>
+
+                                    <strong>
+                                        25 de agosto de 2026
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- HORA -->
+
+                            <div class="reservation-detail">
+
+                                <div class="reservation-detail__icon">
+
+                                    <i class="bi bi-clock"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <small>
+                                        Horario
+                                    </small>
+
+                                    <strong>
+                                        7:00 PM - 8:00 PM
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- DURACIÓN -->
+
+                            <div class="reservation-detail">
+
+                                <div class="reservation-detail__icon">
+
+                                    <i class="bi bi-hourglass-split"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <small>
+                                        Duración
+                                    </small>
+
+                                    <strong>
+                                        1 hora
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- JUGADORES -->
+
+                            <div class="reservation-detail">
+
+                                <div class="reservation-detail__icon">
+
+                                    <i class="bi bi-people"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <small>
+                                        Jugadores
+                                    </small>
+
+                                    <strong>
+                                        10 jugadores
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                             <div class="reservation-actions my-3">
+                                 <button type="button" id="btn-cancelar-reserva" class="btn btn-outline-danger w-100 btn-sm">
+                                     <i class="bi bi-trash"></i> Eliminar Reserva
+                                 </button>
+                             </div>
+                            <hr>
+
+
+                            <!-- PRECIO -->
+
+                            <div class="price-row">
+
+                                <span>
+                                    Precio de la cancha
+                                </span>
+
+                                <strong>
+                                    $80.000
+                                </strong>
+
+                            </div>
+
+
+                            <div class="price-row price-row--total">
+
+                                <span>
+                                    Total
+                                </span>
+
+                                <strong>
+                                    $80.000
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================
+                         MÉTODO DE PAGO
+                         ================================= -->
+
+                    <div class="col-lg-5">
+
+                        <div class="payment-card">
+
+                            <div class="payment-card__header">
+
+                                <div class="payment-icon">
+
+                                    <i class="bi bi-credit-card"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <p class="payment-card__label">
+                                        PAGO
+                                    </p>
+
+                                    <h2>
+                                        Método de pago
+                                    </h2>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- OPCIONES -->
+
+                            <div class="payment-methods">
+
+
+                                <!-- TARJETA -->
+
+                                <div class="payment-method">
+
+                                    <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="metodoPago"
+                                        id="tarjeta"
+                                        value="tarjeta"
+                                        checked
+                                    >
+
+                                    <label
+                                        for="tarjeta"
+                                        class="payment-method__label"
+                                    >
+
+                                        <i class="bi bi-credit-card"></i>
+
+                                        <span>
+
+                                            <strong>
+                                                Tarjeta
+                                            </strong>
+
+                                            <small>
+                                                Débito o crédito
+                                            </small>
+
+                                        </span>
+
+                                    </label>
+
+                                </div>
+                
+
+                                <!-- NEQUI -->
+
+                                <div class="payment-method">
+
+                                    <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="metodoPago"
+                                        id="nequi"
+                                        value="nequi"
+                                    >
+
+                                    <label
+                                        for="nequi"
+                                        class="payment-method__label"
+                                    >
+
+                                        <i class="bi bi-phone"></i>
+
+                                        <span>
+
+                                            <strong>
+                                                Nequi
+                                            </strong>
+
+                                            <small>
+                                                Pago desde tu celular
+                                            </small>
+
+                                        </span>
+
+                                    </label>
+
+                                </div>
+
+
+                                <!-- DAVIPLATA -->
+
+                                <div class="payment-method">
+
+                                    <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="metodoPago"
+                                        id="daviplata"
+                                        value="daviplata"
+                                    >
+
+                                    <label
+                                        for="daviplata"
+                                        class="payment-method__label"
+                                    >
+
+                                        <i class="bi bi-wallet2"></i>
+
+                                        <span>
+
+                                            <strong>
+                                                Daviplata
+                                            </strong>
+
+                                            <small>
+                                                Pago desde tu celular
+                                            </small>
+
+                                        </span>
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- =================================
+                                 DATOS DE TARJETA
+                                 ================================= -->
+
+                            <form id="pago-form">
+
+
+                                <div class="mb-3">
+
+                                    <label
+                                        for="numero-tarjeta"
+                                        class="form-label"
+                                    >
+                                        Número de tarjeta
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="numero-tarjeta"
+                                        placeholder="0000 0000 0000 0000"
+                                        maxlength="19"
+                                    >
+
+                                </div>
+
+
+                                <div class="row">
+
+                                    <div class="col-6 mb-3">
+
+                                        <label
+                                            for="vencimiento"
+                                            class="form-label"
+                                        >
+                                            Vencimiento
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="vencimiento"
+                                            placeholder="MM/AA"
+                                            maxlength="5"
+                                        >
+
+                                    </div>
+
+
+                                    <div class="col-6 mb-3">
+
+                                        <label
+                                            for="cvv"
+                                            class="form-label"
+                                        >
+                                            CVV
+                                        </label>
+
+                                        <input
+                                            type="password"
+                                            class="form-control"
+                                            id="cvv"
+                                            placeholder="123"
+                                            maxlength="4"
+                                        >
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- TITULAR -->
+
+                                <div class="mb-4">
+
+                                    <label
+                                        for="nombre-titular"
+                                        class="form-label"
+                                    >
+                                        Nombre del titular
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="nombre-titular"
+                                        placeholder="Nombre completo"
+                                    >
+
+                                </div>
+
+
+                                <!-- TOTAL -->
+
+                                <div class="payment-total">
+
+                                    <span>
+                                        Total a pagar
+                                    </span>
+
+                                    <strong>
+                                        $80.000
+                                    </strong>
+
+                                </div>
+
+
+                                <!-- BOTÓN -->
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary w-100 payment-button"
+                                >
+
+                                    <i class="bi bi-lock-fill"></i>
+
+                                    Confirmar y pagar
+
+                                </button>
+
+
+                                <!-- ESTADO -->
+
+                                <p
+                                    id="pago-status"
+                                    class="payment-status"
+                                ></p>
+
+
+                            </form>
+
+
+                            <!-- SEGURIDAD -->
+
+                            <div class="payment-security">
+
+                                <i class="bi bi-shield-check"></i>
+
+                                <div>
+
+                                    <strong>
+                                        Pago seguro
+                                    </strong>
+
+                                    <span>
+                                        Tus datos están protegidos.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+         ========================================= -->
+
     <footer>
 
         <mi-footer></mi-footer>

@@ -50,9 +50,6 @@ class MiFooter extends HTMLElement {
                         Medellín, Colombia
                     </p>
                 </div>
-                <a href="catalogo.html" class="btn btn-warning mt-2 fw-semibold">
-                    Reserva ahora
-                </a>
             </div>
         </div>
         <hr class="footer-divider my-4">

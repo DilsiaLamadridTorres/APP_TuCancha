@@ -28,7 +28,7 @@ try {
                     }`,
                     calificacion: "Nueva",
                     precio: cancha.precioPorHora || null,
-                    imagen: cancha.fotos?.[0] || "https://via.placeholder.com/400x250?text=TuCancha",
+                    imagen: cancha.fotos?.[0] || "../img/foto.canchas.jpg",
                     publicada: true,
                     solicitudId: cancha.solicitudId
                 }));

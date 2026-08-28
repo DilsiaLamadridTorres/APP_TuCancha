@@ -740,26 +740,6 @@
             </div>
 
 
-
-            <!-- =================================================
-                 INICIO TRABAJO DILSIA
-
-                 RESPONSABLE: DILSIA
-
-                 Esta sección queda preparada para desarrollar:
-
-                 - Selección de fecha.
-                 - Horarios disponibles.
-                 - Horarios reservados.
-                 - Horario seleccionado.
-                 - Resumen de la reserva.
-                 - Botón continuar.
-
-                 IMPORTANTE:
-                 No cambiar los ID definidos porque luego
-                 podrán ser utilizados desde JavaScript.
-                 ================================================= -->
-
         <section class="agenda">
             <h2>Semana del <span id="fecha-inicio"></span> al <span id="fecha-fin"></span></h2>
             <div class="navegacion-semana">
@@ -776,11 +756,11 @@
         </div>
 
         <div class="etiquetas">
-            <button class="Disponible"></button>
+            <button type="button" class="Disponible" aria-label="Disponible" title="Disponible"></button>
             <span>Disponible</span>
-            <button class="Reservado"></button>
+            <button type="button" class="Reservado" aria-label="Reservado" title="Reservado"></button>
             <span>Reservado</span>
-            <button class="tu_seleccion"></button>
+            <button type="button" class="tu_seleccion" aria-label="Tu selección" title="Tu selección"></button>
             <span>Tu selección</span>
         </div>
 
@@ -799,19 +779,7 @@
 
             <p>Horario:<span id="horario-reserva"></span></p>
 
-        </section>
-
-        <button class="reservar">
-            Reservar</button>
-        </section>
-
-
-            <!-- =================================================
-                 FIN TRABAJO DILSIA
-                 ================================================= -->
-
-
-        </section>
+       </section>
 
         <footer>
             <mi-footer></mi-footer>

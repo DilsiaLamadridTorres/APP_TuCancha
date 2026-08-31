@@ -1,5 +1,5 @@
 // 1. Importación del array exportado desde lista-canchas.js
-import { canchas } from '../admin/lista-canchas.js';
+import { canchas } from '../complejos/lista-canchas.js';
 
 // ============================================================
 // CANCHAS PUBLICADAS DESDE EL DASHBOARD ADMINISTRATIVO

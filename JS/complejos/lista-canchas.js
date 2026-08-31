@@ -59,7 +59,7 @@ export let canchas = [{
     nombre: "Cancha los Millo",
     empresa: "Asociacion deportiva",
     ubicacion: "San Antonio de Pereira",
-    calificacion: 5,
+    calificacion: 4.7,
     precio: 85000,
     imagen: "https://images.unsplash.com/photo-1602432141202-e8b683524997?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 },
@@ -95,7 +95,7 @@ export let canchas = [{
     nombre: "Cancha Rola FC",
     empresa: "TuCancha",
     ubicacion: "Bogotá",
-    calificacion: 5,
+    calificacion: 4.6,
     precio: 135000,
     descripcion:"Esta es una cancha de prueba nueva que se usa para ver los cambios dinamicos en las cards",
     imagen: "https://images.unsplash.com/photo-1510526292299-20af3f62d453?q=80&w=1128&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

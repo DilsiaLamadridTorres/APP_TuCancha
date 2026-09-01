@@ -717,7 +717,7 @@
         </section>
 
         <!-- =====================================================
-             ELEGÍ TU TURNO
+             ESCOGER TURNO POR FECHA Y HORA
              ===================================================== -->
 
         <section class="venue-container reservation-section" id="elegi-tu-turno">
@@ -748,21 +748,18 @@
         </div>
 
         <div class="turnos_disponibles">
-            <h2>Turnos disponibles: <span>0</span></h2>
+            <h2>Turnos disponibles: <span id="cantidad-turnos">0</span></h2>
         </div>
-
-        <div class="canchas_disponibles">
-            <h2>Canchas disponibles: <span>0</span></h2>
-        </div>
-
-        <div class="etiquetas">
-            <button type="button" class="Disponible" aria-label="Disponible" title="Disponible"></button>
+       
+       <div class="etiquetas">
+            <button class="Disponible"></button>
             <span>Disponible</span>
-            <button type="button" class="Reservado" aria-label="Reservado" title="Reservado"></button>
+            <button class="Reservado"></button>
             <span>Reservado</span>
-            <button type="button" class="tu_seleccion" aria-label="Tu selección" title="Tu selección"></button>
+            <button class="tu_seleccion"></button>
             <span>Tu selección</span>
         </div>
+
 
         <div class="fechas-lista" id="fechas">
         </div>
@@ -778,6 +775,13 @@
             <p> Fecha: <span id="fecha-reserva"></span></p>
 
             <p>Horario:<span id="horario-reserva"></span></p>
+
+               </section>
+
+        <button class="reservar">
+            Reservar</button>
+        </section>
+
 
        </section>
 

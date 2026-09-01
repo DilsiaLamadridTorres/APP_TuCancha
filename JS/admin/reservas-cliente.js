@@ -1,132 +1,88 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const panelDetalle = document.getElementById("panel-detalle");
-  const btnCerrar = panelDetalle ? panelDetalle.querySelector(".btn-cerrar") : null;
   const contenedorProximas = document.getElementById("contenedor-proximas");
+  const panelDetalle = document.getElementById("panel-detalle");
+  const btnCerrarDetalle = document.querySelector(".btn-cerrar");
 
-  // Ocultar el panel lateral por defecto
-  if (panelDetalle) {
-    panelDetalle.style.display = "none";
-  }
+  // 1. Cargar el usuario logueado actual desde sessionStorage (o localStorage como respaldo)
+  const usuarioLogueadoStr = sessionStorage.getItem("usuario") || localStorage.getItem("usuario_logueado") || localStorage.getItem("usuario");
+  const usuarioActual = usuarioLogueadoStr ? JSON.parse(usuarioLogueadoStr) : null;
+  
+  // Extraer el nombre real del usuario (compatible con Supabase o estructura personalizada)
+  const nombreUsuarioReal = usuarioActual?.nombre || usuarioActual?.correo || "Cliente";
 
-  // -----------------------------------------------------------
-  // 1. Obtener y actualizar datos del USUARIO LOGUEADO
-  // -----------------------------------------------------------
-  const usuarioGuardado = 
-    sessionStorage.getItem("usuario_logueado") || 
-    localStorage.getItem("usuario_logueado") || 
-    localStorage.getItem("usuario");
+  // 2. Cargar la lista completa de reservas desde LocalStorage ("mis_reservas")
+  const reservasGuardadas = localStorage.getItem("mis_reservas");
+  const misReservas = reservasGuardadas ? JSON.parse(reservasGuardadas) : [];
 
-  let usuarioActual = { nombre: "Usuario" };
-
-  if (usuarioGuardado) {
-    try {
-      usuarioActual = JSON.parse(usuarioGuardado);
-    } catch (e) {
-      // Por si el storage solo guardó un string plano con el nombre
-      usuarioActual = { nombre: usuarioGuardado };
-    }
-  }
-
-  // Nombre completo o primer nombre
-  const nombreMostrar = usuarioActual.nombre 
-    ? `${usuarioActual.nombre} ${usuarioActual.apellido || ''}`.trim() 
-    : "Usuario";
-
-  // Actualizar el saludo en la Navbar si existe la etiqueta
-  const elementoSaludo = document.querySelector(".user-info span:last-child") || document.querySelector(".user-name");
-  if (elementoSaludo) {
-    elementoSaludo.textContent = `Hola, ${usuarioActual.nombre || 'Usuario'}`;
-  }
-
-  // -----------------------------------------------------------
-  // 2. Obtener la reserva guardada desde localStorage
-  // -----------------------------------------------------------
-  const reservaGuardada = 
-    localStorage.getItem("reserva_realizada") || 
-    localStorage.getItem("reserva_actual") || 
-    localStorage.getItem("cancha_seleccionada");
-
-  if (!reservaGuardada) {
+  if (misReservas.length === 0) {
     if (contenedorProximas) {
-      contenedorProximas.innerHTML = `<p style="color: var(--text-muted); padding: 10px;">No tienes reservas activas en este momento.</p>`;
+      contenedorProximas.innerHTML = `
+        <div style="padding: 20px; text-align: center; color: #aaa; background: #181c24; border-radius: 8px;">
+          <p>No tienes reservas activas en este momento.</p>
+        </div>
+      `;
     }
+    if (panelDetalle) panelDetalle.style.display = "none";
     return;
   }
 
-  const reserva = JSON.parse(reservaGuardada);
+  // 3. Actualizar contadores superiores con el número total de reservas
+  const spanTodas = document.querySelector(".btn-filtro.active span");
+  const spanProximas = document.querySelectorAll(".btn-filtro span")[1];
+  const totalReservasStr = misReservas.length.toString();
+  if (spanTodas) spanTodas.textContent = totalReservasStr;
+  if (spanProximas) spanProximas.textContent = totalReservasStr;
 
-  // -----------------------------------------------------------
-  // 3. Renderizar únicamente la tarjeta de la reserva
-  // -----------------------------------------------------------
+  // 4. Pintar todas las tarjetas dinámicamente en la izquierda
   if (contenedorProximas) {
-    contenedorProximas.innerHTML = "";
+    contenedorProximas.innerHTML = ""; // Limpiar contenedor
+    
+    misReservas.forEach((reserva, index) => {
+      const tarjetaHTML = `
+        <div class="tarjeta-reserva" style="background: #181c24; border: 1px solid #2a2f3a; border-radius: 8px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; gap: 15px;">
+          <img src="${reserva.imagen || ''}" alt="${reserva.nombre || 'Cancha'}" style="width: 100px; height: 70px; object-fit: cover; border-radius: 6px;">
+          
+          <div style="flex: 1;">
+            <h3 style="margin: 0 0 5px 0; color: #fff; font-size: 1.1rem;">${reserva.nombre || 'Cancha Deportiva'}</h3>
+            <p style="margin: 0; color: #aaa; font-size: 0.85rem;">📍 ${reserva.ubicacion || 'Ubicación no especificada'}</p>
+            <small style="color: #107c41; font-weight: bold;">📅 ${reserva.fecha || ''} - ⏰ ${reserva.hora || ''} (${reserva.duracion || ''})</small>
+          </div>
 
-    const nombreCancha = reserva.nombre || reserva.nombreCancha || "Cancha Reservada";
-    const ubicacion = reserva.ubicacion || reserva.ciudad || "Ubicación no disponible";
-    const fecha = reserva.fecha || reserva.fechaReserva || "Fecha pendiente";
-    const hora = reserva.hora || reserva.horaReserva || "";
-    const imagen = reserva.imagen || reserva.img || reserva.foto || "https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg";
-
-    const tarjeta = document.createElement("div");
-    tarjeta.className = "tarjeta-reserva";
-
-    tarjeta.innerHTML = `
-      <div style="display: flex; gap: 15px; align-items: center;">
-        <img src="${imagen}" alt="${nombreCancha}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 6px;">
-        <div>
-          <h3 style="margin: 0 0 5px 0; color: var(--color-blanco-secundario);">${nombreCancha}</h3>
-          <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem;">📍 ${ubicacion} | 📅 ${fecha} ${hora ? '(' + hora + ')' : ''}</p>
+          <button class="btn-ver-reserva" data-index="${index}" style="background: #2a2f3a; color: #fff; border: 1px solid #444; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold;">
+            Ver reserva
+          </button>
         </div>
-      </div>
-      <button class="btn-ver-reserva">Ver reserva</button>
-    `;
-
-    tarjeta.querySelector(".btn-ver-reserva").addEventListener("click", () => {
-      mostrarDetalleReserva(reserva);
+      `;
+      contenedorProximas.innerHTML += tarjetaHTML;
     });
-
-    contenedorProximas.appendChild(tarjeta);
   }
 
-  // -----------------------------------------------------------
-  // 4. Mostrar panel derecho con datos de reserva y del usuario
-  // -----------------------------------------------------------
-  function mostrarDetalleReserva(datos) {
+  // 5. Función para mapear los datos específicos de una reserva y del usuario al panel lateral
+  function mostrarDetalleReserva(reserva) {
     if (!panelDetalle) return;
 
-    const elementos = panelDetalle.querySelectorAll("[data-field]");
+    const elementosDinamicos = panelDetalle.querySelectorAll("[data-field]");
 
-    elementos.forEach((el) => {
-      const campo = el.getAttribute("data-field");
+    elementosDinamicos.forEach((elemento) => {
+      const campo = elemento.getAttribute("data-field");
+
+      let valor = reserva[campo];
       
-      let valor = datos[campo];
-
-      // Caso especial: Campo "usuario" o "Reserva para"
-      if (campo === "usuario") {
-        valor = nombreMostrar;
-      }
-
-      // Mapeo de respaldos para campos de reserva
-      if (valor === undefined || valor === null) {
-        if (campo === "imagen") valor = datos.img || datos.foto;
-        if (campo === "nombre") valor = datos.nombreCancha;
-        if (campo === "ubicacion") valor = datos.ciudad;
-        if (campo === "fecha") valor = datos.fechaReserva;
-        if (campo === "hora") valor = datos.horaReserva;
-        if (campo === "id") valor = datos.idReserva || datos.numeroReserva || "RES-" + Math.floor(1000 + Math.random() * 9000);
+      // Si el HTML solicita el cliente, usuario o nombre del titular, inyectamos el nombre real del logueado
+      if (campo === "usuario" || campo === "cliente" || campo === "nombreUsuario") {
+        valor = reserva.cliente || nombreUsuarioReal;
+      } else if (campo === "id") {
+        valor = reserva.idReserva || reserva.id;
       }
 
       if (valor !== undefined && valor !== null) {
-        if (el.tagName === "IMG") {
-          el.src = valor;
-          el.alt = datos.nombre || "Imagen de la cancha";
+        if (elemento.tagName === "IMG") {
+          elemento.src = valor;
+          elemento.alt = reserva.nombre;
         } else if (campo === "precio") {
-          const precioNum = Number(valor);
-          el.textContent = isNaN(precioNum)
-            ? valor
-            : `$ ${precioNum.toLocaleString("es-CO")} COP`;
+          elemento.textContent = `$ ${Number(valor).toLocaleString("es-CO")} COP`;
         } else {
-          el.textContent = valor;
+          elemento.textContent = valor;
         }
       }
     });
@@ -134,10 +90,23 @@ document.addEventListener("DOMContentLoaded", () => {
     panelDetalle.style.display = "block";
   }
 
-  // 5. Cerrar panel con la 'X'
-  if (btnCerrar) {
-    btnCerrar.addEventListener("click", () => {
+  // 6. Asignar eventos a cada botón "Ver reserva" generado
+  const botonesVer = document.querySelectorAll(".btn-ver-reserva");
+  botonesVer.forEach((boton) => {
+    boton.addEventListener("click", (e) => {
+      const index = e.currentTarget.getAttribute("data-index");
+      mostrarDetalleReserva(misReservas[index]);
+    });
+  });
+
+  if (btnCerrarDetalle) {
+    btnCerrarDetalle.addEventListener("click", () => {
       panelDetalle.style.display = "none";
     });
+  }
+
+  // Abrir por defecto el panel lateral con la información de la primera reserva de la lista
+  if (misReservas.length > 0) {
+    mostrarDetalleReserva(misReservas[0]);
   }
 });

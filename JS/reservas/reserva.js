@@ -347,7 +347,9 @@ botonReservar.addEventListener("click", () => {
         ubicacion:cancha.ubicacion,
         imagen:cancha.imagen,
         fecha: fechaSeleccionada.toLocaleDateString("es-CO"),
-        horario: horarioSeleccionado
+        horario: horarioSeleccionado,
+        duracion: "1 hora",          
+        jugadores: "10 jugadores"
     };
 
     localStorage.setItem("reserva_seleccionada", JSON.stringify(reserva));

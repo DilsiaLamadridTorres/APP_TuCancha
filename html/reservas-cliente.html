@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Reservas - TuCancha</title>
+  <link rel="stylesheet" href="../css/reservas-cliente.css"> <!-- Ajusta la ruta a tu CSS si es diferente -->
+</head>
+<body>
+
+
+
+  <!-- Contenido Principal -->
+  <main class="contenedor-reservas" style="display: flex; gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto;">
+    
+    <!-- Sección Izquierda: Lista de Reservas -->
+    <section class="seccion-mis-reservas" style="flex: 1;">
+      <h1>Mis reservas</h1>
+      <p>Consulta y administra todas tus reservas en un solo lugar.</p>
+
+      <!-- Botones de Filtro -->
+      <div class="filtros-reservas" style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button class="btn-filtro active">Todas <span>0</span></button>
+        <button class="btn-filtro">Próximas <span>0</span></button>
+        <button class="btn-filtro">Completadas <span>0</span></button>
+        <button class="btn-filtro">Canceladas <span>0</span></button>
+      </div>
+
+      <!-- Selector de Orden -->
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
+        <select class="select-orden">
+          <option value="proximas">Próximas fechas</option>
+          <option value="antiguas">Fechas anteriores</option>
+        </select>
+      </div>
+
+      <!-- Contenedor donde JS inyectará las tarjetas de reservas -->
+      <div class="lista-reservas-contenedor">
+        <h2>Próximas reservas</h2>
+        <div id="contenedor-proximas">
+          <!-- El script reservas-cliente.js insertará aquí las tarjetas con el botón 'Ver reserva' -->
+        </div>
+
+        <h2>Reservas anteriores</h2>
+        <div id="contenedor-anteriores"></div>
+      </div>
+    </section>
+
+    <!-- Sección Derecha: Panel de Detalle (Oculto por defecto mediante style="display: none;") -->
+    <aside class="detalle-reserva" id="panel-detalle" style="display: none; width: 350px; background: #181c24; padding: 20px; border-radius: 10px; height: fit-content; border: 1px solid #2a2f3a;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 style="margin: 0; color: #fff;">Detalle de la reserva</h3>
+        <button class="btn-cerrar" style="background: transparent; border: 1px solid #555; color: #fff; border-radius: 4px; cursor: pointer; padding: 2px 8px;">✕</button>
+      </div>
+
+      <!-- Imagen de la Cancha -->
+      <img data-field="imagen" src="" alt="Cancha" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">
+      
+      <span data-field="estado" class="badge-estado" style="background: #107c41; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px;">Confirmada</span>
+
+      <h2 data-field="nombre" style="margin: 5px 0; color: #fff;">--</h2>
+      <p style="color: #aaa; margin: 0 0 15px 0;">📍 <span data-field="ubicacion">--</span></p>
+
+      <!-- Resumen de Fecha y Precio -->
+      <div style="background: #0f1217; padding: 12px; border-radius: 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+        <div>
+          <small style="color: #888;">Fecha</small>
+          <div data-field="fecha" style="color: #fff; font-weight: bold;">--</div>
+        </div>
+        <div>
+          <small style="color: #888;">Hora</small>
+          <div data-field="hora" style="color: #fff; font-weight: bold;">--</div>
+        </div>
+        <div>
+          <small style="color: #888;">Duración</small>
+          <div data-field="duracion" style="color: #fff; font-weight: bold;">--</div>
+        </div>
+        <div>
+          <small style="color: #888;">Precio total</small>
+          <div data-field="precio" style="color: #f95700; font-weight: bold;">$ 0 COP</div>
+        </div>
+      </div>
+
+      <!-- Información Complementaria -->
+      <h4 style="color: #fff; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">Información de la reserva</h4>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #ccc; font-size: 0.9rem;">
+        <span>Número de reserva</span>
+        <strong data-field="id" style="color: #fff;">--</strong>
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #ccc; font-size: 0.9rem;">
+        <span>Reserva para</span>
+        <strong data-field="usuario" style="color: #fff;">Julián</strong>
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #ccc; font-size: 0.9rem;">
+        <span>Método de pago</span>
+        <strong data-field="metodoPago" style="color: #fff;">Tarjeta / Efectivo</strong>
+      </div>
+
+      <!-- Botón de Acción -->
+      <button class="btn-modificar" style="width: 100%; background: #f95700; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px;">
+        ✏️ Modificar reserva
+      </button>
+    </aside>
+
+  </main>
+
+  <!-- Inclusión del script correspondiente -->
+  <script src="../JS/admin/reservas-cliente.js"></script>
+</body>
+</html>

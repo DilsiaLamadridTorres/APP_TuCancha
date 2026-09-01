@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 5. Función para mapear los datos específicos de una reserva y del usuario al panel lateral
+  // 5. Función para mapear los datos específicos de una reserva al panel lateral
   function mostrarDetalleReserva(reserva) {
     if (!panelDetalle) return;
 
@@ -68,11 +69,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let valor = reserva[campo];
       
-      // Si el HTML solicita el cliente, usuario o nombre del titular, inyectamos el nombre real del logueado
+      // Mapear campos especiales y asegurar nombres alternativos
       if (campo === "usuario" || campo === "cliente" || campo === "nombreUsuario") {
         valor = reserva.cliente || nombreUsuarioReal;
       } else if (campo === "id") {
         valor = reserva.idReserva || reserva.id;
+      } else if (campo === "hora" || campo === "horario") {
+        // Busca en cualquiera de las propiedades donde pueda venir la hora de la cancha
+        valor = reserva.hora || reserva.horario || reserva.time;
       }
 
       if (valor !== undefined && valor !== null) {

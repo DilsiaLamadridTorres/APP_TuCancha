@@ -5,6 +5,7 @@ export let canchas = [{
     ubicacion: "Medellin calle siempre viva",
     calificacion: 4.8,
     precio: 80000,
+    disponible: true,
     descripcion:"Complejo deportivo ubicado en Medellín con espacios preparados para partidos de fútbol, encuentros entre amigos y eventos deportivos. Cuenta con iluminación, zonas de descanso y diferentes servicios para mejorar la experiencia de los jugadores.",
     imagen: "https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg"
 
@@ -16,6 +17,8 @@ export let canchas = [{
     ubicacion: "Bogotá",
     calificacion: 4.6,
     precio: 75000,
+     disponible: true,
+      descripcion:"Complejo deportivo ubicado en Medellín con espacios preparados para partidos de fútbol, encuentros entre amigos y eventos deportivos. Cuenta con iluminación, zonas de descanso y diferentes servicios para mejorar la experiencia de los jugadores.",
     imagen: "https://images.unsplash.com/photo-1543351611-58f69d7c1781?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 },
 {
@@ -25,6 +28,8 @@ export let canchas = [{
     ubicacion: "Pereira",
     calificacion: 4.5,
     precio: 60000,
+     disponible: true,
+      descripcion:"Complejo deportivo ubicado en Medellín con espacios preparados para partidos de fútbol, encuentros entre amigos y eventos deportivos. Cuenta con iluminación, zonas de descanso y diferentes servicios para mejorar la experiencia de los jugadores.",
     imagen: "https://images.unsplash.com/photo-1487466365202-1afdb86c764e?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 },
 {
@@ -34,6 +39,8 @@ export let canchas = [{
     ubicacion: "Barranquilla",
     calificacion: 4.9,
     precio: 79000,
+     disponible: true,
+      descripcion:"Complejo deportivo ubicado en Medellín con espacios preparados para partidos de fútbol, encuentros entre amigos y eventos deportivos. Cuenta con iluminación, zonas de descanso y diferentes servicios para mejorar la experiencia de los jugadores.",
     imagen: "https://images.unsplash.com/photo-1607414721186-5309963d7b52?q=80&w=736&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 },
 {
@@ -43,6 +50,8 @@ export let canchas = [{
     ubicacion: "Medellin",
     calificacion: 3.8,
     precio: 75000,
+     disponible: true,
+      descripcion:"Complejo deportivo ubicado en Medellín con espacios preparados para partidos de fútbol, encuentros entre amigos y eventos deportivos. Cuenta con iluminación, zonas de descanso y diferentes servicios para mejorar la experiencia de los jugadores.",
     imagen: "https://images.unsplash.com/photo-1676746424139-77f8bd8922a8?q=80&w=736&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 },
 {
@@ -52,6 +61,8 @@ export let canchas = [{
     ubicacion: "Medellin calle siempre viva",
     calificacion: 4.8,
     precio: 80000,
+     disponible: true,
+      descripcion:"Complejo deportivo ubicado en Medellín con espacios preparados para partidos de fútbol, encuentros entre amigos y eventos deportivos. Cuenta con iluminación, zonas de descanso y diferentes servicios para mejorar la experiencia de los jugadores.",
     imagen: "https://plus.unsplash.com/premium_photo-1663948061665-34c2b6d42381?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 },
 {
@@ -59,8 +70,10 @@ export let canchas = [{
     nombre: "Cancha los Millo",
     empresa: "Asociacion deportiva",
     ubicacion: "San Antonio de Pereira",
-    calificacion: 5,
+    calificacion: 4.7,
     precio: 85000,
+     disponible: true,
+      descripcion:"Complejo deportivo ubicado en Medellín con espacios preparados para partidos de fútbol, encuentros entre amigos y eventos deportivos. Cuenta con iluminación, zonas de descanso y diferentes servicios para mejorar la experiencia de los jugadores.",
     imagen: "https://images.unsplash.com/photo-1602432141202-e8b683524997?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 },
 {
@@ -70,6 +83,8 @@ export let canchas = [{
     ubicacion: "Guarne",
     calificacion: 4.7,
     precio: 82000,
+     disponible: true,
+      descripcion:"Complejo deportivo ubicado en Medellín con espacios preparados para partidos de fútbol, encuentros entre amigos y eventos deportivos. Cuenta con iluminación, zonas de descanso y diferentes servicios para mejorar la experiencia de los jugadores.",
     imagen: "https://images.unsplash.com/photo-1546717003-caee5f93a9db?q=80&w=1078&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 },
 {
@@ -79,6 +94,8 @@ export let canchas = [{
     ubicacion: "Vereda carmín",
     calificacion: 4.8,
     precio: 80000,
+     disponible: true,
+      descripcion:"Complejo deportivo ubicado en Medellín con espacios preparados para partidos de fútbol, encuentros entre amigos y eventos deportivos. Cuenta con iluminación, zonas de descanso y diferentes servicios para mejorar la experiencia de los jugadores.",
     imagen: "https://images.unsplash.com/photo-1632684363781-c82fe0e357c8?q=80&w=718&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 },
 {
@@ -88,6 +105,8 @@ export let canchas = [{
     ubicacion: "Medellin, Castilla",
     calificacion: 4.3,
     precio: 80000,
+     disponible: true,
+      descripcion:"Complejo deportivo ubicado en Medellín con espacios preparados para partidos de fútbol, encuentros entre amigos y eventos deportivos. Cuenta con iluminación, zonas de descanso y diferentes servicios para mejorar la experiencia de los jugadores.",
     imagen: "https://images.unsplash.com/photo-1510526292299-20af3f62d453?q=80&w=1128&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 },
 {
@@ -95,8 +114,9 @@ export let canchas = [{
     nombre: "Cancha Rola FC",
     empresa: "TuCancha",
     ubicacion: "Bogotá",
-    calificacion: 5,
+    calificacion: 4.6,
     precio: 135000,
+     disponible: true,
     descripcion:"Esta es una cancha de prueba nueva que se usa para ver los cambios dinamicos en las cards",
     imagen: "https://images.unsplash.com/photo-1510526292299-20af3f62d453?q=80&w=1128&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }

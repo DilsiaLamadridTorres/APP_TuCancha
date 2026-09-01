@@ -36,6 +36,7 @@ const idCancha = parametros.get("id");
 
 const fechas = document.getElementById("fechas");
 const turnos = document.getElementById("turnos");
+const cantidadTurnos = document.getElementById("cantidad-turnos");
 const fechaReserva = document.getElementById("fecha-reserva");
 const horarioReserva = document.getElementById("horario-reserva");
 const detalleCancha = document.getElementById("detalle-cancha");
@@ -83,6 +84,8 @@ const horariosOcupados = [
     "13:00",
     "17:00"
 ];
+
+cantidadTurnos.textContent = horarios.length - horariosOcupados.length;
 
 function obtenerLunes(fecha) {
     const lunes = new Date(fecha);

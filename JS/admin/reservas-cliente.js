@@ -8,8 +8,39 @@ document.addEventListener("DOMContentLoaded", () => {
     panelDetalle.style.display = "none";
   }
 
-  // 1. Intentar obtener la reserva recién hecha desde el localStorage
-  // Revisa estas claves en el orden en que suelen guardarse al pagar/reservar
+  // -----------------------------------------------------------
+  // 1. Obtener y actualizar datos del USUARIO LOGUEADO
+  // -----------------------------------------------------------
+  const usuarioGuardado = 
+    sessionStorage.getItem("usuario_logueado") || 
+    localStorage.getItem("usuario_logueado") || 
+    localStorage.getItem("usuario");
+
+  let usuarioActual = { nombre: "Usuario" };
+
+  if (usuarioGuardado) {
+    try {
+      usuarioActual = JSON.parse(usuarioGuardado);
+    } catch (e) {
+      // Por si el storage solo guardó un string plano con el nombre
+      usuarioActual = { nombre: usuarioGuardado };
+    }
+  }
+
+  // Nombre completo o primer nombre
+  const nombreMostrar = usuarioActual.nombre 
+    ? `${usuarioActual.nombre} ${usuarioActual.apellido || ''}`.trim() 
+    : "Usuario";
+
+  // Actualizar el saludo en la Navbar si existe la etiqueta
+  const elementoSaludo = document.querySelector(".user-info span:last-child") || document.querySelector(".user-name");
+  if (elementoSaludo) {
+    elementoSaludo.textContent = `Hola, ${usuarioActual.nombre || 'Usuario'}`;
+  }
+
+  // -----------------------------------------------------------
+  // 2. Obtener la reserva guardada desde localStorage
+  // -----------------------------------------------------------
   const reservaGuardada = 
     localStorage.getItem("reserva_realizada") || 
     localStorage.getItem("reserva_actual") || 
@@ -22,35 +53,34 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Parsear el objeto real de localStorage
   const reserva = JSON.parse(reservaGuardada);
 
-  // 2. Renderizar únicamente la reserva realizada en la sección izquierda
+  // -----------------------------------------------------------
+  // 3. Renderizar únicamente la tarjeta de la reserva
+  // -----------------------------------------------------------
   if (contenedorProximas) {
-    contenedorProximas.innerHTML = ""; // Limpia texto por defecto
+    contenedorProximas.innerHTML = "";
 
-    const tarjeta = document.createElement("div");
-    tarjeta.className = "tarjeta-reserva";
-
-    // Normalización de campos por si variaron en el formulario de pago/reserva
-    const nombre = reserva.nombre || reserva.nombreCancha || "Cancha Reservada";
+    const nombreCancha = reserva.nombre || reserva.nombreCancha || "Cancha Reservada";
     const ubicacion = reserva.ubicacion || reserva.ciudad || "Ubicación no disponible";
     const fecha = reserva.fecha || reserva.fechaReserva || "Fecha pendiente";
     const hora = reserva.hora || reserva.horaReserva || "";
     const imagen = reserva.imagen || reserva.img || reserva.foto || "https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg";
 
+    const tarjeta = document.createElement("div");
+    tarjeta.className = "tarjeta-reserva";
+
     tarjeta.innerHTML = `
       <div style="display: flex; gap: 15px; align-items: center;">
-        <img src="${imagen}" alt="${nombre}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 6px;">
+        <img src="${imagen}" alt="${nombreCancha}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 6px;">
         <div>
-          <h3 style="margin: 0 0 5px 0; color: var(--color-blanco-secundario);">${nombre}</h3>
+          <h3 style="margin: 0 0 5px 0; color: var(--color-blanco-secundario);">${nombreCancha}</h3>
           <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem;">📍 ${ubicacion} | 📅 ${fecha} ${hora ? '(' + hora + ')' : ''}</p>
         </div>
       </div>
       <button class="btn-ver-reserva">Ver reserva</button>
     `;
 
-    // Evento de clic para abrir el panel con la información real
     tarjeta.querySelector(".btn-ver-reserva").addEventListener("click", () => {
       mostrarDetalleReserva(reserva);
     });
@@ -58,7 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
     contenedorProximas.appendChild(tarjeta);
   }
 
-  // 3. Función para volcar todos los datos reales en el panel lateral de detalle
+  // -----------------------------------------------------------
+  // 4. Mostrar panel derecho con datos de reserva y del usuario
+  // -----------------------------------------------------------
   function mostrarDetalleReserva(datos) {
     if (!panelDetalle) return;
 
@@ -67,8 +99,14 @@ document.addEventListener("DOMContentLoaded", () => {
     elementos.forEach((el) => {
       const campo = el.getAttribute("data-field");
       
-      // Buscar el valor directamente en el objeto o sus alias comunes
       let valor = datos[campo];
+
+      // Caso especial: Campo "usuario" o "Reserva para"
+      if (campo === "usuario") {
+        valor = nombreMostrar;
+      }
+
+      // Mapeo de respaldos para campos de reserva
       if (valor === undefined || valor === null) {
         if (campo === "imagen") valor = datos.img || datos.foto;
         if (campo === "nombre") valor = datos.nombreCancha;
@@ -96,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     panelDetalle.style.display = "block";
   }
 
-  // 4. Cerrar el panel al pulsar 'X'
+  // 5. Cerrar panel con la 'X'
   if (btnCerrar) {
     btnCerrar.addEventListener("click", () => {
       panelDetalle.style.display = "none";

@@ -5,48 +5,29 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Panel Administrativo | TuCancha</title>
 
 
     <!-- Favicon -->
-    <link
-        rel="icon"
-        type="image/png"
-        href="../../img/logo/logo corto.png"
-    >
+    <link rel="icon" type="image/png" href="../../img/logo/logo corto.png">
 
 
     <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
     <!-- Bootstrap Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-    >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 
     <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
     <!-- CSS del panel administrativo -->
-    <link
-        rel="stylesheet"
-        href="../../css/admin/inicio-admin.css"
-    >
+    <link rel="stylesheet" href="../../css/admin/inicio-admin.css">
 
 </head>
 
@@ -74,11 +55,7 @@
 
             <div class="sidebar-brand">
 
-                <img
-                    src="../../img/logo/Logo.png"
-                    alt="Logo TuCancha"
-                    class="sidebar-logo"
-                >
+                <img src="../../img/logo/Logo.png" alt="Logo TuCancha" class="sidebar-logo">
 
 
                 <div class="sidebar-brand-text">
@@ -106,10 +83,7 @@
 
                 <!-- Inicio -->
 
-                <a
-                    href="inicio-admin.html"
-                    class="sidebar-link active"
-                >
+                <a href="inicio-admin.html" class="sidebar-link active">
 
                     <i class="bi bi-house-door-fill"></i>
 
@@ -123,10 +97,7 @@
 
                 <!-- Solicitudes -->
 
-                <a
-                    href="../dashboard_admin.html"
-                    class="sidebar-link"
-                >
+                <a href="../dashboard_admin.html" class="sidebar-link">
 
                     <i class="bi bi-file-earmark-text"></i>
 
@@ -175,11 +146,7 @@
 
                 <!-- Cerrar sesión -->
 
-                <button
-                    type="button"
-                    class="btn-logout"
-                    id="btnLogout"
-                >
+                <button type="button" class="btn-logout" id="btnLogout">
 
                     <i class="bi bi-box-arrow-right"></i>
 
@@ -204,6 +171,43 @@
         <main class="admin-main">
 
 
+            <!-- =====================================================
+     ENCABEZADO DEL PANEL
+     ===================================================== -->
+
+            <section class="admin-header">
+
+
+                <!-- Saludo -->
+
+                <div class="admin-header-info">
+
+                    <h1>
+                        Hola, Administrador
+                    </h1>
+
+                    <p>
+                        Desde aquí puedes acceder a las diferentes secciones del panel.
+                    </p>
+
+                </div>
+
+
+                <!-- Fecha -->
+
+                <div class="admin-date">
+
+                    <i class="bi bi-calendar3"></i>
+
+                    <span id="adminCurrentDate">
+                        Lunes, 1 de septiembre de 2026
+                    </span>
+
+                </div>
+
+
+            </section>
+
             <!--
 
                 - Saludo al administrador
@@ -221,9 +225,7 @@
 
 
     <!-- Bootstrap JS -->
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 
 </body>

@@ -43,11 +43,8 @@ a {
    ========================================================= */
 
 .admin-layout {
+    width: 100%;
     min-height: 100vh;
-
-    display: grid;
-
-    grid-template-columns: 260px 1fr;
 }
 
 
@@ -198,7 +195,7 @@ a {
 
 
 /* =========================================================
-   PERFIL DEL ADMIN
+   PERFIL ADMIN
    ========================================================= */
 
 .admin-profile {
@@ -289,6 +286,10 @@ a {
     transition: 0.2s ease;
 }
 
+.btn-logout i {
+    font-size: 16px;
+}
+
 .btn-logout:hover {
     background-color: rgba(220, 53, 69, 0.1);
 
@@ -301,14 +302,19 @@ a {
    ========================================================= */
 
 .admin-main {
+    width: calc(100% - 260px);
     min-height: 100vh;
 
     margin-left: 260px;
 
     padding: 42px 48px;
 
+    display: flex;
+    flex-direction: column;
+
     background-color: #f5f6f8;
 }
+
 
 /* =========================================================
    ENCABEZADO DEL PANEL
@@ -338,6 +344,8 @@ a {
 
     font-size: 30px;
     font-weight: 700;
+
+    line-height: 1.2;
 }
 
 .admin-header-info p {
@@ -377,6 +385,8 @@ a {
 
     box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.04);
+
+    white-space: nowrap;
 }
 
 .admin-date i {
@@ -387,25 +397,6 @@ a {
 
 
 /* =========================================================
-   RESPONSIVE DEL ENCABEZADO
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-    .admin-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .admin-date {
-        width: 100%;
-
-        justify-content: center;
-    }
-
-}
-
-/* =========================================================
    BANNER DE BIENVENIDA
    ========================================================= */
 
@@ -413,7 +404,6 @@ a {
     position: relative;
 
     width: 100%;
-
     min-height: 250px;
 
     margin-bottom: 34px;
@@ -431,9 +421,11 @@ a {
     border-radius: 18px;
 
     background:
-        linear-gradient(135deg,
+        linear-gradient(
+            135deg,
             #1f1f1f 0%,
-            #2a2a2a 100%);
+            #2a2a2a 100%
+        );
 
     box-shadow:
         0 12px 30px rgba(0, 0, 0, 0.08);
@@ -449,7 +441,7 @@ a {
 
     z-index: 2;
 
-    max-width: 600px;
+    max-width: 620px;
 }
 
 .admin-welcome-label {
@@ -504,6 +496,8 @@ a {
     height: 180px;
 
     flex-shrink: 0;
+
+    z-index: 2;
 }
 
 
@@ -567,7 +561,7 @@ a {
 
 
 /* =========================================================
-   DECORACIÓN EXTRA
+   DECORACIÓN EXTRA BANNER
    ========================================================= */
 
 .admin-welcome-banner::before {
@@ -606,49 +600,6 @@ a {
 
 
 /* =========================================================
-   RESPONSIVE DEL BANNER
-   ========================================================= */
-
-@media (max-width: 900px) {
-
-    .admin-welcome-banner {
-        min-height: 220px;
-    }
-
-    .admin-welcome-visual {
-        width: 180px;
-    }
-
-    .admin-field-icon {
-        right: 0;
-    }
-
-}
-
-
-@media (max-width: 700px) {
-
-    .admin-welcome-banner {
-        padding: 28px;
-
-        min-height: auto;
-    }
-
-    .admin-welcome-content {
-        max-width: 100%;
-    }
-
-    .admin-welcome-content h2 {
-        font-size: 28px;
-    }
-
-    .admin-welcome-visual {
-        display: none;
-    }
-
-}
-
-/* =========================================================
    SECCIONES DISPONIBLES
    ========================================================= */
 
@@ -660,7 +611,7 @@ a {
 
 
 /* =========================================================
-   ENCABEZADO DE LA SECCIÓN
+   ENCABEZADO DE SECCIONES
    ========================================================= */
 
 .admin-sections-header {
@@ -695,7 +646,7 @@ a {
     display: grid;
 
     grid-template-columns:
-        repeat(auto-fit, minmax(280px, 1fr));
+        repeat(auto-fit, minmax(300px, 400px));
 
     gap: 18px;
 }
@@ -706,7 +657,8 @@ a {
    ========================================================= */
 
 .admin-section-card {
-    min-height: 150px;
+    width: 100%;
+    min-height: 145px;
 
     padding: 22px;
 
@@ -723,11 +675,15 @@ a {
     box-shadow:
         0 6px 18px rgba(0, 0, 0, 0.04);
 
-    transition: 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .admin-section-card:hover {
-    border-color: rgba(255, 106, 0, 0.45);
+    border-color:
+        rgba(255, 106, 0, 0.45);
 
     transform: translateY(-3px);
 
@@ -737,12 +693,12 @@ a {
 
 
 /* =========================================================
-   ICONO
+   ICONO DE TARJETA
    ========================================================= */
 
 .admin-section-icon {
-    width: 52px;
-    height: 52px;
+    width: 58px;
+    height: 58px;
 
     flex-shrink: 0;
 
@@ -756,12 +712,12 @@ a {
 
     color: #ff6a00;
 
-    font-size: 22px;
+    font-size: 24px;
 }
 
 
 /* =========================================================
-   INFORMACIÓN
+   INFORMACIÓN DE TARJETA
    ========================================================= */
 
 .admin-section-info {
@@ -782,8 +738,6 @@ a {
 .admin-section-info p {
     margin: 0;
 
-    max-width: 420px;
-
     color: #7f7f7f;
 
     font-size: 11px;
@@ -793,7 +747,7 @@ a {
 
 
 /* =========================================================
-   FLECHA
+   FLECHA TARJETA
    ========================================================= */
 
 .admin-section-arrow {
@@ -815,7 +769,8 @@ a {
     transition: 0.2s ease;
 }
 
-.admin-section-card:hover .admin-section-arrow {
+.admin-section-card:hover
+.admin-section-arrow {
     background-color: #ff6a00;
 
     color: #ffffff;
@@ -825,31 +780,13 @@ a {
 
 
 /* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    .admin-section-card {
-        align-items: flex-start;
-
-        padding: 18px;
-    }
-
-    .admin-section-arrow {
-        margin-left: auto;
-    }
-
-}
-
-/* =========================================================
    FOOTER DEL PANEL
    ========================================================= */
 
 .admin-footer {
     width: 100%;
 
-    margin-top: 40px;
+    margin-top: auto;
 
     padding-top: 20px;
 
@@ -864,7 +801,7 @@ a {
 
 
 /* =========================================================
-   INFORMACIÓN DEL FOOTER
+   INFORMACIÓN FOOTER
    ========================================================= */
 
 .admin-footer-info {
@@ -900,14 +837,27 @@ a {
 
 
 /* =========================================================
-   RESPONSIVE GENERAL DEL PANEL
+   RESPONSIVE - TABLET GRANDE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .admin-main {
+        padding: 36px 34px;
+    }
+
+    .admin-welcome-content h2 {
+        font-size: 31px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
    ========================================================= */
 
 @media (max-width: 900px) {
-
-    .admin-layout {
-        grid-template-columns: 220px 1fr;
-    }
 
     .admin-sidebar {
         width: 220px;
@@ -916,6 +866,8 @@ a {
     }
 
     .admin-main {
+        width: calc(100% - 220px);
+
         margin-left: 220px;
 
         padding: 34px 28px;
@@ -929,14 +881,35 @@ a {
         font-size: 8px;
     }
 
+    .sidebar-logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .admin-header {
+        align-items: flex-start;
+    }
+
+    .admin-welcome-banner {
+        min-height: 220px;
+    }
+
+    .admin-welcome-visual {
+        width: 180px;
+    }
+
+    .admin-field-icon {
+        right: 0;
+    }
+
 }
 
 
-@media (max-width: 700px) {
+/* =========================================================
+   RESPONSIVE - MÓVIL
+   ========================================================= */
 
-    .admin-layout {
-        display: block;
-    }
+@media (max-width: 700px) {
 
     .admin-sidebar {
         position: static;
@@ -947,8 +920,12 @@ a {
         padding: 18px;
     }
 
+    .sidebar-brand {
+        padding-bottom: 18px;
+    }
+
     .sidebar-nav {
-        margin-top: 20px;
+        margin-top: 18px;
 
         flex-direction: row;
     }
@@ -964,14 +941,97 @@ a {
     }
 
     .admin-main {
+        width: 100%;
+
         margin-left: 0;
 
         padding: 26px 18px;
     }
 
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 18px;
+    }
+
+    .admin-date {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    .admin-welcome-banner {
+        min-height: auto;
+
+        padding: 28px;
+    }
+
+    .admin-welcome-content {
+        max-width: 100%;
+    }
+
+    .admin-welcome-content h2 {
+        font-size: 28px;
+    }
+
+    .admin-welcome-visual {
+        display: none;
+    }
+
+    .admin-sections-grid {
+        grid-template-columns: 1fr;
+    }
+
     .admin-footer {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - CELULARES PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .admin-header-info h1 {
+        font-size: 25px;
+    }
+
+    .admin-header-info p {
+        font-size: 11px;
+    }
+
+    .admin-welcome-banner {
+        padding: 24px;
+    }
+
+    .admin-welcome-content h2 {
+        font-size: 25px;
+    }
+
+    .admin-welcome-content p {
+        font-size: 11px;
+    }
+
+    .admin-section-card {
+        padding: 18px;
+
+        align-items: flex-start;
+    }
+
+    .admin-section-icon {
+        width: 48px;
+        height: 48px;
+
+        font-size: 20px;
+    }
+
+    .admin-section-arrow {
+        margin-left: auto;
     }
 
 }

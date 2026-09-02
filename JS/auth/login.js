@@ -25,7 +25,7 @@ function obtenerRolUsuario(correo) {
 
 function obtenerRutaPorRol(rol) {
     return rol === "admin"
-        ? "admin/dashboard_admin.html"
+        ? "admin/inicio-admin.html"
         : "pagar-reserva.html";
 }
 

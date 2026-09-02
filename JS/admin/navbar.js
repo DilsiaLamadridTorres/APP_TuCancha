@@ -298,7 +298,7 @@ class MiNavbar extends HTMLElement {
             aria-labelledby="menuUsuario"
           >
             <li>
-              <a class="dropdown-item" href="${rutaPaginas}pagar-reserva.html">
+              <a class="dropdown-item" href="${rutaPaginas}reservas-cliente.html">
                 <i class="bi bi-calendar-check me-2"></i>
                 Mis reservas
               </a>

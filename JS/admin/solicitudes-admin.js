@@ -1545,6 +1545,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 solicitud
             );
 
+        const cancha =
+            canchas[0]
+            || null;
+
 
         /* ========================================================
            INFORMACIÓN PRINCIPAL

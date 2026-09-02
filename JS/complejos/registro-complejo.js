@@ -310,12 +310,16 @@ function guardarLocalStorage() {
             JSON.stringify(registroComplejo)
         );
 
+        return true;
+
     } catch (error) {
 
         console.error(
             "Error guardando el formulario:",
             error
         );
+
+        return false;
 
     }
 
@@ -1740,6 +1744,29 @@ function limpiarFormularioCancha() {
 
     }
 
+
+    const errorFotos =
+        obtenerElemento(
+            "photosError"
+        );
+
+
+    if (errorFotos) {
+
+        errorFotos.remove();
+
+    }
+
+
+    document
+        .querySelector(
+            ".photo-upload"
+        )
+        ?.classList
+        .remove(
+            "input-error"
+        );
+
 }
 
 
@@ -1759,9 +1786,123 @@ function convertirFotoBase64(file) {
             reader.onload =
                 () => {
 
-                    resolve(
-                        reader.result
-                    );
+                    const dataUrlOriginal =
+                        reader.result;
+
+
+                    const imagen =
+                        new Image();
+
+
+                    imagen.onload =
+                        () => {
+
+                            const MAX_DIMENSION =
+                                720;
+
+
+                            const escala =
+                                Math.min(
+                                    1,
+                                    MAX_DIMENSION /
+                                    Math.max(
+                                        imagen.width,
+                                        imagen.height
+                                    )
+                                );
+
+
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
+
+
+                            canvas.width =
+                                Math.max(
+                                    1,
+                                    Math.round(
+                                        imagen.width * escala
+                                    )
+                                );
+
+
+                            canvas.height =
+                                Math.max(
+                                    1,
+                                    Math.round(
+                                        imagen.height * escala
+                                    )
+                                );
+
+
+                            const contexto =
+                                canvas.getContext(
+                                    "2d"
+                                );
+
+
+                            if (!contexto) {
+
+                                resolve(
+                                    dataUrlOriginal
+                                );
+
+                                return;
+
+                            }
+
+
+                            contexto.fillStyle =
+                                "#FFFFFF";
+
+
+                            contexto.fillRect(
+                                0,
+                                0,
+                                canvas.width,
+                                canvas.height
+                            );
+
+
+                            contexto.drawImage(
+                                imagen,
+                                0,
+                                0,
+                                canvas.width,
+                                canvas.height
+                            );
+
+
+                            const dataUrlOptimizada =
+                                canvas.toDataURL(
+                                    "image/jpeg",
+                                    0.62
+                                );
+
+
+                            resolve(
+                                dataUrlOptimizada.length <
+                                dataUrlOriginal.length
+                                    ? dataUrlOptimizada
+                                    : dataUrlOriginal
+                            );
+
+                        };
+
+
+                    imagen.onerror =
+                        () => {
+
+                            resolve(
+                                dataUrlOriginal
+                            );
+
+                        };
+
+
+                    imagen.src =
+                        dataUrlOriginal;
 
                 };
 
@@ -1796,13 +1937,14 @@ async function procesarFotos(archivos) {
 
     /*
         Como estamos trabajando con localStorage,
-        limitamos fotos y tamaño.
+        permitimos fotos originales grandes y luego
+        las optimizamos antes de guardarlas.
     */
 
     const MAX_FOTOS = 4;
 
     const MAX_SIZE =
-        600 * 1024;
+        8 * 1024 * 1024;
 
 
     for (
@@ -1867,7 +2009,7 @@ async function procesarFotos(archivos) {
         ) {
 
             mostrarAlerta(
-                `${archivo.name} pesa más de 600 KB. Usa una imagen más liviana.`,
+                `${archivo.name} pesa mas de 8 MB. Usa una imagen mas liviana.`,
                 "warning"
             );
 
@@ -1890,12 +2032,18 @@ async function procesarFotos(archivos) {
                     archivo.name,
 
                 tipo:
-                    archivo.type,
+                    base64.startsWith(
+                        "data:image/jpeg"
+                    )
+                        ? "image/jpeg"
+                        : archivo.type,
 
                 dataUrl:
                     base64
 
             });
+
+            validarFotosCancha();
 
 
         } catch (error) {
@@ -1943,6 +2091,19 @@ function renderizarPreviewFotos() {
     fotosTemporales.forEach(
         (foto, index) => {
 
+            const dataUrl =
+                obtenerDataUrlFoto(
+                    foto
+                );
+
+
+            if (!dataUrl) {
+
+                return;
+
+            }
+
+
             const item =
                 document.createElement(
                     "div"
@@ -1956,7 +2117,7 @@ function renderizarPreviewFotos() {
             item.innerHTML = `
 
                 <img
-                    src="${foto.dataUrl}"
+                    src="${dataUrl}"
                     alt="Foto de la cancha"
                 >
 
@@ -1996,6 +2157,174 @@ function eliminarFotoPreview(index) {
 
 
     renderizarPreviewFotos();
+
+
+    validarFotosCancha();
+
+}
+
+
+/* ============================================================
+   VALIDAR FOTOS DE LA CANCHA
+   ============================================================ */
+
+function obtenerDataUrlFoto(foto) {
+
+    if (
+        typeof foto === "string"
+    ) {
+
+        return foto.trim();
+
+    }
+
+
+    if (
+        typeof foto?.dataUrl === "string"
+    ) {
+
+        return foto.dataUrl.trim();
+
+    }
+
+
+    return "";
+
+}
+
+
+function canchaTieneFotos(cancha) {
+
+    return (
+        Array.isArray(
+            cancha?.fotos
+        ) &&
+        cancha.fotos.some(
+            foto =>
+                obtenerDataUrlFoto(
+                    foto
+                ) !== ""
+        )
+    );
+
+}
+
+
+function validarCanchasGuardadasConFotos() {
+
+    const canchaSinFotos =
+        registroComplejo
+            .canchas
+            .find(
+                cancha =>
+                    !canchaTieneFotos(
+                        cancha
+                    )
+            );
+
+
+    if (!canchaSinFotos) {
+
+        return true;
+
+    }
+
+
+    mostrarAlerta(
+        `${canchaSinFotos.nombre || "Una cancha"} debe tener al menos una foto antes de continuar.`,
+        "warning"
+    );
+
+
+    return false;
+
+}
+
+
+function validarFotosCancha() {
+
+    const errorAnterior =
+        obtenerElemento(
+            "photosError"
+        );
+
+
+    if (errorAnterior) {
+
+        errorAnterior.remove();
+
+    }
+
+
+    const upload =
+        document.querySelector(
+            ".photo-upload"
+        );
+
+
+    upload
+        ?.classList
+        .remove(
+            "input-error"
+        );
+
+
+    if (
+        canchaTieneFotos({
+
+            fotos:
+                fotosTemporales
+
+        })
+    ) {
+
+        return true;
+
+    }
+
+
+    const contenedor =
+        document.querySelector(
+            ".court-photos"
+        );
+
+
+    if (contenedor) {
+
+        const error =
+            document.createElement(
+                "small"
+            );
+
+
+        error.id =
+            "photosError";
+
+
+        error.className =
+            "field-error";
+
+
+        error.textContent =
+            "Agrega al menos una foto de la cancha.";
+
+
+        contenedor.insertAdjacentElement(
+            "afterend",
+            error
+        );
+
+    }
+
+
+    upload
+        ?.classList
+        .add(
+            "input-error"
+        );
+
+
+    return false;
 
 }
 
@@ -2183,6 +2512,19 @@ function validarCancha() {
     }
 
 
+    /* ========================================================
+       FOTOS
+       ======================================================== */
+
+    if (
+        !validarFotosCancha()
+    ) {
+
+        valido = false;
+
+    }
+
+
     if (!valido) {
 
         mostrarAlerta(
@@ -2272,6 +2614,22 @@ function guardarCancha() {
     };
 
 
+    const canchasAnteriores =
+        JSON.parse(
+            JSON.stringify(
+                registroComplejo.canchas
+            )
+        );
+
+
+    let mensajeExito =
+        "La cancha fue agregada correctamente.";
+
+
+    let tituloExito =
+        "Cancha guardada";
+
+
     /* ========================================================
        EDITAR CANCHA EXISTENTE
        ======================================================== */
@@ -2290,26 +2648,36 @@ function guardarCancha() {
                 );
 
 
-        if (indice !== -1) {
+        if (indice === -1) {
 
-            registroComplejo
-                .canchas[indice] = {
+            mostrarAlerta(
+                "No se encontro la cancha que intentas editar.",
+                "error",
+                "Cancha no encontrada"
+            );
 
-                    ...registroComplejo
-                        .canchas[indice],
-
-                    ...datosCancha
-
-                };
+            return;
 
         }
 
 
-        mostrarAlerta(
-            "Los cambios de la cancha fueron guardados.",
-            "success",
-            "Cancha actualizada"
-        );
+        registroComplejo
+            .canchas[indice] = {
+
+                ...registroComplejo
+                    .canchas[indice],
+
+                ...datosCancha
+
+            };
+
+
+        mensajeExito =
+            "Los cambios de la cancha fueron guardados.";
+
+
+        tituloExito =
+            "Cancha actualizada";
 
 
     } else {
@@ -2337,16 +2705,36 @@ function guardarCancha() {
             });
 
 
+    }
+
+
+    const guardado =
+        guardarLocalStorage();
+
+
+    if (!guardado) {
+
+        registroComplejo.canchas =
+            canchasAnteriores;
+
+
         mostrarAlerta(
-            "La cancha fue agregada correctamente.",
-            "success",
-            "Cancha guardada"
+            "No fue posible guardar la cancha. Reduce el peso o la cantidad de fotos e intenta de nuevo.",
+            "error",
+            "Cancha no guardada"
         );
+
+
+        return;
 
     }
 
 
-    guardarLocalStorage();
+    mostrarAlerta(
+        mensajeExito,
+        "success",
+        tituloExito
+    );
 
     cerrarFormularioCancha();
 
@@ -2672,15 +3060,23 @@ function renderizarCanchas() {
                    FOTOS
                    ================================================= */
 
+                const fotosCancha =
+                    Array.isArray(
+                        cancha.fotos
+                    )
+                        ? cancha.fotos
+                            .map(
+                                obtenerDataUrlFoto
+                            )
+                            .filter(Boolean)
+                        : [];
+
+
                 let fotosHTML = "";
 
 
                 if (
-                    Array.isArray(
-                        cancha.fotos
-                    )
-                    &&
-                    cancha.fotos.length > 0
+                    fotosCancha.length > 0
                 ) {
 
                     fotosHTML = `
@@ -2688,14 +3084,14 @@ function renderizarCanchas() {
                         <div class="saved-court-photos">
 
                             ${
-                                cancha.fotos
+                                fotosCancha
                                     .map(
-                                        (foto, index) => `
+                                        (dataUrl, index) => `
 
                                             <div class="saved-court-photo">
 
                                                 <img
-                                                    src="${foto.dataUrl}"
+                                                    src="${dataUrl}"
                                                     alt="Foto ${index + 1} de ${cancha.nombre}"
                                                 >
 
@@ -3108,6 +3504,17 @@ function guardarSolicitudFinal(
     );
 
 
+    const borradorActual =
+        localStorage.getItem(
+            STORAGE_KEY
+        );
+
+
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
+
+
     try {
 
         localStorage.setItem(
@@ -3120,6 +3527,29 @@ function guardarSolicitudFinal(
         return true;
 
     } catch (error) {
+
+        if (
+            borradorActual !== null
+        ) {
+
+            try {
+
+                localStorage.setItem(
+                    STORAGE_KEY,
+                    borradorActual
+                );
+
+            } catch (errorRestaurando) {
+
+                console.error(
+                    "Error restaurando borrador:",
+                    errorRestaurando
+                );
+
+            }
+
+        }
+
 
         console.error(
             "Error guardando solicitud:",
@@ -3181,6 +3611,19 @@ function enviarSolicitud() {
 
 
         mostrarPaso(3);
+
+        return;
+
+    }
+
+
+    if (
+        !validarCanchasGuardadasConFotos()
+    ) {
+
+        mostrarPaso(3);
+
+        renderizarCanchas();
 
         return;
 
@@ -3837,6 +4280,15 @@ function configurarEventos() {
                 }
 
 
+                if (
+                    !validarCanchasGuardadasConFotos()
+                ) {
+
+                    return;
+
+                }
+
+
                 mostrarPaso(4);
 
             }
@@ -4046,6 +4498,36 @@ function configurarEventos() {
     /* ========================================================
        CARGAR FOTOS
        ======================================================== */
+
+    document
+        .querySelector(
+            ".photo-upload"
+        )
+        ?.addEventListener(
+            "click",
+            event => {
+
+                const inputFotos =
+                    obtenerElemento(
+                        "courtPhotos"
+                    );
+
+
+                if (!inputFotos) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+
+                inputFotos.click();
+
+            }
+        );
+
 
     obtenerElemento(
         "courtPhotos"

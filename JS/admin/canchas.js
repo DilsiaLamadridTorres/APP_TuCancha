@@ -6,7 +6,108 @@ import { canchas } from '../complejos/lista-canchas.js';
 // ============================================================
 
 const CANCHAS_PUBLICADAS_KEY = "tucancha_canchas_publicadas";
-let canchasPublicadas = [];
+const IMAGEN_CANCHA_DEFAULT = "../img/foto.canchas.jpg";
+
+function obtenerUrlFoto(foto) {
+    if (typeof foto === "string") {
+        return foto;
+    }
+
+    if (foto?.dataUrl) {
+        return foto.dataUrl;
+    }
+
+    return "";
+}
+
+function obtenerImagenCancha(cancha) {
+    if (cancha.imagen) {
+        return obtenerUrlFoto(cancha.imagen) || IMAGEN_CANCHA_DEFAULT;
+    }
+
+    if (
+        Array.isArray(cancha.fotos) &&
+        cancha.fotos.length > 0
+    ) {
+        return obtenerUrlFoto(cancha.fotos[0]) || IMAGEN_CANCHA_DEFAULT;
+    }
+
+    return IMAGEN_CANCHA_DEFAULT;
+}
+
+function formatearTextoSimple(valor) {
+    if (!valor) {
+        return "";
+    }
+
+    return String(valor)
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, letra => letra.toUpperCase());
+}
+
+function obtenerUbicacionCancha(cancha) {
+    if (cancha.ubicacion) {
+        return cancha.ubicacion;
+    }
+
+    const ciudad = formatearTextoSimple(cancha.complejo?.ciudad);
+    const provincia = formatearTextoSimple(cancha.complejo?.provincia);
+
+    if (ciudad && provincia) {
+        return `${ciudad}, ${provincia}`;
+    }
+
+    return ciudad
+        || provincia
+        || cancha.complejo?.direccion
+        || "UbicaciÃ³n no especificada";
+}
+
+function normalizarPrecio(valor) {
+    if (
+        typeof valor === "number" &&
+        !Number.isNaN(valor)
+    ) {
+        return valor;
+    }
+
+    if (
+        typeof valor === "string" &&
+        valor.trim()
+    ) {
+        const numero = Number(
+            valor.replace(/[^\d]/g, "")
+        );
+
+        return Number.isNaN(numero)
+            ? null
+            : numero;
+    }
+
+    return null;
+}
+
+function normalizarCanchaPublicada(cancha) {
+    const precio = normalizarPrecio(
+        cancha.precio || cancha.precioPorHora
+    );
+
+    return {
+        ...cancha,
+        empresa: cancha.empresa || cancha.complejo?.nombre || "Complejo deportivo",
+        ubicacion: obtenerUbicacionCancha(cancha),
+        calificacion: cancha.calificacion || "Nueva",
+        precio: precio,
+        precioPorHora: precio,
+        imagen: obtenerImagenCancha(cancha),
+        descripcion: cancha.descripcion || cancha.complejo?.descripcion || "Cancha publicada por TuCancha.",
+        disponible: true,
+        publicada: true
+    };
+}
+
+function obtenerCanchasPublicadas() {
+    const canchasPublicadas = [];
 
 try {
     const datosPublicados = localStorage.getItem(CANCHAS_PUBLICADAS_KEY);
@@ -15,29 +116,31 @@ try {
         const publicaciones = JSON.parse(datosPublicados);
 
         if (Array.isArray(publicaciones)) {
-            canchasPublicadas = publicaciones
+            publicaciones
                 .filter(cancha => cancha.publicada === true)
-                .map(cancha => ({
-                    id: cancha.id,
-                    nombre: cancha.nombre,
-                    empresa: cancha.complejo?.nombre || "Complejo deportivo",
-                    ubicacion: `${cancha.complejo?.ciudad || ""}${cancha.complejo?.provincia
-                        ? ", " + cancha.complejo.provincia
-                        : ""
-                        }`,
-                    calificacion: "Nueva",
-                    precio: cancha.precioPorHora || null,
-                    imagen: cancha.fotos?.[0] || "../img/foto.canchas.jpg",
-                    publicada: true,
-                    solicitudId: cancha.solicitudId
-                }));
+                .map(normalizarCanchaPublicada)
+                .forEach(cancha => {
+                    const existe = canchasPublicadas.some(
+                        publicada =>
+                            String(publicada.id) === String(cancha.id) &&
+                            String(publicada.solicitudId) === String(cancha.solicitudId)
+                    );
+
+                    if (!existe) {
+                        canchasPublicadas.push(cancha);
+                    }
+                });
         }
     }
 } catch (error) {
     console.error("Error leyendo canchas publicadas:", error);
 }
 
+    return canchasPublicadas;
+}
+
 // 2. Unimos las canchas publicadas en LocalStorage al array importado
+const canchasPublicadas = obtenerCanchasPublicadas();
 canchas.push(...canchasPublicadas);
 
 // 3. Selección de elementos del DOM
@@ -231,7 +334,7 @@ function mostrarCanchas(lista) {
         const precio = document.createElement("p");
         precio.classList.add("cancha-card__price");
 
-        if (typeof canchas[i].precio === "number") {
+        if (typeof lista[i].precio === "number") {
             precio.textContent = `$${lista[i].precio.toLocaleString("es-CO")} / hora`;
         } else {
             precio.textContent = "Precio no especificado";

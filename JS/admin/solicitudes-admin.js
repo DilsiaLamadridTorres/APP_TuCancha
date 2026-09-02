@@ -356,6 +356,305 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ============================================================
+       OBTENER URL DE FOTO
+       ============================================================ */
+
+    function obtenerUrlFoto(
+        foto
+    ) {
+
+        if (
+            typeof foto === "string"
+        ) {
+
+            return foto;
+
+        }
+
+
+        if (
+            foto?.dataUrl
+        ) {
+
+            return foto.dataUrl;
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* ============================================================
+       OBTENER FOTO DE UNA CANCHA
+       ============================================================ */
+
+    function obtenerFotoCanchaPublicada(
+        cancha
+    ) {
+
+        if (
+            Array.isArray(
+                cancha?.fotos
+            ) &&
+            cancha.fotos.length > 0
+        ) {
+
+            const foto =
+                obtenerUrlFoto(
+                    cancha.fotos[0]
+                );
+
+
+            if (foto) {
+
+                return foto;
+
+            }
+
+        }
+
+
+        return "../img/foto.canchas.jpg";
+
+    }
+
+
+    /* ============================================================
+       FORMATEAR TEXTO SIMPLE
+       ============================================================ */
+
+    function formatearTextoSimple(
+        valor
+    ) {
+
+        if (!valor) {
+
+            return "";
+
+        }
+
+
+        return String(valor)
+            .replace(/-/g, " ")
+            .replace(
+                /\b\w/g,
+                letra =>
+                    letra.toUpperCase()
+            );
+
+    }
+
+
+    /* ============================================================
+       UBICACIÃ“N PARA CATÃLOGO
+       ============================================================ */
+
+    function obtenerUbicacionPublica(
+        complejo = {}
+    ) {
+
+        const ciudad =
+            formatearTextoSimple(
+                complejo.ciudad
+            );
+
+        const provincia =
+            formatearTextoSimple(
+                complejo.provincia
+            );
+
+
+        if (
+            ciudad &&
+            provincia
+        ) {
+
+            return `${ciudad}, ${provincia}`;
+
+        }
+
+
+        return ciudad
+            || provincia
+            || complejo.direccion
+            || "UbicaciÃ³n no especificada";
+
+    }
+
+
+    /* ============================================================
+       NORMALIZAR PRECIO
+       ============================================================ */
+
+    function normalizarPrecio(
+        valor
+    ) {
+
+        if (
+            typeof valor === "number" &&
+            !Number.isNaN(valor)
+        ) {
+
+            return valor;
+
+        }
+
+
+        if (
+            typeof valor === "string" &&
+            valor.trim()
+        ) {
+
+            const numero =
+                Number(
+                    valor.replace(/[^\d]/g, "")
+                );
+
+
+            return Number.isNaN(numero)
+                ? null
+                : numero;
+
+        }
+
+
+        return null;
+
+    }
+
+
+    /* ============================================================
+       CREAR CANCHA PUBLICADA
+       ============================================================ */
+
+    function crearCanchaPublicada(
+        solicitud,
+        cancha
+    ) {
+
+        const precio =
+            normalizarPrecio(
+                cancha.precio
+                || cancha.precioPorHora
+                || solicitud.precio
+                || solicitud.precioPorHora
+                || solicitud.complejo?.precio
+                || solicitud.complejo?.precioPorHora
+            );
+
+
+        return {
+
+            id:
+                cancha.id,
+
+            solicitudId:
+                solicitud.id,
+
+            nombre:
+                cancha.nombre
+                || obtenerNombreComplejo(
+                    solicitud
+                ),
+
+            empresa:
+                obtenerNombreComplejo(
+                    solicitud
+                ),
+
+            ubicacion:
+                obtenerUbicacionPublica(
+                    solicitud.complejo
+                ),
+
+            calificacion:
+                "Nueva",
+
+            precio:
+                precio,
+
+            precioPorHora:
+                precio,
+
+            disponible:
+                true,
+
+            descripcion:
+                obtenerDescripcion(
+                    solicitud
+                ),
+
+            imagen:
+                obtenerFotoCanchaPublicada(
+                    cancha
+                ),
+
+            deporte:
+                cancha.deporte,
+
+            deporteTexto:
+                formatearDeporte(
+                    cancha.deporte
+                ),
+
+            tipoPiso:
+                cancha.tipoPiso,
+
+            tipoPisoTexto:
+                formatearTextoSimple(
+                    cancha.tipoPiso
+                ),
+
+            largo:
+                cancha.largo,
+
+            ancho:
+                cancha.ancho,
+
+            duraciones:
+                cancha.duraciones || [],
+
+            techada:
+                cancha.techada || false,
+
+            permiteOtrosDeportes:
+                cancha.permiteOtrosDeportes
+                || false,
+
+            fotos:
+                cancha.fotos || [],
+
+            prestaciones:
+                solicitud.complejo?.prestaciones || [],
+
+            complejo:
+                {
+                    ...solicitud.complejo
+                },
+
+            organizacion:
+                {
+                    ...solicitud.organizacion
+                },
+
+            publicada:
+                true,
+
+            estado:
+                "publicada",
+
+            fechaPublicacion:
+                new Date()
+                    .toISOString()
+
+        };
+
+    }
+
+
+    /* ============================================================
        OBTENER DEPORTE
        ============================================================ */
 
@@ -1651,18 +1950,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (
             nuevoEstado ===
-            "aprobada"
-        ) {
-
-            publicarCanchas(
-                solicitud
-            );
-
-        }
-
-
-        if (
-            nuevoEstado ===
             "publicada"
         ) {
 
@@ -1763,75 +2050,46 @@ document.addEventListener("DOMContentLoaded", () => {
         canchas.forEach(
             cancha => {
 
-                const canchaPublicada = {
-
-                    id:
-                        cancha.id,
-
-                    solicitudId:
-                        solicitud.id,
-
-                    nombre:
-                        cancha.nombre,
-
-                    deporte:
-                        cancha.deporte,
-
-                    tipoPiso:
-                        cancha.tipoPiso,
-
-                    largo:
-                        cancha.largo,
-
-                    ancho:
-                        cancha.ancho,
-
-                    duraciones:
-                        cancha.duraciones || [],
-
-                    techada:
-                        cancha.techada || false,
-
-                    permiteOtrosDeportes:
-                        cancha.permiteOtrosDeportes
-                        || false,
-
-                    fotos:
-                        cancha.fotos || [],
-
-                    complejo:
-                        {
-                            ...solicitud.complejo
-                        },
-
-                    organizacion:
-                        {
-                            ...solicitud.organizacion
-                        },
-
-                    publicada:
-                        true,
-
-                    fechaPublicacion:
-                        new Date()
-                            .toISOString()
-
-                };
-
-
-                const existe =
-                    canchasPublicadas.some(
-                        publicada =>
-                            publicada.id ===
-                            cancha.id
+                const canchaPublicada =
+                    crearCanchaPublicada(
+                        solicitud,
+                        cancha
                     );
 
 
-                if (!existe) {
+                const indicePublicada =
+                    canchasPublicadas.findIndex(
+                        publicada =>
+                            String(publicada.id) ===
+                            String(canchaPublicada.id)
+                            &&
+                            String(publicada.solicitudId) ===
+                            String(canchaPublicada.solicitudId)
+                    );
+
+
+                if (
+                    indicePublicada === -1
+                ) {
 
                     canchasPublicadas.push(
                         canchaPublicada
                     );
+
+                } else {
+
+                    canchasPublicadas[indicePublicada] = {
+
+                        ...canchasPublicadas[indicePublicada],
+
+                        ...canchaPublicada,
+
+                        fechaPublicacion:
+                            canchasPublicadas[indicePublicada]
+                                .fechaPublicacion
+                            || canchaPublicada.fechaPublicacion
+
+                    };
 
                 }
 

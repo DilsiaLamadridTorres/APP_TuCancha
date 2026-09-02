@@ -5,11 +5,13 @@
 
 
 /* ============================================================
-   MOSTRAR FECHA ACTUAL
+   FECHA ACTUAL
    ============================================================ */
 
 const adminCurrentDate =
-    document.getElementById("adminCurrentDate");
+    document.getElementById(
+        "adminCurrentDate"
+    );
 
 
 if (adminCurrentDate) {
@@ -37,10 +39,6 @@ if (adminCurrentDate) {
             opcionesFecha
         );
 
-
-    /*
-        Colocamos la primera letra en mayúscula.
-    */
 
     fechaFormateada =
         fechaFormateada

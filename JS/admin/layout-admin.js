@@ -191,6 +191,40 @@ class AdminSidebar extends HTMLElement {
 
         `;
 
+        this.configurarCerrarSesion();
+
+    }
+
+
+    configurarCerrarSesion() {
+
+        const botonLogout =
+            this.querySelector(
+                "#btnLogout"
+            );
+
+
+        botonLogout?.addEventListener(
+            "click",
+            () => {
+
+                sessionStorage.removeItem(
+                    "usuario"
+                );
+
+
+                sessionStorage.removeItem(
+                    "access_token"
+                );
+
+
+                window.location.replace(
+                    "../login.html"
+                );
+
+            }
+        );
+
     }
 
 }

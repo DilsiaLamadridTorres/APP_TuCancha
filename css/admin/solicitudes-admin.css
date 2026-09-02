@@ -71,11 +71,13 @@ button {
 }
 
 .encabezado-dashboard h1 {
+    color: #1f1f1f;
+
     font-size: 24px;
 }
 
 .encabezado-dashboard p {
-    color: var(--color-texto-secundario);
+    color: #5f6673;
 }
 
 /* Filtros */

@@ -41,6 +41,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let filtroActual = "pendiente";
 
+    let fotosGaleria = [];
+
+    let indiceFotoGaleria = 0;
+
 
     /* ============================================================
        LEER SOLICITUDES DESDE LOCAL STORAGE
@@ -642,6 +646,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         return "";
+
+    }
+
+
+    /* ============================================================
+       OBTENER FOTOS DE CANCHAS
+       ============================================================ */
+
+    function obtenerFotosCanchas(
+        canchas
+    ) {
+
+        const fotos = [];
+
+
+        canchas.forEach(
+            cancha => {
+
+                if (
+                    !Array.isArray(
+                        cancha?.fotos
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                cancha.fotos.forEach(
+                    foto => {
+
+                        const urlFoto =
+                            obtenerUrlFoto(
+                                foto
+                            );
+
+
+                        if (urlFoto) {
+
+                            fotos.push(
+                                urlFoto
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        return fotos;
 
     }
 
@@ -1877,6 +1935,205 @@ document.addEventListener("DOMContentLoaded", () => {
        FOTOS
        ============================================================ */
 
+    function actualizarGaleriaDetalle() {
+
+        const imagenPrincipal =
+            document.getElementById(
+                "imagen-detalle-principal"
+            );
+
+        const botonAnterior =
+            document.querySelector(
+                ".flecha-galeria.anterior"
+            );
+
+        const botonSiguiente =
+            document.querySelector(
+                ".flecha-galeria.siguiente"
+            );
+
+        const contenedorPuntos =
+            document.querySelector(
+                ".puntos-galeria"
+            );
+
+        const totalFotos =
+            fotosGaleria.length;
+
+
+        if (
+            !imagenPrincipal ||
+            totalFotos === 0
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            indiceFotoGaleria < 0
+        ) {
+
+            indiceFotoGaleria =
+                totalFotos - 1;
+
+        }
+
+
+        if (
+            indiceFotoGaleria >= totalFotos
+        ) {
+
+            indiceFotoGaleria = 0;
+
+        }
+
+
+        imagenPrincipal.src =
+            fotosGaleria[indiceFotoGaleria];
+
+        imagenPrincipal.alt =
+            `Foto ${indiceFotoGaleria + 1} de la cancha`;
+
+
+        const mostrarControles =
+            totalFotos > 1;
+
+
+        [
+            botonAnterior,
+            botonSiguiente
+        ].forEach(
+            boton => {
+
+                if (!boton) {
+
+                    return;
+
+                }
+
+
+                boton.disabled =
+                    !mostrarControles;
+
+                boton.classList.toggle(
+                    "oculto",
+                    !mostrarControles
+                );
+
+            }
+        );
+
+
+        if (contenedorPuntos) {
+
+            contenedorPuntos.innerHTML = "";
+
+
+            if (mostrarControles) {
+
+                fotosGaleria.forEach(
+                    (_foto, index) => {
+
+                        const punto =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        punto.type =
+                            "button";
+
+                        punto.className =
+                            index === indiceFotoGaleria
+                                ? "punto activo"
+                                : "punto";
+
+                        punto.dataset.indice =
+                            index;
+
+                        punto.setAttribute(
+                            "aria-label",
+                            `Ver foto ${index + 1}`
+                        );
+
+
+                        contenedorPuntos.appendChild(
+                            punto
+                        );
+
+                    }
+                );
+
+            }
+
+        }
+
+
+        document
+            .querySelectorAll(
+                ".fotos-adicionales img"
+            )
+            .forEach(
+                miniatura => {
+
+                    miniatura.classList.toggle(
+                        "activa",
+                        Number(
+                            miniatura.dataset.indice
+                        ) === indiceFotoGaleria
+                    );
+
+                }
+            );
+
+    }
+
+
+    function cambiarFotoGaleria(
+        direccion
+    ) {
+
+        if (
+            fotosGaleria.length <= 1
+        ) {
+
+            return;
+
+        }
+
+
+        indiceFotoGaleria +=
+            direccion;
+
+        actualizarGaleriaDetalle();
+
+    }
+
+
+    function seleccionarFotoGaleria(
+        indice
+    ) {
+
+        if (
+            indice < 0 ||
+            indice >= fotosGaleria.length
+        ) {
+
+            return;
+
+        }
+
+
+        indiceFotoGaleria =
+            indice;
+
+        actualizarGaleriaDetalle();
+
+    }
+
+
     function renderizarFotos(
         canchas
     ) {
@@ -1897,81 +2154,75 @@ document.addEventListener("DOMContentLoaded", () => {
         contenedor.innerHTML = "";
 
 
-        const fotos = [];
+        fotosGaleria =
+            obtenerFotosCanchas(
+                canchas
+            );
+
+        indiceFotoGaleria = 0;
 
 
-        canchas.forEach(
-            cancha => {
+        const hayFotosSubidas =
+            fotosGaleria.length > 0;
 
-                if (
-                    Array.isArray(
-                        cancha.fotos
-                    )
-                ) {
 
-                    cancha.fotos.forEach(
-                        foto => {
+        if (!hayFotosSubidas) {
 
-                            if (
-                                typeof foto === "string"
-                            ) {
+            fotosGaleria = [
+                "https://via.placeholder.com/60x40?text=Cancha"
+            ];
 
-                                fotos.push(
-                                    foto
-                                );
+            contenedor.innerHTML =
+                "<span>Sin fotos adicionales.</span>";
 
-                            } else if (
-                                foto?.dataUrl
-                            ) {
+            actualizarGaleriaDetalle();
 
-                                fotos.push(
-                                    foto.dataUrl
-                                );
+            return;
 
-                            }
+        }
 
-                        }
+
+        fotosGaleria.forEach(
+            (foto, index) => {
+
+                const imagen =
+                    document.createElement(
+                        "img"
                     );
 
-                }
+
+                imagen.src =
+                    foto;
+
+                imagen.alt =
+                    `Foto ${index + 1}`;
+
+                imagen.dataset.indice =
+                    index;
+
+                imagen.tabIndex =
+                    0;
+
+                imagen.setAttribute(
+                    "role",
+                    "button"
+                );
+
+                imagen.setAttribute(
+                    "aria-label",
+                    `Ver foto ${index + 1}`
+                );
+
+
+                contenedor.appendChild(
+                    imagen
+                );
 
             }
         );
 
 
-        fotos
-            .slice(0, 5)
-            .forEach(
-                (foto, index) => {
-
-                    const imagen =
-                        document.createElement(
-                            "img"
-                        );
-
-
-                    imagen.src =
-                        foto;
-
-                    imagen.alt =
-                        `Foto ${index + 1}`;
-
-                    contenedor.appendChild(
-                        imagen
-                    );
-
-                }
-            );
-
-
-        if (
-            fotos.length === 0
-        ) {
-
-            contenedor.innerHTML =
-                "<span>Sin fotos adicionales.</span>";
-
-        }
+        actualizarGaleriaDetalle();
 
     }
 
@@ -2531,6 +2782,147 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
     );
+
+
+    /* ============================================================
+       EVENTOS DE LA GALERIA
+       ============================================================ */
+
+    document
+        .querySelector(
+            ".flecha-galeria.anterior"
+        )
+        ?.addEventListener(
+            "click",
+            () => {
+
+                cambiarFotoGaleria(
+                    -1
+                );
+
+            }
+        );
+
+
+    document
+        .querySelector(
+            ".flecha-galeria.siguiente"
+        )
+        ?.addEventListener(
+            "click",
+            () => {
+
+                cambiarFotoGaleria(
+                    1
+                );
+
+            }
+        );
+
+
+    document
+        .querySelector(
+            ".puntos-galeria"
+        )
+        ?.addEventListener(
+            "click",
+            event => {
+
+                const punto =
+                    event.target.closest(
+                        ".punto"
+                    );
+
+
+                if (!punto) {
+
+                    return;
+
+                }
+
+
+                seleccionarFotoGaleria(
+                    Number(
+                        punto.dataset.indice
+                    )
+                );
+
+            }
+        );
+
+
+    document
+        .querySelector(
+            ".fotos-adicionales"
+        )
+        ?.addEventListener(
+            "click",
+            event => {
+
+                const miniatura =
+                    event.target.closest(
+                        "img[data-indice]"
+                    );
+
+
+                if (!miniatura) {
+
+                    return;
+
+                }
+
+
+                seleccionarFotoGaleria(
+                    Number(
+                        miniatura.dataset.indice
+                    )
+                );
+
+            }
+        );
+
+
+    document
+        .querySelector(
+            ".fotos-adicionales"
+        )
+        ?.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key !== "Enter" &&
+                    event.key !== " "
+                ) {
+
+                    return;
+
+                }
+
+
+                const miniatura =
+                    event.target.closest(
+                        "img[data-indice]"
+                    );
+
+
+                if (!miniatura) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+                seleccionarFotoGaleria(
+                    Number(
+                        miniatura.dataset.indice
+                    )
+                );
+
+            }
+        );
 
 
     /* ============================================================

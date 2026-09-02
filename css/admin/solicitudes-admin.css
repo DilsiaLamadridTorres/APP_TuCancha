@@ -439,7 +439,16 @@ button {
     color: #fff;
     width: 30px;
     height: 30px;
+    border: 0;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.flecha-galeria.oculto {
+    display: none;
 }
 
 .flecha-galeria.anterior { left: 10px; }
@@ -457,8 +466,11 @@ button {
 .puntos-galeria .punto {
     width: 8px;
     height: 8px;
+    padding: 0;
+    border: 0;
     background: rgba(255,255,255,0.4);
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .puntos-galeria .punto.activo {
@@ -558,6 +570,15 @@ button {
     border-radius: var(--radio-borde-pequeno);
     object-fit: cover;
     border: 1px solid var(--color-borde);
+    cursor: pointer;
+    opacity: 0.72;
+    transition: opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fotos-adicionales img.activa {
+    border-color: var(--color-naranja-principal);
+    box-shadow: 0 0 0 2px rgba(255, 106, 0, 0.18);
+    opacity: 1;
 }
 
 .miniatura-mas-fotos {

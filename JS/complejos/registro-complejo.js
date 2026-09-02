@@ -1370,6 +1370,12 @@ function abrirFormularioCancha(
         }
 
 
+        const nombre =
+            obtenerElemento(
+                "courtName"
+            );
+
+
         const sport =
             obtenerElemento(
                 "courtSport"
@@ -1392,6 +1398,14 @@ function abrirFormularioCancha(
             obtenerElemento(
                 "courtWidth"
             );
+
+
+        if (nombre) {
+
+            nombre.value =
+                cancha.nombre || "";
+
+        }
 
 
         if (sport) {
@@ -1522,11 +1536,7 @@ function abrirFormularioCancha(
         if (titulo) {
 
             titulo.textContent =
-                `Cancha ${
-                    registroComplejo
-                        .canchas
-                        .length + 1
-                }`;
+                "Nueva cancha";
 
         }
 
@@ -1604,6 +1614,7 @@ function limpiarFormularioCancha() {
 
     const campos = [
 
+        "courtName",
         "courtSport",
         "courtFloor",
         "courtLength",
@@ -2340,6 +2351,18 @@ function validarCancha() {
 
     if (
         !validarRequerido(
+            "courtName",
+            "Ingresa el nombre de la cancha."
+        )
+    ) {
+
+        valido = false;
+
+    }
+
+
+    if (
+        !validarRequerido(
             "courtSport",
             "Selecciona un deporte."
         )
@@ -2571,6 +2594,11 @@ function guardarCancha() {
 
     const datosCancha = {
 
+        nombre:
+            obtenerValor(
+                "courtName"
+            ),
+
         deporte:
             obtenerValor(
                 "courtSport"
@@ -2693,13 +2721,6 @@ function guardarCancha() {
                 id:
                     Date.now(),
 
-                nombre:
-                    `Cancha ${
-                        registroComplejo
-                            .canchas
-                            .length + 1
-                    }`,
-
                 ...datosCancha
 
             });
@@ -2768,22 +2789,6 @@ function eliminarCancha(id) {
                 cancha =>
                     cancha.id !== id
             );
-
-
-    /*
-        Renumeramos.
-    */
-
-    registroComplejo
-        .canchas
-        .forEach(
-            (cancha, index) => {
-
-                cancha.nombre =
-                    `Cancha ${index + 1}`;
-
-            }
-        );
 
 
     guardarLocalStorage();

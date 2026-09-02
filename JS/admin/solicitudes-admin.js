@@ -2485,8 +2485,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const indice =
             solicitudes.findIndex(
                 solicitud =>
-                    solicitud.id ===
-                    idSolicitud
+                    String(solicitud.id) ===
+                    String(idSolicitud)
             );
 
 
@@ -2982,19 +2982,17 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            cambiarEstadoSolicitud(
-                idSolicitudSeleccionada,
-                "aprobada"
-            );
+            const idSolicitud =
+                idSolicitudSeleccionada;
 
 
             /*
-                La solicitud queda aprobada
-                y las canchas se publican.
+                La solicitud pasa directo a publicada
+                para guardar las canchas visibles al usuario.
             */
 
             cambiarEstadoSolicitud(
-                idSolicitudSeleccionada,
+                idSolicitud,
                 "publicada"
             );
 

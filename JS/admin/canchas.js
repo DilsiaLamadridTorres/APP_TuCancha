@@ -6,6 +6,7 @@ import { canchas } from '../complejos/lista-canchas.js';
 // ============================================================
 
 const CANCHAS_PUBLICADAS_KEY = "tucancha_canchas_publicadas";
+const SOLICITUDES_KEY = "tucancha_solicitudes_complejos";
 const IMAGEN_CANCHA_DEFAULT = "../img/foto.canchas.jpg";
 
 function obtenerUrlFoto(foto) {
@@ -106,6 +107,80 @@ function normalizarCanchaPublicada(cancha) {
     };
 }
 
+function canchaEstaPublicada(cancha) {
+    const estado = cancha?.estado || "";
+
+    return cancha?.publicada === true ||
+        estado === "publicada" ||
+        estado === "aprobada";
+}
+
+function solicitudEstaAceptada(solicitud) {
+    const estado = solicitud?.estado || "";
+
+    return estado === "publicada" ||
+        estado === "aprobada";
+}
+
+function obtenerCanchasSolicitud(solicitud) {
+    if (
+        Array.isArray(solicitud?.canchas) &&
+        solicitud.canchas.length > 0
+    ) {
+        return solicitud.canchas;
+    }
+
+    if (solicitud?.cancha) {
+        return [solicitud.cancha];
+    }
+
+    return [];
+}
+
+function crearCanchaDesdeSolicitud(solicitud, cancha, index) {
+    return {
+        ...cancha,
+        id: cancha.id || solicitud.canchaId || `${solicitud.id}-cancha-${index + 1}`,
+        solicitudId: solicitud.id,
+        nombre: cancha.nombre || solicitud.complejo?.nombre || "Cancha publicada",
+        empresa: solicitud.complejo?.nombre || cancha.empresa || "Complejo deportivo",
+        ubicacion: cancha.ubicacion,
+        precio: cancha.precio ||
+            cancha.precioPorHora ||
+            solicitud.precio ||
+            solicitud.precioPorHora ||
+            solicitud.complejo?.precio ||
+            solicitud.complejo?.precioPorHora,
+        descripcion: cancha.descripcion ||
+            solicitud.descripcion ||
+            solicitud.complejo?.descripcion,
+        complejo: {
+            ...(solicitud.complejo || {})
+        },
+        organizacion: {
+            ...(solicitud.organizacion || {})
+        },
+        prestaciones: solicitud.complejo?.prestaciones || [],
+        publicada: true,
+        estado: "publicada",
+        fechaPublicacion: solicitud.fechaPublicacion || solicitud.fechaSolicitud
+    };
+}
+
+function agregarCanchaPublicada(canchasPublicadas, cancha) {
+    const canchaNormalizada = normalizarCanchaPublicada(cancha);
+
+    const existe = canchasPublicadas.some(
+        publicada =>
+            String(publicada.id) === String(canchaNormalizada.id) &&
+            String(publicada.solicitudId) === String(canchaNormalizada.solicitudId)
+    );
+
+    if (!existe) {
+        canchasPublicadas.push(canchaNormalizada);
+    }
+}
+
 function obtenerCanchasPublicadas() {
     const canchasPublicadas = [];
 
@@ -117,23 +192,42 @@ try {
 
         if (Array.isArray(publicaciones)) {
             publicaciones
-                .filter(cancha => cancha.publicada === true)
-                .map(normalizarCanchaPublicada)
-                .forEach(cancha => {
-                    const existe = canchasPublicadas.some(
-                        publicada =>
-                            String(publicada.id) === String(cancha.id) &&
-                            String(publicada.solicitudId) === String(cancha.solicitudId)
-                    );
-
-                    if (!existe) {
-                        canchasPublicadas.push(cancha);
-                    }
-                });
+                .filter(canchaEstaPublicada)
+                .forEach(cancha =>
+                    agregarCanchaPublicada(canchasPublicadas, cancha)
+                );
         }
     }
 } catch (error) {
     console.error("Error leyendo canchas publicadas:", error);
+}
+
+try {
+    const datosSolicitudes = localStorage.getItem(SOLICITUDES_KEY);
+
+    if (datosSolicitudes) {
+        const solicitudes = JSON.parse(datosSolicitudes);
+
+        if (Array.isArray(solicitudes)) {
+            solicitudes
+                .filter(solicitudEstaAceptada)
+                .forEach(solicitud => {
+                    obtenerCanchasSolicitud(solicitud)
+                        .forEach((cancha, index) => {
+                            agregarCanchaPublicada(
+                                canchasPublicadas,
+                                crearCanchaDesdeSolicitud(
+                                    solicitud,
+                                    cancha,
+                                    index
+                                )
+                            );
+                        });
+                });
+        }
+    }
+} catch (error) {
+    console.error("Error leyendo solicitudes aceptadas:", error);
 }
 
     return canchasPublicadas;
@@ -141,7 +235,7 @@ try {
 
 // 2. Unimos las canchas publicadas en LocalStorage al array importado
 const canchasPublicadas = obtenerCanchasPublicadas();
-canchas.push(...canchasPublicadas);
+canchas.unshift(...canchasPublicadas);
 
 // 3. Selección de elementos del DOM
 const listaCanchas = document.getElementById("lista-canchas");

@@ -119,15 +119,41 @@ function mostrarAlerta(
     titulo = ""
 ) {
 
-    const container =
+    let container =
         obtenerElemento("formAlertContainer");
 
 
     if (!container) {
 
-        console.log(mensaje);
+        container =
+            document.createElement(
+                "div"
+            );
 
-        return;
+
+        container.id =
+            "formAlertContainer";
+
+
+        container.className =
+            "form-alert-container";
+
+
+        container.setAttribute(
+            "aria-live",
+            "polite"
+        );
+
+
+        container.setAttribute(
+            "aria-atomic",
+            "true"
+        );
+
+
+        document.body.appendChild(
+            container
+        );
 
     }
 

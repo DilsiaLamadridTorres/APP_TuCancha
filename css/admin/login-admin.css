@@ -649,3 +649,198 @@ a {
     }
 
 }
+
+/* =========================================================
+   SECCIONES DISPONIBLES
+   ========================================================= */
+
+.admin-sections {
+    width: 100%;
+
+    margin-bottom: 34px;
+}
+
+
+/* =========================================================
+   ENCABEZADO DE LA SECCIÓN
+   ========================================================= */
+
+.admin-sections-header {
+    margin-bottom: 20px;
+}
+
+.admin-sections-header h2 {
+    margin: 0 0 6px;
+
+    color: #1f1f1f;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.admin-sections-header p {
+    margin: 0;
+
+    color: #7d7d7d;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   GRID DE TARJETAS
+   ========================================================= */
+
+.admin-sections-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   TARJETA DE SECCIÓN
+   ========================================================= */
+
+.admin-section-card {
+    min-height: 150px;
+
+    padding: 22px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    border: 1px solid #e3e3e3;
+    border-radius: 14px;
+
+    background-color: #ffffff;
+
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.04);
+
+    transition: 0.2s ease;
+}
+
+.admin-section-card:hover {
+    border-color: rgba(255, 106, 0, 0.45);
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 25px rgba(0, 0, 0, 0.07);
+}
+
+
+/* =========================================================
+   ICONO
+   ========================================================= */
+
+.admin-section-icon {
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background-color: #fff3eb;
+
+    color: #ff6a00;
+
+    font-size: 22px;
+}
+
+
+/* =========================================================
+   INFORMACIÓN
+   ========================================================= */
+
+.admin-section-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.admin-section-info h3 {
+    margin: 0 0 6px;
+
+    color: #1f1f1f;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.admin-section-info p {
+    margin: 0;
+
+    max-width: 420px;
+
+    color: #7f7f7f;
+
+    font-size: 11px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   FLECHA
+   ========================================================= */
+
+.admin-section-arrow {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background-color: #f5f5f5;
+
+    color: #9a9a9a;
+
+    transition: 0.2s ease;
+}
+
+.admin-section-card:hover
+.admin-section-arrow {
+    background-color: #ff6a00;
+
+    color: #ffffff;
+
+    transform: translateX(3px);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .admin-section-card {
+        align-items: flex-start;
+
+        padding: 18px;
+    }
+
+    .admin-section-arrow {
+        margin-left: auto;
+    }
+
+}

@@ -8,6 +8,7 @@ import { canchas } from '../complejos/lista-canchas.js';
 const CANCHAS_PUBLICADAS_KEY = "tucancha_canchas_publicadas";
 const SOLICITUDES_KEY = "tucancha_solicitudes_complejos";
 const IMAGEN_CANCHA_DEFAULT = "../img/foto.canchas.jpg";
+const HORARIO_PREDETERMINADO = "Lunes a domingo, 8:00 AM - 10:00 PM";
 
 function obtenerUrlFoto(foto) {
     if (typeof foto === "string") {
@@ -102,6 +103,14 @@ function normalizarCanchaPublicada(cancha) {
         precioPorHora: precio,
         imagen: obtenerImagenCancha(cancha),
         descripcion: cancha.descripcion || cancha.complejo?.descripcion || "Cancha publicada por TuCancha.",
+        horario: cancha.horario ||
+            cancha.horarioAtencion ||
+            cancha.complejo?.horarioAtencion ||
+            HORARIO_PREDETERMINADO,
+        horarioAtencion: cancha.horarioAtencion ||
+            cancha.horario ||
+            cancha.complejo?.horarioAtencion ||
+            HORARIO_PREDETERMINADO,
         disponible: true,
         publicada: true
     };
@@ -154,6 +163,16 @@ function crearCanchaDesdeSolicitud(solicitud, cancha, index) {
         descripcion: cancha.descripcion ||
             solicitud.descripcion ||
             solicitud.complejo?.descripcion,
+        horario: cancha.horario ||
+            cancha.horarioAtencion ||
+            solicitud.horarioAtencion ||
+            solicitud.complejo?.horarioAtencion ||
+            HORARIO_PREDETERMINADO,
+        horarioAtencion: cancha.horarioAtencion ||
+            cancha.horario ||
+            solicitud.horarioAtencion ||
+            solicitud.complejo?.horarioAtencion ||
+            HORARIO_PREDETERMINADO,
         complejo: {
             ...(solicitud.complejo || {})
         },

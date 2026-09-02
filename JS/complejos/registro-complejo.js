@@ -22,6 +22,9 @@ const STORAGE_KEY = "tucancha_registro_complejo";
 const SOLICITUDES_KEY = "tucancha_solicitudes_complejos";
 
 
+const HORARIO_PREDETERMINADO = "Lunes a domingo, 8:00 AM - 10:00 PM";
+
+
 /* ============================================================
    2. CREAR ESTADO INICIAL
    ============================================================ */
@@ -1426,6 +1429,12 @@ function abrirFormularioCancha(
             );
 
 
+        const precio =
+            obtenerElemento(
+                "courtPrice"
+            );
+
+
         if (nombre) {
 
             nombre.value =
@@ -1462,6 +1471,16 @@ function abrirFormularioCancha(
 
             ancho.value =
                 cancha.ancho;
+
+        }
+
+
+        if (precio) {
+
+            precio.value =
+                cancha.precioPorHora
+                || cancha.precio
+                || "";
 
         }
 
@@ -1644,7 +1663,8 @@ function limpiarFormularioCancha() {
         "courtSport",
         "courtFloor",
         "courtLength",
-        "courtWidth"
+        "courtWidth",
+        "courtPrice"
 
     ];
 
@@ -2278,6 +2298,54 @@ function validarCanchasGuardadasConFotos() {
 }
 
 
+function canchaTienePrecio(cancha) {
+
+    const valor =
+        cancha?.precioPorHora
+        || cancha?.precio;
+
+    const precio =
+        Number(valor);
+
+
+    return Boolean(valor) &&
+        Number.isFinite(precio) &&
+        precio > 0;
+
+}
+
+
+function validarCanchasGuardadasConPrecio() {
+
+    const canchaSinPrecio =
+        registroComplejo
+            .canchas
+            .find(
+                cancha =>
+                    !canchaTienePrecio(
+                        cancha
+                    )
+            );
+
+
+    if (!canchaSinPrecio) {
+
+        return true;
+
+    }
+
+
+    mostrarAlerta(
+        `${canchaSinPrecio.nombre || "Una cancha"} debe tener precio por hora antes de continuar.`,
+        "warning"
+    );
+
+
+    return false;
+
+}
+
+
 function validarFotosCancha() {
 
     const errorAnterior =
@@ -2496,6 +2564,48 @@ function validarCancha() {
 
 
     /* ========================================================
+       PRECIO
+       ======================================================== */
+
+    if (
+        !validarRequerido(
+            "courtPrice",
+            "Ingresa el precio por hora de la cancha."
+        )
+    ) {
+
+        valido = false;
+
+    } else {
+
+        const precio =
+            Number(
+                obtenerValor(
+                    "courtPrice"
+                )
+            );
+
+
+        if (
+            !Number.isFinite(precio) ||
+            precio <= 0
+        ) {
+
+            mostrarError(
+                obtenerElemento(
+                    "courtPrice"
+                ),
+                "El precio debe ser mayor que 0."
+            );
+
+            valido = false;
+
+        }
+
+    }
+
+
+    /* ========================================================
        DURACIÓN
        ======================================================== */
 
@@ -2618,6 +2728,14 @@ function guardarCancha() {
         );
 
 
+    const precioPorHora =
+        Number(
+            obtenerValor(
+                "courtPrice"
+            )
+        );
+
+
     const datosCancha = {
 
         nombre:
@@ -2648,6 +2766,18 @@ function guardarCancha() {
                     "courtWidth"
                 )
             ),
+
+        precio:
+            precioPorHora,
+
+        precioPorHora:
+            precioPorHora,
+
+        horario:
+            HORARIO_PREDETERMINADO,
+
+        horarioAtencion:
+            HORARIO_PREDETERMINADO,
 
         duraciones:
             duraciones,
@@ -2918,7 +3048,32 @@ function obtenerNombreDuracion(valor) {
 
 
 /* ============================================================
-   35. RENDERIZAR CANCHAS GUARDADAS
+   35. FORMATEAR PRECIO DE CANCHA
+   ============================================================ */
+
+function formatearPrecioCancha(valor) {
+
+    const precio =
+        Number(valor);
+
+
+    if (
+        !valor ||
+        Number.isNaN(precio)
+    ) {
+
+        return "Precio pendiente";
+
+    }
+
+
+    return `$${precio.toLocaleString("es-CO")} COP / hora`;
+
+}
+
+
+/* ============================================================
+   36. RENDERIZAR CANCHAS GUARDADAS
    ============================================================ */
 
 function renderizarCanchas() {
@@ -3177,6 +3332,13 @@ function renderizarCanchas() {
 
                             ${cancha.largo}m x
                             ${cancha.ancho}m
+
+                            &middot;
+
+                            ${formatearPrecioCancha(
+                                cancha.precioPorHora
+                                || cancha.precio
+                            )}
 
                         </p>
 
@@ -3486,6 +3648,13 @@ function renderizarCanchasRevision() {
                             cancha.tipoPiso
                         )}
 
+                        &middot;
+
+                        ${formatearPrecioCancha(
+                            cancha.precioPorHora
+                            || cancha.precio
+                        )}
+
                     </strong>
 
                 `;
@@ -3559,6 +3728,20 @@ function crearSolicitudesPorCancha() {
 
                     numeroCancha:
                         index + 1,
+
+                    precio:
+                        canchaSolicitud.precio,
+
+                    precioPorHora:
+                        canchaSolicitud.precioPorHora,
+
+                    horario:
+                        canchaSolicitud.horario
+                        || HORARIO_PREDETERMINADO,
+
+                    horarioAtencion:
+                        canchaSolicitud.horarioAtencion
+                        || HORARIO_PREDETERMINADO,
 
                     organizacion: {
                         ...registroComplejo.organizacion
@@ -3757,6 +3940,19 @@ function enviarSolicitud() {
 
     if (
         !validarCanchasGuardadasConFotos()
+    ) {
+
+        mostrarPaso(3);
+
+        renderizarCanchas();
+
+        return;
+
+    }
+
+
+    if (
+        !validarCanchasGuardadasConPrecio()
     ) {
 
         mostrarPaso(3);
@@ -4381,6 +4577,15 @@ function configurarEventos() {
 
                 if (
                     !validarCanchasGuardadasConFotos()
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    !validarCanchasGuardadasConPrecio()
                 ) {
 
                     return;

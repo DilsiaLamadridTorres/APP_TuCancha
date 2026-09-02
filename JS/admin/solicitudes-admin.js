@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const SOLICITUDES_KEY = "tucancha_solicitudes_complejos";
     const CANCHAS_PUBLICADAS_KEY = "tucancha_canchas_publicadas";
+    const HORARIO_PREDETERMINADO = "Lunes a domingo, 8:00 AM - 10:00 PM";
 
 
     /* ============================================================
@@ -843,6 +844,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    function formatearPrecioCancha(
+        valor
+    ) {
+
+        const precio =
+            normalizarPrecio(
+                valor
+            );
+
+
+        if (
+            precio === null
+        ) {
+
+            return "Precio no especificado";
+
+        }
+
+
+        return `$${precio.toLocaleString("es-CO")} COP / hora`;
+
+    }
+
+
     /* ============================================================
        CREAR CANCHA PUBLICADA
        ============================================================ */
@@ -901,6 +926,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             descripcion:
                 obtenerDescripcion(
+                    solicitud
+                ),
+
+            horario:
+                obtenerHorario(
+                    solicitud
+                ),
+
+            horarioAtencion:
+                obtenerHorario(
                     solicitud
                 ),
 
@@ -1805,12 +1840,13 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        return (
-            solicitud.precioPorHora
-            || cancha?.precioPorHora
+        return formatearPrecioCancha(
+            cancha?.precioPorHora
             || cancha?.precio
+            || solicitud.precioPorHora
+            || solicitud.precio
             || solicitud.complejo?.precioPorHora
-            || "No especificado"
+            || solicitud.complejo?.precio
         );
 
     }
@@ -1835,7 +1871,7 @@ document.addEventListener("DOMContentLoaded", () => {
             || cancha?.horarioAtencion
             || cancha?.horario
             || solicitud.complejo?.horarioAtencion
-            || "No especificado"
+            || HORARIO_PREDETERMINADO
         );
 
     }

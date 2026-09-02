@@ -446,6 +446,21 @@ document.addEventListener("DOMContentLoaded", () => {
             obtenerSolicitudesFiltradas();
 
 
+        const solicitudSeleccionadaVisible =
+            solicitudesFiltradas.some(
+                solicitud =>
+                    String(solicitud.id) ===
+                    String(idSolicitudSeleccionada)
+            );
+
+
+        if (!solicitudSeleccionadaVisible) {
+
+            ocultarDetalleSolicitud();
+
+        }
+
+
         if (
             solicitudesFiltradas.length === 0
         ) {
@@ -523,8 +538,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         if (
-            solicitud.id ===
-            idSolicitudSeleccionada
+            String(solicitud.id) ===
+            String(idSolicitudSeleccionada)
         ) {
 
             fila.classList.add(
@@ -694,6 +709,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ============================================================
+       OCULTAR DETALLE CUANDO NO HAY SELECCIÃ“N
+       ============================================================ */
+
+    function ocultarDetalleSolicitud() {
+
+        idSolicitudSeleccionada =
+            null;
+
+
+        if (panelDetalle) {
+
+            panelDetalle.classList.remove(
+                "abierto"
+            );
+
+            panelDetalle.classList.add(
+                "sin-seleccion"
+            );
+
+        }
+
+
+        [
+            botonMarcarRevision,
+            botonAprobarPublicar,
+            botonRechazar
+        ].forEach(
+            boton => {
+
+                if (boton) {
+
+                    boton.disabled =
+                        true;
+
+                }
+
+            }
+        );
+
+
+        resaltarFilaSeleccionadaEnTabla(
+            null
+        );
+
+    }
+
+
+    /* ============================================================
        CONTADORES
        ============================================================ */
 
@@ -855,8 +918,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const solicitud =
             solicitudes.find(
                 item =>
-                    item.id ===
-                    idSolicitud
+                    String(item.id) ===
+                    String(idSolicitud)
             );
 
 
@@ -866,6 +929,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Solicitud no encontrada:",
                 idSolicitud
             );
+
+            ocultarDetalleSolicitud();
 
             return;
 
@@ -1026,6 +1091,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         resaltarFilaSeleccionadaEnTabla(
             idSolicitud
+        );
+
+
+        panelDetalle.classList.remove(
+            "sin-seleccion"
         );
 
 
@@ -1887,18 +1957,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "click",
         () => {
 
-            panelDetalle.classList.remove(
-                "abierto"
-            );
-
-
-            idSolicitudSeleccionada =
-                null;
-
-
-            resaltarFilaSeleccionadaEnTabla(
-                null
-            );
+            ocultarDetalleSolicitud();
 
         }
     );

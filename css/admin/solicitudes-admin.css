@@ -361,6 +361,54 @@ button {
     color: var(--color-texto-tenue);
 }
 
+.detalle-vacio {
+    flex: 1;
+
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 36px;
+
+    color: var(--color-texto-secundario);
+    text-align: center;
+}
+
+.detalle-vacio i {
+    margin-bottom: 16px;
+
+    color: var(--color-naranja-principal);
+
+    font-size: 38px;
+}
+
+.detalle-vacio h3 {
+    margin-bottom: 8px;
+
+    color: var(--color-texto-principal);
+
+    font-size: 18px;
+}
+
+.detalle-vacio p {
+    max-width: 260px;
+
+    color: var(--color-texto-tenue);
+
+    font-size: 13px;
+}
+
+.panel-detalle.sin-seleccion .cerrar-detalle,
+.panel-detalle.sin-seleccion .contenido-detalle,
+.panel-detalle.sin-seleccion .acciones-detalle {
+    display: none;
+}
+
+.panel-detalle.sin-seleccion .detalle-vacio {
+    display: flex;
+}
+
 .contenido-detalle {
     flex: 1;
     overflow-y: auto;

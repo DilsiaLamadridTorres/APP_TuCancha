@@ -96,9 +96,8 @@ let botonHorarioSeleccionado = null;
 
 let semanaActual = new Date();
 
-// ========================================
-// HORARIOS TEMPORALES
-// ========================================
+//  HORARIOS TEMPORALES
+
 
 const horarios = [
     "08:00",
@@ -117,9 +116,8 @@ const horarios = [
 ];
 
 
-// ========================================
-// HORARIOS OCUPADOS TEMPORALES
-// ========================================
+//  HORARIOS OCUPADOS TEMPORALES
+
 
 const horariosOcupados = [
     "09:00",
@@ -372,6 +370,18 @@ botonSiguiente.addEventListener(
 );
 
 botonReservar.addEventListener("click", () => {
+
+    const usuario = sessionStorage.getItem("usuario");
+
+    if (!usuario) {
+        alert(
+            "Para reservar una cancha necesitas iniciar sesión o registrarte."
+        );
+
+        window.location.href = "login.html";
+        return;
+    }
+
     if (!canchaSeleccionada) {
         alert("Selecciona una cancha antes de reservar");
         window.location.href = "canchas.html";
@@ -387,15 +397,16 @@ botonReservar.addEventListener("click", () => {
         alert("Selecciona un horario");
         return;
     }
+
     const reserva = {
         canchaId: canchaSeleccionada.id,
-        precio:canchaSeleccionada.precio,
-        nombre:canchaSeleccionada.nombre,
-        ubicacion:canchaSeleccionada.ubicacion,
-        imagen:canchaSeleccionada.imagen,
+        precio: canchaSeleccionada.precio,
+        nombre: canchaSeleccionada.nombre,
+        ubicacion: canchaSeleccionada.ubicacion,
+        imagen: canchaSeleccionada.imagen,
         fecha: fechaSeleccionada.toLocaleDateString("es-CO"),
         horario: horarioSeleccionado,
-        duracion: "1 hora",          
+        duracion: "1 hora",
         jugadores: "10 jugadores"
     };
 
@@ -407,4 +418,4 @@ botonReservar.addEventListener("click", () => {
 });
 
 mostrarSemana();
-})
+});

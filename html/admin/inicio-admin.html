@@ -12,27 +12,45 @@
     </title>
 
 
-    <!-- Favicon -->
+    <!-- =====================================================
+         FAVICON
+         ===================================================== -->
+
     <link rel="icon" type="image/png" href="../../img/logo/logo corto.png">
 
 
-    <!-- Bootstrap -->
+    <!-- =====================================================
+         BOOTSTRAP
+         ===================================================== -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
-    <!-- Bootstrap Icons -->
+    <!-- =====================================================
+         BOOTSTRAP ICONS
+         ===================================================== -->
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 
-    <!-- Google Fonts -->
+    <!-- =====================================================
+         GOOGLE FONTS
+         ===================================================== -->
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
-    <!-- Layout general del administrador -->
+    <!-- =====================================================
+         CSS GENERAL DEL PANEL ADMIN
+         ===================================================== -->
+
     <link rel="stylesheet" href="../../css/admin/layout-admin.css">
 
 
-    <!-- CSS específico del inicio -->
+    <!-- =====================================================
+         CSS ESPECÍFICO DEL INICIO
+         ===================================================== -->
+
     <link rel="stylesheet" href="../../css/admin/inicio-admin.css">
 
 
@@ -43,14 +61,15 @@
 
 
     <!-- =====================================================
-         PANEL ADMINISTRATIVO
+         LAYOUT ADMINISTRATIVO
          ===================================================== -->
 
     <div class="admin-layout">
 
 
         <!-- =================================================
-             SIDEBAR COMPARTIDO
+             SIDEBAR
+             SE GENERA DESDE layout-admin.js
              ================================================= -->
 
         <admin-sidebar></admin-sidebar>
@@ -86,6 +105,8 @@
 
 
 
+                <!-- Fecha actual -->
+
                 <div class="admin-date">
 
                     <i class="bi bi-calendar3"></i>
@@ -102,11 +123,13 @@
 
 
             <!-- =================================================
-                 BANNER
+                 BANNER DE BIENVENIDA
                  ================================================= -->
 
             <section class="admin-welcome-banner">
 
+
+                <!-- Contenido -->
 
                 <div class="admin-welcome-content">
 
@@ -144,6 +167,8 @@
 
 
 
+                <!-- Elementos decorativos -->
+
                 <div class="admin-welcome-visual">
 
 
@@ -175,28 +200,41 @@
             <section class="admin-sections">
 
 
+                <!-- Encabezado -->
+
                 <div class="admin-sections-header">
+
 
                     <h2>
                         Secciones disponibles
                     </h2>
+
 
                     <p>
                         Accede rápidamente a las herramientas
                         de administración.
                     </p>
 
+
                 </div>
 
 
 
+                <!-- =================================================
+                     TARJETAS
+                     ================================================= -->
+
                 <div class="admin-sections-grid">
 
 
-                    <!-- Solicitudes -->
+                    <!-- =============================================
+                         SOLICITUDES
+                         ============================================= -->
 
                     <a href="solicitudes-admin.html" class="admin-section-card">
 
+
+                        <!-- Icono -->
 
                         <div class="admin-section-icon">
 
@@ -206,20 +244,27 @@
 
 
 
+                        <!-- Información -->
+
                         <div class="admin-section-info">
+
 
                             <h3>
                                 Solicitudes
                             </h3>
+
 
                             <p>
                                 Revisa y gestiona las solicitudes
                                 de registro de complejos deportivos.
                             </p>
 
+
                         </div>
 
 
+
+                        <!-- Flecha -->
 
                         <div class="admin-section-arrow">
 
@@ -239,7 +284,7 @@
 
 
             <!-- =================================================
-                 FOOTER
+                 FOOTER INTERNO
                  ================================================= -->
 
             <footer class="admin-footer">
@@ -247,22 +292,28 @@
 
                 <div class="admin-footer-info">
 
+
                     <span>
                         TuCancha
                     </span>
+
 
                     <small>
                         Panel administrativo
                     </small>
 
+
                 </div>
+
 
 
                 <div class="admin-footer-version">
 
+
                     <span>
                         Versión 1.0.0
                     </span>
+
 
                 </div>
 
@@ -278,18 +329,22 @@
 
 
     <!-- =====================================================
-         SCRIPTS
+         JAVASCRIPT
          ===================================================== -->
 
-    <!-- Sidebar -->
-    <script src="../../JS/admin/sidebar-admin.js"></script>
+
+    <!-- Layout + Sidebar compartido -->
+
+    <script src="../../JS/admin/layout-admin.js"></script>
 
 
-    <!-- Inicio admin -->
+    <!-- JS específico del inicio -->
+
     <script src="../../JS/admin/inicio-admin.js"></script>
 
 
     <!-- Bootstrap -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 

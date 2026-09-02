@@ -1,6 +1,11 @@
 /* ============================================================
    TUCANCHA
-   SIDEBAR ADMINISTRATIVO
+   LAYOUT GENERAL DEL PANEL ADMINISTRATIVO
+   ============================================================ */
+
+
+/* ============================================================
+   COMPONENTE SIDEBAR
    ============================================================ */
 
 class AdminSidebar extends HTMLElement {
@@ -8,7 +13,7 @@ class AdminSidebar extends HTMLElement {
     connectedCallback() {
 
         /* =====================================================
-           PÁGINA ACTUAL
+           OBTENER LA PÁGINA ACTUAL
            ===================================================== */
 
         const paginaActual =
@@ -19,7 +24,7 @@ class AdminSidebar extends HTMLElement {
 
 
         /* =====================================================
-           OPCIONES ACTIVAS
+           DETERMINAR OPCIÓN ACTIVA
            ===================================================== */
 
         const inicioActivo =
@@ -27,11 +32,11 @@ class AdminSidebar extends HTMLElement {
 
 
         const solicitudesActivo =
-            paginaActual === "dashboard_admin.html";
+            paginaActual === "solicitudes-admin.html";
 
 
         /* =====================================================
-           SIDEBAR
+           CREAR SIDEBAR
            ===================================================== */
 
         this.innerHTML = `
@@ -44,6 +49,7 @@ class AdminSidebar extends HTMLElement {
                      ========================================= -->
 
                 <div class="sidebar-brand">
+
 
                     <img
                         src="../../img/logo/Logo.png"
@@ -64,6 +70,7 @@ class AdminSidebar extends HTMLElement {
 
                     </div>
 
+
                 </div>
 
 
@@ -75,15 +82,16 @@ class AdminSidebar extends HTMLElement {
                 <nav class="sidebar-nav">
 
 
-                    <!-- Inicio -->
+                    <!-- =====================================
+                         INICIO
+                         ===================================== -->
 
                     <a
                         href="inicio-admin.html"
-                        class="sidebar-link ${
-                            inicioActivo
-                                ? "active"
-                                : ""
-                        }"
+                        class="sidebar-link ${inicioActivo
+                ? "active"
+                : ""
+            }"
                     >
 
                         <i class="bi bi-house-door-fill"></i>
@@ -96,15 +104,16 @@ class AdminSidebar extends HTMLElement {
 
 
 
-                    <!-- Solicitudes -->
+                    <!-- =====================================
+                         SOLICITUDES
+                         ===================================== -->
 
                     <a
-                        href="/html/admin/solicitudes-admin.html"
-                        class="sidebar-link ${
-                            solicitudesActivo
-                                ? "active"
-                                : ""
-                        }"
+                        href="solicitudes-admin.html"
+                        class="sidebar-link ${solicitudesActivo
+                ? "active"
+                : ""
+            }"
                     >
 
                         <i class="bi bi-file-earmark-text"></i>
@@ -121,11 +130,15 @@ class AdminSidebar extends HTMLElement {
 
 
                 <!-- =========================================
-                     PERFIL ADMIN
+                     PARTE INFERIOR DEL SIDEBAR
                      ========================================= -->
 
                 <div class="sidebar-footer">
 
+
+                    <!-- =====================================
+                         INFORMACIÓN DEL ADMIN
+                         ===================================== -->
 
                     <div class="admin-profile">
 
@@ -182,6 +195,10 @@ class AdminSidebar extends HTMLElement {
 
 }
 
+
+/* ============================================================
+   REGISTRAR COMPONENTE
+   ============================================================ */
 
 customElements.define(
     "admin-sidebar",

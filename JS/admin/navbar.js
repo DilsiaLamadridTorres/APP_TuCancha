@@ -271,34 +271,53 @@ class MiNavbar extends HTMLElement {
                         <!-- =====================================
                              USUARIO
                              ===================================== -->
+<div class="d-flex align-items-center mx-5">
+  ${usuario ? `
+        <div class="dropdown">
+          <button
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            id="menuUsuario"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-person-circle me-1"></i>
+            ${nombreUsuario}
+          </button>
 
-                        <div
-                            class="d-flex align-items-center gap-2 mx-5"
-                        >
+          <ul
+            class="dropdown-menu dropdown-menu-end dropdown-menu-dark"
+            aria-labelledby="menuUsuario"
+          >
+            <li>
+              <a class="dropdown-item" href="${rutaPaginas}pagar-reserva.html">
+                <i class="bi bi-calendar-check me-2"></i>
+                Mis reservas
+              </a>
+            </li>
 
-                            <a
-                                href="${rutaUsuario}"
-                                class="btn btn-primary"
-                            >
-                                ${nombreUsuario}
-                            </a>
+            <li><hr class="dropdown-divider"></li>
 
-
-                            ${
-                                usuario
-                                    ? `
-                                        <button
-                                            type="button"
-                                            id="btn-logout"
-                                            class="btn btn-outline-light"
-                                        >
-                                            Cerrar sesión
-                                        </button>
-                                      `
-                                    : ""
-                            }
-
-                        </div>
+            <li>
+              <button
+                type="button"
+                id="btn-logout"
+                class="dropdown-item text-danger"
+              >
+                <i class="bi bi-box-arrow-right me-2"></i>
+                Cerrar sesión
+              </button>
+            </li>
+          </ul>
+        </div>
+      `
+      : `
+        <a href="${rutaPaginas}registro.html" class="btn btn-primary">
+          Únete
+        </a>
+      `
+  }
+</div>
 
                     </div>
 

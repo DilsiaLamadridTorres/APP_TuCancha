@@ -514,8 +514,32 @@
 
 @media (max-width: 900px) {
 
+    .admin-header {
+        gap: 20px;
+    }
+
+    .admin-header-info h1 {
+        font-size: 26px;
+    }
+
+    .admin-welcome-banner {
+        padding: 30px;
+    }
+
+    .admin-welcome-content h2 {
+        font-size: 30px;
+    }
+
     .admin-welcome-visual {
         width: 180px;
+    }
+
+    .admin-sections-grid {
+        grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(260px, 1fr)
+            );
     }
 
 }
@@ -540,6 +564,10 @@
         padding: 28px;
     }
 
+    .admin-welcome-content h2 {
+        font-size: 28px;
+    }
+
     .admin-welcome-visual {
         display: none;
     }
@@ -551,6 +579,57 @@
     .admin-footer {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .admin-header-info h1 {
+        font-size: 23px;
+    }
+
+    .admin-header-info p {
+        font-size: 12px;
+    }
+
+    .admin-welcome-banner {
+        margin-bottom: 28px;
+
+        padding: 22px;
+    }
+
+    .admin-welcome-content h2 {
+        font-size: 24px;
+    }
+
+    .admin-welcome-content p {
+        font-size: 12px;
+    }
+
+    .admin-sections-header h2 {
+        font-size: 19px;
+    }
+
+    .admin-section-card {
+        min-height: auto;
+
+        padding: 18px;
+
+        align-items: flex-start;
+    }
+
+    .admin-section-icon {
+        width: 48px;
+        height: 48px;
+
+        font-size: 20px;
+    }
+
+    .admin-section-arrow {
+        width: 32px;
+        height: 32px;
     }
 
 }

@@ -705,3 +705,309 @@ button {
 ::-webkit-scrollbar-track { background: var(--color-fondo-principal); }
 ::-webkit-scrollbar-thumb { background: var(--color-borde); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-texto-tenue); }
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1180px) {
+
+    .panel-administrador {
+        display: block;
+
+        min-height: auto;
+    }
+
+    .panel-izquierdo {
+        min-width: 0;
+
+        padding: 0;
+    }
+
+    .contenedor-tabla {
+        overflow-x: auto;
+    }
+
+    .tabla-solicitudes {
+        min-width: 820px;
+    }
+
+    .panel-detalle {
+        position: fixed;
+
+        top: 0;
+        right: 0;
+        bottom: 0;
+
+        width: min(420px, 100vw);
+        height: 100dvh;
+
+        transform: translateX(100%);
+
+        box-shadow: -12px 0 30px rgba(0, 0, 0, 0.35);
+
+        z-index: 1300;
+    }
+
+    .panel-detalle.abierto {
+        transform: translateX(0);
+    }
+
+    .panel-detalle.sin-seleccion {
+        transform: translateX(100%);
+    }
+
+}
+
+
+@media (max-width: 760px) {
+
+    .encabezado-dashboard {
+        margin-bottom: 18px;
+    }
+
+    .encabezado-dashboard h1 {
+        font-size: 22px;
+    }
+
+    .encabezado-dashboard p {
+        font-size: 13px;
+    }
+
+    .filtros-estado {
+        margin: 0 -4px 20px;
+        padding: 0 4px 6px;
+
+        overflow-x: auto;
+    }
+
+    .boton-filtro {
+        flex: 0 0 auto;
+
+        padding: 8px 14px;
+
+        white-space: nowrap;
+    }
+
+    .contenedor-tabla {
+        overflow: visible;
+
+        border: 0;
+        border-radius: 0;
+
+        background-color: transparent;
+    }
+
+    .tabla-solicitudes {
+        min-width: 0;
+    }
+
+    .tabla-solicitudes,
+    .tabla-solicitudes tbody,
+    .tabla-solicitudes tr,
+    .tabla-solicitudes td {
+        display: block;
+
+        width: 100%;
+    }
+
+    .tabla-solicitudes thead {
+        display: none;
+    }
+
+    .fila-solicitud {
+        margin-bottom: 12px;
+        padding: 14px;
+
+        border: 1px solid var(--color-borde);
+        border-radius: var(--radio-borde-medio);
+
+        background-color: var(--color-fondo-panel);
+    }
+
+    .tabla-solicitudes tbody td {
+        padding: 7px 0;
+    }
+
+    .tabla-solicitudes td.columna-cancha {
+        display: flex;
+
+        width: 100%;
+
+        padding-bottom: 12px;
+
+        border-bottom: 1px solid var(--color-borde);
+    }
+
+    .tabla-solicitudes td.columna-propietario,
+    .tabla-solicitudes td.columna-ciudad,
+    .tabla-solicitudes td.columna-fecha,
+    .tabla-solicitudes td.columna-estado {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+
+        width: 100%;
+
+        gap: 16px;
+
+        text-align: right;
+    }
+
+    .columna-propietario::before,
+    .columna-ciudad::before,
+    .columna-fecha::before,
+    .columna-estado::before {
+        flex-shrink: 0;
+
+        color: var(--color-texto-tenue);
+
+        font-size: 11px;
+        font-weight: 600;
+
+        text-transform: uppercase;
+    }
+
+    .columna-propietario::before {
+        content: "Propietario";
+    }
+
+    .columna-ciudad::before {
+        content: "Ciudad";
+    }
+
+    .columna-fecha::before {
+        content: "Fecha";
+    }
+
+    .columna-estado::before {
+        content: "Estado";
+    }
+
+    .tabla-solicitudes td.columna-acciones {
+        width: 100%;
+
+        text-align: left;
+    }
+
+    .boton-ver {
+        width: 100%;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-top: 4px;
+    }
+
+    .pie-paginacion {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .flujo-guia {
+        padding: 18px;
+    }
+
+    .pasos-flujo {
+        align-items: stretch;
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .paso {
+        width: 100%;
+    }
+
+    .conector-paso.punteado {
+        width: 1px;
+        height: 18px;
+
+        flex: 0 0 18px;
+
+        margin: 0 0 0 20px;
+
+        border-top: 0;
+        border-left: 1px dotted var(--color-borde);
+    }
+
+    .galeria-detalle img {
+        height: 230px;
+
+        object-fit: cover;
+    }
+
+    .fotos-adicionales {
+        overflow-x: auto;
+
+        padding-bottom: 6px;
+    }
+
+    .fotos-adicionales img,
+    .miniatura-mas-fotos {
+        flex: 0 0 auto;
+    }
+
+    .acciones-detalle {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .encabezado-dashboard h1 {
+        font-size: 20px;
+    }
+
+    .encabezado-dashboard p {
+        font-size: 12px;
+    }
+
+    .miniatura-cancha {
+        width: 54px;
+        height: 42px;
+    }
+
+    .info-cancha h3 {
+        font-size: 13px;
+    }
+
+    .panel-detalle {
+        width: 100vw;
+    }
+
+    .encabezado-detalle,
+    .contenido-detalle,
+    .acciones-detalle {
+        padding: 16px;
+    }
+
+    .galeria-detalle img {
+        height: 190px;
+    }
+
+    .grupo-informacion li {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 3px;
+    }
+
+    .linea-tiempo-estado .pasos-estado {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 14px;
+    }
+
+    .conector-estado {
+        display: none;
+    }
+
+}

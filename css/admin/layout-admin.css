@@ -45,6 +45,8 @@ a {
 .admin-layout {
     width: 100%;
     min-height: 100vh;
+
+    display: block;
 }
 
 
@@ -304,6 +306,7 @@ a {
 .admin-main {
     width: calc(100% - 260px);
     min-height: 100vh;
+    min-width: 0;
 
     margin-left: 260px;
 
@@ -348,22 +351,32 @@ a {
 @media (max-width: 700px) {
 
     .admin-sidebar {
-        position: static;
+        position: sticky;
+
+        top: 0;
 
         width: 100%;
         height: auto;
 
-        padding: 18px;
+        padding: 14px 16px;
+    }
+
+    .sidebar-brand {
+        padding-bottom: 14px;
     }
 
     .sidebar-nav {
-        margin-top: 18px;
+        margin-top: 14px;
 
         flex-direction: row;
+
+        overflow-x: auto;
     }
 
     .sidebar-link {
-        flex: 1;
+        flex: 0 0 auto;
+
+        min-width: 136px;
 
         justify-content: center;
     }
@@ -378,6 +391,47 @@ a {
         margin-left: 0;
 
         padding: 26px 18px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .admin-sidebar {
+        padding: 12px;
+    }
+
+    .sidebar-brand {
+        gap: 10px;
+    }
+
+    .sidebar-logo {
+        width: 38px;
+        height: 38px;
+    }
+
+    .sidebar-brand-text strong {
+        font-size: 14px;
+    }
+
+    .sidebar-brand-text span {
+        font-size: 8px;
+    }
+
+    .sidebar-link {
+        min-width: 112px;
+        min-height: 40px;
+
+        padding: 0 10px;
+
+        gap: 8px;
+
+        font-size: 12px;
+    }
+
+    .admin-main {
+        padding: 22px 12px;
     }
 
 }

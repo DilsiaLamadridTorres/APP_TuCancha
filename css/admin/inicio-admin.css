@@ -5,319 +5,7 @@
 
 
 /* =========================================================
-   CONFIGURACIÓN GENERAL
-   ========================================================= */
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-
-    min-height: 100vh;
-
-    font-family: 'Poppins', sans-serif;
-
-    background-color: #f5f6f8;
-
-    color: #1f1f1f;
-}
-
-a {
-    text-decoration: none;
-}
-
-button,
-a {
-    font-family: inherit;
-}
-
-
-/* =========================================================
-   LAYOUT GENERAL
-   ========================================================= */
-
-.admin-layout {
-    width: 100%;
-    min-height: 100vh;
-}
-
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
-
-.admin-sidebar {
-    position: fixed;
-
-    top: 0;
-    left: 0;
-
-    width: 260px;
-    height: 100vh;
-
-    padding: 28px 20px;
-
-    display: flex;
-    flex-direction: column;
-
-    background-color: #1f1f1f;
-
-    border-right: 1px solid #2d2d2d;
-
-    z-index: 1000;
-}
-
-
-/* =========================================================
-   LOGO
-   ========================================================= */
-
-.sidebar-brand {
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    padding-bottom: 25px;
-
-    border-bottom: 1px solid #333333;
-}
-
-.sidebar-logo {
-    width: 50px;
-    height: 50px;
-
-    object-fit: cover;
-
-    border-radius: 50%;
-}
-
-.sidebar-brand-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar-brand-text strong {
-    color: #ffffff;
-
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.sidebar-brand-text span {
-    margin-top: 2px;
-
-    color: #ff6a00;
-
-    font-size: 9px;
-    font-weight: 600;
-
-    letter-spacing: 0.7px;
-
-    text-transform: uppercase;
-}
-
-
-/* =========================================================
-   NAVEGACIÓN
-   ========================================================= */
-
-.sidebar-nav {
-    margin-top: 30px;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 8px;
-}
-
-.sidebar-link {
-    width: 100%;
-    min-height: 46px;
-
-    padding: 0 14px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    border-radius: 10px;
-
-    color: #a1a1a1;
-
-    font-size: 13px;
-    font-weight: 500;
-
-    transition: 0.2s ease;
-}
-
-.sidebar-link i {
-    width: 22px;
-
-    font-size: 17px;
-
-    text-align: center;
-}
-
-.sidebar-link:hover {
-    background-color: #2a2a2a;
-
-    color: #ffffff;
-}
-
-.sidebar-link.active {
-    background-color: #ff6a00;
-
-    color: #ffffff;
-
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   FOOTER SIDEBAR
-   ========================================================= */
-
-.sidebar-footer {
-    margin-top: auto;
-
-    padding-top: 20px;
-
-    border-top: 1px solid #333333;
-}
-
-
-/* =========================================================
-   PERFIL ADMIN
-   ========================================================= */
-
-.admin-profile {
-    display: flex;
-    align-items: center;
-
-    gap: 11px;
-
-    margin-bottom: 16px;
-}
-
-.admin-avatar {
-    width: 38px;
-    height: 38px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background-color: #ff6a00;
-
-    color: #ffffff;
-
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.admin-profile-info {
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-}
-
-.admin-profile-info strong {
-    color: #ffffff;
-
-    font-size: 11px;
-    font-weight: 600;
-}
-
-.admin-profile-info span {
-    margin-top: 2px;
-
-    overflow: hidden;
-
-    color: #777777;
-
-    font-size: 9px;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
-}
-
-
-/* =========================================================
-   CERRAR SESIÓN
-   ========================================================= */
-
-.btn-logout {
-    width: 100%;
-    height: 42px;
-
-    padding: 0 12px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    border: none;
-    border-radius: 9px;
-
-    background-color: transparent;
-
-    color: #8b8b8b;
-
-    font-size: 11px;
-    font-weight: 500;
-
-    cursor: pointer;
-
-    transition: 0.2s ease;
-}
-
-.btn-logout i {
-    font-size: 16px;
-}
-
-.btn-logout:hover {
-    background-color: rgba(220, 53, 69, 0.1);
-
-    color: #dc3545;
-}
-
-
-/* =========================================================
-   CONTENIDO PRINCIPAL
-   ========================================================= */
-
-.admin-main {
-    width: calc(100% - 260px);
-    min-height: 100vh;
-
-    margin-left: 260px;
-
-    padding: 42px 48px;
-
-    display: flex;
-    flex-direction: column;
-
-    background-color: #f5f6f8;
-}
-
-
-/* =========================================================
-   ENCABEZADO DEL PANEL
+   ENCABEZADO
    ========================================================= */
 
 .admin-header {
@@ -383,10 +71,11 @@ a {
     font-size: 11px;
     font-weight: 500;
 
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.04);
-
     white-space: nowrap;
+
+    box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.04);
 }
 
 .admin-date i {
@@ -397,7 +86,7 @@ a {
 
 
 /* =========================================================
-   BANNER DE BIENVENIDA
+   BANNER
    ========================================================= */
 
 .admin-welcome-banner {
@@ -428,12 +117,13 @@ a {
         );
 
     box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.08);
+        0 12px 30px
+        rgba(0, 0, 0, 0.08);
 }
 
 
 /* =========================================================
-   CONTENIDO DEL BANNER
+   CONTENIDO BANNER
    ========================================================= */
 
 .admin-welcome-content {
@@ -486,7 +176,7 @@ a {
 
 
 /* =========================================================
-   DECORACIÓN DEL BANNER
+   VISUAL BANNER
    ========================================================= */
 
 .admin-welcome-visual {
@@ -499,11 +189,6 @@ a {
 
     z-index: 2;
 }
-
-
-/* =========================================================
-   ICONO CAMPO
-   ========================================================= */
 
 .admin-field-icon {
     position: absolute;
@@ -520,19 +205,16 @@ a {
 
     border-radius: 20px;
 
-    background-color: rgba(255, 255, 255, 0.04);
+    background-color:
+        rgba(255, 255, 255, 0.04);
 
-    color: rgba(255, 255, 255, 0.12);
+    color:
+        rgba(255, 255, 255, 0.12);
 
     font-size: 90px;
 
     transform: rotate(-8deg);
 }
-
-
-/* =========================================================
-   ICONO BALÓN
-   ========================================================= */
 
 .admin-ball-icon {
     position: absolute;
@@ -556,12 +238,13 @@ a {
     font-size: 27px;
 
     box-shadow:
-        0 10px 22px rgba(255, 106, 0, 0.30);
+        0 10px 22px
+        rgba(255, 106, 0, 0.30);
 }
 
 
 /* =========================================================
-   DECORACIÓN EXTRA BANNER
+   DECORACIÓN BANNER
    ========================================================= */
 
 .admin-welcome-banner::before {
@@ -595,12 +278,13 @@ a {
     border-radius: 50%;
 
     border:
-        30px solid rgba(255, 106, 0, 0.05);
+        30px solid
+        rgba(255, 106, 0, 0.05);
 }
 
 
 /* =========================================================
-   SECCIONES DISPONIBLES
+   SECCIONES
    ========================================================= */
 
 .admin-sections {
@@ -608,11 +292,6 @@ a {
 
     margin-bottom: 34px;
 }
-
-
-/* =========================================================
-   ENCABEZADO DE SECCIONES
-   ========================================================= */
 
 .admin-sections-header {
     margin-bottom: 20px;
@@ -639,21 +318,24 @@ a {
 
 
 /* =========================================================
-   GRID DE TARJETAS
+   GRID
    ========================================================= */
 
 .admin-sections-grid {
     display: grid;
 
     grid-template-columns:
-        repeat(auto-fit, minmax(300px, 400px));
+        repeat(
+            auto-fit,
+            minmax(300px, 400px)
+        );
 
     gap: 18px;
 }
 
 
 /* =========================================================
-   TARJETA DE SECCIÓN
+   CARD
    ========================================================= */
 
 .admin-section-card {
@@ -673,12 +355,10 @@ a {
     background-color: #ffffff;
 
     box-shadow:
-        0 6px 18px rgba(0, 0, 0, 0.04);
+        0 6px 18px
+        rgba(0, 0, 0, 0.04);
 
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        border-color 0.2s ease;
+    transition: 0.2s ease;
 }
 
 .admin-section-card:hover {
@@ -688,12 +368,13 @@ a {
     transform: translateY(-3px);
 
     box-shadow:
-        0 12px 25px rgba(0, 0, 0, 0.07);
+        0 12px 25px
+        rgba(0, 0, 0, 0.07);
 }
 
 
 /* =========================================================
-   ICONO DE TARJETA
+   ICONO CARD
    ========================================================= */
 
 .admin-section-icon {
@@ -717,7 +398,7 @@ a {
 
 
 /* =========================================================
-   INFORMACIÓN DE TARJETA
+   INFORMACIÓN CARD
    ========================================================= */
 
 .admin-section-info {
@@ -747,7 +428,7 @@ a {
 
 
 /* =========================================================
-   FLECHA TARJETA
+   FLECHA
    ========================================================= */
 
 .admin-section-arrow {
@@ -780,13 +461,13 @@ a {
 
 
 /* =========================================================
-   FOOTER DEL PANEL
+   FOOTER
    ========================================================= */
 
 .admin-footer {
     width: 100%;
 
-    margin-top: auto;
+    margin-top: 60px;
 
     padding-top: 20px;
 
@@ -796,13 +477,9 @@ a {
 
     gap: 20px;
 
-    border-top: 1px solid #e1e1e1;
+    border-top:
+        1px solid #e1e1e1;
 }
-
-
-/* =========================================================
-   INFORMACIÓN FOOTER
-   ========================================================= */
 
 .admin-footer-info {
     display: flex;
@@ -824,11 +501,6 @@ a {
     font-size: 10px;
 }
 
-
-/* =========================================================
-   VERSIÓN
-   ========================================================= */
-
 .admin-footer-version span {
     color: #9a9a9a;
 
@@ -837,122 +509,23 @@ a {
 
 
 /* =========================================================
-   RESPONSIVE - TABLET GRANDE
-   ========================================================= */
-
-@media (max-width: 1100px) {
-
-    .admin-main {
-        padding: 36px 34px;
-    }
-
-    .admin-welcome-content h2 {
-        font-size: 31px;
-    }
-
-}
-
-
-/* =========================================================
-   RESPONSIVE - TABLET
+   RESPONSIVE
    ========================================================= */
 
 @media (max-width: 900px) {
-
-    .admin-sidebar {
-        width: 220px;
-
-        padding: 24px 16px;
-    }
-
-    .admin-main {
-        width: calc(100% - 220px);
-
-        margin-left: 220px;
-
-        padding: 34px 28px;
-    }
-
-    .sidebar-brand-text strong {
-        font-size: 16px;
-    }
-
-    .sidebar-brand-text span {
-        font-size: 8px;
-    }
-
-    .sidebar-logo {
-        width: 42px;
-        height: 42px;
-    }
-
-    .admin-header {
-        align-items: flex-start;
-    }
-
-    .admin-welcome-banner {
-        min-height: 220px;
-    }
 
     .admin-welcome-visual {
         width: 180px;
     }
 
-    .admin-field-icon {
-        right: 0;
-    }
-
 }
 
 
-/* =========================================================
-   RESPONSIVE - MÓVIL
-   ========================================================= */
-
 @media (max-width: 700px) {
-
-    .admin-sidebar {
-        position: static;
-
-        width: 100%;
-        height: auto;
-
-        padding: 18px;
-    }
-
-    .sidebar-brand {
-        padding-bottom: 18px;
-    }
-
-    .sidebar-nav {
-        margin-top: 18px;
-
-        flex-direction: row;
-    }
-
-    .sidebar-link {
-        flex: 1;
-
-        justify-content: center;
-    }
-
-    .sidebar-footer {
-        display: none;
-    }
-
-    .admin-main {
-        width: 100%;
-
-        margin-left: 0;
-
-        padding: 26px 18px;
-    }
 
     .admin-header {
         flex-direction: column;
         align-items: flex-start;
-
-        gap: 18px;
     }
 
     .admin-date {
@@ -967,14 +540,6 @@ a {
         padding: 28px;
     }
 
-    .admin-welcome-content {
-        max-width: 100%;
-    }
-
-    .admin-welcome-content h2 {
-        font-size: 28px;
-    }
-
     .admin-welcome-visual {
         display: none;
     }
@@ -986,52 +551,6 @@ a {
     .admin-footer {
         flex-direction: column;
         align-items: flex-start;
-    }
-
-}
-
-
-/* =========================================================
-   RESPONSIVE - CELULARES PEQUEÑOS
-   ========================================================= */
-
-@media (max-width: 480px) {
-
-    .admin-header-info h1 {
-        font-size: 25px;
-    }
-
-    .admin-header-info p {
-        font-size: 11px;
-    }
-
-    .admin-welcome-banner {
-        padding: 24px;
-    }
-
-    .admin-welcome-content h2 {
-        font-size: 25px;
-    }
-
-    .admin-welcome-content p {
-        font-size: 11px;
-    }
-
-    .admin-section-card {
-        padding: 18px;
-
-        align-items: flex-start;
-    }
-
-    .admin-section-icon {
-        width: 48px;
-        height: 48px;
-
-        font-size: 20px;
-    }
-
-    .admin-section-arrow {
-        margin-left: auto;
     }
 
 }

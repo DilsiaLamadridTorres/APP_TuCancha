@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,228 +8,245 @@
     <link rel="stylesheet" href="../../css/admin/dashboard_admin.css">
     <script src="../../JS/admin/auth-admin.js"></script>
 </head>
+
 <body>
 
-<div class="panel-administrador">
-    <!-- Panel Izquierdo: Listado de Solicitudes -->
-    <div class="panel-izquierdo">
-        <header class="encabezado-dashboard">
-            <h1>Canchas Registradas</h1>
-            <p>Revisa, aprueba y publica nuevas canchas en la plataforma.</p>
-        </header>
+    <div class="panel-administrador">
+        <!-- Panel Izquierdo: Listado de Solicitudes -->
+        <div class="panel-izquierdo">
+            <header class="encabezado-dashboard">
+                <h1>Canchas Registradas</h1>
+                <p>Revisa, aprueba y publica nuevas canchas en la plataforma.</p>
+            </header>
 
-        <!-- Filtros de Estado -->
-        <nav class="filtros-estado">
-            <button class="boton-filtro activo" data-estado="pendiente">Pendientes <span class="contador">5</span></button>
-            <button class="boton-filtro" data-estado="en_revision">En revisión <span class="contador">2</span></button>
-            <button class="boton-filtro" data-estado="aprobada">Aprobadas <span class="contador">12</span></button>
-            <button class="boton-filtro" data-estado="rechazada">Rechazadas <span class="contador">1</span></button>
-            <button class="boton-filtro" data-estado="todas">Todas <span class="contador">20</span></button>
-        </nav>
+            <!-- Filtros de Estado -->
+            <nav class="filtros-estado">
+                <button class="boton-filtro activo" data-estado="pendiente">Pendientes <span
+                        class="contador">5</span></button>
+                <button class="boton-filtro" data-estado="en_revision">En revisión <span
+                        class="contador">2</span></button>
+                <button class="boton-filtro" data-estado="aprobada">Aprobadas <span class="contador">12</span></button>
+                <button class="boton-filtro" data-estado="rechazada">Rechazadas <span class="contador">1</span></button>
+                <button class="boton-filtro" data-estado="todas">Todas <span class="contador">20</span></button>
+            </nav>
 
-        <!-- Tabla de Solicitudes -->
-        <div class="contenedor-tabla">
-            <table class="tabla-solicitudes">
-                <thead>
-                    <tr>
-                        <th>Cancha</th>
-                        <th>Propietario</th>
-                        <th>Ciudad</th>
-                        <th>Fecha de envío</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="cuerpo-tabla-solicitudes">
-                    <!-- Fila 1 (Activa) -->
-                    <tr class="fila-solicitud activa" data-id="1">
-                        <td class="columna-cancha">
-                            <img src="https://via.placeholder.com/60x40?text=Arena+7" alt="Cancha Arena Gol 7" class="miniatura-cancha">
-                            <div class="info-cancha">
-                                <h3>Arena Gol 7</h3>
-                                <p>Fútbol 7</p>
-                            </div>
-                        </td>
-                        <td class="columna-propietario">Carlos Pérez<br>+57 301 234 5678</td>
-                        <td class="columna-ciudad">Medellín<br>Antioquia</td>
-                        <td class="columna-fecha">24 May 2024<br>10:30 AM</td>
-                        <td class="columna-estado"><span class="etiqueta-estado pendiente">Pendiente</span></td>
-                        <td class="columna-acciones"><button class="boton-ver">Ver solicitud <span class="flecha">&gt;</span></button></td>
-                    </tr>
-                    <!-- Fila 2 -->
-                    <tr class="fila-solicitud" data-id="2">
-                        <td class="columna-cancha">
-                            <img src="https://via.placeholder.com/60x40?text=La+80" alt="La 80 Cancha" class="miniatura-cancha">
-                            <div class="info-cancha">
-                                <h3>La 80 Cancha</h3>
-                                <p>Fútbol 8</p>
-                            </div>
-                        </td>
-                        <td class="columna-propietario">María López<br>+57 301 456 7890</td>
-                        <td class="columna-ciudad">Cali<br>Valle del Cauca</td>
-                        <td class="columna-fecha">23 May 2024<br>09:20 AM</td>
-                        <td class="columna-estado"><span class="etiqueta-estado en-revision">En revisión</span></td>
-                        <td class="columna-acciones"><button class="boton-ver">Ver solicitud <span class="flecha">&gt;</span></button></td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Tabla de Solicitudes -->
+            <div class="contenedor-tabla">
+                <table class="tabla-solicitudes">
+                    <thead>
+                        <tr>
+                            <th>Cancha</th>
+                            <th>Propietario</th>
+                            <th>Ciudad</th>
+                            <th>Fecha de envío</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-tabla-solicitudes">
+                        <!-- Fila 1 (Activa) -->
+                        <tr class="fila-solicitud activa" data-id="1">
+                            <td class="columna-cancha">
+                                <img src="https://via.placeholder.com/60x40?text=Arena+7" alt="Cancha Arena Gol 7"
+                                    class="miniatura-cancha">
+                                <div class="info-cancha">
+                                    <h3>Arena Gol 7</h3>
+                                    <p>Fútbol 7</p>
+                                </div>
+                            </td>
+                            <td class="columna-propietario">Carlos Pérez<br>+57 301 234 5678</td>
+                            <td class="columna-ciudad">Medellín<br>Antioquia</td>
+                            <td class="columna-fecha">24 May 2024<br>10:30 AM</td>
+                            <td class="columna-estado"><span class="etiqueta-estado pendiente">Pendiente</span></td>
+                            <td class="columna-acciones"><button class="boton-ver">Ver solicitud <span
+                                        class="flecha">&gt;</span></button></td>
+                        </tr>
+                        <!-- Fila 2 -->
+                        <tr class="fila-solicitud" data-id="2">
+                            <td class="columna-cancha">
+                                <img src="https://via.placeholder.com/60x40?text=La+80" alt="La 80 Cancha"
+                                    class="miniatura-cancha">
+                                <div class="info-cancha">
+                                    <h3>La 80 Cancha</h3>
+                                    <p>Fútbol 8</p>
+                                </div>
+                            </td>
+                            <td class="columna-propietario">María López<br>+57 301 456 7890</td>
+                            <td class="columna-ciudad">Cali<br>Valle del Cauca</td>
+                            <td class="columna-fecha">23 May 2024<br>09:20 AM</td>
+                            <td class="columna-estado"><span class="etiqueta-estado en-revision">En revisión</span></td>
+                            <td class="columna-acciones"><button class="boton-ver">Ver solicitud <span
+                                        class="flecha">&gt;</span></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <footer class="pie-paginacion">
+                <p>Mostrando <span id="rango-inicio">1</span> a <span id="rango-fin">5</span> de <span
+                        id="total-solicitudes">5</span> solicitudes</p>
+                <div class="controles-paginacion">
+                    <button class="flecha-pagina">&lt;</button>
+                    <button class="numero-pagina activo">1</button>
+                    <button class="flecha-pagina">&gt;</button>
+                </div>
+            </footer>
+
+            <!-- Explicación del Flujo -->
+            <section class="flujo-guia">
+                <h3>¿Cómo funciona el flujo de solicitudes?</h3>
+                <div class="pasos-flujo">
+                    <div class="paso activo">
+                        <div class="circulo-icono naranja"><i class="icono-usuario"></i></div>
+                        <div class="texto-paso">
+                            <h4>1. Usuario envía</h4>
+                            <p>El propietario envía la información de su cancha para inscripción.</p>
+                        </div>
+                    </div>
+                    <div class="conector-paso punteado"></div>
+                    <div class="paso">
+                        <div class="circulo-icono azul"><i class="icono-busqueda"></i></div>
+                        <div class="texto-paso">
+                            <h4>2. En revisión</h4>
+                            <p>Revisa la información y verifica que cumpla con los requisitos.</p>
+                        </div>
+                    </div>
+                    <div class="conector-paso punteado"></div>
+                    <div class="paso">
+                        <div class="circulo-icono verde"><i class="icono-escudo-ok"></i></div>
+                        <div class="texto-paso">
+                            <h4>3. Aprueba</h4>
+                            <p>Aprueba la cancha para que quede disponible en la plataforma.</p>
+                        </div>
+                    </div>
+                    <div class="conector-paso punteado"></div>
+                    <div class="paso">
+                        <div class="circulo-icono gris"><i class="icono-check-circulo"></i></div>
+                        <div class="texto-paso">
+                            <h4>4. Publicada</h4>
+                            <p>La cancha se publica y los usuarios pueden reservar.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
-        <!-- Paginación -->
-        <footer class="pie-paginacion">
-            <p>Mostrando <span id="rango-inicio">1</span> a <span id="rango-fin">5</span> de <span id="total-solicitudes">5</span> solicitudes</p>
-            <div class="controles-paginacion">
-                <button class="flecha-pagina">&lt;</button>
-                <button class="numero-pagina activo">1</button>
-                <button class="flecha-pagina">&gt;</button>
-            </div>
-        </footer>
+        <!-- Panel Derecho: Detalle de Solicitud -->
+        <aside class="panel-detalle" id="panel-detalle">
+            <header class="encabezado-detalle">
+                <h2>Detalle de la solicitud</h2>
+                <button class="cerrar-detalle" id="boton-cerrar-detalle">&times;</button>
+            </header>
 
-        <!-- Explicación del Flujo -->
-        <section class="flujo-guia">
-            <h3>¿Cómo funciona el flujo de solicitudes?</h3>
-            <div class="pasos-flujo">
-                <div class="paso activo">
-                    <div class="circulo-icono naranja"><i class="icono-usuario"></i></div>
-                    <div class="texto-paso">
-                        <h4>1. Usuario envía</h4>
-                        <p>El propietario envía la información de su cancha para inscripción.</p>
+            <div class="contenido-detalle">
+                <!-- Galería de imágenes -->
+                <div class="galeria-detalle">
+                    <img src="../../img/foto.canchas.jpg" alt="Foto principal de la cancha"
+                        id="imagen-detalle-principal">
+                    <button class="flecha-galeria anterior">&lt;</button>
+                    <button class="flecha-galeria siguiente">&gt;</button>
+                    <div class="puntos-galeria">
+                        <span class="punto activo"></span>
+                        <span class="punto"></span>
+                        <span class="punto"></span>
                     </div>
                 </div>
-                <div class="conector-paso punteado"></div>
-                <div class="paso">
-                    <div class="circulo-icono azul"><i class="icono-busqueda"></i></div>
-                    <div class="texto-paso">
-                        <h4>2. En revisión</h4>
-                        <p>Revisa la información y verifica que cumpla con los requisitos.</p>
-                    </div>
+
+                <div class="bloque-titulo-cancha">
+                    <span class="etiqueta-estado pendiente" id="etiqueta-estado-detalle">Pendiente</span>
+                    <p class="fecha-envio">Enviado el <span id="fecha-envio-detalle">24 May 2024, 10:30 AM</span></p>
+                    <h3 id="nombre-cancha-detalle">Arena Gol 7</h3>
+                    <p class="tipo-cancha" id="tipo-cancha-detalle">Fútbol 7</p>
                 </div>
-                <div class="conector-paso punteado"></div>
-                <div class="paso">
-                    <div class="circulo-icono verde"><i class="icono-escudo-ok"></i></div>
-                    <div class="texto-paso">
-                        <h4>3. Aprueba</h4>
-                        <p>Aprueba la cancha para que quede disponible en la plataforma.</p>
+
+                <!-- Información General -->
+                <section class="grupo-informacion">
+                    <h4>Información general</h4>
+                    <ul>
+                        <li><span class="clave">Propietario</span> <span class="valor"
+                                id="nombre-propietario-detalle">Carlos Pérez</span></li>
+                        <li><span class="clave">Teléfono</span> <span class="valor"
+                                id="telefono-propietario-detalle">+57 301 234 5678</span></li>
+                        <li><span class="clave">Ciudad</span> <span class="valor" id="ciudad-detalle">Medellín,
+                                Antioquia</span></li>
+                        <li><span class="clave">Dirección</span> <span class="valor" id="direccion-detalle">Calle 45 #
+                                78 - 123</span></li>
+                        <li><span class="clave">Precio por hora</span> <span class="valor precio"
+                                id="precio-detalle">$60.000 COP</span></li>
+                        <li><span class="clave">Horarios</span> <span class="valor" id="horario-detalle">Lunes a
+                                Domingo: 6:00 AM - 11:00 PM</span></li>
+                    </ul>
+                </section>
+
+                <!-- Servicios Incluidos -->
+                <section class="grupo-informacion">
+                    <h4>Servicios incluidos</h4>
+                    <div class="etiquetas-servicios" id="servicios-detalle">
+                        <span class="etiqueta-servicio"><i class="icono-iluminacion"></i> Iluminación</span>
+                        <span class="etiqueta-servicio"><i class="icono-camerinos"></i> Camerinos</span>
+                        <span class="etiqueta-servicio"><i class="icono-parqueadero"></i> Parqueadero</span>
+                        <span class="etiqueta-servicio"><i class="icono-wifi"></i> Wifi</span>
+                        <span class="etiqueta-servicio"><i class="icono-descanso"></i> Zona de descanso</span>
                     </div>
-                </div>
-                <div class="conector-paso punteado"></div>
-                <div class="paso">
-                    <div class="circulo-icono gris"><i class="icono-check-circulo"></i></div>
-                    <div class="texto-paso">
-                        <h4>4. Publicada</h4>
-                        <p>La cancha se publica y los usuarios pueden reservar.</p>
+                </section>
+
+                <!-- Descripción -->
+                <section class="grupo-informacion">
+                    <h4>Descripción</h4>
+                    <p class="texto-descripcion" id="descripcion-detalle">Cancha sintética profesional con medidas
+                        reglamentarias, iluminación LED y ambiente seguro para tu partido.</p>
+                </section>
+
+                <!-- Fotos Adicionales -->
+                <section class="grupo-informacion">
+                    <h4>Fotos adicionales</h4>
+                    <div class="fotos-adicionales">
+                        <img src="https://via.placeholder.com/80x60?text=Foto1" alt="Foto adicional 1">
+                        <img src="https://via.placeholder.com/80x60?text=Foto2" alt="Foto adicional 2">
+                        <img src="https://via.placeholder.com/80x60?text=Foto3" alt="Foto adicional 3">
+                        <img src="https://via.placeholder.com/80x60?text=Foto4" alt="Foto adicional 4">
+                        <div class="miniatura-mas-fotos">+5<br>fotos</div>
                     </div>
-                </div>
+                </section>
+
+                <!-- Línea de Tiempo de Estado -->
+                <section class="grupo-informacion linea-tiempo-estado">
+                    <h4>Estado de la solicitud</h4>
+                    <div class="pasos-estado">
+                        <div class="paso-estado paso-pendiente activo">
+                            <div class="circulo-icono"><i class="icono-usuario"></i></div>
+                            <p>Pendiente</p>
+                        </div>
+                        <div class="conector-estado"></div>
+                        <div class="paso-estado paso-en-revision">
+                            <div class="circulo-icono"><i class="icono-busqueda"></i></div>
+                            <p>En revisión</p>
+                        </div>
+                        <div class="conector-estado"></div>
+                        <div class="paso-estado paso-aprobada">
+                            <div class="circulo-icono"><i class="icono-escudo-ok"></i></div>
+                            <p>Aprobada</p>
+                        </div>
+                        <div class="conector-estado"></div>
+                        <div class="paso-estado paso-publicada">
+                            <div class="circulo-icono"><i class="icono-check-circulo"></i></div>
+                            <p>Publicada</p>
+                        </div>
+                    </div>
+                </section>
             </div>
-        </section>
+
+            <!-- Acciones Fijas -->
+            <footer class="acciones-detalle">
+                <button class="boton-accion revision" id="boton-marcar-revision">Marcar en revisión</button>
+                <button class="boton-accion aprobar" id="boton-aprobar-publicar">Aprobar y publicar</button>
+                <button class="boton-accion rechazar" id="boton-rechazar">Rechazar</button>
+            </footer>
+        </aside>
     </div>
 
-    <!-- Panel Derecho: Detalle de Solicitud -->
-    <aside class="panel-detalle" id="panel-detalle">
-        <header class="encabezado-detalle">
-            <h2>Detalle de la solicitud</h2>
-            <button class="cerrar-detalle" id="boton-cerrar-detalle">&times;</button>
-        </header>
-
-        <div class="contenido-detalle">
-            <!-- Galería de imágenes -->
-            <div class="galeria-detalle">
-                <img src="../../img/foto.canchas.jpg" alt="Foto principal de la cancha" id="imagen-detalle-principal">
-                <button class="flecha-galeria anterior">&lt;</button>
-                <button class="flecha-galeria siguiente">&gt;</button>
-                <div class="puntos-galeria">
-                    <span class="punto activo"></span>
-                    <span class="punto"></span>
-                    <span class="punto"></span>
-                </div>
-            </div>
-
-            <div class="bloque-titulo-cancha">
-                <span class="etiqueta-estado pendiente" id="etiqueta-estado-detalle">Pendiente</span>
-                <p class="fecha-envio">Enviado el <span id="fecha-envio-detalle">24 May 2024, 10:30 AM</span></p>
-                <h3 id="nombre-cancha-detalle">Arena Gol 7</h3>
-                <p class="tipo-cancha" id="tipo-cancha-detalle">Fútbol 7</p>
-            </div>
-
-            <!-- Información General -->
-            <section class="grupo-informacion">
-                <h4>Información general</h4>
-                <ul>
-                    <li><span class="clave">Propietario</span> <span class="valor" id="nombre-propietario-detalle">Carlos Pérez</span></li>
-                    <li><span class="clave">Teléfono</span> <span class="valor" id="telefono-propietario-detalle">+57 301 234 5678</span></li>
-                    <li><span class="clave">Ciudad</span> <span class="valor" id="ciudad-detalle">Medellín, Antioquia</span></li>
-                    <li><span class="clave">Dirección</span> <span class="valor" id="direccion-detalle">Calle 45 # 78 - 123</span></li>
-                    <li><span class="clave">Precio por hora</span> <span class="valor precio" id="precio-detalle">$60.000 COP</span></li>
-                    <li><span class="clave">Horarios</span> <span class="valor" id="horario-detalle">Lunes a Domingo: 6:00 AM - 11:00 PM</span></li>
-                </ul>
-            </section>
-
-            <!-- Servicios Incluidos -->
-            <section class="grupo-informacion">
-                <h4>Servicios incluidos</h4>
-                <div class="etiquetas-servicios" id="servicios-detalle">
-                    <span class="etiqueta-servicio"><i class="icono-iluminacion"></i> Iluminación</span>
-                    <span class="etiqueta-servicio"><i class="icono-camerinos"></i> Camerinos</span>
-                    <span class="etiqueta-servicio"><i class="icono-parqueadero"></i> Parqueadero</span>
-                    <span class="etiqueta-servicio"><i class="icono-wifi"></i> Wifi</span>
-                    <span class="etiqueta-servicio"><i class="icono-descanso"></i> Zona de descanso</span>
-                </div>
-            </section>
-
-            <!-- Descripción -->
-            <section class="grupo-informacion">
-                <h4>Descripción</h4>
-                <p class="texto-descripcion" id="descripcion-detalle">Cancha sintética profesional con medidas reglamentarias, iluminación LED y ambiente seguro para tu partido.</p>
-            </section>
-
-            <!-- Fotos Adicionales -->
-            <section class="grupo-informacion">
-                <h4>Fotos adicionales</h4>
-                <div class="fotos-adicionales">
-                    <img src="https://via.placeholder.com/80x60?text=Foto1" alt="Foto adicional 1">
-                    <img src="https://via.placeholder.com/80x60?text=Foto2" alt="Foto adicional 2">
-                    <img src="https://via.placeholder.com/80x60?text=Foto3" alt="Foto adicional 3">
-                    <img src="https://via.placeholder.com/80x60?text=Foto4" alt="Foto adicional 4">
-                    <div class="miniatura-mas-fotos">+5<br>fotos</div>
-                </div>
-            </section>
-
-            <!-- Línea de Tiempo de Estado -->
-            <section class="grupo-informacion linea-tiempo-estado">
-                <h4>Estado de la solicitud</h4>
-                <div class="pasos-estado">
-                    <div class="paso-estado paso-pendiente activo">
-                        <div class="circulo-icono"><i class="icono-usuario"></i></div>
-                        <p>Pendiente</p>
-                    </div>
-                    <div class="conector-estado"></div>
-                    <div class="paso-estado paso-en-revision">
-                        <div class="circulo-icono"><i class="icono-busqueda"></i></div>
-                        <p>En revisión</p>
-                    </div>
-                    <div class="conector-estado"></div>
-                    <div class="paso-estado paso-aprobada">
-                        <div class="circulo-icono"><i class="icono-escudo-ok"></i></div>
-                        <p>Aprobada</p>
-                    </div>
-                    <div class="conector-estado"></div>
-                    <div class="paso-estado paso-publicada">
-                        <div class="circulo-icono"><i class="icono-check-circulo"></i></div>
-                        <p>Publicada</p>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Acciones Fijas -->
-        <footer class="acciones-detalle">
-            <button class="boton-accion revision" id="boton-marcar-revision">Marcar en revisión</button>
-            <button class="boton-accion aprobar" id="boton-aprobar-publicar">Aprobar y publicar</button>
-            <button class="boton-accion rechazar" id="boton-rechazar">Rechazar</button>
-        </footer>
-    </aside>
-</div>
-
-<script src="../../JS/admin/dashboard.js"></script>
+    <script src="../../JS/admin/dashboard.js"></script>
 </body>
+
 </html>

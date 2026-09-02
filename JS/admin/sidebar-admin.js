@@ -1,15 +1,14 @@
 /* ============================================================
    TUCANCHA
-   SIDEBAR PANEL ADMINISTRATIVO
+   SIDEBAR ADMINISTRATIVO
    ============================================================ */
-
 
 class AdminSidebar extends HTMLElement {
 
     connectedCallback() {
 
         /* =====================================================
-           OBTENER PÁGINA ACTUAL
+           PÁGINA ACTUAL
            ===================================================== */
 
         const paginaActual =
@@ -20,7 +19,7 @@ class AdminSidebar extends HTMLElement {
 
 
         /* =====================================================
-           SABER QUÉ OPCIÓN ESTÁ ACTIVA
+           OPCIONES ACTIVAS
            ===================================================== */
 
         const inicioActivo =
@@ -28,11 +27,11 @@ class AdminSidebar extends HTMLElement {
 
 
         const solicitudesActivo =
-            paginaActual === "solicitudes-admin.html";
+            paginaActual === "dashboard_admin.html";
 
 
         /* =====================================================
-           CREAR SIDEBAR
+           SIDEBAR
            ===================================================== */
 
         this.innerHTML = `
@@ -80,7 +79,11 @@ class AdminSidebar extends HTMLElement {
 
                     <a
                         href="inicio-admin.html"
-                        class="sidebar-link ${inicioActivo ? "active" : ""}"
+                        class="sidebar-link ${
+                            inicioActivo
+                                ? "active"
+                                : ""
+                        }"
                     >
 
                         <i class="bi bi-house-door-fill"></i>
@@ -96,8 +99,12 @@ class AdminSidebar extends HTMLElement {
                     <!-- Solicitudes -->
 
                     <a
-                        href="solicitudes-admin.html"
-                        class="sidebar-link ${solicitudesActivo ? "active" : ""}"
+                        href="dashboard_admin.html"
+                        class="sidebar-link ${
+                            solicitudesActivo
+                                ? "active"
+                                : ""
+                        }"
                     >
 
                         <i class="bi bi-file-earmark-text"></i>
@@ -114,13 +121,11 @@ class AdminSidebar extends HTMLElement {
 
 
                 <!-- =========================================
-                     FOOTER
+                     PERFIL ADMIN
                      ========================================= -->
 
                 <div class="sidebar-footer">
 
-
-                    <!-- Perfil -->
 
                     <div class="admin-profile">
 
@@ -147,7 +152,9 @@ class AdminSidebar extends HTMLElement {
 
 
 
-                    <!-- Cerrar sesión -->
+                    <!-- =====================================
+                         CERRAR SESIÓN
+                         ===================================== -->
 
                     <button
                         type="button"

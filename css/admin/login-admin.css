@@ -431,11 +431,9 @@ a {
     border-radius: 18px;
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #1f1f1f 0%,
-            #2a2a2a 100%
-        );
+            #2a2a2a 100%);
 
     box-shadow:
         0 12px 30px rgba(0, 0, 0, 0.08);
@@ -817,8 +815,7 @@ a {
     transition: 0.2s ease;
 }
 
-.admin-section-card:hover
-.admin-section-arrow {
+.admin-section-card:hover .admin-section-arrow {
     background-color: #ff6a00;
 
     color: #ffffff;
@@ -841,6 +838,140 @@ a {
 
     .admin-section-arrow {
         margin-left: auto;
+    }
+
+}
+
+/* =========================================================
+   FOOTER DEL PANEL
+   ========================================================= */
+
+.admin-footer {
+    width: 100%;
+
+    margin-top: 40px;
+
+    padding-top: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-top: 1px solid #e1e1e1;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DEL FOOTER
+   ========================================================= */
+
+.admin-footer-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.admin-footer-info span {
+    color: #1f1f1f;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-footer-info small {
+    color: #8a8a8a;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   VERSIÓN
+   ========================================================= */
+
+.admin-footer-version span {
+    color: #9a9a9a;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE GENERAL DEL PANEL
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .admin-layout {
+        grid-template-columns: 220px 1fr;
+    }
+
+    .admin-sidebar {
+        width: 220px;
+
+        padding: 24px 16px;
+    }
+
+    .admin-main {
+        margin-left: 220px;
+
+        padding: 34px 28px;
+    }
+
+    .sidebar-brand-text strong {
+        font-size: 16px;
+    }
+
+    .sidebar-brand-text span {
+        font-size: 8px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .admin-layout {
+        display: block;
+    }
+
+    .admin-sidebar {
+        position: static;
+
+        width: 100%;
+        height: auto;
+
+        padding: 18px;
+    }
+
+    .sidebar-nav {
+        margin-top: 20px;
+
+        flex-direction: row;
+    }
+
+    .sidebar-link {
+        flex: 1;
+
+        justify-content: center;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .admin-main {
+        margin-left: 0;
+
+        padding: 26px 18px;
+    }
+
+    .admin-footer {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
 }

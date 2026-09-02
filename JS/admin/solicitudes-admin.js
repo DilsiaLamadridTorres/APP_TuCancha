@@ -697,6 +697,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        if (
+            filtroActual === "aprobada"
+        ) {
+
+            return solicitudes.filter(
+                solicitud =>
+                    [
+                        "aprobada",
+                        "publicada"
+                    ].includes(
+                        solicitud.estado
+                        || "pendiente"
+                    )
+            );
+
+        }
+
+
         return solicitudes.filter(
             solicitud =>
                 (

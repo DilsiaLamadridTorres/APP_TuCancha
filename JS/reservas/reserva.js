@@ -356,7 +356,7 @@ botonReservar.addEventListener("click", () => {
 
     console.log("Reserva guardada:", reserva);
 
-    window.location.href = "registro.html";
+    window.location.href = "pagar-reserva.html";
 });
 
 mostrarSemana();

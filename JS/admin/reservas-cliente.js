@@ -1,7 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
+ 
+  let reservaSeleccionada = null;
   const contenedorProximas = document.getElementById("contenedor-proximas");
   const panelDetalle = document.getElementById("panel-detalle");
   const btnCerrarDetalle = document.querySelector(".btn-cerrar");
+  const btnCancelar = document.getElementById("btn-cancelar-reserva");
 
   // 1. Cargar el usuario logueado actual desde sessionStorage (o localStorage como respaldo)
   const usuarioLogueadoStr = sessionStorage.getItem("usuario") || localStorage.getItem("usuario_logueado") || localStorage.getItem("usuario");
@@ -61,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 5. Función para mapear los datos específicos de una reserva al panel lateral
   function mostrarDetalleReserva(reserva) {
     if (!panelDetalle) return;
+    
 
     const elementosDinamicos = panelDetalle.querySelectorAll("[data-field]");
 
@@ -113,4 +117,35 @@ document.addEventListener("DOMContentLoaded", () => {
   if (misReservas.length > 0) {
     mostrarDetalleReserva(misReservas[0]);
   }
+});
+
+btnCancelar.addEventListener("click", () => {
+  if (!reservaSeleccionada) return;
+
+  const confirmar = confirm(
+    "¿Seguro que deseas cancelar esta reserva? El horario quedará disponible."
+  );
+
+  if (!confirmar) return;
+
+  const reservas = JSON.parse(localStorage.getItem("mis_reservas")) || [];
+
+  const reservasActualizadas = reservas.map((reserva) => {
+    if (reserva.idReserva === reservaSeleccionada.idReserva) {
+      return {
+        ...reserva,
+        estado: "Cancelada"
+      };
+    }
+
+    return reserva;
+  });
+
+  localStorage.setItem(
+    "mis_reservas",
+    JSON.stringify(reservasActualizadas)
+  );
+
+  alert("Reserva cancelada correctamente.");
+  window.location.reload();
 });

@@ -100,16 +100,13 @@ document.addEventListener("DOMContentLoaded", () => {
             misReservas.push(reserva);
             localStorage.setItem("mis_reservas", JSON.stringify(misReservas));
 
+            reserva.idReserva = `RES-${Date.now()}`;
+            reserva.estado = "Confirmada";
+
             // Limpiar la reserva temporal en proceso
             localStorage.removeItem("reserva_seleccionada");
 
-            // Mostrar aviso de éxito definitivo y quedarse en la página
-            mostrarAviso("¡Pago exitoso! Cancha reservada correctamente.", "success");
-
-            // Deshabilitar el formulario y el botón de cancelar para congelar la vista
-            formPago.querySelectorAll("input, button").forEach(el => el.disabled = true);
-            if (btnCancelar) btnCancelar.disabled = true;
-
+            window.location.href = "reservas-cliente.html";
         }, 1500);
     });
 

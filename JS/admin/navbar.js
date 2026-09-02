@@ -226,6 +226,14 @@ class MiNavbar extends HTMLElement {
                             </li>
 
 
+                            ${usuario ? `
+                           <li class="nav-item">
+                          <a class="nav-link ${rutaActual === "reservas-cliente.html" ? "active" : " " }" href="${rutaPaginas}reservas-cliente.html">
+                            Mis reservas
+                           </a>
+                          </li>
+                           ` : ""}
+
                             <!-- =================================
                                  NOSOTROS
                                  ================================= -->

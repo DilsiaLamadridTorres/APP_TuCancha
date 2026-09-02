@@ -13,6 +13,9 @@
   <!-- Contenido Principal -->
   <main class="contenedor-reservas" style="display: flex; gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto;">
     
+    <a href="../index.html" class="btn-regresar-inicio">
+  ← Regresar a inicio
+    </a>
     <!-- Sección Izquierda: Lista de Reservas -->
     <section class="seccion-mis-reservas" style="flex: 1;">
       <h1>Mis reservas</h1>
@@ -27,8 +30,9 @@
       </div>
 
       <!-- Selector de Orden -->
-      <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
-        <select class="select-orden">
+      <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 15px;">
+        <label for="select-orden" style="color: #ccc; font-size: 0.9rem;">Ordenar por</label>
+        <select id="select-orden" class="select-orden" aria-label="Ordenar reservas">
           <option value="proximas">Próximas fechas</option>
           <option value="antiguas">Fechas anteriores</option>
         </select>
@@ -99,6 +103,9 @@
       <!-- Botón de Acción -->
       <button class="btn-modificar" style="width: 100%; background: #f95700; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px;">
         ✏️ Modificar reserva
+      </button>
+      <button id="btn-cancelar-reserva" class="btn-cancelar-reserva" type="button">
+           Cancelar reserva
       </button>
     </aside>
 

@@ -3471,11 +3471,108 @@ function renderizarCanchasRevision() {
 
 
 /* ============================================================
-   39. GUARDAR SOLICITUD PARA ADMIN
+   39. CREAR SOLICITUDES PARA ADMIN
+   ============================================================ */
+
+function clonarCanchaParaSolicitud(cancha) {
+
+    return {
+
+        ...cancha,
+
+        duraciones: [
+            ...(cancha.duraciones || [])
+        ],
+
+        fotos: [
+            ...(cancha.fotos || [])
+        ]
+
+    };
+
+}
+
+
+function crearSolicitudesPorCancha() {
+
+    const idGrupoSolicitud =
+        `SOL-${Date.now()}`;
+
+
+    const fechaSolicitud =
+        new Date()
+            .toISOString();
+
+
+    return registroComplejo
+        .canchas
+        .map(
+            (cancha, index) => {
+
+                const canchaSolicitud =
+                    clonarCanchaParaSolicitud(
+                        cancha
+                    );
+
+
+                return {
+
+                    id:
+                        `${idGrupoSolicitud}-CANCHA-${index + 1}`,
+
+                    grupoSolicitudId:
+                        idGrupoSolicitud,
+
+                    canchaId:
+                        canchaSolicitud.id,
+
+                    numeroCancha:
+                        index + 1,
+
+                    organizacion: {
+                        ...registroComplejo.organizacion
+                    },
+
+                    complejo: {
+
+                        ...registroComplejo.complejo,
+
+                        prestaciones: [
+                            ...registroComplejo
+                                .complejo
+                                .prestaciones
+                        ]
+
+                    },
+
+                    canchas: [
+                        canchaSolicitud
+                    ],
+
+                    comoNosConociste:
+                        registroComplejo
+                            .comoNosConociste,
+
+                    estado:
+                        "pendiente",
+
+                    fechaSolicitud:
+                        fechaSolicitud
+
+                };
+
+            }
+        );
+
+}
+
+
+/* ============================================================
+   40. GUARDAR SOLICITUDES PARA ADMIN
    ============================================================ */
 
 function guardarSolicitudFinal(
-    solicitud
+    solicitudesNuevas
 ) {
 
     let solicitudes = [];
@@ -3499,8 +3596,18 @@ function guardarSolicitudFinal(
     }
 
 
+    const nuevasSolicitudes =
+        Array.isArray(
+            solicitudesNuevas
+        )
+            ? solicitudesNuevas
+            : [
+                solicitudesNuevas
+            ];
+
+
     solicitudes.push(
-        solicitud
+        ...nuevasSolicitudes
     );
 
 
@@ -3571,7 +3678,7 @@ function guardarSolicitudFinal(
 
 
 /* ============================================================
-   40. ENVIAR SOLICITUD
+   41. ENVIAR SOLICITUD
    ============================================================ */
 
 function enviarSolicitud() {
@@ -3673,61 +3780,11 @@ function enviarSolicitud() {
 
 
     /* ========================================================
-       CREAR SOLICITUD
+       CREAR SOLICITUDES
        ======================================================== */
 
-    const solicitud = {
-
-        id:
-            `SOL-${Date.now()}`,
-
-        organizacion: {
-            ...registroComplejo.organizacion
-        },
-
-        complejo: {
-
-            ...registroComplejo.complejo,
-
-            prestaciones: [
-                ...registroComplejo
-                    .complejo
-                    .prestaciones
-            ]
-
-        },
-
-        canchas:
-            registroComplejo
-                .canchas
-                .map(
-                    cancha => ({
-
-                        ...cancha,
-
-                        duraciones: [
-                            ...(cancha.duraciones || [])
-                        ],
-
-                        fotos: [
-                            ...(cancha.fotos || [])
-                        ]
-
-                    })
-                ),
-
-        comoNosConociste:
-            registroComplejo
-                .comoNosConociste,
-
-        estado:
-            "pendiente",
-
-        fechaSolicitud:
-            new Date()
-                .toISOString()
-
-    };
+    const solicitudesCancha =
+        crearSolicitudesPorCancha();
 
 
     /* ========================================================
@@ -3736,7 +3793,7 @@ function enviarSolicitud() {
 
     const guardado =
         guardarSolicitudFinal(
-            solicitud
+            solicitudesCancha
         );
 
 
@@ -3756,33 +3813,40 @@ function enviarSolicitud() {
         gigantes de las imágenes.
     */
 
-    const solicitudConsola =
+    const solicitudesConsola =
         JSON.parse(
             JSON.stringify(
-                solicitud
+                solicitudesCancha
             )
         );
 
 
-    solicitudConsola
-        .canchas
+    solicitudesConsola
         .forEach(
-            cancha => {
+            solicitud => {
 
-                cancha.fotos =
-                    cancha.fotos.map(
-                        foto => ({
+                solicitud
+                    .canchas
+                    .forEach(
+                        cancha => {
 
-                            nombre:
-                                foto.nombre,
+                            cancha.fotos =
+                                cancha.fotos.map(
+                                    foto => ({
 
-                            tipo:
-                                foto.tipo,
+                                        nombre:
+                                            foto.nombre,
 
-                            dataUrl:
-                                "[imagen almacenada]"
+                                        tipo:
+                                            foto.tipo,
 
-                        })
+                                        dataUrl:
+                                            "[imagen almacenada]"
+
+                                    })
+                                );
+
+                        }
                     );
 
             }
@@ -3804,7 +3868,7 @@ function enviarSolicitud() {
 
     console.log(
         JSON.stringify(
-            solicitudConsola,
+            solicitudesConsola,
             null,
             4
         )
@@ -3812,8 +3876,8 @@ function enviarSolicitud() {
 
 
     console.log(
-        "Solicitud completa:",
-        solicitud
+        "Solicitudes completas:",
+        solicitudesCancha
     );
 
 
@@ -3831,9 +3895,13 @@ function enviarSolicitud() {
        ======================================================== */
 
     mostrarAlerta(
-        "La solicitud fue enviada correctamente y quedó pendiente de revisión.",
+        solicitudesCancha.length === 1
+            ? "La solicitud fue enviada correctamente y quedo pendiente de revision."
+            : `Se enviaron ${solicitudesCancha.length} solicitudes, una por cada cancha creada.`,
         "success",
-        "Solicitud enviada"
+        solicitudesCancha.length === 1
+            ? "Solicitud enviada"
+            : "Solicitudes enviadas"
     );
 
 

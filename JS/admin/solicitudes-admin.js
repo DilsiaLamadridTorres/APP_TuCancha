@@ -69,10 +69,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 JSON.parse(datos);
 
 
+            const resultadoNormalizado =
+                separarSolicitudesPorCancha(
+                    Array.isArray(solicitudesParseadas)
+                        ? solicitudesParseadas
+                        : []
+                );
+
+
             solicitudes =
-                Array.isArray(solicitudesParseadas)
-                    ? solicitudesParseadas
-                    : [];
+                resultadoNormalizado.solicitudes;
+
+
+            if (
+                resultadoNormalizado.cambio
+            ) {
+
+                guardarSolicitudes();
+
+            }
 
 
         } catch (error) {
@@ -217,18 +232,239 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
 
         if (
-            !solicitud ||
-            !Array.isArray(
+            solicitud &&
+            Array.isArray(
                 solicitud.canchas
-            )
+            ) &&
+            solicitud.canchas.length > 0
         ) {
 
-            return [];
+            return solicitud.canchas;
 
         }
 
 
-        return solicitud.canchas;
+        if (
+            solicitud?.cancha
+        ) {
+
+            return [
+                solicitud.cancha
+            ];
+
+        }
+
+
+        return [];
+
+    }
+
+
+    /* ============================================================
+       OBTENER CANCHA PRINCIPAL
+       ============================================================ */
+
+    function obtenerCanchaPrincipal(
+        solicitud
+    ) {
+
+        const canchas =
+            obtenerCanchasSolicitud(
+                solicitud
+            );
+
+
+        return canchas[0] || null;
+
+    }
+
+
+    /* ============================================================
+       SEPARAR SOLICITUDES POR CANCHA
+       ============================================================ */
+
+    function clonarCanchaSolicitud(
+        cancha
+    ) {
+
+        return {
+
+            ...cancha,
+
+            duraciones: [
+                ...(cancha.duraciones || [])
+            ],
+
+            fotos: [
+                ...(cancha.fotos || [])
+            ]
+
+        };
+
+    }
+
+
+    function crearSolicitudParaCancha(
+        solicitud,
+        cancha,
+        index
+    ) {
+
+        const canchaSolicitud =
+            clonarCanchaSolicitud(
+                cancha
+            );
+
+
+        const idGrupo =
+            solicitud.grupoSolicitudId
+            || solicitud.solicitudGrupoId
+            || solicitud.id;
+
+
+        return {
+
+            ...solicitud,
+
+            id:
+                `${idGrupo}-CANCHA-${index + 1}`,
+
+            grupoSolicitudId:
+                idGrupo,
+
+            solicitudOriginalId:
+                solicitud.id,
+
+            canchaId:
+                canchaSolicitud.id,
+
+            numeroCancha:
+                index + 1,
+
+            cancha:
+                undefined,
+
+            canchas: [
+                canchaSolicitud
+            ]
+
+        };
+
+    }
+
+
+    function separarSolicitudesPorCancha(
+        listaSolicitudes
+    ) {
+
+        let cambio =
+            false;
+
+
+        const solicitudesSeparadas = [];
+
+
+        listaSolicitudes.forEach(
+            solicitud => {
+
+                const canchas =
+                    Array.isArray(
+                        solicitud?.canchas
+                    )
+                        ? solicitud.canchas
+                        : [];
+
+
+                if (
+                    canchas.length <= 1
+                ) {
+
+                    const canchaUnica =
+                        canchas[0]
+                        || solicitud.cancha;
+
+
+                    if (
+                        canchaUnica &&
+                        (
+                            solicitud.cancha ||
+                            !solicitud.canchaId ||
+                            canchas.length === 0
+                        )
+                    ) {
+
+                        cambio =
+                            true;
+
+
+                        const canchaSolicitud =
+                            clonarCanchaSolicitud(
+                                canchaUnica
+                            );
+
+
+                        solicitudesSeparadas.push({
+
+                            ...solicitud,
+
+                            cancha:
+                                undefined,
+
+                            canchas: [
+                                canchaSolicitud
+                            ],
+
+                            canchaId:
+                                solicitud.canchaId
+                                || canchaSolicitud.id
+
+                        });
+
+                        return;
+
+                    }
+
+
+                    solicitudesSeparadas.push(
+                        solicitud
+                    );
+
+                    return;
+
+                }
+
+
+                cambio =
+                    true;
+
+
+                canchas.forEach(
+                    (cancha, index) => {
+
+                        solicitudesSeparadas.push(
+                            crearSolicitudParaCancha(
+                                solicitud,
+                                cancha,
+                                index
+                            )
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        return {
+
+            solicitudes:
+                solicitudesSeparadas,
+
+            cambio:
+                cambio
+
+        };
 
     }
 
@@ -244,6 +480,30 @@ document.addEventListener("DOMContentLoaded", () => {
         return (
             solicitud?.complejo?.nombre
             || "Complejo sin nombre"
+        );
+
+    }
+
+
+    /* ============================================================
+       NOMBRE DE LA CANCHA
+       ============================================================ */
+
+    function obtenerNombreCancha(
+        solicitud
+    ) {
+
+        const cancha =
+            obtenerCanchaPrincipal(
+                solicitud
+            );
+
+
+        return (
+            cancha?.nombre
+            || obtenerNombreComplejo(
+                solicitud
+            )
         );
 
     }
@@ -715,6 +975,13 @@ document.addEventListener("DOMContentLoaded", () => {
         deporte
     ) {
 
+        if (!deporte) {
+
+            return "Sin deporte";
+
+        }
+
+
         const deportes = {
 
             "futbol-5": "Fútbol 5",
@@ -859,6 +1126,12 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
+        const nombreCancha =
+            obtenerNombreCancha(
+                solicitud
+            );
+
+
         const propietario =
             obtenerPropietario(
                 solicitud
@@ -895,18 +1168,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <img
                     src="${imagen}"
-                    alt="${nombreComplejo}"
+                    alt="${nombreCancha}"
                     class="miniatura-cancha"
                 >
 
                 <div class="info-cancha">
 
                     <h3>
-                        ${nombreComplejo}
+                        ${nombreCancha}
                     </h3>
 
                     <p>
-                        ${deporte}
+                        ${nombreComplejo} · ${deporte}
                     </p>
 
                 </div>
@@ -1303,7 +1576,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         asignarTexto(
             "nombre-cancha-detalle",
-            obtenerNombreComplejo(
+            obtenerNombreCancha(
                 solicitud
             )
         );
@@ -1311,9 +1584,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         asignarTexto(
             "tipo-cancha-detalle",
-            obtenerDeporte(
+            `${obtenerNombreComplejo(
                 solicitud
-            )
+            )} · ${
+                cancha?.deporte
+                    ? formatearDeporte(
+                        cancha.deporte
+                    )
+                    : obtenerDeporte(
+                        solicitud
+                    )
+            }`
         );
 
 
@@ -1456,8 +1737,16 @@ document.addEventListener("DOMContentLoaded", () => {
         solicitud
     ) {
 
+        const cancha =
+            obtenerCanchaPrincipal(
+                solicitud
+            );
+
+
         return (
             solicitud.precioPorHora
+            || cancha?.precioPorHora
+            || cancha?.precio
             || solicitud.complejo?.precioPorHora
             || "No especificado"
         );
@@ -1473,8 +1762,16 @@ document.addEventListener("DOMContentLoaded", () => {
         solicitud
     ) {
 
+        const cancha =
+            obtenerCanchaPrincipal(
+                solicitud
+            );
+
+
         return (
             solicitud.horarioAtencion
+            || cancha?.horarioAtencion
+            || cancha?.horario
             || solicitud.complejo?.horarioAtencion
             || "No especificado"
         );
@@ -1490,8 +1787,15 @@ document.addEventListener("DOMContentLoaded", () => {
         solicitud
     ) {
 
+        const cancha =
+            obtenerCanchaPrincipal(
+                solicitud
+            );
+
+
         return (
             solicitud.descripcion
+            || cancha?.descripcion
             || solicitud.complejo?.descripcion
             || "Sin descripción registrada."
         );

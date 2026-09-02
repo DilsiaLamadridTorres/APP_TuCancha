@@ -75,6 +75,15 @@
 <body>
 
 
+    <div
+        class="form-alert-container"
+        id="formAlertContainer"
+        aria-live="polite"
+        aria-atomic="true"
+    >
+    </div>
+
+
     <!-- =====================================================
          NAVBAR
          ===================================================== -->
@@ -794,8 +803,42 @@
 
 
                             <h3 id="courtFormTitle">
-                                Cancha 1
+                                Nueva cancha
                             </h3>
+
+
+
+                            <!-- =====================================
+                                 NOMBRE DE LA CANCHA
+                                 ===================================== -->
+
+                            <div class="row g-3 mb-4">
+
+
+                                <div class="col-12">
+
+                                    <div class="form-floating">
+
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="courtName"
+                                            name="courtName"
+                                            placeholder="Nombre de la cancha"
+                                            maxlength="60"
+                                            required
+                                        >
+
+                                        <label for="courtName">
+                                            Nombre de la cancha
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
 
 
 
@@ -958,6 +1001,41 @@
 
 
                             <!-- =====================================
+                                 PRECIO
+                                 ===================================== -->
+
+                            <div class="row g-3 mb-4">
+
+
+                                <div class="col-md-6">
+
+                                    <div class="form-floating">
+
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            id="courtPrice"
+                                            name="courtPrice"
+                                            placeholder="Precio por hora"
+                                            min="1"
+                                            step="1000"
+                                            required
+                                        >
+
+                                        <label for="courtPrice">
+                                            Precio por hora (COP)
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- =====================================
                                  DURACIÓN DEL TURNO
                                  ===================================== -->
 
@@ -1106,7 +1184,7 @@
                                     </span>
 
                                     <small>
-                                        JPG, PNG o WEBP
+                                        JPG, PNG o WEBP hasta 8 MB
                                     </small>
 
                                 </label>

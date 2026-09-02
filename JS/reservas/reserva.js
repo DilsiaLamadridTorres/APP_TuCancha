@@ -1,26 +1,30 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     const canchaGuardada = localStorage.getItem("cancha_seleccionada");
+    let canchaSeleccionada = null;
     //console.log("Hola");
 
     if (canchaGuardada) {
         // CONVERTIMOS EN JSON EL localStorage
-        const cancha = JSON.parse(canchaGuardada);
+        canchaSeleccionada = JSON.parse(canchaGuardada);
         const elementosDinamicos = document.querySelectorAll("[data-field]");
         elementosDinamicos.forEach(elemento => {
             const campo = elemento.getAttribute("data-field");
             if (elemento.tagName === "IMG") {
-                elemento.src = cancha[campo]; // Inyecta la URL de la imagen
+                elemento.src = canchaSeleccionada[campo] || "../img/foto.canchas.jpg";
 
-                if (cancha.nombre) {
-                    elemento.alt = `Imagen de ${cancha.nombre}`; // Alt dinámico opcional
+                if (canchaSeleccionada.nombre) {
+                    elemento.alt = `Imagen de ${canchaSeleccionada.nombre}`;
                 }
             }
             if (campo === "precio") {
-                const precioNumerico = Number(cancha[campo]);
-                elemento.textContent = `$ ${precioNumerico.toLocaleString("es-CO")}`;
+                const precioNumerico = Number(canchaSeleccionada[campo]);
+                elemento.textContent = !canchaSeleccionada[campo] ||
+                    Number.isNaN(precioNumerico)
+                    ? "Precio no especificado"
+                    : `$ ${precioNumerico.toLocaleString("es-CO")}`;
             } else {
-                elemento.textContent = cancha[campo];
+                elemento.textContent = canchaSeleccionada[campo] || "No especificado";
             }
         });
     } else {
@@ -36,6 +40,7 @@ const idCancha = parametros.get("id");
 
 const fechas = document.getElementById("fechas");
 const turnos = document.getElementById("turnos");
+const cantidadTurnos = document.getElementById("cantidad-turnos");
 const fechaReserva = document.getElementById("fecha-reserva");
 const horarioReserva = document.getElementById("horario-reserva");
 const detalleCancha = document.getElementById("detalle-cancha");
@@ -44,6 +49,44 @@ const fechaInicio = document.getElementById("fecha-inicio");
 const fechaFin = document.getElementById("fecha-fin");
 const botonAnterior = document.querySelector(".anterior");
 const botonSiguiente = document.querySelector(".siguiente");
+
+function formatearPrecioReserva(valor) {
+    const precio = Number(valor);
+
+    if (
+        !valor ||
+        Number.isNaN(precio)
+    ) {
+        return "Precio no especificado";
+    }
+
+    return `$ ${precio.toLocaleString("es-CO")}`;
+}
+
+function renderizarDetalleReserva(cancha) {
+    if (!detalleCancha) {
+        return;
+    }
+
+    detalleCancha.innerHTML = "";
+
+    const nombre = document.createElement("strong");
+    nombre.textContent = cancha.nombre || "Cancha seleccionada";
+
+    const ubicacion = document.createElement("p");
+    ubicacion.textContent = cancha.ubicacion || "Ubicacion no especificada";
+
+    const precio = document.createElement("p");
+    precio.textContent = formatearPrecioReserva(cancha.precio);
+
+    detalleCancha.appendChild(nombre);
+    detalleCancha.appendChild(ubicacion);
+    detalleCancha.appendChild(precio);
+}
+
+if (canchaSeleccionada) {
+    renderizarDetalleReserva(canchaSeleccionada);
+}
 
 
 let fechaSeleccionada = null;
@@ -83,6 +126,8 @@ const horariosOcupados = [
     "13:00",
     "17:00"
 ];
+
+cantidadTurnos.textContent = horarios.length - horariosOcupados.length;
 
 function obtenerLunes(fecha) {
     const lunes = new Date(fecha);
@@ -327,6 +372,12 @@ botonSiguiente.addEventListener(
 );
 
 botonReservar.addEventListener("click", () => {
+    if (!canchaSeleccionada) {
+        alert("Selecciona una cancha antes de reservar");
+        window.location.href = "canchas.html";
+        return;
+    }
+
     if (fechaSeleccionada === null) {
         alert("Selecciona una fecha");
         return;
@@ -336,22 +387,23 @@ botonReservar.addEventListener("click", () => {
         alert("Selecciona un horario");
         return;
     }
-    const cancha = JSON.parse(canchaGuardada);
     const reserva = {
-        canchaId: cancha.id,
-        precio:cancha.precio,
-        nombre:cancha.nombre,
-        ubicacion:cancha.ubicacion,
-        imagen:cancha.imagen,
+        canchaId: canchaSeleccionada.id,
+        precio:canchaSeleccionada.precio,
+        nombre:canchaSeleccionada.nombre,
+        ubicacion:canchaSeleccionada.ubicacion,
+        imagen:canchaSeleccionada.imagen,
         fecha: fechaSeleccionada.toLocaleDateString("es-CO"),
-        horario: horarioSeleccionado
+        horario: horarioSeleccionado,
+        duracion: "1 hora",          
+        jugadores: "10 jugadores"
     };
 
     localStorage.setItem("reserva_seleccionada", JSON.stringify(reserva));
 
     console.log("Reserva guardada:", reserva);
 
-    window.location.href = "registro.html";
+    window.location.href = "pagar-reserva.html";
 });
 
 mostrarSemana();

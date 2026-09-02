@@ -424,7 +424,7 @@
 
                         <div class="court-detail-image">
 
-                            <img data-field="imagen"src="../img/canchas/cancha-principal.jpg" alt="Cancha 1">
+                            <img data-field="imagen"src="" alt="Cancha 1">
 
                             <span class="court-sport-badge">
                                 Fútbol 5
@@ -717,7 +717,7 @@
         </section>
 
         <!-- =====================================================
-             ELEGÍ TU TURNO
+             ESCOGER TURNO POR FECHA Y HORA
              ===================================================== -->
 
         <section class="venue-container reservation-section" id="elegi-tu-turno">
@@ -740,26 +740,6 @@
             </div>
 
 
-
-            <!-- =================================================
-                 INICIO TRABAJO DILSIA
-
-                 RESPONSABLE: DILSIA
-
-                 Esta sección queda preparada para desarrollar:
-
-                 - Selección de fecha.
-                 - Horarios disponibles.
-                 - Horarios reservados.
-                 - Horario seleccionado.
-                 - Resumen de la reserva.
-                 - Botón continuar.
-
-                 IMPORTANTE:
-                 No cambiar los ID definidos porque luego
-                 podrán ser utilizados desde JavaScript.
-                 ================================================= -->
-
         <section class="agenda">
             <h2>Semana del <span id="fecha-inicio"></span> al <span id="fecha-fin"></span></h2>
             <div class="navegacion-semana">
@@ -768,14 +748,10 @@
         </div>
 
         <div class="turnos_disponibles">
-            <h2>Turnos disponibles: <span>0</span></h2>
+            <h2>Turnos disponibles: <span id="cantidad-turnos">0</span></h2>
         </div>
-
-        <div class="canchas_disponibles">
-            <h2>Canchas disponibles: <span>0</span></h2>
-        </div>
-
-        <div class="etiquetas">
+       
+       <div class="etiquetas">
             <button class="Disponible"></button>
             <span>Disponible</span>
             <button class="Reservado"></button>
@@ -783,6 +759,7 @@
             <button class="tu_seleccion"></button>
             <span>Tu selección</span>
         </div>
+
 
         <div class="fechas-lista" id="fechas">
         </div>
@@ -799,19 +776,14 @@
 
             <p>Horario:<span id="horario-reserva"></span></p>
 
-        </section>
+               </section>
 
         <button class="reservar">
             Reservar</button>
         </section>
 
 
-            <!-- =================================================
-                 FIN TRABAJO DILSIA
-                 ================================================= -->
-
-
-        </section>
+       </section>
 
         <footer>
             <mi-footer></mi-footer>

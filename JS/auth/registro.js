@@ -1,6 +1,27 @@
 const registroForm = document.querySelector("#registro-form");
 const registroStatus = document.querySelector("#registro-status");
 const registroSubmit = document.querySelector("#registro-submit");
+const contrasena = document.getElementById("contrasena");
+const mostrarContrasena = document.getElementById("mostrar-contrasena");
+const confirmaContrasena = document.getElementById("confirmarContrasena");
+const mostrarConfirmarContrasena = document.getElementById("mostrar-confirmar-contrasena");
+
+
+mostrarContrasena.addEventListener("click", () => {
+contrasena.type = contrasena.type === "password" ? "text" : "password";  
+mostrarContrasena.classList.toggle("bi-eye");
+mostrarContrasena.classList.toggle("bi-eye-slash");
+
+});
+
+mostrarConfirmarContrasena.addEventListener("click", () => {
+mostrarConfirmarContrasena.type = mostrarConfirmarContrasena.type === "password" ? "text" : "password";  
+mostrarConfirmarContrasena.classList.toggle("bi-eye");
+mostrarConfirmarContrasena.classList.toggle("bi-eye-slash");
+
+});
+
+
 
 const rules = {
     nombreCompleto: (value) => value.trim().length >= 3 ? "" : "Escribe tu nombre completo (mínimo 3 caracteres).",

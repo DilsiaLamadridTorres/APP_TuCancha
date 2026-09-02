@@ -36,3 +36,35 @@
 .auth-status--error, .connection-status--error { color: #842029; background: #f8d7da; }
 .connection-status--demo { color: #664d03; background: #fff3cd; }
 .auth-status--hidden { display: none; }
+
+.campo-password {
+    position: relative;
+}
+
+.campo-password i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group .form-control {
+    border-radius: 0.5rem !important;
+    padding-right: 50px;
+}
+
+.input-group .btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    border: none;
+    background: transparent;
+    border-radius: 0 0.5rem 0.5rem 0 !important;
+    z-index: 5;
+}

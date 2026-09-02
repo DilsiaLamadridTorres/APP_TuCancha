@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const SOLICITUDES_KEY = "tucancha_solicitudes_complejos";
     const CANCHAS_PUBLICADAS_KEY = "tucancha_canchas_publicadas";
+    const HORARIO_PREDETERMINADO = "Lunes a domingo, 8:00 AM - 10:00 PM";
 
 
     /* ============================================================
@@ -41,6 +42,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let filtroActual = "pendiente";
 
+    let fotosGaleria = [];
+
+    let indiceFotoGaleria = 0;
+
 
     /* ============================================================
        LEER SOLICITUDES DESDE LOCAL STORAGE
@@ -69,10 +74,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 JSON.parse(datos);
 
 
+            const resultadoNormalizado =
+                separarSolicitudesPorCancha(
+                    Array.isArray(solicitudesParseadas)
+                        ? solicitudesParseadas
+                        : []
+                );
+
+
             solicitudes =
-                Array.isArray(solicitudesParseadas)
-                    ? solicitudesParseadas
-                    : [];
+                resultadoNormalizado.solicitudes;
+
+
+            if (
+                resultadoNormalizado.cambio
+            ) {
+
+                guardarSolicitudes();
+
+            }
 
 
         } catch (error) {
@@ -217,18 +237,239 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
 
         if (
-            !solicitud ||
-            !Array.isArray(
+            solicitud &&
+            Array.isArray(
                 solicitud.canchas
-            )
+            ) &&
+            solicitud.canchas.length > 0
         ) {
 
-            return [];
+            return solicitud.canchas;
 
         }
 
 
-        return solicitud.canchas;
+        if (
+            solicitud?.cancha
+        ) {
+
+            return [
+                solicitud.cancha
+            ];
+
+        }
+
+
+        return [];
+
+    }
+
+
+    /* ============================================================
+       OBTENER CANCHA PRINCIPAL
+       ============================================================ */
+
+    function obtenerCanchaPrincipal(
+        solicitud
+    ) {
+
+        const canchas =
+            obtenerCanchasSolicitud(
+                solicitud
+            );
+
+
+        return canchas[0] || null;
+
+    }
+
+
+    /* ============================================================
+       SEPARAR SOLICITUDES POR CANCHA
+       ============================================================ */
+
+    function clonarCanchaSolicitud(
+        cancha
+    ) {
+
+        return {
+
+            ...cancha,
+
+            duraciones: [
+                ...(cancha.duraciones || [])
+            ],
+
+            fotos: [
+                ...(cancha.fotos || [])
+            ]
+
+        };
+
+    }
+
+
+    function crearSolicitudParaCancha(
+        solicitud,
+        cancha,
+        index
+    ) {
+
+        const canchaSolicitud =
+            clonarCanchaSolicitud(
+                cancha
+            );
+
+
+        const idGrupo =
+            solicitud.grupoSolicitudId
+            || solicitud.solicitudGrupoId
+            || solicitud.id;
+
+
+        return {
+
+            ...solicitud,
+
+            id:
+                `${idGrupo}-CANCHA-${index + 1}`,
+
+            grupoSolicitudId:
+                idGrupo,
+
+            solicitudOriginalId:
+                solicitud.id,
+
+            canchaId:
+                canchaSolicitud.id,
+
+            numeroCancha:
+                index + 1,
+
+            cancha:
+                undefined,
+
+            canchas: [
+                canchaSolicitud
+            ]
+
+        };
+
+    }
+
+
+    function separarSolicitudesPorCancha(
+        listaSolicitudes
+    ) {
+
+        let cambio =
+            false;
+
+
+        const solicitudesSeparadas = [];
+
+
+        listaSolicitudes.forEach(
+            solicitud => {
+
+                const canchas =
+                    Array.isArray(
+                        solicitud?.canchas
+                    )
+                        ? solicitud.canchas
+                        : [];
+
+
+                if (
+                    canchas.length <= 1
+                ) {
+
+                    const canchaUnica =
+                        canchas[0]
+                        || solicitud.cancha;
+
+
+                    if (
+                        canchaUnica &&
+                        (
+                            solicitud.cancha ||
+                            !solicitud.canchaId ||
+                            canchas.length === 0
+                        )
+                    ) {
+
+                        cambio =
+                            true;
+
+
+                        const canchaSolicitud =
+                            clonarCanchaSolicitud(
+                                canchaUnica
+                            );
+
+
+                        solicitudesSeparadas.push({
+
+                            ...solicitud,
+
+                            cancha:
+                                undefined,
+
+                            canchas: [
+                                canchaSolicitud
+                            ],
+
+                            canchaId:
+                                solicitud.canchaId
+                                || canchaSolicitud.id
+
+                        });
+
+                        return;
+
+                    }
+
+
+                    solicitudesSeparadas.push(
+                        solicitud
+                    );
+
+                    return;
+
+                }
+
+
+                cambio =
+                    true;
+
+
+                canchas.forEach(
+                    (cancha, index) => {
+
+                        solicitudesSeparadas.push(
+                            crearSolicitudParaCancha(
+                                solicitud,
+                                cancha,
+                                index
+                            )
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        return {
+
+            solicitudes:
+                solicitudesSeparadas,
+
+            cambio:
+                cambio
+
+        };
 
     }
 
@@ -244,6 +485,30 @@ document.addEventListener("DOMContentLoaded", () => {
         return (
             solicitud?.complejo?.nombre
             || "Complejo sin nombre"
+        );
+
+    }
+
+
+    /* ============================================================
+       NOMBRE DE LA CANCHA
+       ============================================================ */
+
+    function obtenerNombreCancha(
+        solicitud
+    ) {
+
+        const cancha =
+            obtenerCanchaPrincipal(
+                solicitud
+            );
+
+
+        return (
+            cancha?.nombre
+            || obtenerNombreComplejo(
+                solicitud
+            )
         );
 
     }
@@ -356,6 +621,393 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ============================================================
+       OBTENER URL DE FOTO
+       ============================================================ */
+
+    function obtenerUrlFoto(
+        foto
+    ) {
+
+        if (
+            typeof foto === "string"
+        ) {
+
+            return foto;
+
+        }
+
+
+        if (
+            foto?.dataUrl
+        ) {
+
+            return foto.dataUrl;
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* ============================================================
+       OBTENER FOTOS DE CANCHAS
+       ============================================================ */
+
+    function obtenerFotosCanchas(
+        canchas
+    ) {
+
+        const fotos = [];
+
+
+        canchas.forEach(
+            cancha => {
+
+                if (
+                    !Array.isArray(
+                        cancha?.fotos
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                cancha.fotos.forEach(
+                    foto => {
+
+                        const urlFoto =
+                            obtenerUrlFoto(
+                                foto
+                            );
+
+
+                        if (urlFoto) {
+
+                            fotos.push(
+                                urlFoto
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        return fotos;
+
+    }
+
+
+    /* ============================================================
+       OBTENER FOTO DE UNA CANCHA
+       ============================================================ */
+
+    function obtenerFotoCanchaPublicada(
+        cancha
+    ) {
+
+        if (
+            Array.isArray(
+                cancha?.fotos
+            ) &&
+            cancha.fotos.length > 0
+        ) {
+
+            const foto =
+                obtenerUrlFoto(
+                    cancha.fotos[0]
+                );
+
+
+            if (foto) {
+
+                return foto;
+
+            }
+
+        }
+
+
+        return "../img/foto.canchas.jpg";
+
+    }
+
+
+    /* ============================================================
+       FORMATEAR TEXTO SIMPLE
+       ============================================================ */
+
+    function formatearTextoSimple(
+        valor
+    ) {
+
+        if (!valor) {
+
+            return "";
+
+        }
+
+
+        return String(valor)
+            .replace(/-/g, " ")
+            .replace(
+                /\b\w/g,
+                letra =>
+                    letra.toUpperCase()
+            );
+
+    }
+
+
+    /* ============================================================
+       UBICACIÃ“N PARA CATÃLOGO
+       ============================================================ */
+
+    function obtenerUbicacionPublica(
+        complejo = {}
+    ) {
+
+        const ciudad =
+            formatearTextoSimple(
+                complejo.ciudad
+            );
+
+        const provincia =
+            formatearTextoSimple(
+                complejo.provincia
+            );
+
+
+        if (
+            ciudad &&
+            provincia
+        ) {
+
+            return `${ciudad}, ${provincia}`;
+
+        }
+
+
+        return ciudad
+            || provincia
+            || complejo.direccion
+            || "UbicaciÃ³n no especificada";
+
+    }
+
+
+    /* ============================================================
+       NORMALIZAR PRECIO
+       ============================================================ */
+
+    function normalizarPrecio(
+        valor
+    ) {
+
+        if (
+            typeof valor === "number" &&
+            !Number.isNaN(valor)
+        ) {
+
+            return valor;
+
+        }
+
+
+        if (
+            typeof valor === "string" &&
+            valor.trim()
+        ) {
+
+            const numero =
+                Number(
+                    valor.replace(/[^\d]/g, "")
+                );
+
+
+            return Number.isNaN(numero)
+                ? null
+                : numero;
+
+        }
+
+
+        return null;
+
+    }
+
+
+    function formatearPrecioCancha(
+        valor
+    ) {
+
+        const precio =
+            normalizarPrecio(
+                valor
+            );
+
+
+        if (
+            precio === null
+        ) {
+
+            return "Precio no especificado";
+
+        }
+
+
+        return `$${precio.toLocaleString("es-CO")} COP / hora`;
+
+    }
+
+
+    /* ============================================================
+       CREAR CANCHA PUBLICADA
+       ============================================================ */
+
+    function crearCanchaPublicada(
+        solicitud,
+        cancha
+    ) {
+
+        const precio =
+            normalizarPrecio(
+                cancha.precio
+                || cancha.precioPorHora
+                || solicitud.precio
+                || solicitud.precioPorHora
+                || solicitud.complejo?.precio
+                || solicitud.complejo?.precioPorHora
+            );
+
+
+        return {
+
+            id:
+                cancha.id,
+
+            solicitudId:
+                solicitud.id,
+
+            nombre:
+                cancha.nombre
+                || obtenerNombreComplejo(
+                    solicitud
+                ),
+
+            empresa:
+                obtenerNombreComplejo(
+                    solicitud
+                ),
+
+            ubicacion:
+                obtenerUbicacionPublica(
+                    solicitud.complejo
+                ),
+
+            calificacion:
+                "Nueva",
+
+            precio:
+                precio,
+
+            precioPorHora:
+                precio,
+
+            disponible:
+                true,
+
+            descripcion:
+                obtenerDescripcion(
+                    solicitud
+                ),
+
+            horario:
+                obtenerHorario(
+                    solicitud
+                ),
+
+            horarioAtencion:
+                obtenerHorario(
+                    solicitud
+                ),
+
+            imagen:
+                obtenerFotoCanchaPublicada(
+                    cancha
+                ),
+
+            deporte:
+                cancha.deporte,
+
+            deporteTexto:
+                formatearDeporte(
+                    cancha.deporte
+                ),
+
+            tipoPiso:
+                cancha.tipoPiso,
+
+            tipoPisoTexto:
+                formatearTextoSimple(
+                    cancha.tipoPiso
+                ),
+
+            largo:
+                cancha.largo,
+
+            ancho:
+                cancha.ancho,
+
+            duraciones:
+                cancha.duraciones || [],
+
+            techada:
+                cancha.techada || false,
+
+            permiteOtrosDeportes:
+                cancha.permiteOtrosDeportes
+                || false,
+
+            fotos:
+                cancha.fotos || [],
+
+            prestaciones:
+                solicitud.complejo?.prestaciones || [],
+
+            complejo:
+                {
+                    ...solicitud.complejo
+                },
+
+            organizacion:
+                {
+                    ...solicitud.organizacion
+                },
+
+            publicada:
+                true,
+
+            estado:
+                "publicada",
+
+            fechaPublicacion:
+                new Date()
+                    .toISOString()
+
+        };
+
+    }
+
+
+    /* ============================================================
        OBTENER DEPORTE
        ============================================================ */
 
@@ -416,6 +1068,13 @@ document.addEventListener("DOMContentLoaded", () => {
         deporte
     ) {
 
+        if (!deporte) {
+
+            return "Sin deporte";
+
+        }
+
+
         const deportes = {
 
             "futbol-5": "Fútbol 5",
@@ -444,6 +1103,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const solicitudesFiltradas =
             obtenerSolicitudesFiltradas();
+
+
+        const solicitudSeleccionadaVisible =
+            solicitudesFiltradas.some(
+                solicitud =>
+                    String(solicitud.id) ===
+                    String(idSolicitudSeleccionada)
+            );
+
+
+        if (!solicitudSeleccionadaVisible) {
+
+            ocultarDetalleSolicitud();
+
+        }
 
 
         if (
@@ -523,8 +1197,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         if (
-            solicitud.id ===
-            idSolicitudSeleccionada
+            String(solicitud.id) ===
+            String(idSolicitudSeleccionada)
         ) {
 
             fila.classList.add(
@@ -541,6 +1215,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const nombreComplejo =
             obtenerNombreComplejo(
+                solicitud
+            );
+
+
+        const nombreCancha =
+            obtenerNombreCancha(
                 solicitud
             );
 
@@ -581,18 +1261,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <img
                     src="${imagen}"
-                    alt="${nombreComplejo}"
+                    alt="${nombreCancha}"
                     class="miniatura-cancha"
                 >
 
                 <div class="info-cancha">
 
                     <h3>
-                        ${nombreComplejo}
+                        ${nombreCancha}
                     </h3>
 
                     <p>
-                        ${deporte}
+                        ${nombreComplejo} · ${deporte}
                     </p>
 
                 </div>
@@ -682,12 +1362,78 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        if (
+            filtroActual === "aprobada"
+        ) {
+
+            return solicitudes.filter(
+                solicitud =>
+                    [
+                        "aprobada",
+                        "publicada"
+                    ].includes(
+                        solicitud.estado
+                        || "pendiente"
+                    )
+            );
+
+        }
+
+
         return solicitudes.filter(
             solicitud =>
                 (
                     solicitud.estado
                     || "pendiente"
                 ) === filtroActual
+        );
+
+    }
+
+
+    /* ============================================================
+       OCULTAR DETALLE CUANDO NO HAY SELECCIÃ“N
+       ============================================================ */
+
+    function ocultarDetalleSolicitud() {
+
+        idSolicitudSeleccionada =
+            null;
+
+
+        if (panelDetalle) {
+
+            panelDetalle.classList.remove(
+                "abierto"
+            );
+
+            panelDetalle.classList.add(
+                "sin-seleccion"
+            );
+
+        }
+
+
+        [
+            botonMarcarRevision,
+            botonAprobarPublicar,
+            botonRechazar
+        ].forEach(
+            boton => {
+
+                if (boton) {
+
+                    boton.disabled =
+                        true;
+
+                }
+
+            }
+        );
+
+
+        resaltarFilaSeleccionadaEnTabla(
+            null
         );
 
     }
@@ -855,8 +1601,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const solicitud =
             solicitudes.find(
                 item =>
-                    item.id ===
-                    idSolicitud
+                    String(item.id) ===
+                    String(idSolicitud)
             );
 
 
@@ -866,6 +1612,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Solicitud no encontrada:",
                 idSolicitud
             );
+
+            ocultarDetalleSolicitud();
 
             return;
 
@@ -889,6 +1637,10 @@ document.addEventListener("DOMContentLoaded", () => {
             obtenerCanchasSolicitud(
                 solicitud
             );
+
+        const cancha =
+            canchas[0]
+            || null;
 
 
         /* ========================================================
@@ -921,7 +1673,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         asignarTexto(
             "nombre-cancha-detalle",
-            obtenerNombreComplejo(
+            obtenerNombreCancha(
                 solicitud
             )
         );
@@ -929,9 +1681,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         asignarTexto(
             "tipo-cancha-detalle",
-            obtenerDeporte(
+            `${obtenerNombreComplejo(
                 solicitud
-            )
+            )} · ${
+                cancha?.deporte
+                    ? formatearDeporte(
+                        cancha.deporte
+                    )
+                    : obtenerDeporte(
+                        solicitud
+                    )
+            }`
         );
 
 
@@ -1029,6 +1789,11 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
+        panelDetalle.classList.remove(
+            "sin-seleccion"
+        );
+
+
         panelDetalle.classList.add(
             "abierto"
         );
@@ -1069,10 +1834,19 @@ document.addEventListener("DOMContentLoaded", () => {
         solicitud
     ) {
 
-        return (
-            solicitud.precioPorHora
+        const cancha =
+            obtenerCanchaPrincipal(
+                solicitud
+            );
+
+
+        return formatearPrecioCancha(
+            cancha?.precioPorHora
+            || cancha?.precio
+            || solicitud.precioPorHora
+            || solicitud.precio
             || solicitud.complejo?.precioPorHora
-            || "No especificado"
+            || solicitud.complejo?.precio
         );
 
     }
@@ -1086,10 +1860,18 @@ document.addEventListener("DOMContentLoaded", () => {
         solicitud
     ) {
 
+        const cancha =
+            obtenerCanchaPrincipal(
+                solicitud
+            );
+
+
         return (
             solicitud.horarioAtencion
+            || cancha?.horarioAtencion
+            || cancha?.horario
             || solicitud.complejo?.horarioAtencion
-            || "No especificado"
+            || HORARIO_PREDETERMINADO
         );
 
     }
@@ -1103,8 +1885,15 @@ document.addEventListener("DOMContentLoaded", () => {
         solicitud
     ) {
 
+        const cancha =
+            obtenerCanchaPrincipal(
+                solicitud
+            );
+
+
         return (
             solicitud.descripcion
+            || cancha?.descripcion
             || solicitud.complejo?.descripcion
             || "Sin descripción registrada."
         );
@@ -1182,6 +1971,205 @@ document.addEventListener("DOMContentLoaded", () => {
        FOTOS
        ============================================================ */
 
+    function actualizarGaleriaDetalle() {
+
+        const imagenPrincipal =
+            document.getElementById(
+                "imagen-detalle-principal"
+            );
+
+        const botonAnterior =
+            document.querySelector(
+                ".flecha-galeria.anterior"
+            );
+
+        const botonSiguiente =
+            document.querySelector(
+                ".flecha-galeria.siguiente"
+            );
+
+        const contenedorPuntos =
+            document.querySelector(
+                ".puntos-galeria"
+            );
+
+        const totalFotos =
+            fotosGaleria.length;
+
+
+        if (
+            !imagenPrincipal ||
+            totalFotos === 0
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            indiceFotoGaleria < 0
+        ) {
+
+            indiceFotoGaleria =
+                totalFotos - 1;
+
+        }
+
+
+        if (
+            indiceFotoGaleria >= totalFotos
+        ) {
+
+            indiceFotoGaleria = 0;
+
+        }
+
+
+        imagenPrincipal.src =
+            fotosGaleria[indiceFotoGaleria];
+
+        imagenPrincipal.alt =
+            `Foto ${indiceFotoGaleria + 1} de la cancha`;
+
+
+        const mostrarControles =
+            totalFotos > 1;
+
+
+        [
+            botonAnterior,
+            botonSiguiente
+        ].forEach(
+            boton => {
+
+                if (!boton) {
+
+                    return;
+
+                }
+
+
+                boton.disabled =
+                    !mostrarControles;
+
+                boton.classList.toggle(
+                    "oculto",
+                    !mostrarControles
+                );
+
+            }
+        );
+
+
+        if (contenedorPuntos) {
+
+            contenedorPuntos.innerHTML = "";
+
+
+            if (mostrarControles) {
+
+                fotosGaleria.forEach(
+                    (_foto, index) => {
+
+                        const punto =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        punto.type =
+                            "button";
+
+                        punto.className =
+                            index === indiceFotoGaleria
+                                ? "punto activo"
+                                : "punto";
+
+                        punto.dataset.indice =
+                            index;
+
+                        punto.setAttribute(
+                            "aria-label",
+                            `Ver foto ${index + 1}`
+                        );
+
+
+                        contenedorPuntos.appendChild(
+                            punto
+                        );
+
+                    }
+                );
+
+            }
+
+        }
+
+
+        document
+            .querySelectorAll(
+                ".fotos-adicionales img"
+            )
+            .forEach(
+                miniatura => {
+
+                    miniatura.classList.toggle(
+                        "activa",
+                        Number(
+                            miniatura.dataset.indice
+                        ) === indiceFotoGaleria
+                    );
+
+                }
+            );
+
+    }
+
+
+    function cambiarFotoGaleria(
+        direccion
+    ) {
+
+        if (
+            fotosGaleria.length <= 1
+        ) {
+
+            return;
+
+        }
+
+
+        indiceFotoGaleria +=
+            direccion;
+
+        actualizarGaleriaDetalle();
+
+    }
+
+
+    function seleccionarFotoGaleria(
+        indice
+    ) {
+
+        if (
+            indice < 0 ||
+            indice >= fotosGaleria.length
+        ) {
+
+            return;
+
+        }
+
+
+        indiceFotoGaleria =
+            indice;
+
+        actualizarGaleriaDetalle();
+
+    }
+
+
     function renderizarFotos(
         canchas
     ) {
@@ -1202,81 +2190,75 @@ document.addEventListener("DOMContentLoaded", () => {
         contenedor.innerHTML = "";
 
 
-        const fotos = [];
+        fotosGaleria =
+            obtenerFotosCanchas(
+                canchas
+            );
+
+        indiceFotoGaleria = 0;
 
 
-        canchas.forEach(
-            cancha => {
+        const hayFotosSubidas =
+            fotosGaleria.length > 0;
 
-                if (
-                    Array.isArray(
-                        cancha.fotos
-                    )
-                ) {
 
-                    cancha.fotos.forEach(
-                        foto => {
+        if (!hayFotosSubidas) {
 
-                            if (
-                                typeof foto === "string"
-                            ) {
+            fotosGaleria = [
+                "https://via.placeholder.com/60x40?text=Cancha"
+            ];
 
-                                fotos.push(
-                                    foto
-                                );
+            contenedor.innerHTML =
+                "<span>Sin fotos adicionales.</span>";
 
-                            } else if (
-                                foto?.dataUrl
-                            ) {
+            actualizarGaleriaDetalle();
 
-                                fotos.push(
-                                    foto.dataUrl
-                                );
+            return;
 
-                            }
+        }
 
-                        }
+
+        fotosGaleria.forEach(
+            (foto, index) => {
+
+                const imagen =
+                    document.createElement(
+                        "img"
                     );
 
-                }
+
+                imagen.src =
+                    foto;
+
+                imagen.alt =
+                    `Foto ${index + 1}`;
+
+                imagen.dataset.indice =
+                    index;
+
+                imagen.tabIndex =
+                    0;
+
+                imagen.setAttribute(
+                    "role",
+                    "button"
+                );
+
+                imagen.setAttribute(
+                    "aria-label",
+                    `Ver foto ${index + 1}`
+                );
+
+
+                contenedor.appendChild(
+                    imagen
+                );
 
             }
         );
 
 
-        fotos
-            .slice(0, 5)
-            .forEach(
-                (foto, index) => {
-
-                    const imagen =
-                        document.createElement(
-                            "img"
-                        );
-
-
-                    imagen.src =
-                        foto;
-
-                    imagen.alt =
-                        `Foto ${index + 1}`;
-
-                    contenedor.appendChild(
-                        imagen
-                    );
-
-                }
-            );
-
-
-        if (
-            fotos.length === 0
-        ) {
-
-            contenedor.innerHTML =
-                "<span>Sin fotos adicionales.</span>";
-
-        }
+        actualizarGaleriaDetalle();
 
     }
 
@@ -1539,8 +2521,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const indice =
             solicitudes.findIndex(
                 solicitud =>
-                    solicitud.id ===
-                    idSolicitud
+                    String(solicitud.id) ===
+                    String(idSolicitud)
             );
 
 
@@ -1559,18 +2541,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         solicitud.estado =
             nuevoEstado;
-
-
-        if (
-            nuevoEstado ===
-            "aprobada"
-        ) {
-
-            publicarCanchas(
-                solicitud
-            );
-
-        }
 
 
         if (
@@ -1675,75 +2645,46 @@ document.addEventListener("DOMContentLoaded", () => {
         canchas.forEach(
             cancha => {
 
-                const canchaPublicada = {
-
-                    id:
-                        cancha.id,
-
-                    solicitudId:
-                        solicitud.id,
-
-                    nombre:
-                        cancha.nombre,
-
-                    deporte:
-                        cancha.deporte,
-
-                    tipoPiso:
-                        cancha.tipoPiso,
-
-                    largo:
-                        cancha.largo,
-
-                    ancho:
-                        cancha.ancho,
-
-                    duraciones:
-                        cancha.duraciones || [],
-
-                    techada:
-                        cancha.techada || false,
-
-                    permiteOtrosDeportes:
-                        cancha.permiteOtrosDeportes
-                        || false,
-
-                    fotos:
-                        cancha.fotos || [],
-
-                    complejo:
-                        {
-                            ...solicitud.complejo
-                        },
-
-                    organizacion:
-                        {
-                            ...solicitud.organizacion
-                        },
-
-                    publicada:
-                        true,
-
-                    fechaPublicacion:
-                        new Date()
-                            .toISOString()
-
-                };
-
-
-                const existe =
-                    canchasPublicadas.some(
-                        publicada =>
-                            publicada.id ===
-                            cancha.id
+                const canchaPublicada =
+                    crearCanchaPublicada(
+                        solicitud,
+                        cancha
                     );
 
 
-                if (!existe) {
+                const indicePublicada =
+                    canchasPublicadas.findIndex(
+                        publicada =>
+                            String(publicada.id) ===
+                            String(canchaPublicada.id)
+                            &&
+                            String(publicada.solicitudId) ===
+                            String(canchaPublicada.solicitudId)
+                    );
+
+
+                if (
+                    indicePublicada === -1
+                ) {
 
                     canchasPublicadas.push(
                         canchaPublicada
                     );
+
+                } else {
+
+                    canchasPublicadas[indicePublicada] = {
+
+                        ...canchasPublicadas[indicePublicada],
+
+                        ...canchaPublicada,
+
+                        fechaPublicacion:
+                            canchasPublicadas[indicePublicada]
+                                .fechaPublicacion
+                            || canchaPublicada.fechaPublicacion
+
+                    };
 
                 }
 
@@ -1880,6 +2821,147 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ============================================================
+       EVENTOS DE LA GALERIA
+       ============================================================ */
+
+    document
+        .querySelector(
+            ".flecha-galeria.anterior"
+        )
+        ?.addEventListener(
+            "click",
+            () => {
+
+                cambiarFotoGaleria(
+                    -1
+                );
+
+            }
+        );
+
+
+    document
+        .querySelector(
+            ".flecha-galeria.siguiente"
+        )
+        ?.addEventListener(
+            "click",
+            () => {
+
+                cambiarFotoGaleria(
+                    1
+                );
+
+            }
+        );
+
+
+    document
+        .querySelector(
+            ".puntos-galeria"
+        )
+        ?.addEventListener(
+            "click",
+            event => {
+
+                const punto =
+                    event.target.closest(
+                        ".punto"
+                    );
+
+
+                if (!punto) {
+
+                    return;
+
+                }
+
+
+                seleccionarFotoGaleria(
+                    Number(
+                        punto.dataset.indice
+                    )
+                );
+
+            }
+        );
+
+
+    document
+        .querySelector(
+            ".fotos-adicionales"
+        )
+        ?.addEventListener(
+            "click",
+            event => {
+
+                const miniatura =
+                    event.target.closest(
+                        "img[data-indice]"
+                    );
+
+
+                if (!miniatura) {
+
+                    return;
+
+                }
+
+
+                seleccionarFotoGaleria(
+                    Number(
+                        miniatura.dataset.indice
+                    )
+                );
+
+            }
+        );
+
+
+    document
+        .querySelector(
+            ".fotos-adicionales"
+        )
+        ?.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key !== "Enter" &&
+                    event.key !== " "
+                ) {
+
+                    return;
+
+                }
+
+
+                const miniatura =
+                    event.target.closest(
+                        "img[data-indice]"
+                    );
+
+
+                if (!miniatura) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+                seleccionarFotoGaleria(
+                    Number(
+                        miniatura.dataset.indice
+                    )
+                );
+
+            }
+        );
+
+
+    /* ============================================================
        CERRAR DETALLE
        ============================================================ */
 
@@ -1887,18 +2969,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "click",
         () => {
 
-            panelDetalle.classList.remove(
-                "abierto"
-            );
-
-
-            idSolicitudSeleccionada =
-                null;
-
-
-            resaltarFilaSeleccionadaEnTabla(
-                null
-            );
+            ocultarDetalleSolicitud();
 
         }
     );
@@ -1947,19 +3018,17 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            cambiarEstadoSolicitud(
-                idSolicitudSeleccionada,
-                "aprobada"
-            );
+            const idSolicitud =
+                idSolicitudSeleccionada;
 
 
             /*
-                La solicitud queda aprobada
-                y las canchas se publican.
+                La solicitud pasa directo a publicada
+                para guardar las canchas visibles al usuario.
             */
 
             cambiarEstadoSolicitud(
-                idSolicitudSeleccionada,
+                idSolicitud,
                 "publicada"
             );
 

@@ -1,0 +1,308 @@
+/* ==========================================
+   Variables Globales (Variables personalizadas)
+   ========================================== */
+:root {
+  --color-negro-fondo: #000000;
+  --color-blanco-secundario: #FFFFFF;
+  --color-naranjatono: #FF5500;
+  --color-containers: #171A17;
+
+  /* Colores complementarios derivados de tu paleta */
+  --border-color: #2a2f3a;
+  --text-muted: #aaaaaa;
+  --status-green: #107c41;
+}
+
+/* ==========================================
+   Reset Básico
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--color-negro-fondo);
+  color: var(--color-blanco-secundario);
+  line-height: 1.6;
+}
+
+/* ==========================================
+   Barra de Navegación (Navbar)
+   ========================================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-containers);
+  padding: 15px 30px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  padding-bottom: 5px;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--color-naranjatono);
+  border-bottom: 2px solid var(--color-naranjatono);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.notificacion {
+  background-color: #262c38;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #ffc107;
+}
+
+.avatar-img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ==========================================
+   Contenedor Principal y Layout
+   ========================================== */
+.contenedor-reservas {
+  display: flex;
+  gap: 24px;
+  padding: 30px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.seccion-mis-reservas {
+  flex: 1;
+}
+
+.seccion-mis-reservas h1 {
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+  color: var(--color-blanco-secundario);
+}
+
+.seccion-mis-reservas p {
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+/* ==========================================
+   Filtros y Selector
+   ========================================== */
+.filtros-reservas {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-filtro {
+  background-color: var(--color-containers);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn-filtro span {
+  background-color: #252a25;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  margin-left: 4px;
+}
+
+.btn-filtro:hover,
+.btn-filtro.active {
+  background-color: var(--color-naranjatono);
+  color: var(--color-blanco-secundario);
+  border-color: var(--color-naranjatono);
+}
+
+.btn-filtro.active span {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.select-orden {
+  background-color: var(--color-containers);
+  color: var(--color-blanco-secundario);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* ==========================================
+   Tarjetas de Reservas (Lista)
+   ========================================== */
+.lista-reservas-contenedor h2 {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin: 20px 0 10px 0;
+}
+
+.tarjeta-reserva {
+  background-color: var(--color-containers);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: border-color 0.2s ease;
+}
+
+.tarjeta-reserva:hover {
+  border-color: var(--color-naranjatono);
+}
+
+.btn-ver-reserva {
+  background-color: var(--color-naranjatono);
+  color: var(--color-blanco-secundario);
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.btn-ver-reserva:hover {
+  opacity: 0.9;
+}
+
+/* ==========================================
+   Panel Lateral de Detalle
+   ========================================== */
+.detalle-reserva {
+  width: 360px;
+  background-color: var(--color-containers);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 20px;
+  height: fit-content;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.btn-cerrar {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-cerrar:hover {
+  color: var(--color-blanco-secundario);
+  border-color: var(--color-blanco-secundario);
+}
+
+.badge-estado {
+  background-color: var(--status-green);
+  color: var(--color-blanco-secundario);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.btn-modificar {
+  width: 100%;
+  background-color: var(--color-naranjatono);
+  color: var(--color-blanco-secundario);
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: opacity 0.2s ease;
+}
+
+.btn-modificar:hover {
+  opacity: 0.9;
+}
+
+.btn-regresar-inicio {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+
+  display: inline-block;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+
+  background-color: var(--color-naranjatono);
+  color: var(--color-blanco-secundario);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-regresar-inicio:hover {
+  background-color: #e64d00;
+  color: var(--color-blanco-secundario);
+}
+
+.btn-cancelar-reserva {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+
+  border: none;
+  border-radius: 6px;
+
+  background-color: #dc3545;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancelar-reserva:hover {
+  background-color: #bb2d3b;
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+@media (max-width: 850px) {
+  .contenedor-reservas {
+    flex-direction: column;
+  }
+
+  .detalle-reserva {
+    width: 100%;
+  }
+}

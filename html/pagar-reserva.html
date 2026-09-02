@@ -180,33 +180,32 @@
 
 
                             <!-- CANCHA -->
+                            <div class="reservation-court">
 
-                           <!-- CANCHA -->
-<div class="reservation-court">
+                                <img
+                                    data-field="imagen"
+                                    src="../img/fotocancha.png"
+                                    alt="Cancha seleccionada"
+                                >
 
-    <img
-        data-field="imagen"
-        src="../img/fotocancha.png"
-        alt="Cancha seleccionada"
-    >
+                                <div>
 
-    <div>
+                                    <span>
+                                        CANCHA
+                                    </span>
 
-        <span>
-            CANCHA
-        </span>
+                                    <h3 data-field="nombre">
+                                        <!-- Se llena dinámicamente -->
+                                    </h3>
 
-        <h3 data-field="nombre">
-            <!-- Se llena dinámicamente -->
-        </h3>
+                                    <p data-field="ubicacion">
+                                        <!-- Se llena dinámicamente -->
+                                    </p>
 
-        <p data-field="ubicacion">
-            <!-- Se llena dinámicamente -->
-        </p>
+                                </div>
 
-    </div>
+                            </div>
 
-</div>
                             <hr>
 
 
@@ -226,8 +225,8 @@
                                         Fecha
                                     </small>
 
-                                    <strong>
-                                        25 de agosto de 2026
+                                    <strong data-field="fecha">
+                                        <!-- Se llena dinámicamente -->
                                     </strong>
 
                                 </div>
@@ -251,8 +250,8 @@
                                         Horario
                                     </small>
 
-                                    <strong>
-                                        7:00 PM - 8:00 PM
+                                    <strong data-field="horario">
+                                        <!-- Se llena dinámicamente -->
                                     </strong>
 
                                 </div>
@@ -276,8 +275,8 @@
                                         Duración
                                     </small>
 
-                                    <strong>
-                                        1 hora
+                                    <strong data-field="duracion">
+                                        <!-- Se llena dinámicamente -->
                                     </strong>
 
                                 </div>
@@ -301,8 +300,8 @@
                                         Jugadores
                                     </small>
 
-                                    <strong>
-                                        10 jugadores
+                                    <strong data-field="jugadores">
+                                        <!-- Se llena dinámicamente -->
                                     </strong>
 
                                 </div>
@@ -314,6 +313,7 @@
                                      <i class="bi bi-trash"></i> Eliminar Reserva
                                  </button>
                              </div>
+
                             <hr>
 
 
@@ -325,8 +325,8 @@
                                     Precio de la cancha
                                 </span>
 
-                                <strong>
-                                    $80.000
+                                <strong data-field="precio">
+                                    <!-- Se llena dinámicamente -->
                                 </strong>
 
                             </div>
@@ -338,8 +338,8 @@
                                     Total
                                 </span>
 
-                                <strong>
-                                    $80.000
+                                <strong data-field="precio">
+                                    <!-- Se llena dinámicamente -->
                                 </strong>
 
                             </div>
@@ -348,311 +348,115 @@
 
                     </div>
 
-
-
                     <!-- =================================
                          MÉTODO DE PAGO
                          ================================= -->
-
                     <div class="col-lg-5">
-
                         <div class="payment-card">
 
                             <div class="payment-card__header">
-
                                 <div class="payment-icon">
-
                                     <i class="bi bi-credit-card"></i>
-
                                 </div>
-
                                 <div>
-
-                                    <p class="payment-card__label">
-                                        PAGO
-                                    </p>
-
-                                    <h2>
-                                        Método de pago
-                                    </h2>
-
+                                    <p class="payment-card__label">PAGO</p>
+                                    <h2>Método de pago</h2>
                                 </div>
-
                             </div>
-
 
                             <!-- OPCIONES -->
-
-                            <div class="payment-methods">
-
+                            <div class="payment-methods mb-4">
 
                                 <!-- TARJETA -->
-
                                 <div class="payment-method">
-
-                                    <input
-                                        class="form-check-input"
-                                        type="radio"
-                                        name="metodoPago"
-                                        id="tarjeta"
-                                        value="tarjeta"
-                                        checked
-                                    >
-
-                                    <label
-                                        for="tarjeta"
-                                        class="payment-method__label"
-                                    >
-
+                                    <input class="form-check-input" type="radio" name="metodoPago" id="tarjeta" value="tarjeta">
+                                    <label for="tarjeta" class="payment-method__label">
                                         <i class="bi bi-credit-card"></i>
-
                                         <span>
-
-                                            <strong>
-                                                Tarjeta
-                                            </strong>
-
-                                            <small>
-                                                Débito o crédito
-                                            </small>
-
+                                            <strong>Tarjeta</strong>
+                                            <small>Débito o crédito</small>
                                         </span>
-
                                     </label>
-
                                 </div>
-                
 
                                 <!-- NEQUI -->
-
                                 <div class="payment-method">
-
-                                    <input
-                                        class="form-check-input"
-                                        type="radio"
-                                        name="metodoPago"
-                                        id="nequi"
-                                        value="nequi"
-                                    >
-
-                                    <label
-                                        for="nequi"
-                                        class="payment-method__label"
-                                    >
-
+                                    <input class="form-check-input" type="radio" name="metodoPago" id="nequi" value="nequi">
+                                    <label for="nequi" class="payment-method__label">
                                         <i class="bi bi-phone"></i>
-
                                         <span>
-
-                                            <strong>
-                                                Nequi
-                                            </strong>
-
-                                            <small>
-                                                Pago desde tu celular
-                                            </small>
-
+                                            <strong>Nequi</strong>
+                                            <small>Pago desde tu celular</small>
                                         </span>
-
                                     </label>
-
                                 </div>
 
-
                                 <!-- DAVIPLATA -->
-
                                 <div class="payment-method">
-
-                                    <input
-                                        class="form-check-input"
-                                        type="radio"
-                                        name="metodoPago"
-                                        id="daviplata"
-                                        value="daviplata"
-                                    >
-
-                                    <label
-                                        for="daviplata"
-                                        class="payment-method__label"
-                                    >
-
+                                    <input class="form-check-input" type="radio" name="metodoPago" id="daviplata" value="daviplata">
+                                    <label for="daviplata" class="payment-method__label">
                                         <i class="bi bi-wallet2"></i>
-
                                         <span>
-
-                                            <strong>
-                                                Daviplata
-                                            </strong>
-
-                                            <small>
-                                                Pago desde tu celular
-                                            </small>
-
+                                            <strong>Daviplata</strong>
+                                            <small>Pago desde tu celular</small>
                                         </span>
-
                                     </label>
-
                                 </div>
 
                             </div>
 
-
-
-                            <!-- =================================
-                                 DATOS DE TARJETA
-                                 ================================= -->
-
+                            <!-- FORMULARIO DE CAPTURA DE DATOS -->
                             <form id="pago-form">
 
-
-                                <div class="mb-3">
-
-                                    <label
-                                        for="numero-tarjeta"
-                                        class="form-label"
-                                    >
-                                        Número de tarjeta
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="numero-tarjeta"
-                                        placeholder="0000 0000 0000 0000"
-                                        maxlength="19"
-                                    >
-
-                                </div>
-
-
-                                <div class="row">
-
-                                    <div class="col-6 mb-3">
-
-                                        <label
-                                            for="vencimiento"
-                                            class="form-label"
-                                        >
-                                            Vencimiento
-                                        </label>
-
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="vencimiento"
-                                            placeholder="MM/AA"
-                                            maxlength="5"
-                                        >
-
+                                <!-- DATOS DE TARJETA (Ocultos por defecto con d-none) -->
+                                <div id="seccion-datos-tarjeta" class="d-none">
+                                    <div class="mb-3">
+                                        <label for="numero-tarjeta" class="form-label">Número de tarjeta</label>
+                                        <input type="text" inputmode="numeric" class="form-control" id="numero-tarjeta" placeholder="0000 0000 0000 0000" maxlength="19">
                                     </div>
 
+                                    <div class="row">
+                                        <div class="col-6 mb-3">
+                                            <label for="vencimiento" class="form-label">Vencimiento</label>
+                                            <input type="text" inputmode="numeric" class="form-control" id="vencimiento" placeholder="MM/AA" maxlength="5">
+                                        </div>
 
-                                    <div class="col-6 mb-3">
-
-                                        <label
-                                            for="cvv"
-                                            class="form-label"
-                                        >
-                                            CVV
-                                        </label>
-
-                                        <input
-                                            type="password"
-                                            class="form-control"
-                                            id="cvv"
-                                            placeholder="123"
-                                            maxlength="4"
-                                        >
-
+                                        <div class="col-6 mb-3">
+                                            <label for="cvv" class="form-label">CVV</label>
+                                            <input type="password" inputmode="numeric" class="form-control" id="cvv" placeholder="123" maxlength="4">
+                                        </div>
                                     </div>
 
+                                    <div class="mb-4">
+                                        <label for="nombre-titular" class="form-label">Nombre del titular</label>
+                                        <input type="text" class="form-control" id="nombre-titular" placeholder="Nombre completo">
+                                    </div>
                                 </div>
-
-
-                                <!-- TITULAR -->
-
-                                <div class="mb-4">
-
-                                    <label
-                                        for="nombre-titular"
-                                        class="form-label"
-                                    >
-                                        Nombre del titular
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="nombre-titular"
-                                        placeholder="Nombre completo"
-                                    >
-
-                                </div>
-
 
                                 <!-- TOTAL -->
-
                                 <div class="payment-total">
-
-                                    <span>
-                                        Total a pagar
-                                    </span>
-
-                                    <strong>
-                                        $80.000
-                                    </strong>
-
+                                    <span>Total a pagar</span>
+                                    <strong data-field="precio">$80.000</strong>
                                 </div>
-
 
                                 <!-- BOTÓN -->
-
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary w-100 payment-button"
-                                >
-
-                                    <i class="bi bi-lock-fill"></i>
-
-                                    Confirmar y pagar
-
+                                <button type="submit" id="btn-confirmar-pago" class="btn btn-primary w-100 payment-button">
+                                    <i class="bi bi-lock-fill"></i> Confirmar y pagar
                                 </button>
-
-
-                                <!-- ESTADO -->
-
-                                <p
-                                    id="pago-status"
-                                    class="payment-status"
-                                ></p>
-
-
+                                
+                                <p id="pago-status" class="payment-status"></p>
                             </form>
 
-
-                            <!-- SEGURIDAD -->
-
-                            <div class="payment-security">
-
+                            <div class="payment-security mt-3">
                                 <i class="bi bi-shield-check"></i>
-
                                 <div>
-
-                                    <strong>
-                                        Pago seguro
-                                    </strong>
-
-                                    <span>
-                                        Tus datos están protegidos.
-                                    </span>
-
+                                    <strong>Pago seguro</strong>
+                                    <span>Tus datos están protegidos.</span>
                                 </div>
-
                             </div>
 
                         </div>
-
-                    </div>
+                    </div>      
 
                 </div>
 

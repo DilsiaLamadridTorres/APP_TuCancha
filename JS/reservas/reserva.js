@@ -394,14 +394,16 @@ botonReservar.addEventListener("click", () => {
         ubicacion:canchaSeleccionada.ubicacion,
         imagen:canchaSeleccionada.imagen,
         fecha: fechaSeleccionada.toLocaleDateString("es-CO"),
-        horario: horarioSeleccionado
+        horario: horarioSeleccionado,
+        duracion: "1 hora",          
+        jugadores: "10 jugadores"
     };
 
     localStorage.setItem("reserva_seleccionada", JSON.stringify(reserva));
 
     console.log("Reserva guardada:", reserva);
 
-    window.location.href = "registro.html";
+    window.location.href = "pagar-reserva.html";
 });
 
 mostrarSemana();

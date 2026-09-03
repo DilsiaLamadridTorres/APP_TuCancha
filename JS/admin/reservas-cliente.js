@@ -5,10 +5,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const panelDetalle = document.getElementById("panel-detalle");
   const btnCerrarDetalle = document.querySelector(".btn-cerrar");
   const btnCancelar = document.getElementById("btn-cancelar-reserva");
+  const btnModificar = document.querySelector(".btn-modificar");
+  const menuModificar = document.getElementById("menu-modificar");
+  const btnCambiarHorario =document.getElementById("btn-cambiar-horario");
+  const btnCambiarDia =document.getElementById("btn-cambiar-dia");
 
   // 1. Cargar el usuario logueado actual desde sessionStorage (o localStorage como respaldo)
-  const usuarioLogueadoStr = sessionStorage.getItem("usuario") || localStorage.getItem("usuario_logueado") || localStorage.getItem("usuario");
-  const usuarioActual = usuarioLogueadoStr ? JSON.parse(usuarioLogueadoStr) : null;
+  const usuarioLogueadoStr =
+    sessionStorage.getItem("usuario") ||
+    localStorage.getItem("usuario_logueado") ||
+    localStorage.getItem("usuario");
+
+  const usuarioActual = usuarioLogueadoStr
+   ? JSON.parse(usuarioLogueadoStr) 
+   : null;
   
   // Extraer el nombre real del usuario (compatible con Supabase o estructura personalizada)
   const nombreUsuarioReal = usuarioActual?.nombre || usuarioActual?.correo || "Cliente";
@@ -47,8 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
           
           <div style="flex: 1;">
             <h3 style="margin: 0 0 5px 0; color: #fff; font-size: 1.1rem;">${reserva.nombre || 'Cancha Deportiva'}</h3>
-            <p style="margin: 0; color: #aaa; font-size: 0.85rem;">📍 ${reserva.ubicacion || 'Ubicación no especificada'}</p>
-            <small style="color: #107c41; font-weight: bold;">📅 ${reserva.fecha || ''} - ⏰ ${reserva.hora || ''} (${reserva.duracion || ''})</small>
+            <p style="margin: 0; color: #aaa; font-size: 0.85rem;"> ${reserva.ubicacion || 'Ubicación no especificada'}</p>
+            <small style="color: #107c41; font-weight: bold;"> ${reserva.fecha || ''} -  ${reserva.hora || ''} (${reserva.duracion || ''})</small>
           </div>
 
           <button class="btn-ver-reserva" data-index="${index}" style="background: #2a2f3a; color: #fff; border: 1px solid #444; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold;">
@@ -60,10 +70,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 5. Función para mapear los datos específicos de una reserva y del usuario al panel lateral
+  
   // 5. Función para mapear los datos específicos de una reserva al panel lateral
   function mostrarDetalleReserva(reserva) {
     if (!panelDetalle) return;
+
+    reservaSeleccionada = reserva;
     
 
     const elementosDinamicos = panelDetalle.querySelectorAll("[data-field]");
@@ -117,35 +129,96 @@ document.addEventListener("DOMContentLoaded", () => {
   if (misReservas.length > 0) {
     mostrarDetalleReserva(misReservas[0]);
   }
-});
 
-btnCancelar.addEventListener("click", () => {
-  if (!reservaSeleccionada) return;
+  if (btnCancelar) {
+    btnCancelar.addEventListener("click", () => {
+      if (!reservaSeleccionada) return;
 
-  const confirmar = confirm(
-    "¿Seguro que deseas cancelar esta reserva? El horario quedará disponible."
-  );
+      const confirmar = confirm(
+        "¿Seguro que deseas cancelar esta reserva? El horario quedará disponible."
+      );
 
-  if (!confirmar) return;
+      if (!confirmar) return;
+       
+      const indiceReserva = misReservas.indexOf(reservaSeleccionada);
 
-  const reservas = JSON.parse(localStorage.getItem("mis_reservas")) || [];
+if (indiceReserva === -1) {
+    alert("No se pudo encontrar la reserva seleccionada.");
+    return;
+}
 
-  const reservasActualizadas = reservas.map((reserva) => {
-    if (reserva.idReserva === reservaSeleccionada.idReserva) {
-      return {
-        ...reserva,
-        estado: "Cancelada"
-      };
-    }
+const reservasActualizadas = misReservas.filter(
+    (_, index) => index !== indiceReserva
+);
 
-    return reserva;
-  });
-
-  localStorage.setItem(
+localStorage.setItem(
     "mis_reservas",
     JSON.stringify(reservasActualizadas)
-  );
+);
 
-  alert("Reserva cancelada correctamente.");
-  window.location.reload();
+alert("Reserva cancelada correctamente.");
+
+window.location.reload();
+      
+    });
+  }
+//  MODIFICAR RESERVA
+
+
+if (btnModificar) {
+
+    btnModificar.addEventListener("click", () => {
+
+        if (!reservaSeleccionada) {
+
+            alert("Primero selecciona una reserva.");
+            return;
+
+        }
+
+        menuModificar.classList.toggle("mostrar");
+
+    });
+
+}
+
+
+//  CAMBIAR HORARIO
+
+
+if (btnCambiarHorario) {
+
+    btnCambiarHorario.addEventListener("click", () => {
+
+        alert(
+            "🕐 Cambiar horario\n\n" +
+            "Esta funcionalidad estará disponible próximamente."
+        );
+
+        menuModificar.classList.remove("mostrar");
+
+    });
+
+}
+
+
+//  CAMBIAR DÍA
+
+
+if (btnCambiarDia) {
+
+    btnCambiarDia.addEventListener("click", () => {
+
+        alert(
+            "📅 Cambiar día\n\n" +
+            "Esta funcionalidad estará disponible próximamente."
+        );
+
+        menuModificar.classList.remove("mostrar");
+
+    });
+
+}
+   
 });
+

@@ -294,9 +294,42 @@ body {
   background-color: #bb2d3b;
 }
 
-/* ==========================================
-   Responsive
-   ========================================== */
+.contenedor-modificar {
+    position: relative;
+    width: 100%;
+}
+
+.menu-modificar {
+    display: none;
+    width: 100%;
+    margin-top: 8px;
+    background: #181c24;
+    border: 1px solid #343a46;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.menu-modificar.mostrar {
+    display: block;
+}
+
+.opcion-modificar {
+    width: 100%;
+    padding: 11px 14px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.opcion-modificar:hover {
+    background: #272d38;
+}
+/* Responsive */
 @media (max-width: 850px) {
   .contenedor-reservas {
     flex-direction: column;

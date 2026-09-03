@@ -101,9 +101,33 @@
       </div>
 
       <!-- Botón de Acción -->
-      <button class="btn-modificar" style="width: 100%; background: #f95700; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px;">
+      <div class="contenedor-modificar">
+
+    <button class="btn-modificar" type="button">
         ✏️ Modificar reserva
-      </button>
+    </button>
+
+    <div id="menu-modificar" class="menu-modificar">
+
+        <button
+            type="button"
+            id="btn-cambiar-horario"
+            class="opcion-modificar"
+        >
+            🕐 Cambiar horario
+        </button>
+
+        <button
+            type="button"
+            id="btn-cambiar-dia"
+            class="opcion-modificar"
+        >
+            📅 Cambiar día
+        </button>
+
+    </div>
+
+</div>
       <button id="btn-cancelar-reserva" class="btn-cancelar-reserva" type="button">
            Cancelar reserva
       </button>

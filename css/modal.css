@@ -1,0 +1,164 @@
+/* MODAL GENERAL TUCANCHA */
+ 
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 9999;
+}
+
+.modal-overlay.mostrar {
+    display: flex;
+}
+
+
+/*CONTENEDOR DEL MODAL*/
+
+.modal-contenido {
+    position: relative;
+    width: 100%;
+    max-width: 430px;
+    padding: 30px;
+    background: #181c24;
+    border: 1px solid #343a46;
+    border-radius: 14px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+    text-align: center;
+    animation: aparecerModal 0.2s ease;
+}
+
+
+/* BOTÓN CERRAR */
+  
+
+.modal-cerrar {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #aaa;
+
+    font-size: 22px;
+    cursor: pointer;
+
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.modal-cerrar:hover {
+    background: #272d38;
+    color: #fff;
+}
+
+
+/* ICON */
+
+
+#modal-icono {
+    margin-bottom: 12px;
+    font-size: 38px;
+}
+
+
+/* TÍTULO*/
+
+#modal-titulo {
+    margin: 0 0 12px;
+    color: #fff;
+    font-size: 22px;
+}
+
+
+/*  MENSAJE */
+
+#modal-mensaje {
+    margin: 0 auto 25px;
+    max-width: 350px;
+
+    color: #c7cbd3;
+
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+
+/*  BOTONES */
+
+.modal-botones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.modal-boton {
+    min-width: 120px;
+    padding: 11px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+.modal-boton:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+
+/* Botón principal */
+
+.modal-boton-principal {
+    background: #f57c00;
+    color: #fff;
+}
+
+
+/* Botón secundario */
+
+.modal-boton-secundario {
+    background: #343a46;
+    color: #fff;
+}
+
+
+/* Botón peligro */
+
+.modal-boton-peligro {
+    background: #c62828;
+    color: #fff;
+}
+
+
+/*ANIMACIÓN*/
+
+@keyframes aparecerModal {
+
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}

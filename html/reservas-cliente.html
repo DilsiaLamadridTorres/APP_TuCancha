@@ -4,25 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mis Reservas - TuCancha</title>
-  <link rel="stylesheet" href="../css/reservas-cliente.css"> <!-- Ajusta la ruta a tu CSS si es diferente -->
+  <link rel="stylesheet" href="../css/reservas-cliente.css">
+  <link rel="stylesheet" href="../css/modal.css">
+  <style>
+    .contenedor-reservas {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .seccion-mis-reservas {
+      flex: 1;
+    }
+
+    .filtros-reservas {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .orden-container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .orden-label {
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
 
-
-
   <!-- Contenido Principal -->
-  <main class="contenedor-reservas" style="display: flex; gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto;">
-    
+  <main class="contenedor-reservas">
     <a href="../index.html" class="btn-regresar-inicio">
-  ← Regresar a inicio
+      ← Regresar a inicio
     </a>
     <!-- Sección Izquierda: Lista de Reservas -->
-    <section class="seccion-mis-reservas" style="flex: 1;">
+    <section class="seccion-mis-reservas">
       <h1>Mis reservas</h1>
       <p>Consulta y administra todas tus reservas en un solo lugar.</p>
 
       <!-- Botones de Filtro -->
-      <div class="filtros-reservas" style="display: flex; gap: 10px; margin-bottom: 20px;">
+      <div class="filtros-reservas">
         <button class="btn-filtro active">Todas <span>0</span></button>
         <button class="btn-filtro">Próximas <span>0</span></button>
         <button class="btn-filtro">Completadas <span>0</span></button>
@@ -30,8 +60,8 @@
       </div>
 
       <!-- Selector de Orden -->
-      <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 15px;">
-        <label for="select-orden" style="color: #ccc; font-size: 0.9rem;">Ordenar por</label>
+      <div class="orden-container">
+        <label for="select-orden" class="orden-label">Ordenar por</label>
         <select id="select-orden" class="select-orden" aria-label="Ordenar reservas">
           <option value="proximas">Próximas fechas</option>
           <option value="antiguas">Fechas anteriores</option>
@@ -134,8 +164,26 @@
     </aside>
 
   </main>
+<div id="modal-tu-cancha" class="modal-overlay">
 
-  <!-- Inclusión del script correspondiente -->
-  <script src="../JS/admin/reservas-cliente.js"></script>
+    <div class="modal-contenido">
+
+        <button id="modal-cerrar" class="modal-cerrar">
+            ×
+        </button>
+
+        <div id="modal-icono"></div>
+
+        <h2 id="modal-titulo"></h2>
+
+        <p id="modal-mensaje"></p>
+
+        <div id="modal-botones" class="modal-botones"></div>
+
+    </div>
+
+</div>
+<script src="../JS/utils/modal.js"></script>
+ <script src="../JS/admin/reservas-cliente.js"></script>
 </body>
 </html>

@@ -374,13 +374,34 @@ botonReservar.addEventListener("click", () => {
     const usuario = sessionStorage.getItem("usuario");
 
     if (!usuario) {
-        alert(
-            "Para reservar una cancha necesitas iniciar sesión o registrarte."
-        );
-
-        window.location.href = "login.html";
-        return;
-    }
+        mostrarModal({
+        titulo: "Inicia sesión para reservar",
+        mensaje: "Para reservar una cancha necesitas iniciar sesión o registrarte.",
+        icono: "🔐",
+        botones: [
+            {
+                texto: "Iniciar sesión",
+                clase: "modal-boton-principal",
+                accion: () => {
+                    window.location.href = "login.html";
+                }
+            },
+            {
+                texto: "Registrarme",
+                clase: "modal-boton-secundario",
+                accion: () => {
+                    alert("Redirigiendo a la página de registro...");
+                    window.location.href = "registro.html";
+                }
+            },
+            {
+                texto: "Cerrar",
+                clase: "modal-boton-secundario"
+            }
+        ]
+    });
+    return;
+}
 
     if (!canchaSeleccionada) {
         alert("Selecciona una cancha antes de reservar");

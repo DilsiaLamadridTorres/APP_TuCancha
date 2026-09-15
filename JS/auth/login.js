@@ -1,3 +1,5 @@
+import { backendApi } from "../services/backend-api.js";
+
 const ADMIN_USERS = [
     {
         correo: "admin@tucancha.com",
@@ -26,10 +28,45 @@ function obtenerRolUsuario(correo) {
 function obtenerRutaPorRol(rol) {
     return rol === "admin"
         ? "admin/inicio-admin.html"
-        : "pagar-reserva.html";
+        : "canchas.html";
+}
+
+async function obtenerUsuarioBackend(correo) {
+    const usuarios = await backendApi.obtenerUsuarios();
+
+    if (!Array.isArray(usuarios)) {
+        throw new Error("El backend devolvió una lista de usuarios inválida.");
+    }
+
+    const usuario = usuarios.find(item =>
+        normalizarCorreo(item.correo || "") === normalizarCorreo(correo)
+    );
+
+    if (!usuario || !Number.isInteger(Number(usuario.id)) || Number(usuario.id) <= 0) {
+        throw new Error(
+            "Tu cuenta no está registrada en el sistema de reservas. " +
+            "Debe existir en Supabase y en el backend con el mismo correo."
+        );
+    }
+
+    return usuario;
 }
 
 const loginForm = document.querySelector("#login-form");
+const btnVerContrasena = document.getElementById("btn-ver-contrasena");
+const iconoContrasena = document.getElementById("icono-contrasena");
+
+if (btnVerContrasena && iconoContrasena) {
+    btnVerContrasena.addEventListener("click", () => {
+        const inputContrasena = document.getElementById("contrasena");
+        if (!inputContrasena) return;
+
+        const mostrar = inputContrasena.type === "password";
+        inputContrasena.type = mostrar ? "text" : "password";
+        iconoContrasena.classList.toggle("bi-eye", !mostrar);
+        iconoContrasena.classList.toggle("bi-eye-slash", mostrar);
+    });
+}
 
 if (loginForm) {
 
@@ -112,7 +149,7 @@ if (loginForm) {
                 );
 
                 loginStatus.textContent =
-                    "Inicio de sesiÃ³n exitoso.";
+                    "Inicio de sesión exitoso.";
 
                 loginStatus.className =
                     "auth-status auth-status--success";
@@ -147,20 +184,28 @@ if (loginForm) {
                OBTENER DATOS DEL USUARIO
                ===================================== */
 
+            const correoUsuario = result.user?.email || correo;
             const usuario = {
-
                 nombre:
                     result.user?.user_metadata
-                        ?.nombre_completo || correo,
-
-                correo:
-                    result.user?.email || correo,
-
-                rol:
-                    obtenerRolUsuario(
-                        result.user?.email || correo
-                    )
+                        ?.nombre_completo || correoUsuario,
+                correo: correoUsuario,
+                rol: obtenerRolUsuario(correoUsuario)
             };
+
+            try {
+                const usuarioBackend = await obtenerUsuarioBackend(correoUsuario);
+
+                usuario.idBackend = Number(usuarioBackend.id);
+            } catch (error) {
+                sessionStorage.removeItem("usuario");
+                sessionStorage.removeItem("access_token");
+
+                console.error("No fue posible identificar el usuario en el backend:", error);
+                loginStatus.textContent = error.message;
+                loginStatus.className = "auth-status auth-status--error";
+                return;
+            }
 
 
             /* =====================================
@@ -228,37 +273,3 @@ if (loginForm) {
 
     });
 }
-
-// ============================================================
-// MOSTRAR / OCULTAR CONTRASEÑA
-// ============================================================
-
-const inputContrasena = document.getElementById("contrasena");
-
-const botonVERContrasena = document.getElementById("btn-ver-contrasena");
-
-const iconoContrasena = document.getElementById("icono-contrasena");
-
-botonVERContrasena.addEventListener("click", () => {
-
-    // Verificar si actualmente la contrasena esta oculta
-
-    const estaOculta = inputContrasena.type === "password";
-
-
-    // cambiamos entre password y text
-    inputContrasena.type = estaOculta ? "text" : "password";
-
-    // cambiamos el icono
-
-    iconoContrasena.classList.toggle("bi-eye", !estaOculta);
-
-
-    iconoContrasena.classList.toggle("bi-eye-slash", estaOculta);
-
-    //Cambiar descripcion del boton
-
-    botonVERContrasena.setAttribute("aria-label", estaOculta ? "Ocultar contraseña" : "Mostrar contrOcultar Ocultar contraseña");
-
-
-});

@@ -2,24 +2,27 @@ const registroForm = document.querySelector("#registro-form");
 const registroStatus = document.querySelector("#registro-status");
 const registroSubmit = document.querySelector("#registro-submit");
 const contrasena = document.getElementById("contrasena");
+const confirmarContrasenaInput = document.getElementById("confirmarContrasena");
 const mostrarContrasena = document.getElementById("mostrar-contrasena");
-const confirmaContrasena = document.getElementById("confirmarContrasena");
 const mostrarConfirmarContrasena = document.getElementById("mostrar-confirmar-contrasena");
 
+if (mostrarContrasena && contrasena) {
+    mostrarContrasena.addEventListener("click", () => {
+        const mostrar = contrasena.type === "password";
+        contrasena.type = mostrar ? "text" : "password";
+        mostrarContrasena.classList.toggle("bi-eye", !mostrar);
+        mostrarContrasena.classList.toggle("bi-eye-slash", mostrar);
+    });
+}
 
-mostrarContrasena.addEventListener("click", () => {
-contrasena.type = contrasena.type === "password" ? "text" : "password";  
-mostrarContrasena.classList.toggle("bi-eye");
-mostrarContrasena.classList.toggle("bi-eye-slash");
-
-});
-
-mostrarConfirmarContrasena.addEventListener("click", () => {
-mostrarConfirmarContrasena.type = mostrarConfirmarContrasena.type === "password" ? "text" : "password";  
-mostrarConfirmarContrasena.classList.toggle("bi-eye");
-mostrarConfirmarContrasena.classList.toggle("bi-eye-slash");
-
-});
+if (mostrarConfirmarContrasena && confirmarContrasenaInput) {
+    mostrarConfirmarContrasena.addEventListener("click", () => {
+        const mostrar = confirmarContrasenaInput.type === "password";
+        confirmarContrasenaInput.type = mostrar ? "text" : "password";
+        mostrarConfirmarContrasena.classList.toggle("bi-eye", !mostrar);
+        mostrarConfirmarContrasena.classList.toggle("bi-eye-slash", mostrar);
+    });
+}
 
 
 
@@ -52,6 +55,7 @@ function showStatus(message, type) {
 
 Object.keys(rules).forEach((name) => {
     const field = registroForm.elements[name];
+    if (!field) return;
     field.addEventListener(field.type === "checkbox" ? "change" : "blur", () => validateField(field));
 });
 
@@ -81,25 +85,31 @@ registroForm.addEventListener("submit", async (event) => {
                 ? "Cuenta creada en modo demostración. Configura Supabase para guardar usuarios reales."
                 : "Cuenta creada correctamente. Ya puedes iniciar sesión.";
         showStatus(message, "success");
+
+        setTimeout(() => {
+            window.location.href = "login.html";
+        }, 1400);
     } catch (error) {
         showStatus(error.message || "No fue posible crear la cuenta. Inténtalo de nuevo.", "error");
     } finally {
         registroSubmit.disabled = false;
         registroSubmit.textContent = "Crear cuenta";
     }
-
-    window.location.href="canchas.html";
 });
 
-window.authService.checkConnection().then((result) => {
-    const indicator = document.querySelector("#connection-status");
-    indicator.textContent = result.message;
-    indicator.className = `connection-status connection-status--${result.mode}`;
-    setTimeout(()=>{
-        indicator.style.display="none";
-    },3000)
-}).catch((error) => {
-    const indicator = document.querySelector("#connection-status");
-    indicator.textContent = error.message;
-    indicator.className = "connection-status connection-status--error";
-});
+if (window.authService) {
+    window.authService.checkConnection().then((result) => {
+        const indicator = document.querySelector("#connection-status");
+        if (!indicator) return;
+        indicator.textContent = result.message;
+        indicator.className = `connection-status connection-status--${result.mode}`;
+        setTimeout(() => {
+            indicator.style.display = "none";
+        }, 3000);
+    }).catch((error) => {
+        const indicator = document.querySelector("#connection-status");
+        if (!indicator) return;
+        indicator.textContent = error.message;
+        indicator.className = "connection-status connection-status--error";
+    });
+}

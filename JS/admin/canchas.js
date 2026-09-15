@@ -1,5 +1,6 @@
 // 1. Importación del array exportado desde lista-canchas.js
 import { canchas } from '../complejos/lista-canchas.js';
+import { backendApi } from '../services/backend-api.js';
 
 // ============================================================
 // CANCHAS PUBLICADAS DESDE EL DASHBOARD ADMINISTRATIVO
@@ -113,6 +114,28 @@ function normalizarCanchaPublicada(cancha) {
             HORARIO_PREDETERMINADO,
         disponible: true,
         publicada: true
+    };
+}
+
+function normalizarCanchaBackend(cancha, complejosPorId) {
+    const complejo = complejosPorId.get(String(cancha.complejoId));
+    const ubicacion = [
+        complejo?.direccion,
+        complejo?.ciudad,
+        complejo?.provincia
+    ].filter(Boolean).join(", ");
+
+    return {
+        ...cancha,
+        id: cancha.idCancha,
+        precio: normalizarPrecio(cancha.precioHora),
+        precioPorHora: normalizarPrecio(cancha.precioHora),
+        empresa: complejo?.nombreComplejo || "Complejo deportivo",
+        ubicacion: ubicacion || "Ubicación no especificada",
+        imagen: IMAGEN_CANCHA_DEFAULT,
+        calificacion: "Nueva",
+        descripcion: cancha.deporte || "Cancha publicada por TuCancha.",
+        disponible: true
     };
 }
 
@@ -394,8 +417,12 @@ formularioBusqueda.addEventListener("submit", (event) => {
 
 
 
-if (resultados) resultados.textContent = `${canchas.length} resultados encontrados`;
-if (cantidadCanchas) cantidadCanchas.textContent = canchas.length;
+function actualizarResumen() {
+    if (resultados) resultados.textContent = `${canchas.length} resultados encontrados`;
+    if (cantidadCanchas) cantidadCanchas.textContent = canchas.length;
+}
+
+actualizarResumen();
 
 // 4. Ciclo para renderizar la lista completa de canchas
 function mostrarCanchas(lista) {
@@ -474,3 +501,35 @@ function mostrarCanchas(lista) {
     }
 }
 mostrarCanchas(canchas);
+
+async function cargarCanchasBackend() {
+    try {
+        const [canchasBackend, complejos] = await Promise.all([
+            backendApi.obtenerCanchas(),
+            backendApi.obtenerComplejos()
+        ]);
+
+        if (!Array.isArray(canchasBackend) || !Array.isArray(complejos)) {
+            throw new Error("El backend devolvió una respuesta inválida.");
+        }
+
+        const complejosPorId = new Map(
+            complejos.map(complejo => [String(complejo.id), complejo])
+        );
+        const canchasNormalizadas = canchasBackend.map(cancha =>
+            normalizarCanchaBackend(cancha, complejosPorId)
+        );
+
+        canchas.splice(0, canchas.length, ...canchasNormalizadas);
+        cantidadMostrada = 10;
+        actualizarResumen();
+        mostrarCanchas(canchas);
+    } catch (error) {
+        console.warn(
+            "No fue posible cargar las canchas del backend. Se conserva el respaldo local.",
+            error
+        );
+    }
+}
+
+cargarCanchasBackend();

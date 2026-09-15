@@ -357,40 +357,23 @@ class MiNavbar extends HTMLElement {
 
 
                     try {
+                        const token = sessionStorage.getItem("access_token");
 
-                        const token =
-                            sessionStorage.getItem(
-                                "access_token"
-                            );
-
-
-                        /* =====================================
-                           CERRAR SESIÓN EN SUPABASE
-                           ===================================== */
-
-                        if (token) {
-
+                        if (token && window.authService && typeof window.authService.logout === "function") {
+                            await window.authService.logout(token);
+                        } else if (token && window.TuCanchaConfig) {
                             await fetch(
                                 `${window.TuCanchaConfig.supabaseUrl}/auth/v1/logout`,
                                 {
                                     method: "POST",
-
                                     headers: {
-                                        "apikey":
-                                            window.TuCanchaConfig
-                                                .supabaseAnonKey,
-
-                                        "Authorization":
-                                            `Bearer ${token}`,
-
-                                        "Content-Type":
-                                            "application/json"
+                                        "apikey": window.TuCanchaConfig.supabaseAnonKey,
+                                        "Authorization": `Bearer ${token}`,
+                                        "Content-Type": "application/json"
                                     }
                                 }
                             );
                         }
-
-
                     } catch (error) {
 
                         console.error(

@@ -94,6 +94,12 @@ class DemoAuthProvider {
         return user;
     }
 
+    async logout() {
+        return {
+            mode: "demo"
+        };
+    }
+
     async hash(value) {
         const bytes = new TextEncoder().encode(value);
 
@@ -267,9 +273,9 @@ class AuthService {
     login(data) {
         return this.provider.login(data);
     }
-    logout() {
-    return this.provider.logout();
-}
+    logout(accessToken = sessionStorage.getItem("access_token")) {
+        return this.provider.logout(accessToken);
+    }
 }
 
 

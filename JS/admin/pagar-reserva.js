@@ -1,10 +1,19 @@
+import { backendApi } from "../services/backend-api.js";
+
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Cargar los datos de la reserva guardados previamente en el localStorage
     const reservaGuardada = localStorage.getItem("reserva_seleccionada");
-    
+
     if (!reservaGuardada) {
-        alert("No hay ninguna reserva en proceso.");
-        window.location.href = "../index.html"; 
+        mostrarModal({
+            titulo: "Sin reserva activa",
+            mensaje: "No hay ninguna reserva en proceso. Regresa a la selección de canchas.",
+            icono: "ℹ️",
+            botones: [{
+                texto: "Volver",
+                clase: "modal-boton-principal",
+                accion: () => window.location.href = "canchas.html"
+            }]
+        });
         return;
     }
 
@@ -24,10 +33,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 3. Manejar la visualización de los campos de tarjeta según el método de pago seleccionado
     const radiosPago = document.querySelectorAll('input[name="metodoPago"]');
     const seccionTarjeta = document.getElementById("seccion-datos-tarjeta");
     const pagoStatus = document.getElementById("pago-status");
+    const formPago = document.getElementById("pago-form");
+
+    if (!formPago) {
+        return;
+    }
 
     radiosPago.forEach(radio => {
         radio.addEventListener("change", (e) => {
@@ -57,10 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 5. Funcionalidad del botón Confirmar y Pagar
-    const formPago = document.getElementById("pago-form");
-
-    formPago.addEventListener("submit", (e) => {
+    formPago.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         // Validar método de pago seleccionado
@@ -83,31 +93,59 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Deshabilitar botón temporalmente y cambiar texto a "Reservado"
+        let usuario;
+
+        try {
+            usuario = JSON.parse(sessionStorage.getItem("usuario"));
+        } catch (error) {
+            mostrarAviso("No fue posible identificar tu sesión.", "danger");
+            return;
+        }
+
+        if (!usuario?.idBackend || !Number.isInteger(Number(reserva.horarioId)) || Number(reserva.horarioId) <= 0) {
+            mostrarAviso(
+                "No fue posible identificar el usuario o el horario válido de la reserva. Revisa la disponibilidad del servidor.",
+                "danger"
+            );
+            return;
+        }
+
+        // Deshabilitar botón temporalmente mientras se confirma con el backend.
         const btnConfirmar = document.getElementById("btn-confirmar-pago");
         btnConfirmar.disabled = true;
         btnConfirmar.innerHTML = `<i class="bi bi-check-circle-fill me-2"></i> Reservado`;
 
         mostrarAviso("Procesando pago y asegurando tu cancha...", "warning");
 
-        setTimeout(() => {
-            // Guardar datos definitivos en el arreglo de "mis_reservas"
+        try {
+            const respuestaReserva = await backendApi.crearReserva(usuario.idBackend, reserva.horarioId);
+
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
             reserva.metodoPago = metodoSeleccionado.value;
             reserva.estado = "Confirmada";
             reserva.fechaPago = new Date().toLocaleString("es-CO");
+            reserva.idReserva = respuestaReserva?.id || respuestaReserva?.idReserva || `RES-${Date.now()}`;
 
-            let misReservas = JSON.parse(localStorage.getItem("mis_reservas")) || [];
-            misReservas.push(reserva);
-            localStorage.setItem("mis_reservas", JSON.stringify(misReservas));
+            const misReservasGuardadas = JSON.parse(localStorage.getItem("mis_reservas") || "[]");
+            const yaExiste = misReservasGuardadas.some(item => String(item.idReserva || item.id) === String(reserva.idReserva));
+            if (!yaExiste) {
+                misReservasGuardadas.push(reserva);
+                localStorage.setItem("mis_reservas", JSON.stringify(misReservasGuardadas));
+            }
 
-            reserva.idReserva = `RES-${Date.now()}`;
-            reserva.estado = "Confirmada";
-
-            // Limpiar la reserva temporal en proceso
             localStorage.removeItem("reserva_seleccionada");
 
             window.location.href = "reservas-cliente.html";
-        }, 1500);
+        } catch (error) {
+            console.error("No fue posible crear la reserva:", error);
+            mostrarAviso(
+                error.message || "No fue posible crear la reserva. Inténtalo de nuevo.",
+                "danger"
+            );
+            btnConfirmar.disabled = false;
+            btnConfirmar.innerHTML = "Confirmar y pagar";
+        }
     });
 
     // Función auxiliar para pintar avisos dinámicos bonitos en pantalla

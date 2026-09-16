@@ -267,7 +267,7 @@
 
     min-height: 100vh;
 
-    background: var(--bs-dark) !important;
+    background: #000000 !important;
 }
 
 .partido-title {
@@ -292,7 +292,7 @@
     width: 48px;
     height: 48px;
 
-    border: 1.5px solid var(--bs-primary);
+    border: 1.5px solid var(--color-blanco-secundario);
     border-radius: 12px;
 
     background: rgba(255, 85, 0, .02);
@@ -309,7 +309,7 @@
 }
 
 .btn-jugadores-top:hover {
-    background: #e04b00 !important;
+    background: #fdfdfd !important;
 
     transform: translateY(-1px);
 
@@ -452,7 +452,7 @@
 }
 
 .valor-titulo {
-    font-size: 1.8rem;
+    font-size: 1rem;
     margin-bottom: .8rem;
     font-weight: 700;
     color: #FFFFFF;
@@ -462,7 +462,7 @@
     margin: 0;
     color: #E5E7EB;
     text-align: center;
-    line-height: 1.8;
+    line-height: 1;
     font-size: 1rem;
 }
 
@@ -645,22 +645,22 @@
 }
 
 .card-name {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     font-weight: 700;
 
     color: var(--color-white);
 }
 
 .card-role {
-    font-size: .9rem;
+    font-size: 1rem;
     font-weight: 600;
 
     color: var(--color-orange-light);
 }
 
 .card-description {
-    font-size: .85rem;
-    line-height: 1.5;
+    font-size: 1rem;
+    line-height: 1;
 
     color: var(--color-card-text);
 }

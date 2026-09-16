@@ -31,3 +31,14 @@
     background: var(--color-containers);
     border-radius: 5px;
 }
+:root {
+
+  --footer-bg-color: #1a1d20;        
+  --footer-text-color: #e0e0e0;       
+
+  --footer-title-color: #ffffff;     
+  
+ 
+  --footer-icon-color: #20c997;       
+  --footer-link-hover-color: #17a2b8;
+}

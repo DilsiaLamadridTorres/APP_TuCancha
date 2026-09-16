@@ -107,11 +107,16 @@
     border-color: var(--bs-primary);
     background: var(--bs-primary);
 }
+.canchas-section-bg {
+    width: 100%;
+    background-color: #000000;
+}
 
 .canchas-list {
     width: min(100% - 3rem, 1140px);
     margin: 0 auto;
     padding: 4rem 0;
+   
 }
 
 .canchas-list__header {
@@ -124,7 +129,7 @@
 
 .canchas-list__header h2 {
     margin: 0;
-    color: var(--bs-dark);
+    color: #ffffff;
     font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 700;
 }
@@ -135,7 +140,7 @@
 
 .canchas-list__header p {
     margin: 0;
-    color: #6b7280;
+    color: #9ca3af;
 }
 
 .canchas-grid {

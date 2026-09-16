@@ -1,0 +1,1063 @@
+diff --git a/.DS_Store b/.DS_Store
+index 8671b29..e78b5a8 100644
+Binary files a/.DS_Store and b/.DS_Store differ
+diff --git a/JS/admin/canchas.js b/JS/admin/canchas.js
+index f9c11ec..4fa68b5 100644
+--- a/JS/admin/canchas.js
++++ b/JS/admin/canchas.js
+@@ -1,5 +1,6 @@
+ // 1. Importación del array exportado desde lista-canchas.js
+ import { canchas } from '../complejos/lista-canchas.js';
++import { backendApi } from '../services/backend-api.js';
+ 
+ // ============================================================
+ // CANCHAS PUBLICADAS DESDE EL DASHBOARD ADMINISTRATIVO
+@@ -116,6 +117,28 @@ function normalizarCanchaPublicada(cancha) {
+     };
+ }
+ 
++function normalizarCanchaBackend(cancha, complejosPorId) {
++    const complejo = complejosPorId.get(String(cancha.complejoId));
++    const ubicacion = [
++        complejo?.direccion,
++        complejo?.ciudad,
++        complejo?.provincia
++    ].filter(Boolean).join(", ");
++
++    return {
++        ...cancha,
++        id: cancha.idCancha,
++        precio: normalizarPrecio(cancha.precioHora),
++        precioPorHora: normalizarPrecio(cancha.precioHora),
++        empresa: complejo?.nombreComplejo || "Complejo deportivo",
++        ubicacion: ubicacion || "Ubicación no especificada",
++        imagen: IMAGEN_CANCHA_DEFAULT,
++        calificacion: "Nueva",
++        descripcion: cancha.deporte || "Cancha publicada por TuCancha.",
++        disponible: true
++    };
++}
++
+ function canchaEstaPublicada(cancha) {
+     const estado = cancha?.estado || "";
+ 
+@@ -394,8 +417,12 @@ formularioBusqueda.addEventListener("submit", (event) => {
+ 
+ 
+ 
+-if (resultados) resultados.textContent = `${canchas.length} resultados encontrados`;
+-if (cantidadCanchas) cantidadCanchas.textContent = canchas.length;
++function actualizarResumen() {
++    if (resultados) resultados.textContent = `${canchas.length} resultados encontrados`;
++    if (cantidadCanchas) cantidadCanchas.textContent = canchas.length;
++}
++
++actualizarResumen();
+ 
+ // 4. Ciclo para renderizar la lista completa de canchas
+ function mostrarCanchas(lista) {
+@@ -474,3 +501,35 @@ function mostrarCanchas(lista) {
+     }
+ }
+ mostrarCanchas(canchas);
++
++async function cargarCanchasBackend() {
++    try {
++        const [canchasBackend, complejos] = await Promise.all([
++            backendApi.obtenerCanchas(),
++            backendApi.obtenerComplejos()
++        ]);
++
++        if (!Array.isArray(canchasBackend) || !Array.isArray(complejos)) {
++            throw new Error("El backend devolvió una respuesta inválida.");
++        }
++
++        const complejosPorId = new Map(
++            complejos.map(complejo => [String(complejo.id), complejo])
++        );
++        const canchasNormalizadas = canchasBackend.map(cancha =>
++            normalizarCanchaBackend(cancha, complejosPorId)
++        );
++
++        canchas.splice(0, canchas.length, ...canchasNormalizadas);
++        cantidadMostrada = 10;
++        actualizarResumen();
++        mostrarCanchas(canchas);
++    } catch (error) {
++        console.warn(
++            "No fue posible cargar las canchas del backend. Se conserva el respaldo local.",
++            error
++        );
++    }
++}
++
++cargarCanchasBackend();
+diff --git a/JS/admin/pagar-reserva.js b/JS/admin/pagar-reserva.js
+index 10347b0..02d6c8e 100644
+--- a/JS/admin/pagar-reserva.js
++++ b/JS/admin/pagar-reserva.js
+@@ -1,3 +1,5 @@
++import { backendApi } from "../services/backend-api.js";
++
+ document.addEventListener("DOMContentLoaded", () => {
+     // 1. Cargar los datos de la reserva guardados previamente en el localStorage
+     const reservaGuardada = localStorage.getItem("reserva_seleccionada");
+@@ -60,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
+     // 5. Funcionalidad del botón Confirmar y Pagar
+     const formPago = document.getElementById("pago-form");
+ 
+-    formPago.addEventListener("submit", (e) => {
++    formPago.addEventListener("submit", async (e) => {
+         e.preventDefault();
+ 
+         // Validar método de pago seleccionado
+@@ -83,14 +85,35 @@ document.addEventListener("DOMContentLoaded", () => {
+             }
+         }
+ 
+-        // Deshabilitar botón temporalmente y cambiar texto a "Reservado"
++        let usuario;
++
++        try {
++            usuario = JSON.parse(sessionStorage.getItem("usuario"));
++        } catch (error) {
++            mostrarAviso("No fue posible identificar tu sesión.", "danger");
++            return;
++        }
++
++        if (!usuario?.idBackend || !reserva.horarioId) {
++            mostrarAviso(
++                "No fue posible identificar el usuario o el horario de la reserva.",
++                "danger"
++            );
++            return;
++        }
++
++        // Deshabilitar botón temporalmente mientras se confirma con el backend.
+         const btnConfirmar = document.getElementById("btn-confirmar-pago");
+         btnConfirmar.disabled = true;
+         btnConfirmar.innerHTML = `<i class="bi bi-check-circle-fill me-2"></i> Reservado`;
+ 
+         mostrarAviso("Procesando pago y asegurando tu cancha...", "warning");
+ 
+-        setTimeout(() => {
++        try {
++            await backendApi.crearReserva(usuario.idBackend, reserva.horarioId);
++
++            await new Promise(resolve => setTimeout(resolve, 1500));
++
+             // Guardar datos definitivos en el arreglo de "mis_reservas"
+             reserva.metodoPago = metodoSeleccionado.value;
+             reserva.estado = "Confirmada";
+@@ -107,7 +130,15 @@ document.addEventListener("DOMContentLoaded", () => {
+             localStorage.removeItem("reserva_seleccionada");
+ 
+             window.location.href = "reservas-cliente.html";
+-        }, 1500);
++        } catch (error) {
++            console.error("No fue posible crear la reserva:", error);
++            mostrarAviso(
++                error.message || "No fue posible crear la reserva. Inténtalo de nuevo.",
++                "danger"
++            );
++            btnConfirmar.disabled = false;
++            btnConfirmar.innerHTML = "Confirmar y pagar";
++        }
+     });
+ 
+     // Función auxiliar para pintar avisos dinámicos bonitos en pantalla
+@@ -116,4 +147,4 @@ document.addEventListener("DOMContentLoaded", () => {
+         pagoStatus.className = `alert alert-${tipo} mt-3 text-center fw-bold shadow-sm`;
+         pagoStatus.textContent = mensaje;
+     }
+-});
+\ No newline at end of file
++});
+diff --git a/JS/auth/login.js b/JS/auth/login.js
+index f899f87..281f2e7 100644
+--- a/JS/auth/login.js
++++ b/JS/auth/login.js
+@@ -1,3 +1,5 @@
++import { backendApi } from "../services/backend-api.js";
++
+ const ADMIN_USERS = [
+     {
+         correo: "admin@tucancha.com",
+@@ -29,6 +31,27 @@ function obtenerRutaPorRol(rol) {
+         : "pagar-reserva.html";
+ }
+ 
++async function obtenerUsuarioBackend(correo) {
++    const usuarios = await backendApi.obtenerUsuarios();
++
++    if (!Array.isArray(usuarios)) {
++        throw new Error("El backend devolvió una lista de usuarios inválida.");
++    }
++
++    const usuario = usuarios.find(item =>
++        normalizarCorreo(item.correo || "") === normalizarCorreo(correo)
++    );
++
++    if (!usuario || !Number.isInteger(Number(usuario.id)) || Number(usuario.id) <= 0) {
++        throw new Error(
++            "Tu cuenta no está registrada en el sistema de reservas. " +
++            "Debe existir en Supabase y en el backend con el mismo correo."
++        );
++    }
++
++    return usuario;
++}
++
+ const loginForm = document.querySelector("#login-form");
+ 
+ if (loginForm) {
+@@ -147,21 +170,38 @@ if (loginForm) {
+                OBTENER DATOS DEL USUARIO
+                ===================================== */
+ 
++            const correoUsuario = result.user?.email || correo;
+             const usuario = {
+ 
+                 nombre:
+                     result.user?.user_metadata
+-                        ?.nombre_completo || correo,
++                        ?.nombre_completo || correoUsuario,
+ 
+-                correo:
+-                    result.user?.email || correo,
++                correo: correoUsuario,
+ 
+                 rol:
+                     obtenerRolUsuario(
+-                        result.user?.email || correo
++                        correoUsuario
+                     )
+             };
+ 
++            try {
++                const usuarioBackend = await obtenerUsuarioBackend(correoUsuario);
++
++                usuario.idBackend = Number(usuarioBackend.id);
++            } catch (error) {
++                sessionStorage.setItem("usuario", JSON.stringify(usuario));
++
++                if (result.access_token) {
++                    sessionStorage.setItem("access_token", result.access_token);
++                }
++
++                console.error("No fue posible identificar el usuario en el backend:", error);
++                loginStatus.textContent = error.message;
++                loginStatus.className = "auth-status auth-status--error";
++                return;
++            }
++
+ 
+             /* =====================================
+                GUARDAR USUARIO
+diff --git a/JS/reservas/reserva.js b/JS/reservas/reserva.js
+index d53dc8b..6bb613e 100644
+--- a/JS/reservas/reserva.js
++++ b/JS/reservas/reserva.js
+@@ -1,442 +1,393 @@
++import { backendApi } from "../services/backend-api.js";
+ 
+ document.addEventListener("DOMContentLoaded", () => {
+     const canchaGuardada = localStorage.getItem("cancha_seleccionada");
+     let canchaSeleccionada = null;
+-    //console.log("Hola");
+ 
+     if (canchaGuardada) {
+-        // CONVERTIMOS EN JSON EL localStorage
+-        canchaSeleccionada = JSON.parse(canchaGuardada);
++        try {
++            canchaSeleccionada = JSON.parse(canchaGuardada);
++        } catch (error) {
++            console.error("No fue posible leer la cancha seleccionada:", error);
++        }
++    }
++
++    if (canchaSeleccionada) {
+         const elementosDinamicos = document.querySelectorAll("[data-field]");
++
+         elementosDinamicos.forEach(elemento => {
+             const campo = elemento.getAttribute("data-field");
++
+             if (elemento.tagName === "IMG") {
+                 elemento.src = canchaSeleccionada[campo] || "../img/foto.canchas.jpg";
+ 
+                 if (canchaSeleccionada.nombre) {
+                     elemento.alt = `Imagen de ${canchaSeleccionada.nombre}`;
+                 }
++
++                return;
+             }
++
+             if (campo === "precio") {
+                 const precioNumerico = Number(canchaSeleccionada[campo]);
+-                elemento.textContent = !canchaSeleccionada[campo] ||
+-                    Number.isNaN(precioNumerico)
++
++                elemento.textContent = !canchaSeleccionada[campo] || Number.isNaN(precioNumerico)
+                     ? "Precio no especificado"
+                     : `$ ${precioNumerico.toLocaleString("es-CO")}`;
+-            } else {
+-                elemento.textContent = canchaSeleccionada[campo] || "No especificado";
++
++                return;
+             }
++
++            elemento.textContent = canchaSeleccionada[campo] || "No especificado";
+         });
+     } else {
+         console.warn("No se encontró ninguna cancha seleccionada en LocalStorage.");
+     }
+ 
++    const parametros = new URLSearchParams(window.location.search);
++    const idCancha = canchaSeleccionada?.idCancha || canchaSeleccionada?.id || parametros.get("id");
++    const fechas = document.getElementById("fechas");
++    const turnos = document.getElementById("turnos");
++    const cantidadTurnos = document.getElementById("cantidad-turnos");
++    const fechaReserva = document.getElementById("fecha-reserva");
++    const horarioReserva = document.getElementById("horario-reserva");
++    const detalleCancha = document.getElementById("detalle-cancha");
++    const botonReservar = document.querySelector(".reservar");
++    const fechaInicio = document.getElementById("fecha-inicio");
++    const fechaFin = document.getElementById("fecha-fin");
++    const botonAnterior = document.querySelector(".anterior");
++    const botonSiguiente = document.querySelector(".siguiente");
++
++    let fechaSeleccionada = null;
++    let horarioSeleccionado = null;
++    let botonFechaSeleccionado = null;
++    let botonHorarioSeleccionado = null;
++    let semanaActual = new Date();
++    let solicitudHorariosActual = 0;
++
++    const horariosRespaldo = [
++        "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00",
++        "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"
++    ];
++    const horariosOcupadosRespaldo = ["09:00", "13:00", "17:00"];
++
++    function formatearPrecioReserva(valor) {
++        const precio = Number(valor);
++
++        if (!valor || Number.isNaN(precio)) {
++            return "Precio no especificado";
++        }
+ 
+-// DILSIA AGENDA DESDE ACA
+-const parametros = new URLSearchParams(window.location.search);
+-
+-const idCancha = parametros.get("id");
+-
+-
+-const fechas = document.getElementById("fechas");
+-const turnos = document.getElementById("turnos");
+-const cantidadTurnos = document.getElementById("cantidad-turnos");
+-const fechaReserva = document.getElementById("fecha-reserva");
+-const horarioReserva = document.getElementById("horario-reserva");
+-const detalleCancha = document.getElementById("detalle-cancha");
+-const botonReservar = document.querySelector(".reservar");
+-const fechaInicio = document.getElementById("fecha-inicio");
+-const fechaFin = document.getElementById("fecha-fin");
+-const botonAnterior = document.querySelector(".anterior");
+-const botonSiguiente = document.querySelector(".siguiente");
+-
+-function formatearPrecioReserva(valor) {
+-    const precio = Number(valor);
+-
+-    if (
+-        !valor ||
+-        Number.isNaN(precio)
+-    ) {
+-        return "Precio no especificado";
+-    }
+-
+-    return `$ ${precio.toLocaleString("es-CO")}`;
+-}
+-
+-function renderizarDetalleReserva(cancha) {
+-    if (!detalleCancha) {
+-        return;
++        return `$ ${precio.toLocaleString("es-CO")}`;
+     }
+ 
+-    detalleCancha.innerHTML = "";
+-
+-    const nombre = document.createElement("strong");
+-    nombre.textContent = cancha.nombre || "Cancha seleccionada";
+-
+-    const ubicacion = document.createElement("p");
+-    ubicacion.textContent = cancha.ubicacion || "Ubicacion no especificada";
+-
+-    const precio = document.createElement("p");
+-    precio.textContent = formatearPrecioReserva(cancha.precio);
+-
+-    detalleCancha.appendChild(nombre);
+-    detalleCancha.appendChild(ubicacion);
+-    detalleCancha.appendChild(precio);
+-}
+-
+-if (canchaSeleccionada) {
+-    renderizarDetalleReserva(canchaSeleccionada);
+-}
+-
+-
+-let fechaSeleccionada = null;
+-let horarioSeleccionado = null;
+-let botonFechaSeleccionado = null;
+-let botonHorarioSeleccionado = null;
+-
+-let semanaActual = new Date();
+-
+-//  HORARIOS TEMPORALES
++    function renderizarDetalleReserva(cancha) {
++        if (!detalleCancha) {
++            return;
++        }
+ 
++        detalleCancha.innerHTML = "";
+ 
+-const horarios = [
+-    "08:00",
+-    "09:00",
+-    "10:00",
+-    "11:00",
+-    "12:00",
+-    "13:00",
+-    "14:00",
+-    "15:00",
+-    "16:00",
+-    "17:00",
+-    "18:00",
+-    "19:00",
+-    "20:00"
+-];
++        const nombre = document.createElement("strong");
++        nombre.textContent = cancha.nombre || "Cancha seleccionada";
+ 
++        const ubicacion = document.createElement("p");
++        ubicacion.textContent = cancha.ubicacion || "Ubicación no especificada";
+ 
+-//  HORARIOS OCUPADOS TEMPORALES
++        const precio = document.createElement("p");
++        precio.textContent = formatearPrecioReserva(cancha.precio);
+ 
++        detalleCancha.append(nombre, ubicacion, precio);
++    }
+ 
+-const horariosOcupados = [
+-    "09:00",
+-    "13:00",
+-    "17:00"
+-];
++    function obtenerLunes(fecha) {
++        const lunes = new Date(fecha);
++        const diaSemana = lunes.getDay();
++        const diferencia = diaSemana === 0 ? 6 : diaSemana - 1;
+ 
+-cantidadTurnos.textContent = horarios.length - horariosOcupados.length;
++        lunes.setDate(lunes.getDate() - diferencia);
++        lunes.setHours(0, 0, 0, 0);
+ 
+-function obtenerLunes(fecha) {
+-    const lunes = new Date(fecha);
+-    const diaSemana = lunes.getDay();
+-    let diferencia;
+-    if (diaSemana === 0) {
+-        diferencia = 6;
+-    } else {
+-        diferencia = diaSemana - 1;
++        return lunes;
+     }
+-    lunes.setDate(
+-        lunes.getDate() - diferencia
+-    );
+-    lunes.setHours(0, 0, 0, 0);
+-    return lunes;
+-}
+-
+-function mostrarSemana() {
+-    const lunes = obtenerLunes(semanaActual);
+-    fechas.innerHTML = "";
+-    for (let i = 0; i < 7; i++) {
+-        const fecha = new Date(lunes);
+-        fecha.setDate(
+-            lunes.getDate() + i
+-        );
+-
+-        const botonFecha = document.createElement("button");
+-        const dia = document.createElement("span");
+-        dia.textContent =
+-            fecha.toLocaleDateString("es-CO", {
+-                weekday: "short"
+-            });
+-
+-        const numero = document.createElement("strong");
+ 
+-        numero.textContent =
+-            fecha.getDate();
++    function actualizarTextoSemana(lunes) {
++        const domingo = new Date(lunes);
++        domingo.setDate(lunes.getDate() + 6);
+ 
+-        const mes = document.createElement("small");
+-        mes.textContent =
+-            fecha.toLocaleDateString("es-CO", {
+-                month: "short"
++        if (fechaInicio) {
++            fechaInicio.textContent = lunes.toLocaleDateString("es-CO", {
++                day: "numeric",
++                month: "long"
+             });
++        }
+ 
+-        botonFecha.appendChild(dia);
+-        botonFecha.appendChild(numero);
+-        botonFecha.appendChild(mes);
+-
+-        botonFecha.addEventListener("click", () => {
+-            if (botonFechaSeleccionado !== null) {
+-                botonFechaSeleccionado.classList.remove(
+-                    "seleccionada"
+-                );
+-            }
++        if (fechaFin) {
++            fechaFin.textContent = domingo.toLocaleDateString("es-CO", {
++                day: "numeric",
++                month: "long"
++            });
++        }
++    }
+ 
+-            fechaSeleccionada = fecha;
+-            if (fechaReserva) {
+-                fechaReserva.textContent =
+-                    fechaSeleccionada.toLocaleDateString(
+-                        "es-CO"
+-                    );
+-            }
++    function formatearFechaApi(fecha) {
++        const mes = String(fecha.getMonth() + 1).padStart(2, "0");
++        const dia = String(fecha.getDate()).padStart(2, "0");
+ 
+-            botonFecha.classList.add(
+-                "seleccionada"
+-            );
++        return `${fecha.getFullYear()}-${mes}-${dia}`;
++    }
+ 
+-            botonFechaSeleccionado =
+-                botonFecha;
++    function formatearHora(hora) {
++        return typeof hora === "string" ? hora.slice(0, 5) : "";
++    }
+ 
+-            mostrarHorarios();
++    function limpiarSeleccionHorario() {
++        horarioSeleccionado = null;
++        botonHorarioSeleccionado = null;
+ 
+-            console.log(
+-                "Fecha seleccionada:",
+-                fechaSeleccionada
+-            );
++        if (horarioReserva) {
++            horarioReserva.textContent = "";
++        }
++    }
+ 
+-        });
++    function seleccionarHorario(horario, botonHorario) {
++        if (botonHorarioSeleccionado) {
++            botonHorarioSeleccionado.classList.remove("seleccionado");
++        }
+ 
+-        fechas.appendChild(
+-            botonFecha
+-        );
++        horarioSeleccionado = horario;
++        botonHorarioSeleccionado = botonHorario;
++        botonHorario.classList.add("seleccionado");
+ 
++        if (horarioReserva) {
++            horarioReserva.textContent = horario.etiqueta;
++        }
+     }
+ 
+-    actualizarTextoSemana(lunes);
+-}
+-
+-function actualizarTextoSemana(lunes) {
+-    const domingo = new Date(lunes);
+-    domingo.setDate(
+-        lunes.getDate() + 6
+-    );
++    function renderizarHorarios(horarios) {
++        if (!turnos) {
++            return;
++        }
+ 
+-    fechaInicio.textContent =
+-        lunes.toLocaleDateString(
+-            "es-CO",
+-            {
+-                day: "numeric",
+-                month: "long"
+-            }
+-        );
++        turnos.innerHTML = "";
+ 
++        horarios.forEach(horario => {
++            const botonHorario = document.createElement("button");
++            botonHorario.textContent = horario.etiqueta;
+ 
+-    fechaFin.textContent =
+-        domingo.toLocaleDateString(
+-            "es-CO",
+-            {
+-                day: "numeric",
+-                month: "long"
++            if (horario.ocupado) {
++                botonHorario.classList.add("ocupado");
++            } else {
++                botonHorario.addEventListener("click", () => {
++                    seleccionarHorario(horario, botonHorario);
++                });
+             }
+-        );
+-}
+-
+ 
+-function mostrarHorarios() {
+-
+-    turnos.innerHTML = "";
+-
+-    horarioSeleccionado = null;
+-
+-    botonHorarioSeleccionado = null;
+-
+-    if (horarioReserva) {
+-        horarioReserva.textContent = "";
++            turnos.appendChild(botonHorario);
++        });
+ 
++        if (cantidadTurnos) {
++            cantidadTurnos.textContent = horarios.filter(horario => !horario.ocupado).length;
++        }
+     }
+ 
+-    for (let i = 0; i < horarios.length; i++) {
+-        const botonHorario =
+-            document.createElement("button");
+-        botonHorario.textContent =
+-            horarios[i];
++    function obtenerHorariosRespaldo() {
++        return horariosRespaldo.map(hora => ({
++            etiqueta: hora,
++            ocupado: horariosOcupadosRespaldo.includes(hora)
++        }));
++    }
+ 
+-        if (
+-            horariosOcupados.includes(
+-                horarios[i]
+-            )
+-        ) {
++    async function mostrarHorarios() {
++        const solicitudActual = ++solicitudHorariosActual;
+ 
+-            botonHorario.classList.add(
+-                "ocupado"
+-            );
++        limpiarSeleccionHorario();
+ 
++        if (turnos) {
++            turnos.innerHTML = "";
+         }
+ 
+-        else {
+-            botonHorario.addEventListener(
+-                "click",
+-                () => {
+-                    if (
+-                        botonHorarioSeleccionado !== null
+-                    ) {
+-                        botonHorarioSeleccionado.classList.remove(
+-                            "seleccionado"
+-                        );
+-
+-                    }
+-
+-                    horarioSeleccionado =
+-                        horarios[i];
+-                    if (horarioReserva) {
+-                        horarioReserva.textContent =
+-                            horarioSeleccionado;
+-                    }
+-
+-                    botonHorario.classList.add(
+-                        "seleccionado"
+-                    );
++        if (idCancha && fechaSeleccionada) {
++            try {
++                const horariosBackend = await backendApi.obtenerHorariosDisponibles(
++                    idCancha,
++                    formatearFechaApi(fechaSeleccionada)
++                );
+ 
++                if (solicitudActual !== solicitudHorariosActual) {
++                    return;
++                }
+ 
+-                    botonHorarioSeleccionado =
+-                        botonHorario;
++                if (!Array.isArray(horariosBackend)) {
++                    throw new Error("El backend devolvió una respuesta inválida.");
++                }
+ 
+-                    console.log(
+-                        "Horario seleccionado:",
+-                        horarioSeleccionado
+-                    );
++                renderizarHorarios(horariosBackend.map(horario => ({
++                    idHorario: horario.idHorario,
++                    etiqueta: `${formatearHora(horario.horaInicio)} - ${formatearHora(horario.horaFin)}`,
++                    ocupado: horario.estado !== "DISPONIBLE"
++                })));
+ 
++                return;
++            } catch (error) {
++                if (solicitudActual !== solicitudHorariosActual) {
++                    return;
+                 }
+-            );
+ 
++                console.warn(
++                    "No fue posible cargar la disponibilidad del backend. Se conserva el respaldo local.",
++                    error
++                );
++            }
+         }
+ 
+-        turnos.appendChild(
+-            botonHorario
+-        );
+-
++        renderizarHorarios(obtenerHorariosRespaldo());
+     }
+ 
+-}
+-
+-botonAnterior.addEventListener(
+-    "click",
+-    () => {
+-        semanaActual.setDate(
+-            semanaActual.getDate() - 7
+-        );
+-
++    function limpiarSeleccionFechaYHorario() {
+         fechaSeleccionada = null;
+-        horarioSeleccionado = null;
+         botonFechaSeleccionado = null;
+-        botonHorarioSeleccionado = null;
+-
++        solicitudHorariosActual += 1;
++        limpiarSeleccionHorario();
+ 
+         if (fechaReserva) {
+             fechaReserva.textContent = "";
+         }
+ 
+-        if (horarioReserva) {
+-            horarioReserva.textContent = "";
++        if (turnos) {
++            turnos.innerHTML = "";
+         }
++    }
+ 
+-        turnos.innerHTML = "";
++    function mostrarSemana() {
++        if (!fechas) {
++            return;
++        }
+ 
+-        mostrarSemana();
+-    }
+-);
++        const lunes = obtenerLunes(semanaActual);
++        fechas.innerHTML = "";
+ 
+-botonSiguiente.addEventListener(
+-    "click",
+-    () => {
+-        semanaActual.setDate(
+-            semanaActual.getDate() + 7
+-        );
++        for (let indice = 0; indice < 7; indice += 1) {
++            const fecha = new Date(lunes);
++            fecha.setDate(lunes.getDate() + indice);
+ 
+-        fechaSeleccionada = null;
+-        horarioSeleccionado = null;
+-        botonFechaSeleccionado = null;
+-        botonHorarioSeleccionado = null;
++            const botonFecha = document.createElement("button");
++            const dia = document.createElement("span");
++            const numero = document.createElement("strong");
++            const mes = document.createElement("small");
+ 
+-        if (fechaReserva) {
+-            fechaReserva.textContent = "";
+-        }
++            dia.textContent = fecha.toLocaleDateString("es-CO", { weekday: "short" });
++            numero.textContent = fecha.getDate();
++            mes.textContent = fecha.toLocaleDateString("es-CO", { month: "short" });
++            botonFecha.append(dia, numero, mes);
+ 
+-        if (horarioReserva) {
+-            horarioReserva.textContent = "";
+-        }
+-        turnos.innerHTML = "";
+-        mostrarSemana();
+-    }
+-);
+-
+-botonReservar.addEventListener("click", () => {
+-
+-    const usuario = sessionStorage.getItem("usuario");
+-
+-    if (!usuario) {
+-        mostrarModal({
+-        titulo: "Inicia sesión para reservar",
+-        mensaje: "Para reservar una cancha necesitas iniciar sesión o registrarte.",
+-        icono: "🔐",
+-        botones: [
+-            {
+-                texto: "Iniciar sesión",
+-                clase: "modal-boton-principal",
+-                accion: () => {
+-                    window.location.href = "login.html";
++            botonFecha.addEventListener("click", () => {
++                if (botonFechaSeleccionado) {
++                    botonFechaSeleccionado.classList.remove("seleccionada");
+                 }
+-            },
+-            {
+-                texto: "Registrarme",
+-                clase: "modal-boton-secundario",
+-                accion: () => {
+-                    alert("Redirigiendo a la página de registro...");
+-                    window.location.href = "registro.html";
++
++                fechaSeleccionada = fecha;
++                botonFechaSeleccionado = botonFecha;
++                botonFecha.classList.add("seleccionada");
++
++                if (fechaReserva) {
++                    fechaReserva.textContent = fechaSeleccionada.toLocaleDateString("es-CO");
+                 }
+-            },
+-            {
+-                texto: "Cerrar",
+-                clase: "modal-boton-secundario"
+-            }
+-        ]
+-    });
+-    return;
+-}
+ 
+-    if (!canchaSeleccionada) {
+-        alert("Selecciona una cancha antes de reservar");
+-        window.location.href = "canchas.html";
+-        return;
++                mostrarHorarios();
++            });
++
++            fechas.appendChild(botonFecha);
++        }
++
++        actualizarTextoSemana(lunes);
+     }
+ 
+-    if (fechaSeleccionada === null) {
+-        alert("Selecciona una fecha");
+-        return;
++    if (canchaSeleccionada) {
++        renderizarDetalleReserva(canchaSeleccionada);
+     }
+ 
+-    if (horarioSeleccionado === null) {
+-        alert("Selecciona un horario");
+-        return;
++    if (cantidadTurnos) {
++        cantidadTurnos.textContent = horariosRespaldo.length - horariosOcupadosRespaldo.length;
+     }
+ 
+-    const reserva = {
+-        canchaId: canchaSeleccionada.id,
+-        precio: canchaSeleccionada.precio,
+-        nombre: canchaSeleccionada.nombre,
+-        ubicacion: canchaSeleccionada.ubicacion,
+-        imagen: canchaSeleccionada.imagen,
+-        fecha: fechaSeleccionada.toLocaleDateString("es-CO"),
+-        horario: horarioSeleccionado,
+-        duracion: "1 hora",
+-        jugadores: "10 jugadores"
+-    };
++    botonAnterior?.addEventListener("click", () => {
++        semanaActual.setDate(semanaActual.getDate() - 7);
++        limpiarSeleccionFechaYHorario();
++        mostrarSemana();
++    });
+ 
+-    localStorage.setItem("reserva_seleccionada", JSON.stringify(reserva));
++    botonSiguiente?.addEventListener("click", () => {
++        semanaActual.setDate(semanaActual.getDate() + 7);
++        limpiarSeleccionFechaYHorario();
++        mostrarSemana();
++    });
+ 
+-    console.log("Reserva guardada:", reserva);
++    botonReservar?.addEventListener("click", () => {
++        const usuario = sessionStorage.getItem("usuario");
++
++        if (!usuario) {
++            mostrarModal({
++                titulo: "Inicia sesión para reservar",
++                mensaje: "Para reservar una cancha necesitas iniciar sesión o registrarte.",
++                icono: "🔐",
++                botones: [
++                    {
++                        texto: "Iniciar sesión",
++                        clase: "modal-boton-principal",
++                        accion: () => {
++                            window.location.href = "login.html";
++                        }
++                    },
++                    {
++                        texto: "Registrarme",
++                        clase: "modal-boton-secundario",
++                        accion: () => {
++                            window.location.href = "registro.html";
++                        }
++                    },
++                    {
++                        texto: "Cerrar",
++                        clase: "modal-boton-secundario"
++                    }
++                ]
++            });
+ 
+-    window.location.href = "pagar-reserva.html";
+-});
++            return;
++        }
++
++        if (!canchaSeleccionada) {
++            alert("Selecciona una cancha antes de reservar");
++            window.location.href = "canchas.html";
++            return;
++        }
++
++        if (!fechaSeleccionada) {
++            alert("Selecciona una fecha");
++            return;
++        }
++
++        if (!horarioSeleccionado) {
++            alert("Selecciona un horario");
++            return;
++        }
++
++        const reserva = {
++            canchaId: canchaSeleccionada.idCancha || canchaSeleccionada.id,
++            precio: canchaSeleccionada.precio,
++            nombre: canchaSeleccionada.nombre,
++            ubicacion: canchaSeleccionada.ubicacion,
++            imagen: canchaSeleccionada.imagen,
++            fecha: fechaSeleccionada.toLocaleDateString("es-CO"),
++            horarioId: horarioSeleccionado.idHorario ?? null,
++            horario: horarioSeleccionado.etiqueta,
++            duracion: "1 hora",
++            jugadores: "10 jugadores"
++        };
++
++        localStorage.setItem("reserva_seleccionada", JSON.stringify(reserva));
++        window.location.href = "pagar-reserva.html";
++    });
+ 
+-mostrarSemana();
++    mostrarSemana();
+ });
+diff --git a/JS/services/api.js b/JS/services/api.js
+index 0354e4e..6851b28 100644
+--- a/JS/services/api.js
++++ b/JS/services/api.js
+@@ -94,6 +94,12 @@ class DemoAuthProvider {
+         return user;
+     }
+ 
++    async logout() {
++        return {
++            mode: "demo"
++        };
++    }
++
+     async hash(value) {
+         const bytes = new TextEncoder().encode(value);
+ 
+@@ -267,9 +273,9 @@ class AuthService {
+     login(data) {
+         return this.provider.login(data);
+     }
+-    logout() {
+-    return this.provider.logout();
+-}
++    logout(accessToken = sessionStorage.getItem("access_token")) {
++        return this.provider.logout(accessToken);
++    }
+ }
+ 
+ 
+@@ -282,4 +288,4 @@ window.authService = new AuthService();
+ console.log(
+     "AuthService iniciado:",
+     window.authService.provider.constructor.name
+-);
+\ No newline at end of file
++);
+diff --git a/html/pagar-reserva.html b/html/pagar-reserva.html
+index 2e08929..8987f08 100644
+--- a/html/pagar-reserva.html
++++ b/html/pagar-reserva.html
+@@ -485,7 +485,7 @@
+          ========================================= -->
+ 
+     <script type="module" src="../JS/services/config.js"></script>
+-    <script src="../JS/admin/pagar-reserva.js"></script>
++    <script type="module" src="../JS/admin/pagar-reserva.js"></script>
+     <script src="../JS/admin/navbar.js"></script>
+     <script src="../JS/admin/footer.js"></script>
+     <script
+diff --git a/html/reservas-cancha.html b/html/reservas-cancha.html
+index f0a808a..409b1bb 100644
+--- a/html/reservas-cancha.html
++++ b/html/reservas-cancha.html
+@@ -808,7 +808,7 @@
+ 
+ </div>
+     <script src="../JS/utils/modal.js"></script>
+-<script src="../JS/reservas/reserva.js"></script>
++<script type="module" src="../JS/reservas/reserva.js"></script>
+ <script src="../JS/admin/navbar.js"></script>
+ <script src="../JS/admin/footer.js"></script>
+ 
+@@ -820,4 +820,4 @@
+ 
+ </body>
+ 
+-</html>
+\ No newline at end of file
++</html>

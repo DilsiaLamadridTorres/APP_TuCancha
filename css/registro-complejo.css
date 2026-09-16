@@ -24,9 +24,26 @@ body {
    ========================================================= */
 
 .registration {
-    min-height: 100vh;
+    min-height: 0;
 
     background-color: #FFFFFF;
+}
+
+.registration > .row {
+    min-height: 0 !important;
+    align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+    .registration > .row {
+        flex-wrap: nowrap;
+    }
+
+    .registration-content {
+        flex: 1 1 auto;
+        width: auto;
+        max-width: none;
+    }
 }
 
 
@@ -35,7 +52,7 @@ body {
    ========================================================= */
 
 .registration-sidebar {
-    min-height: 100vh;
+    min-height: 0;
 
     padding: 32px;
 
@@ -300,8 +317,9 @@ body {
 
 .registration-content {
     min-width: 0;
+    align-self: flex-start;
 
-    padding: 60px 80px;
+    padding: 32px clamp(20px, 4vw, 80px) 60px;
 
     background-color: #FFFFFF;
 }
@@ -315,7 +333,7 @@ body {
     display: none;
 
     width: 100%;
-    max-width: 760px;
+    max-width: 960px;
 
     animation: stepFadeIn 0.25s ease;
 }
@@ -394,7 +412,7 @@ body {
 
 .step-form {
     width: 100%;
-    max-width: 700px;
+    max-width: 100%;
 
     display: flex;
     flex-direction: column;

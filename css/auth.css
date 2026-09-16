@@ -41,12 +41,24 @@
     position: relative;
 }
 
+.campo-password .form-control {
+    padding-right: 2.9rem;
+}
+
 .campo-password i {
     position: absolute;
-    right: 15px;
+    right: 0.9rem;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+    z-index: 3;
+    color: #6c757d;
+    background: transparent;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    pointer-events: auto;
 }
 
 .input-group {

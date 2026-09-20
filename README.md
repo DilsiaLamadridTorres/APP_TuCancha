@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://dilsialamadridtorres.github.io/APP_TuCancha/">
-  <img src="./img/banner.svg" alt="TuCancha - Reserva tu cancha en minutos" width="100%">
+  <img src="./img/bannerTC.svg" alt="TuCancha - Reserva tu cancha en minutos" width="100%">
 </a>
 
 ### Sin llamadas. Sin esperas. Sin cruces de horario.
@@ -11,7 +11,7 @@
 <br>
 
 <a href="https://dilsialamadridtorres.github.io/APP_TuCancha/">
-  <img src="./img/btn-demo.svg" alt="Ver demo en vivo" width="300">
+  <img src="./img/btn-demoTC.svg" alt="Ver demo en vivo" width="300">
 </a>
 
 <br>

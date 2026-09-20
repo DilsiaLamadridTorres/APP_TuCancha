@@ -1075,6 +1075,15 @@ body {
     background-color: #FFF8F3;
 }
 
+.photo-upload.input-error {
+    border-color: #DC3545;
+
+    background-color: #FFF5F5;
+
+    box-shadow:
+        0 0 0 3px rgba(220, 53, 69, 0.10);
+}
+
 .photo-upload-icon {
     color: #FF6A00;
 

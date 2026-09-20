@@ -1,0 +1,448 @@
+/* ========================================
+   AGENDA SEMANAL
+======================================== */
+
+body {
+    background-color: var(--bs-dark);
+    color: var(--color-white);
+    font-family: "Poppins", sans-serif;
+}
+.agenda{
+    margin-bottom: 10px;
+}
+
+.volver-reservas {
+    text-decoration: none;
+    color: var(--color-white);
+}
+
+.volver-reservas:hover {
+    color: var(--bs-primary);
+}
+
+h1 {
+     margin-bottom: 2rem;
+
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 1px;
+}
+
+
+h2 {
+    margin-bottom: 30px;
+      margin: 20px 0;
+}
+
+
+/* ========================================
+   BOTONES ANTERIOR / SIGUIENTE
+======================================== */
+
+.navegacion-semana {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0;
+    
+}
+
+.anterior,
+.siguiente {
+    background-color: transparent;
+    color: var(--color-white);
+    border: 1px solid var(--color-gray);
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.anterior:hover,
+.siguiente:hover {
+    border-color: var(--bs-primary);
+    color: var(--bs-primary);
+}
+
+
+/* ========================================
+   CONTADORES
+======================================== */
+
+.turnos_disponibles,
+.canchas_disponibles {
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+
+.turnos_disponibles h2,
+.canchas_disponibles h2 {
+    font-size: 18px;
+}
+
+.turnos_disponibles span,
+.canchas_disponibles span {
+    color: var(--bs-primary);
+}
+
+
+/* ========================================
+   LEYENDA DE ESTADOS
+======================================== */
+
+.etiquetas {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 25px 0;
+}
+
+.etiquetas button {
+    width: 18px;
+    height: 18px;
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+}
+
+
+/* Disponible */
+
+.etiquetas .Disponible {
+    background-color: greenyellow;
+}
+
+
+/* Reservado */
+
+.etiquetas .Reservado {
+    background-color: #303030;
+}
+
+
+/* Tu selección */
+
+.etiquetas .tu_seleccion {
+    background-color: var(--bs-primary);
+}
+
+
+/* ========================================
+   FECHAS
+======================================== */
+
+.fechas-lista {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+
+    background-color: var(--color-card);
+
+    border: 1px solid #303030;
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    margin: 30px 0;
+}
+
+
+/* Botón de cada fecha */
+
+.fechas-lista button {
+    min-height: 90px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: transparent;
+    color: var(--color-white);
+
+    border: none;
+    border-right: 1px solid #303030;
+    border-radius: 0;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.fechas-lista button:last-child {
+    border-right: none;
+}
+
+/* Día de la semana */
+
+.fechas-lista button span {
+    font-size: 14px;
+    text-transform: uppercase;
+    color: var(--color-card-text);
+}
+
+
+/* Número */
+
+.fechas-lista button strong {
+    font-size: 28px;
+    margin: 4px 0;
+}
+
+
+/* Mes */
+
+.fechas-lista button small {
+    font-size: 12px;
+    color: var(--color-card-text);
+    text-transform: uppercase;
+}
+
+
+/* Hover */
+
+.fechas-lista button:hover {
+    border-color: var(--bs-primary);
+    transform: translateY(-2px);
+}
+
+
+/* Fecha seleccionada */
+
+.fechas-lista button.seleccionada {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: var(--color-white);
+}
+
+.fechas-lista button.seleccionada span,
+.fechas-lista button.seleccionada small {
+    color: var(--color-white);
+}
+
+
+/* ========================================
+   HORARIOS
+======================================== */
+
+.turnos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+
+/* Botón horario */
+
+.turnos-grid button {
+    padding: 14px;
+
+    background-color: var(--color-card);
+    color: var(--color-white);
+
+    border: 1px solid greenyellow;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    transition: 0.2s ease;
+}
+
+
+/* Hover horario disponible */
+
+.turnos-grid button:hover {
+    background-color: greenyellow !important;
+    color: var(--color-white);
+    border: none;
+}
+
+
+/* ========================================
+   HORARIO OCUPADO
+======================================== */
+
+.turnos-grid button.ocupado {
+    background-color: var(--color-reserved);
+    border-color: var(--color-reserved);
+
+    color: var(--color-light);
+
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+/* Evitamos el efecto hover en ocupado */
+
+.turnos-grid button.ocupado:hover {
+    background-color: var(--color-reserved);
+    color: var(--color-light);
+}
+
+
+/* ========================================
+   HORARIO SELECCIONADO
+======================================== */
+
+.turnos-grid button.seleccionado {
+    background-color: greenyellow;
+    border-color: greenyellow;
+
+    color: var(--color-white);
+}
+
+
+/* ========================================
+   DETALLE DE LA RESERVA
+======================================== */
+
+#informacion_cancha {
+    background-color: var(--color-card);
+
+    border: 1px solid var(--color-gray);
+    border-radius: 12px;
+
+    padding: 25px;
+
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#informacion_cancha h2 {
+    margin-bottom: 20px;
+}
+
+#informacion_cancha p {
+    color: var(--color-card-text);
+    margin-bottom: 8px;
+}
+
+#informacion_cancha span {
+    color: var(--color-white);
+    font-weight: 700;
+}
+
+
+/* ========================================
+   BOTÓN RESERVAR
+======================================== */
+
+.reservar {
+    width: 100%;
+
+    padding: 14px;
+
+    background-color: var(--bs-primary);
+    color: var(--color-white);
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.reservar:hover {
+    background-color: var(--color-orange-light);
+}
+
+
+/* ========================================
+   RESPONSIVE - TABLET
+======================================== */
+
+@media (max-width: 768px) {
+
+    .fechas-lista {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .turnos-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+/* ========================================
+   RESPONSIVE - CELULAR
+======================================== */
+
+@media (max-width: 576px) {
+
+    main {
+        width: 94%;
+        margin: 25px auto;
+    }
+
+    .fechas-lista {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .turnos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .etiquetas {
+        gap: 6px;
+    }
+
+    .fechas-lista button {
+        min-height: 90px;
+    }
+}
+
+/* ========================================
+   DETALLE DE LA RESERVA
+======================================== */
+
+#informacion_cancha {
+    background-color: var(--color-card);
+    border: 1px solid #303030;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 30px;
+}
+
+#informacion_cancha h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+#detalle-cancha {
+    min-height: 30px;
+    margin-bottom: 20px;
+}
+
+#informacion_cancha p {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 12px 0;
+    margin: 0;
+
+    border-bottom: 1px solid #303030;
+
+    color: var(--color-card-text);
+}
+
+#informacion_cancha p:last-child {
+    border-bottom: none;
+}
+
+#informacion_cancha span {
+    color: var(--color-white);
+    font-weight: 700;
+}

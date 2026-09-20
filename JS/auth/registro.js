@@ -1,6 +1,27 @@
 const registroForm = document.querySelector("#registro-form");
 const registroStatus = document.querySelector("#registro-status");
 const registroSubmit = document.querySelector("#registro-submit");
+const contrasena = document.getElementById("contrasena");
+const mostrarContrasena = document.getElementById("mostrar-contrasena");
+const confirmaContrasena = document.getElementById("confirmarContrasena");
+const mostrarConfirmarContrasena = document.getElementById("mostrar-confirmar-contrasena");
+
+
+mostrarContrasena.addEventListener("click", () => {
+contrasena.type = contrasena.type === "password" ? "text" : "password";  
+mostrarContrasena.classList.toggle("bi-eye");
+mostrarContrasena.classList.toggle("bi-eye-slash");
+
+});
+
+mostrarConfirmarContrasena.addEventListener("click", () => {
+mostrarConfirmarContrasena.type = mostrarConfirmarContrasena.type === "password" ? "text" : "password";  
+mostrarConfirmarContrasena.classList.toggle("bi-eye");
+mostrarConfirmarContrasena.classList.toggle("bi-eye-slash");
+
+});
+
+
 
 const rules = {
     nombreCompleto: (value) => value.trim().length >= 3 ? "" : "Escribe tu nombre completo (mínimo 3 caracteres).",
@@ -66,12 +87,17 @@ registroForm.addEventListener("submit", async (event) => {
         registroSubmit.disabled = false;
         registroSubmit.textContent = "Crear cuenta";
     }
+
+    window.location.href="canchas.html";
 });
 
 window.authService.checkConnection().then((result) => {
     const indicator = document.querySelector("#connection-status");
     indicator.textContent = result.message;
     indicator.className = `connection-status connection-status--${result.mode}`;
+    setTimeout(()=>{
+        indicator.style.display="none";
+    },3000)
 }).catch((error) => {
     const indicator = document.querySelector("#connection-status");
     indicator.textContent = error.message;

@@ -1,0 +1,635 @@
+/* =========================================================
+   TUCANCHA
+   INICIO PANEL ADMINISTRATIVO
+   ========================================================= */
+
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+
+.admin-header {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 32px;
+}
+
+
+/* =========================================================
+   SALUDO
+   ========================================================= */
+
+.admin-header-info h1 {
+    margin: 0 0 6px;
+
+    color: #1f1f1f;
+
+    font-size: 30px;
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+.admin-header-info p {
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FECHA
+   ========================================================= */
+
+.admin-date {
+    min-height: 42px;
+
+    padding: 0 14px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 9px;
+
+    border: 1px solid #e2e2e2;
+    border-radius: 10px;
+
+    background-color: #ffffff;
+
+    color: #666666;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.04);
+}
+
+.admin-date i {
+    color: #ff6a00;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   BANNER
+   ========================================================= */
+
+.admin-welcome-banner {
+    position: relative;
+
+    width: 100%;
+    min-height: 250px;
+
+    margin-bottom: 34px;
+
+    padding: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1f1f1f 0%,
+            #2a2a2a 100%
+        );
+
+    box-shadow:
+        0 12px 30px
+        rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   CONTENIDO BANNER
+   ========================================================= */
+
+.admin-welcome-content {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 620px;
+}
+
+.admin-welcome-label {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    color: #ff6a00;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
+}
+
+.admin-welcome-content h2 {
+    margin: 0 0 14px;
+
+    color: #ffffff;
+
+    font-size: 34px;
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+.admin-welcome-content h2 span {
+    color: #ff6a00;
+}
+
+.admin-welcome-content p {
+    margin: 0;
+
+    color: #b5b5b5;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   VISUAL BANNER
+   ========================================================= */
+
+.admin-welcome-visual {
+    position: relative;
+
+    width: 260px;
+    height: 180px;
+
+    flex-shrink: 0;
+
+    z-index: 2;
+}
+
+.admin-field-icon {
+    position: absolute;
+
+    top: 20px;
+    right: 20px;
+
+    width: 150px;
+    height: 150px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background-color:
+        rgba(255, 255, 255, 0.04);
+
+    color:
+        rgba(255, 255, 255, 0.12);
+
+    font-size: 90px;
+
+    transform: rotate(-8deg);
+}
+
+.admin-ball-icon {
+    position: absolute;
+
+    right: 90px;
+    bottom: 12px;
+
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: #ff6a00;
+
+    color: #ffffff;
+
+    font-size: 27px;
+
+    box-shadow:
+        0 10px 22px
+        rgba(255, 106, 0, 0.30);
+}
+
+
+/* =========================================================
+   DECORACIÓN BANNER
+   ========================================================= */
+
+.admin-welcome-banner::before {
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    top: -120px;
+    right: -70px;
+
+    border-radius: 50%;
+
+    background-color:
+        rgba(255, 106, 0, 0.08);
+}
+
+.admin-welcome-banner::after {
+    content: "";
+
+    position: absolute;
+
+    width: 160px;
+    height: 160px;
+
+    right: 100px;
+    bottom: -100px;
+
+    border-radius: 50%;
+
+    border:
+        30px solid
+        rgba(255, 106, 0, 0.05);
+}
+
+
+/* =========================================================
+   SECCIONES
+   ========================================================= */
+
+.admin-sections {
+    width: 100%;
+
+    margin-bottom: 34px;
+}
+
+.admin-sections-header {
+    margin-bottom: 20px;
+}
+
+.admin-sections-header h2 {
+    margin: 0 0 6px;
+
+    color: #1f1f1f;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.admin-sections-header p {
+    margin: 0;
+
+    color: #7d7d7d;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.admin-sections-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(300px, 400px)
+        );
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.admin-section-card {
+    width: 100%;
+    min-height: 145px;
+
+    padding: 22px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    border: 1px solid #e3e3e3;
+    border-radius: 14px;
+
+    background-color: #ffffff;
+
+    box-shadow:
+        0 6px 18px
+        rgba(0, 0, 0, 0.04);
+
+    transition: 0.2s ease;
+}
+
+.admin-section-card:hover {
+    border-color:
+        rgba(255, 106, 0, 0.45);
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 25px
+        rgba(0, 0, 0, 0.07);
+}
+
+
+/* =========================================================
+   ICONO CARD
+   ========================================================= */
+
+.admin-section-icon {
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background-color: #fff3eb;
+
+    color: #ff6a00;
+
+    font-size: 24px;
+}
+
+
+/* =========================================================
+   INFORMACIÓN CARD
+   ========================================================= */
+
+.admin-section-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.admin-section-info h3 {
+    margin: 0 0 6px;
+
+    color: #1f1f1f;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.admin-section-info p {
+    margin: 0;
+
+    color: #7f7f7f;
+
+    font-size: 11px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   FLECHA
+   ========================================================= */
+
+.admin-section-arrow {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background-color: #f5f5f5;
+
+    color: #9a9a9a;
+
+    transition: 0.2s ease;
+}
+
+.admin-section-card:hover
+.admin-section-arrow {
+    background-color: #ff6a00;
+
+    color: #ffffff;
+
+    transform: translateX(3px);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.admin-footer {
+    width: 100%;
+
+    margin-top: 60px;
+
+    padding-top: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-top:
+        1px solid #e1e1e1;
+}
+
+.admin-footer-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.admin-footer-info span {
+    color: #1f1f1f;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-footer-info small {
+    color: #8a8a8a;
+
+    font-size: 10px;
+}
+
+.admin-footer-version span {
+    color: #9a9a9a;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .admin-header {
+        gap: 20px;
+    }
+
+    .admin-header-info h1 {
+        font-size: 26px;
+    }
+
+    .admin-welcome-banner {
+        padding: 30px;
+    }
+
+    .admin-welcome-content h2 {
+        font-size: 30px;
+    }
+
+    .admin-welcome-visual {
+        width: 180px;
+    }
+
+    .admin-sections-grid {
+        grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(260px, 1fr)
+            );
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-date {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    .admin-welcome-banner {
+        min-height: auto;
+
+        padding: 28px;
+    }
+
+    .admin-welcome-content h2 {
+        font-size: 28px;
+    }
+
+    .admin-welcome-visual {
+        display: none;
+    }
+
+    .admin-sections-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .admin-header-info h1 {
+        font-size: 23px;
+    }
+
+    .admin-header-info p {
+        font-size: 12px;
+    }
+
+    .admin-welcome-banner {
+        margin-bottom: 28px;
+
+        padding: 22px;
+    }
+
+    .admin-welcome-content h2 {
+        font-size: 24px;
+    }
+
+    .admin-welcome-content p {
+        font-size: 12px;
+    }
+
+    .admin-sections-header h2 {
+        font-size: 19px;
+    }
+
+    .admin-section-card {
+        min-height: auto;
+
+        padding: 18px;
+
+        align-items: flex-start;
+    }
+
+    .admin-section-icon {
+        width: 48px;
+        height: 48px;
+
+        font-size: 20px;
+    }
+
+    .admin-section-arrow {
+        width: 32px;
+        height: 32px;
+    }
+
+}

@@ -1,55 +1,417 @@
 class MiNavbar extends HTMLElement {
-    connectedCallback() {
-        const rutaActual = (window.location.pathname.split('/').pop() || "Index.html").toLowerCase();
-        const estaEnHtml = window.location.pathname.includes('/html/');
-        const enlace = (archivo) => {
-            if (archivo === 'index.html') return estaEnHtml ? '../index.html' : 'index.html';
-            return estaEnHtml ? archivo : `html/${archivo}`;
-        };
-        const rutaLogo = estaEnHtml ? './img/logo/Logo.png' : 'img/logo/Logo.png';
 
-        this.innerHTML = `<nav class="navbar navbar-expand-lg bg-dark shadow-sm">
-            <div class="container-fluid">
-                <img src="${rutaLogo}" alt="Logo" width="100" height="100"
-                    class="me-2 rounded-circle object-fit-cover">
-                <div class="d-flex flex-column ">
-                    <a href="${enlace('index.html')}" class="text-decoration-none d-flex flex-column">
-                        <span class="fw-bold text-white lh-1 fs-2">TuCancha</span>
-                        <small class="fst-italic fs-6">¡Arma tu parche y juégatela!</small>
+    connectedCallback() {
+
+        /* =====================================================
+           OBTENER PÁGINA ACTUAL
+           ===================================================== */
+
+        const rutaActual =
+            (
+                window.location.pathname
+                    .split("/")
+                    .pop() || "index.html"
+            ).toLowerCase();
+
+
+        /* =====================================================
+           SABER SI ESTAMOS DENTRO DE /html
+           ===================================================== */
+
+        const estaEnHtml =
+            window.location.pathname
+                .toLowerCase()
+                .includes("/html/");
+
+
+        /* =====================================================
+           RUTAS
+           ===================================================== */
+
+        const rutaInicio =
+            estaEnHtml
+                ? "../index.html"
+                : "index.html";
+
+
+        const rutaPaginas =
+            estaEnHtml
+                ? ""
+                : "html/";
+
+
+        const rutaLogo =
+            estaEnHtml
+                ? "../img/logo/Logo.png"
+                : "img/logo/Logo.png";
+
+
+        /* =====================================================
+           OBTENER USUARIO
+           ===================================================== */
+
+        const usuarioGuardado =
+            sessionStorage.getItem("usuario");
+
+        let usuario = null;
+
+        if (usuarioGuardado) {
+
+            try {
+
+                usuario =
+                    JSON.parse(usuarioGuardado);
+
+            } catch (error) {
+
+                console.error(
+                    "Error leyendo usuario:",
+                    error
+                );
+
+                sessionStorage.removeItem("usuario");
+            }
+        }
+
+
+        /* =====================================================
+           CONFIGURAR BOTÓN DE USUARIO
+           ===================================================== */
+
+        let nombreUsuario = "Únete";
+
+        let rutaUsuario =
+            `${rutaPaginas}registro.html`;
+
+
+        if (usuario) {
+
+            nombreUsuario =
+                usuario.nombre || "Usuario";
+
+            rutaUsuario =
+                `${rutaPaginas}pagar-reserva.html`;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+           ===================================================== */
+
+        this.innerHTML = `
+
+            <nav class="navbar navbar-expand-lg bg-dark shadow-sm">
+
+                <div class="container-fluid">
+
+
+                    <!-- =========================================
+                         LOGO
+                         ========================================= -->
+
+                    <a
+                        href="${rutaInicio}"
+                        class="d-flex align-items-center text-decoration-none"
+                    >
+
+                        <img
+                            src="${rutaLogo}"
+                            alt="Logo TuCancha"
+                            width="100"
+                            height="100"
+                            class="me-2 rounded-circle object-fit-cover"
+                        >
+
                     </a>
+
+
+                    <!-- =========================================
+                         NOMBRE
+                         ========================================= -->
+
+                    <div class="d-flex flex-column">
+
+                        <a
+                            href="${rutaInicio}"
+                            class="text-decoration-none d-flex flex-column"
+                        >
+
+                            <span
+                                class="fw-bold text-white lh-1 fs-2"
+                            >
+                                TuCancha
+                            </span>
+
+                            <small class="fst-italic fs-6">
+                                ¡Arma tu parche y juégatela!
+                            </small>
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         BOTÓN RESPONSIVE
+                         ========================================= -->
+
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Abrir navegación"
+                    >
+
+                        <span
+                            class="navbar-toggler-icon"
+                        ></span>
+
+                    </button>
+
+
+                    <!-- =========================================
+                         LINKS
+                         ========================================= -->
+
+                    <div
+                        class="collapse navbar-collapse text-center"
+                        id="navbarNav"
+                    >
+
+                        <ul
+                            class="navbar-nav mx-auto text-center my-auto"
+                        >
+
+
+                            <!-- =================================
+                                 INICIO
+                                 ================================= -->
+
+                            <li class="nav-item">
+
+                                <a
+                                    class="nav-link ${
+                                        rutaActual === "index.html"
+                                            ? "active"
+                                            : ""
+                                    }"
+                                    href="${rutaInicio}"
+                                >
+                                    Inicio
+                                </a>
+
+                            </li>
+
+
+                            <!-- =================================
+                                 CANCHAS
+                                 ================================= -->
+
+                            <li class="nav-item">
+
+                                <a
+                                    class="nav-link ${
+                                        rutaActual === "canchas.html"
+                                            ? "active"
+                                            : ""
+                                    }"
+                                    href="${rutaPaginas}canchas.html"
+                                >
+                                    Canchas
+                                </a>
+
+                            </li>
+
+
+                            ${usuario ? `
+                           <li class="nav-item">
+                          <a class="nav-link ${rutaActual === "reservas-cliente.html" ? "active" : " " }" href="${rutaPaginas}reservas-cliente.html">
+                            Mis reservas
+                           </a>
+                          </li>
+                           ` : ""}
+
+                            <!-- =================================
+                                 NOSOTROS
+                                 ================================= -->
+
+                            <li class="nav-item">
+
+                                <a
+                                    class="nav-link ${
+                                        rutaActual === "nosotros.html"
+                                            ? "active"
+                                            : ""
+                                    }"
+                                    href="${rutaPaginas}nosotros.html"
+                                >
+                                    Nosotros
+                                </a>
+
+                            </li>
+
+
+                            <!-- =================================
+                                 CONTACTO
+                                 ================================= -->
+
+                            <li class="nav-item">
+
+                                <a
+                                    class="nav-link ${
+                                        rutaActual === "contacto.html"
+                                            ? "active"
+                                            : ""
+                                    }"
+                                    href="${rutaPaginas}contacto.html"
+                                >
+                                    Contacto
+                                </a>
+
+                            </li>
+
+                        </ul>
+
+
+                        <!-- =====================================
+                             USUARIO
+                             ===================================== -->
+
+                        <div
+                            class="d-flex align-items-center gap-2 mx-5"
+                        >
+
+                            <a
+                                href="${rutaUsuario}"
+                                class="btn btn-primary"
+                            >
+                                ${nombreUsuario}
+                            </a>
+
+
+                            ${
+                                usuario
+                                    ? `
+                                        <button
+                                            type="button"
+                                            id="btn-logout"
+                                            class="btn btn-outline-light"
+                                        >
+                                            Cerrar sesión
+                                        </button>
+                                      `
+                                    : ""
+                            }
+
+                        </div>
+
+                    </div>
+
                 </div>
-                <button class="navbar-toggler   " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse text-center" id="navbarNav">
-                    <ul class="navbar-nav mx-auto text-center my-auto">
-                        <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'index.html' ? 'active' : ''}" href="${enlace('index.html')}">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'canchas.html' ? 'active' : ''}" href="${enlace('canchas.html')}">Canchas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'reservas.html' ? 'active' : ''}" href="${enlace('reservas.html')}">Reservas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'precios.html' ? 'active' : ''}" href="${enlace('precios.html')}">Precios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'nosotros.html' ? 'active' : ''}" href="${enlace('nosotros.html')}">Nosotros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link ${rutaActual === 'contacto.html' ? 'active' : ''}" href="${enlace('contacto.html')}">Contacto</a>
-                        </li>
-                    </ul>
-                    <div class=""></div>
-                    <button type="button" class="btn btn-primary mx-5">Únete</button>
-                </div>
-            </div>
-            </div>
-        </nav>`;
+
+            </nav>
+
+        `;
+
+
+        /* =====================================================
+           CERRAR SESIÓN
+           ===================================================== */
+
+        const btnLogout =
+            this.querySelector("#btn-logout");
+
+
+        if (btnLogout) {
+
+            btnLogout.addEventListener(
+                "click",
+                async () => {
+
+                    btnLogout.disabled = true;
+
+                    btnLogout.textContent =
+                        "Cerrando sesión...";
+
+
+                    try {
+
+                        const token =
+                            sessionStorage.getItem(
+                                "access_token"
+                            );
+
+
+                        /* =====================================
+                           CERRAR SESIÓN EN SUPABASE
+                           ===================================== */
+
+                        if (token) {
+
+                            await fetch(
+                                `${window.TuCanchaConfig.supabaseUrl}/auth/v1/logout`,
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "apikey":
+                                            window.TuCanchaConfig
+                                                .supabaseAnonKey,
+
+                                        "Authorization":
+                                            `Bearer ${token}`,
+
+                                        "Content-Type":
+                                            "application/json"
+                                    }
+                                }
+                            );
+                        }
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Error al cerrar sesión:",
+                            error
+                        );
+
+                    } finally {
+
+                        /* ===============================
+                           LIMPIAR SESIÓN LOCAL
+                           =============================== */
+
+                        sessionStorage.removeItem(
+                            "usuario"
+                        );
+
+                        sessionStorage.removeItem(
+                            "access_token"
+                        );
+
+
+                        /* ===============================
+                           VOLVER AL INICIO
+                           =============================== */
+
+                        window.location.href =
+                            rutaInicio;
+                    }
+
+                }
+            );
+        }
+
     }
+
 }
 
-customElements.define('mi-navbar', MiNavbar);
+
+customElements.define(
+    "mi-navbar",
+    MiNavbar
+);

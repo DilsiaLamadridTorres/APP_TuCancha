@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Panel Administrativo | TuCancha
+    </title>
+
+
+    <!-- =====================================================
+         FAVICON
+         ===================================================== -->
+
+    <link rel="icon" type="image/png" href="../../img/logo/logo corto.png">
+
+
+    <!-- =====================================================
+         BOOTSTRAP
+         ===================================================== -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- =====================================================
+         BOOTSTRAP ICONS
+         ===================================================== -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
+    <!-- =====================================================
+         GOOGLE FONTS
+         ===================================================== -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+    <!-- =====================================================
+         CSS GENERAL DEL PANEL ADMIN
+         ===================================================== -->
+
+    <link rel="stylesheet" href="../../css/admin/layout-admin.css">
+
+
+    <!-- =====================================================
+         CSS ESPECÍFICO DEL INICIO
+         ===================================================== -->
+
+    <link rel="stylesheet" href="../../css/admin/inicio-admin.css">
+
+
+    <!-- =====================================================
+         PROTECCIÓN DE LA RUTA ADMIN
+         ===================================================== -->
+
+    <script src="../../JS/admin/auth-admin.js"></script>
+
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         LAYOUT ADMINISTRATIVO
+         ===================================================== -->
+
+    <div class="admin-layout">
+
+
+        <!-- =================================================
+             SIDEBAR
+             SE GENERA DESDE layout-admin.js
+             ================================================= -->
+
+        <admin-sidebar></admin-sidebar>
+
+
+
+        <!-- =================================================
+             CONTENIDO PRINCIPAL
+             ================================================= -->
+
+        <main class="admin-main">
+
+
+            <!-- =================================================
+                 ENCABEZADO
+                 ================================================= -->
+
+            <section class="admin-header">
+
+
+                <div class="admin-header-info">
+
+                    <h1>
+                        Hola, Administrador
+                    </h1>
+
+                    <p>
+                        Desde aquí puedes acceder a las diferentes
+                        secciones del panel.
+                    </p>
+
+                </div>
+
+
+
+                <!-- Fecha actual -->
+
+                <div class="admin-date">
+
+                    <i class="bi bi-calendar3"></i>
+
+                    <span id="adminCurrentDate">
+                        Fecha actual
+                    </span>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 BANNER DE BIENVENIDA
+                 ================================================= -->
+
+            <section class="admin-welcome-banner">
+
+
+                <!-- Contenido -->
+
+                <div class="admin-welcome-content">
+
+
+                    <span class="admin-welcome-label">
+                        PANEL ADMINISTRATIVO
+                    </span>
+
+
+                    <h2>
+
+                        Bienvenido a
+
+                        <span>
+                            TuCancha
+                        </span>
+
+                    </h2>
+
+
+                    <p>
+
+                        Gestiona la información de la plataforma
+                        desde un solo lugar.
+
+                        <br>
+
+                        Selecciona una sección en el menú lateral
+                        para continuar.
+
+                    </p>
+
+
+                </div>
+
+
+
+                <!-- Elementos decorativos -->
+
+                <div class="admin-welcome-visual">
+
+
+                    <div class="admin-field-icon">
+
+                        <i class="bi bi-bounding-box-circles"></i>
+
+                    </div>
+
+
+                    <div class="admin-ball-icon">
+
+                        <i class="bi bi-dribbble"></i>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SECCIONES DISPONIBLES
+                 ================================================= -->
+
+            <section class="admin-sections">
+
+
+                <!-- Encabezado -->
+
+                <div class="admin-sections-header">
+
+
+                    <h2>
+                        Secciones disponibles
+                    </h2>
+
+
+                    <p>
+                        Accede rápidamente a las herramientas
+                        de administración.
+                    </p>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     TARJETAS
+                     ================================================= -->
+
+                <div class="admin-sections-grid">
+
+
+                    <!-- =============================================
+                         SOLICITUDES
+                         ============================================= -->
+
+                    <a href="solicitudes-admin.html" class="admin-section-card">
+
+
+                        <!-- Icono -->
+
+                        <div class="admin-section-icon">
+
+                            <i class="bi bi-file-earmark-text"></i>
+
+                        </div>
+
+
+
+                        <!-- Información -->
+
+                        <div class="admin-section-info">
+
+
+                            <h3>
+                                Solicitudes
+                            </h3>
+
+
+                            <p>
+                                Revisa y gestiona las solicitudes
+                                de registro de complejos deportivos.
+                            </p>
+
+
+                        </div>
+
+
+
+                        <!-- Flecha -->
+
+                        <div class="admin-section-arrow">
+
+                            <i class="bi bi-chevron-right"></i>
+
+                        </div>
+
+
+                    </a>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FOOTER INTERNO
+                 ================================================= -->
+
+            <footer class="admin-footer">
+
+
+                <div class="admin-footer-info">
+
+
+                    <span>
+                        TuCancha
+                    </span>
+
+
+                    <small>
+                        Panel administrativo
+                    </small>
+
+
+                </div>
+
+
+
+                <div class="admin-footer-version">
+
+
+                    <span>
+                        Versión 1.0.0
+                    </span>
+
+
+                </div>
+
+
+            </footer>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+
+    <!-- Layout + Sidebar compartido -->
+
+    <script src="../../JS/admin/layout-admin.js"></script>
+
+
+    <!-- JS específico del inicio -->
+
+    <script src="../../JS/admin/inicio-admin.js"></script>
+
+
+    <!-- Bootstrap -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+
+</html>

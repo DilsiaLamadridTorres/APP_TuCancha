@@ -1,6 +1,15 @@
 /* ==========================================================
    HERO
 ========================================================== */
+:root {
+--color-negro-fondo: #000000;
+--color-blanco-secundario: #FFFFFF;
+--color-naranjatono: #FF5500;
+--color-containers: #171A17;
+
+}
+
+
 
 .hero-section {
     position: relative;
@@ -26,7 +35,7 @@
     width: 60%;
     height: 100%;
 
-    background: var(--bs-dark);
+    background: var(--color-negro-fondo);
 
     clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
     z-index: 1;
@@ -41,7 +50,7 @@
     width: 60.5%;
     height: 100%;
 
-    background: var(--bs-primary);
+    background: var(--color-blanco-secundario);
 
     clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
     z-index: 0;
@@ -57,7 +66,7 @@
 .hero-subtitle {
     display: block;
 
-    font-size: 4.2rem;
+    font-size: 7.2rem;
     line-height: 1;
     letter-spacing: 5px;
 }
@@ -65,21 +74,18 @@
 .hero-title {
     margin-bottom: 1rem;
 
-    font-size: 5rem;
+    font-size: 6rem;
     font-weight: 900;
     line-height: 1;
     letter-spacing: 1px;
 
-    color: var(--bs-primary);
+    color: var(--color-blanco-secundario);
 }
 
-.hero-text {
-    max-width: 100%;
-
-    font-size: 3.15rem;
-    line-height: 2.5;
-
-    color: var(--color-light);
+.hero-text .text-secondary-light {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--color-blanco-secundario);
 }
 
 /* ==========================================================
@@ -105,7 +111,7 @@
 
     border-radius: 2px;
 
-    background: var(--bs-primary);
+    background: var(--color-naranjatono);
 }
 
 .step-line:nth-child(2) {
@@ -121,7 +127,7 @@
 ========================================================== */
 
 .gestion-section {
-    background: var(--bs-dark) !important;
+    background: var(--color-negro-fondo) !important;
 }
 
 .gestion-title {
@@ -138,6 +144,8 @@
 .btn-contactanos {
     font-size: .9rem;
     font-weight: bold;
+    margin-top: -1.7cm;
+    margin-right: -40rem;
 }
 
 .badge-admin {
@@ -145,7 +153,7 @@
 
     padding: 6px 24px;
 
-    border: 1px solid var(--bs-primary);
+    border: 1px solid var(--color-blanco-secundario);
     border-radius: 50px;
 
     font-size: .85rem;
@@ -169,10 +177,10 @@
     width: 70px;
     height: 70px;
 
-    border: 2px solid var(--bs-primary);
+    border: 2px solid var(--color-blanco-secundario);
     border-radius: 12px;
 
-    background: rgba(255, 85, 0, .03);
+    background: rgba(3, 3, 3, 0.03);
 }
 
 /* ==========================================================
@@ -305,7 +313,7 @@
 
     transform: translateY(-1px);
 
-    box-shadow: 0 6px 20px rgba(255, 85, 0, .5);
+   
 }
 
 /* ==========================================================

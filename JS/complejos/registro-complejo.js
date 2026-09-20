@@ -22,6 +22,9 @@ const STORAGE_KEY = "tucancha_registro_complejo";
 const SOLICITUDES_KEY = "tucancha_solicitudes_complejos";
 
 
+const HORARIO_PREDETERMINADO = "Lunes a domingo, 8:00 AM - 10:00 PM";
+
+
 /* ============================================================
    2. CREAR ESTADO INICIAL
    ============================================================ */
@@ -119,15 +122,41 @@ function mostrarAlerta(
     titulo = ""
 ) {
 
-    const container =
+    let container =
         obtenerElemento("formAlertContainer");
 
 
     if (!container) {
 
-        console.log(mensaje);
+        container =
+            document.createElement(
+                "div"
+            );
 
-        return;
+
+        container.id =
+            "formAlertContainer";
+
+
+        container.className =
+            "form-alert-container";
+
+
+        container.setAttribute(
+            "aria-live",
+            "polite"
+        );
+
+
+        container.setAttribute(
+            "aria-atomic",
+            "true"
+        );
+
+
+        document.body.appendChild(
+            container
+        );
 
     }
 
@@ -310,12 +339,16 @@ function guardarLocalStorage() {
             JSON.stringify(registroComplejo)
         );
 
+        return true;
+
     } catch (error) {
 
         console.error(
             "Error guardando el formulario:",
             error
         );
+
+        return false;
 
     }
 
@@ -1366,6 +1399,12 @@ function abrirFormularioCancha(
         }
 
 
+        const nombre =
+            obtenerElemento(
+                "courtName"
+            );
+
+
         const sport =
             obtenerElemento(
                 "courtSport"
@@ -1388,6 +1427,20 @@ function abrirFormularioCancha(
             obtenerElemento(
                 "courtWidth"
             );
+
+
+        const precio =
+            obtenerElemento(
+                "courtPrice"
+            );
+
+
+        if (nombre) {
+
+            nombre.value =
+                cancha.nombre || "";
+
+        }
 
 
         if (sport) {
@@ -1418,6 +1471,16 @@ function abrirFormularioCancha(
 
             ancho.value =
                 cancha.ancho;
+
+        }
+
+
+        if (precio) {
+
+            precio.value =
+                cancha.precioPorHora
+                || cancha.precio
+                || "";
 
         }
 
@@ -1518,11 +1581,7 @@ function abrirFormularioCancha(
         if (titulo) {
 
             titulo.textContent =
-                `Cancha ${
-                    registroComplejo
-                        .canchas
-                        .length + 1
-                }`;
+                "Nueva cancha";
 
         }
 
@@ -1600,10 +1659,12 @@ function limpiarFormularioCancha() {
 
     const campos = [
 
+        "courtName",
         "courtSport",
         "courtFloor",
         "courtLength",
-        "courtWidth"
+        "courtWidth",
+        "courtPrice"
 
     ];
 
@@ -1740,6 +1801,29 @@ function limpiarFormularioCancha() {
 
     }
 
+
+    const errorFotos =
+        obtenerElemento(
+            "photosError"
+        );
+
+
+    if (errorFotos) {
+
+        errorFotos.remove();
+
+    }
+
+
+    document
+        .querySelector(
+            ".photo-upload"
+        )
+        ?.classList
+        .remove(
+            "input-error"
+        );
+
 }
 
 
@@ -1759,9 +1843,123 @@ function convertirFotoBase64(file) {
             reader.onload =
                 () => {
 
-                    resolve(
-                        reader.result
-                    );
+                    const dataUrlOriginal =
+                        reader.result;
+
+
+                    const imagen =
+                        new Image();
+
+
+                    imagen.onload =
+                        () => {
+
+                            const MAX_DIMENSION =
+                                720;
+
+
+                            const escala =
+                                Math.min(
+                                    1,
+                                    MAX_DIMENSION /
+                                    Math.max(
+                                        imagen.width,
+                                        imagen.height
+                                    )
+                                );
+
+
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
+
+
+                            canvas.width =
+                                Math.max(
+                                    1,
+                                    Math.round(
+                                        imagen.width * escala
+                                    )
+                                );
+
+
+                            canvas.height =
+                                Math.max(
+                                    1,
+                                    Math.round(
+                                        imagen.height * escala
+                                    )
+                                );
+
+
+                            const contexto =
+                                canvas.getContext(
+                                    "2d"
+                                );
+
+
+                            if (!contexto) {
+
+                                resolve(
+                                    dataUrlOriginal
+                                );
+
+                                return;
+
+                            }
+
+
+                            contexto.fillStyle =
+                                "#FFFFFF";
+
+
+                            contexto.fillRect(
+                                0,
+                                0,
+                                canvas.width,
+                                canvas.height
+                            );
+
+
+                            contexto.drawImage(
+                                imagen,
+                                0,
+                                0,
+                                canvas.width,
+                                canvas.height
+                            );
+
+
+                            const dataUrlOptimizada =
+                                canvas.toDataURL(
+                                    "image/jpeg",
+                                    0.62
+                                );
+
+
+                            resolve(
+                                dataUrlOptimizada.length <
+                                dataUrlOriginal.length
+                                    ? dataUrlOptimizada
+                                    : dataUrlOriginal
+                            );
+
+                        };
+
+
+                    imagen.onerror =
+                        () => {
+
+                            resolve(
+                                dataUrlOriginal
+                            );
+
+                        };
+
+
+                    imagen.src =
+                        dataUrlOriginal;
 
                 };
 
@@ -1796,13 +1994,14 @@ async function procesarFotos(archivos) {
 
     /*
         Como estamos trabajando con localStorage,
-        limitamos fotos y tamaño.
+        permitimos fotos originales grandes y luego
+        las optimizamos antes de guardarlas.
     */
 
     const MAX_FOTOS = 4;
 
     const MAX_SIZE =
-        600 * 1024;
+        8 * 1024 * 1024;
 
 
     for (
@@ -1867,7 +2066,7 @@ async function procesarFotos(archivos) {
         ) {
 
             mostrarAlerta(
-                `${archivo.name} pesa más de 600 KB. Usa una imagen más liviana.`,
+                `${archivo.name} pesa mas de 8 MB. Usa una imagen mas liviana.`,
                 "warning"
             );
 
@@ -1890,12 +2089,18 @@ async function procesarFotos(archivos) {
                     archivo.name,
 
                 tipo:
-                    archivo.type,
+                    base64.startsWith(
+                        "data:image/jpeg"
+                    )
+                        ? "image/jpeg"
+                        : archivo.type,
 
                 dataUrl:
                     base64
 
             });
+
+            validarFotosCancha();
 
 
         } catch (error) {
@@ -1943,6 +2148,19 @@ function renderizarPreviewFotos() {
     fotosTemporales.forEach(
         (foto, index) => {
 
+            const dataUrl =
+                obtenerDataUrlFoto(
+                    foto
+                );
+
+
+            if (!dataUrl) {
+
+                return;
+
+            }
+
+
             const item =
                 document.createElement(
                     "div"
@@ -1956,7 +2174,7 @@ function renderizarPreviewFotos() {
             item.innerHTML = `
 
                 <img
-                    src="${foto.dataUrl}"
+                    src="${dataUrl}"
                     alt="Foto de la cancha"
                 >
 
@@ -1997,6 +2215,222 @@ function eliminarFotoPreview(index) {
 
     renderizarPreviewFotos();
 
+
+    validarFotosCancha();
+
+}
+
+
+/* ============================================================
+   VALIDAR FOTOS DE LA CANCHA
+   ============================================================ */
+
+function obtenerDataUrlFoto(foto) {
+
+    if (
+        typeof foto === "string"
+    ) {
+
+        return foto.trim();
+
+    }
+
+
+    if (
+        typeof foto?.dataUrl === "string"
+    ) {
+
+        return foto.dataUrl.trim();
+
+    }
+
+
+    return "";
+
+}
+
+
+function canchaTieneFotos(cancha) {
+
+    return (
+        Array.isArray(
+            cancha?.fotos
+        ) &&
+        cancha.fotos.some(
+            foto =>
+                obtenerDataUrlFoto(
+                    foto
+                ) !== ""
+        )
+    );
+
+}
+
+
+function validarCanchasGuardadasConFotos() {
+
+    const canchaSinFotos =
+        registroComplejo
+            .canchas
+            .find(
+                cancha =>
+                    !canchaTieneFotos(
+                        cancha
+                    )
+            );
+
+
+    if (!canchaSinFotos) {
+
+        return true;
+
+    }
+
+
+    mostrarAlerta(
+        `${canchaSinFotos.nombre || "Una cancha"} debe tener al menos una foto antes de continuar.`,
+        "warning"
+    );
+
+
+    return false;
+
+}
+
+
+function canchaTienePrecio(cancha) {
+
+    const valor =
+        cancha?.precioPorHora
+        || cancha?.precio;
+
+    const precio =
+        Number(valor);
+
+
+    return Boolean(valor) &&
+        Number.isFinite(precio) &&
+        precio > 0;
+
+}
+
+
+function validarCanchasGuardadasConPrecio() {
+
+    const canchaSinPrecio =
+        registroComplejo
+            .canchas
+            .find(
+                cancha =>
+                    !canchaTienePrecio(
+                        cancha
+                    )
+            );
+
+
+    if (!canchaSinPrecio) {
+
+        return true;
+
+    }
+
+
+    mostrarAlerta(
+        `${canchaSinPrecio.nombre || "Una cancha"} debe tener precio por hora antes de continuar.`,
+        "warning"
+    );
+
+
+    return false;
+
+}
+
+
+function validarFotosCancha() {
+
+    const errorAnterior =
+        obtenerElemento(
+            "photosError"
+        );
+
+
+    if (errorAnterior) {
+
+        errorAnterior.remove();
+
+    }
+
+
+    const upload =
+        document.querySelector(
+            ".photo-upload"
+        );
+
+
+    upload
+        ?.classList
+        .remove(
+            "input-error"
+        );
+
+
+    if (
+        canchaTieneFotos({
+
+            fotos:
+                fotosTemporales
+
+        })
+    ) {
+
+        return true;
+
+    }
+
+
+    const contenedor =
+        document.querySelector(
+            ".court-photos"
+        );
+
+
+    if (contenedor) {
+
+        const error =
+            document.createElement(
+                "small"
+            );
+
+
+        error.id =
+            "photosError";
+
+
+        error.className =
+            "field-error";
+
+
+        error.textContent =
+            "Agrega al menos una foto de la cancha.";
+
+
+        contenedor.insertAdjacentElement(
+            "afterend",
+            error
+        );
+
+    }
+
+
+    upload
+        ?.classList
+        .add(
+            "input-error"
+        );
+
+
+    return false;
+
 }
 
 
@@ -2007,6 +2441,18 @@ function eliminarFotoPreview(index) {
 function validarCancha() {
 
     let valido = true;
+
+
+    if (
+        !validarRequerido(
+            "courtName",
+            "Ingresa el nombre de la cancha."
+        )
+    ) {
+
+        valido = false;
+
+    }
 
 
     if (
@@ -2118,6 +2564,48 @@ function validarCancha() {
 
 
     /* ========================================================
+       PRECIO
+       ======================================================== */
+
+    if (
+        !validarRequerido(
+            "courtPrice",
+            "Ingresa el precio por hora de la cancha."
+        )
+    ) {
+
+        valido = false;
+
+    } else {
+
+        const precio =
+            Number(
+                obtenerValor(
+                    "courtPrice"
+                )
+            );
+
+
+        if (
+            !Number.isFinite(precio) ||
+            precio <= 0
+        ) {
+
+            mostrarError(
+                obtenerElemento(
+                    "courtPrice"
+                ),
+                "El precio debe ser mayor que 0."
+            );
+
+            valido = false;
+
+        }
+
+    }
+
+
+    /* ========================================================
        DURACIÓN
        ======================================================== */
 
@@ -2183,6 +2671,19 @@ function validarCancha() {
     }
 
 
+    /* ========================================================
+       FOTOS
+       ======================================================== */
+
+    if (
+        !validarFotosCancha()
+    ) {
+
+        valido = false;
+
+    }
+
+
     if (!valido) {
 
         mostrarAlerta(
@@ -2227,7 +2728,20 @@ function guardarCancha() {
         );
 
 
+    const precioPorHora =
+        Number(
+            obtenerValor(
+                "courtPrice"
+            )
+        );
+
+
     const datosCancha = {
+
+        nombre:
+            obtenerValor(
+                "courtName"
+            ),
 
         deporte:
             obtenerValor(
@@ -2253,6 +2767,18 @@ function guardarCancha() {
                 )
             ),
 
+        precio:
+            precioPorHora,
+
+        precioPorHora:
+            precioPorHora,
+
+        horario:
+            HORARIO_PREDETERMINADO,
+
+        horarioAtencion:
+            HORARIO_PREDETERMINADO,
+
         duraciones:
             duraciones,
 
@@ -2270,6 +2796,22 @@ function guardarCancha() {
             [...fotosTemporales]
 
     };
+
+
+    const canchasAnteriores =
+        JSON.parse(
+            JSON.stringify(
+                registroComplejo.canchas
+            )
+        );
+
+
+    let mensajeExito =
+        "La cancha fue agregada correctamente.";
+
+
+    let tituloExito =
+        "Cancha guardada";
 
 
     /* ========================================================
@@ -2290,26 +2832,36 @@ function guardarCancha() {
                 );
 
 
-        if (indice !== -1) {
+        if (indice === -1) {
 
-            registroComplejo
-                .canchas[indice] = {
+            mostrarAlerta(
+                "No se encontro la cancha que intentas editar.",
+                "error",
+                "Cancha no encontrada"
+            );
 
-                    ...registroComplejo
-                        .canchas[indice],
-
-                    ...datosCancha
-
-                };
+            return;
 
         }
 
 
-        mostrarAlerta(
-            "Los cambios de la cancha fueron guardados.",
-            "success",
-            "Cancha actualizada"
-        );
+        registroComplejo
+            .canchas[indice] = {
+
+                ...registroComplejo
+                    .canchas[indice],
+
+                ...datosCancha
+
+            };
+
+
+        mensajeExito =
+            "Los cambios de la cancha fueron guardados.";
+
+
+        tituloExito =
+            "Cancha actualizada";
 
 
     } else {
@@ -2325,28 +2877,41 @@ function guardarCancha() {
                 id:
                     Date.now(),
 
-                nombre:
-                    `Cancha ${
-                        registroComplejo
-                            .canchas
-                            .length + 1
-                    }`,
-
                 ...datosCancha
 
             });
 
 
+    }
+
+
+    const guardado =
+        guardarLocalStorage();
+
+
+    if (!guardado) {
+
+        registroComplejo.canchas =
+            canchasAnteriores;
+
+
         mostrarAlerta(
-            "La cancha fue agregada correctamente.",
-            "success",
-            "Cancha guardada"
+            "No fue posible guardar la cancha. Reduce el peso o la cantidad de fotos e intenta de nuevo.",
+            "error",
+            "Cancha no guardada"
         );
+
+
+        return;
 
     }
 
 
-    guardarLocalStorage();
+    mostrarAlerta(
+        mensajeExito,
+        "success",
+        tituloExito
+    );
 
     cerrarFormularioCancha();
 
@@ -2380,22 +2945,6 @@ function eliminarCancha(id) {
                 cancha =>
                     cancha.id !== id
             );
-
-
-    /*
-        Renumeramos.
-    */
-
-    registroComplejo
-        .canchas
-        .forEach(
-            (cancha, index) => {
-
-                cancha.nombre =
-                    `Cancha ${index + 1}`;
-
-            }
-        );
 
 
     guardarLocalStorage();
@@ -2499,7 +3048,32 @@ function obtenerNombreDuracion(valor) {
 
 
 /* ============================================================
-   35. RENDERIZAR CANCHAS GUARDADAS
+   35. FORMATEAR PRECIO DE CANCHA
+   ============================================================ */
+
+function formatearPrecioCancha(valor) {
+
+    const precio =
+        Number(valor);
+
+
+    if (
+        !valor ||
+        Number.isNaN(precio)
+    ) {
+
+        return "Precio pendiente";
+
+    }
+
+
+    return `$${precio.toLocaleString("es-CO")} COP / hora`;
+
+}
+
+
+/* ============================================================
+   36. RENDERIZAR CANCHAS GUARDADAS
    ============================================================ */
 
 function renderizarCanchas() {
@@ -2672,15 +3246,23 @@ function renderizarCanchas() {
                    FOTOS
                    ================================================= */
 
+                const fotosCancha =
+                    Array.isArray(
+                        cancha.fotos
+                    )
+                        ? cancha.fotos
+                            .map(
+                                obtenerDataUrlFoto
+                            )
+                            .filter(Boolean)
+                        : [];
+
+
                 let fotosHTML = "";
 
 
                 if (
-                    Array.isArray(
-                        cancha.fotos
-                    )
-                    &&
-                    cancha.fotos.length > 0
+                    fotosCancha.length > 0
                 ) {
 
                     fotosHTML = `
@@ -2688,14 +3270,14 @@ function renderizarCanchas() {
                         <div class="saved-court-photos">
 
                             ${
-                                cancha.fotos
+                                fotosCancha
                                     .map(
-                                        (foto, index) => `
+                                        (dataUrl, index) => `
 
                                             <div class="saved-court-photo">
 
                                                 <img
-                                                    src="${foto.dataUrl}"
+                                                    src="${dataUrl}"
                                                     alt="Foto ${index + 1} de ${cancha.nombre}"
                                                 >
 
@@ -2750,6 +3332,13 @@ function renderizarCanchas() {
 
                             ${cancha.largo}m x
                             ${cancha.ancho}m
+
+                            &middot;
+
+                            ${formatearPrecioCancha(
+                                cancha.precioPorHora
+                                || cancha.precio
+                            )}
 
                         </p>
 
@@ -3059,6 +3648,13 @@ function renderizarCanchasRevision() {
                             cancha.tipoPiso
                         )}
 
+                        &middot;
+
+                        ${formatearPrecioCancha(
+                            cancha.precioPorHora
+                            || cancha.precio
+                        )}
+
                     </strong>
 
                 `;
@@ -3075,11 +3671,122 @@ function renderizarCanchasRevision() {
 
 
 /* ============================================================
-   39. GUARDAR SOLICITUD PARA ADMIN
+   39. CREAR SOLICITUDES PARA ADMIN
+   ============================================================ */
+
+function clonarCanchaParaSolicitud(cancha) {
+
+    return {
+
+        ...cancha,
+
+        duraciones: [
+            ...(cancha.duraciones || [])
+        ],
+
+        fotos: [
+            ...(cancha.fotos || [])
+        ]
+
+    };
+
+}
+
+
+function crearSolicitudesPorCancha() {
+
+    const idGrupoSolicitud =
+        `SOL-${Date.now()}`;
+
+
+    const fechaSolicitud =
+        new Date()
+            .toISOString();
+
+
+    return registroComplejo
+        .canchas
+        .map(
+            (cancha, index) => {
+
+                const canchaSolicitud =
+                    clonarCanchaParaSolicitud(
+                        cancha
+                    );
+
+
+                return {
+
+                    id:
+                        `${idGrupoSolicitud}-CANCHA-${index + 1}`,
+
+                    grupoSolicitudId:
+                        idGrupoSolicitud,
+
+                    canchaId:
+                        canchaSolicitud.id,
+
+                    numeroCancha:
+                        index + 1,
+
+                    precio:
+                        canchaSolicitud.precio,
+
+                    precioPorHora:
+                        canchaSolicitud.precioPorHora,
+
+                    horario:
+                        canchaSolicitud.horario
+                        || HORARIO_PREDETERMINADO,
+
+                    horarioAtencion:
+                        canchaSolicitud.horarioAtencion
+                        || HORARIO_PREDETERMINADO,
+
+                    organizacion: {
+                        ...registroComplejo.organizacion
+                    },
+
+                    complejo: {
+
+                        ...registroComplejo.complejo,
+
+                        prestaciones: [
+                            ...registroComplejo
+                                .complejo
+                                .prestaciones
+                        ]
+
+                    },
+
+                    canchas: [
+                        canchaSolicitud
+                    ],
+
+                    comoNosConociste:
+                        registroComplejo
+                            .comoNosConociste,
+
+                    estado:
+                        "pendiente",
+
+                    fechaSolicitud:
+                        fechaSolicitud
+
+                };
+
+            }
+        );
+
+}
+
+
+/* ============================================================
+   40. GUARDAR SOLICITUDES PARA ADMIN
    ============================================================ */
 
 function guardarSolicitudFinal(
-    solicitud
+    solicitudesNuevas
 ) {
 
     let solicitudes = [];
@@ -3103,8 +3810,29 @@ function guardarSolicitudFinal(
     }
 
 
+    const nuevasSolicitudes =
+        Array.isArray(
+            solicitudesNuevas
+        )
+            ? solicitudesNuevas
+            : [
+                solicitudesNuevas
+            ];
+
+
     solicitudes.push(
-        solicitud
+        ...nuevasSolicitudes
+    );
+
+
+    const borradorActual =
+        localStorage.getItem(
+            STORAGE_KEY
+        );
+
+
+    localStorage.removeItem(
+        STORAGE_KEY
     );
 
 
@@ -3120,6 +3848,29 @@ function guardarSolicitudFinal(
         return true;
 
     } catch (error) {
+
+        if (
+            borradorActual !== null
+        ) {
+
+            try {
+
+                localStorage.setItem(
+                    STORAGE_KEY,
+                    borradorActual
+                );
+
+            } catch (errorRestaurando) {
+
+                console.error(
+                    "Error restaurando borrador:",
+                    errorRestaurando
+                );
+
+            }
+
+        }
+
 
         console.error(
             "Error guardando solicitud:",
@@ -3141,7 +3892,7 @@ function guardarSolicitudFinal(
 
 
 /* ============================================================
-   40. ENVIAR SOLICITUD
+   41. ENVIAR SOLICITUD
    ============================================================ */
 
 function enviarSolicitud() {
@@ -3181,6 +3932,32 @@ function enviarSolicitud() {
 
 
         mostrarPaso(3);
+
+        return;
+
+    }
+
+
+    if (
+        !validarCanchasGuardadasConFotos()
+    ) {
+
+        mostrarPaso(3);
+
+        renderizarCanchas();
+
+        return;
+
+    }
+
+
+    if (
+        !validarCanchasGuardadasConPrecio()
+    ) {
+
+        mostrarPaso(3);
+
+        renderizarCanchas();
 
         return;
 
@@ -3230,61 +4007,11 @@ function enviarSolicitud() {
 
 
     /* ========================================================
-       CREAR SOLICITUD
+       CREAR SOLICITUDES
        ======================================================== */
 
-    const solicitud = {
-
-        id:
-            `SOL-${Date.now()}`,
-
-        organizacion: {
-            ...registroComplejo.organizacion
-        },
-
-        complejo: {
-
-            ...registroComplejo.complejo,
-
-            prestaciones: [
-                ...registroComplejo
-                    .complejo
-                    .prestaciones
-            ]
-
-        },
-
-        canchas:
-            registroComplejo
-                .canchas
-                .map(
-                    cancha => ({
-
-                        ...cancha,
-
-                        duraciones: [
-                            ...(cancha.duraciones || [])
-                        ],
-
-                        fotos: [
-                            ...(cancha.fotos || [])
-                        ]
-
-                    })
-                ),
-
-        comoNosConociste:
-            registroComplejo
-                .comoNosConociste,
-
-        estado:
-            "pendiente",
-
-        fechaSolicitud:
-            new Date()
-                .toISOString()
-
-    };
+    const solicitudesCancha =
+        crearSolicitudesPorCancha();
 
 
     /* ========================================================
@@ -3293,7 +4020,7 @@ function enviarSolicitud() {
 
     const guardado =
         guardarSolicitudFinal(
-            solicitud
+            solicitudesCancha
         );
 
 
@@ -3313,33 +4040,40 @@ function enviarSolicitud() {
         gigantes de las imágenes.
     */
 
-    const solicitudConsola =
+    const solicitudesConsola =
         JSON.parse(
             JSON.stringify(
-                solicitud
+                solicitudesCancha
             )
         );
 
 
-    solicitudConsola
-        .canchas
+    solicitudesConsola
         .forEach(
-            cancha => {
+            solicitud => {
 
-                cancha.fotos =
-                    cancha.fotos.map(
-                        foto => ({
+                solicitud
+                    .canchas
+                    .forEach(
+                        cancha => {
 
-                            nombre:
-                                foto.nombre,
+                            cancha.fotos =
+                                cancha.fotos.map(
+                                    foto => ({
 
-                            tipo:
-                                foto.tipo,
+                                        nombre:
+                                            foto.nombre,
 
-                            dataUrl:
-                                "[imagen almacenada]"
+                                        tipo:
+                                            foto.tipo,
 
-                        })
+                                        dataUrl:
+                                            "[imagen almacenada]"
+
+                                    })
+                                );
+
+                        }
                     );
 
             }
@@ -3361,7 +4095,7 @@ function enviarSolicitud() {
 
     console.log(
         JSON.stringify(
-            solicitudConsola,
+            solicitudesConsola,
             null,
             4
         )
@@ -3369,8 +4103,8 @@ function enviarSolicitud() {
 
 
     console.log(
-        "Solicitud completa:",
-        solicitud
+        "Solicitudes completas:",
+        solicitudesCancha
     );
 
 
@@ -3388,9 +4122,13 @@ function enviarSolicitud() {
        ======================================================== */
 
     mostrarAlerta(
-        "La solicitud fue enviada correctamente y quedó pendiente de revisión.",
+        solicitudesCancha.length === 1
+            ? "La solicitud fue enviada correctamente y quedo pendiente de revision."
+            : `Se enviaron ${solicitudesCancha.length} solicitudes, una por cada cancha creada.`,
         "success",
-        "Solicitud enviada"
+        solicitudesCancha.length === 1
+            ? "Solicitud enviada"
+            : "Solicitudes enviadas"
     );
 
 
@@ -3837,6 +4575,24 @@ function configurarEventos() {
                 }
 
 
+                if (
+                    !validarCanchasGuardadasConFotos()
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    !validarCanchasGuardadasConPrecio()
+                ) {
+
+                    return;
+
+                }
+
+
                 mostrarPaso(4);
 
             }
@@ -4046,6 +4802,36 @@ function configurarEventos() {
     /* ========================================================
        CARGAR FOTOS
        ======================================================== */
+
+    document
+        .querySelector(
+            ".photo-upload"
+        )
+        ?.addEventListener(
+            "click",
+            event => {
+
+                const inputFotos =
+                    obtenerElemento(
+                        "courtPhotos"
+                    );
+
+
+                if (!inputFotos) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+
+                inputFotos.click();
+
+            }
+        );
+
 
     obtenerElemento(
         "courtPhotos"

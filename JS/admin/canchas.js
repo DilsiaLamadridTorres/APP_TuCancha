@@ -1,476 +1,1204 @@
-// 1. Importación del array exportado desde lista-canchas.js
-import { canchas } from '../complejos/lista-canchas.js';
+const API_URL = "https://tucanchabackend-production.up.railway.app/api";
 
-// ============================================================
-// CANCHAS PUBLICADAS DESDE EL DASHBOARD ADMINISTRATIVO
-// ============================================================
+const IMAGEN_DEFAULT = "../img/foto.canchas.jpg";
 
-const CANCHAS_PUBLICADAS_KEY = "tucancha_canchas_publicadas";
-const SOLICITUDES_KEY = "tucancha_solicitudes_complejos";
-const IMAGEN_CANCHA_DEFAULT = "../img/foto.canchas.jpg";
-const HORARIO_PREDETERMINADO = "Lunes a domingo, 8:00 AM - 10:00 PM";
+let canchas = [];
 
-function obtenerUrlFoto(foto) {
-    if (typeof foto === "string") {
+let cantidadMostrada = 10;
+
+
+/* ============================================================
+   INICIO
+   ============================================================ */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+        await cargarCanchasActivas();
+
+        configurarBusqueda();
+
+        configurarFiltros();
+
+        configurarVerMas();
+
+    }
+);
+
+
+/* ============================================================
+   CARGAR CANCHAS ACTIVAS
+   ============================================================ */
+
+async function cargarCanchasActivas() {
+
+    const contenedor =
+        document.getElementById("lista-canchas");
+
+    if (!contenedor) {
+        return;
+    }
+
+    try {
+
+        const token =
+            sessionStorage.getItem("access_token");
+
+        if (!token) {
+
+            mostrarMensaje(
+                "No existe una sesión activa."
+            );
+
+            return;
+        }
+
+        /*
+         * Obtener solamente canchas activas
+         */
+        const response =
+            await fetch(
+                `${API_URL}/canchas/activas`,
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`
+                    }
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Error ${response.status} al obtener las canchas.`
+            );
+        }
+
+        const canchasBackend =
+            await response.json();
+
+        console.log(
+            "Canchas activas:",
+            canchasBackend
+        );
+
+        /*
+         * Para cada cancha obtenemos
+         * el complejo y sus fotos.
+         */
+        canchas =
+            await Promise.all(
+                canchasBackend.map(
+                    async cancha => {
+
+                        const complejo =
+                            await obtenerComplejo(
+                                cancha.idComplejo,
+                                token
+                            );
+
+                        const fotos =
+                            await obtenerFotosComplejo(
+                                cancha.idComplejo,
+                                token
+                            );
+
+                        return {
+
+                            ...cancha,
+
+                            complejo:
+                                complejo,
+
+                            fotos:
+                                fotos,
+
+                            empresa:
+                                complejo?.nombreComplejo
+                                ||
+                                "Complejo deportivo",
+
+                            ubicacion:
+                                obtenerUbicacion(
+                                    complejo
+                                ),
+
+                            /*
+                             * Normalizamos precio
+                             */
+                            precio:
+                                Number(
+                                    cancha.precioHora
+                                )
+
+                        };
+
+                    }
+                )
+            );
+
+        console.log(
+            "Canchas completas:",
+            canchas
+        );
+
+        cantidadMostrada = 10;
+
+        mostrarCanchas(
+            canchas
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando canchas:",
+            error
+        );
+
+        mostrarMensaje(
+            error.message ||
+            "No fue posible cargar las canchas."
+        );
+    }
+}
+
+
+/* ============================================================
+   OBTENER COMPLEJO
+   ============================================================ */
+
+async function obtenerComplejo(
+    idComplejo,
+    token
+) {
+
+    const response =
+        await fetch(
+            `${API_URL}/complejos/${idComplejo}`,
+            {
+                method: "GET",
+
+                headers: {
+                    "Authorization":
+                        `Bearer ${token}`
+                }
+            }
+        );
+
+    if (!response.ok) {
+
+        throw new Error(
+            `No se pudo obtener el complejo ${idComplejo}.`
+        );
+    }
+
+    return await response.json();
+}
+
+
+/* ============================================================
+   OBTENER FOTOS DEL COMPLEJO
+   ============================================================ */
+
+async function obtenerFotosComplejo(
+    idComplejo,
+    token
+) {
+
+    const response =
+        await fetch(
+            `${API_URL}/complejos/${idComplejo}/fotos`,
+            {
+                method: "GET",
+
+                headers: {
+                    "Authorization":
+                        `Bearer ${token}`
+                }
+            }
+        );
+
+    if (!response.ok) {
+
+        /*
+         * No tener fotos no debe impedir
+         * mostrar la cancha.
+         */
+        console.warn(
+            `No se pudieron obtener las fotos del complejo ${idComplejo}.`
+        );
+
+        return [];
+    }
+
+    const datos =
+        await response.json();
+
+    /*
+     * El endpoint podría devolver:
+     *
+     * un objeto
+     * o
+     * un arreglo
+     *
+     * Normalizamos ambos casos.
+     */
+
+    if (Array.isArray(datos)) {
+
+        return datos;
+    }
+
+    if (datos) {
+
+        return [datos];
+    }
+
+    return [];
+}
+
+
+/* ============================================================
+   OBTENER UBICACIÓN
+   ============================================================ */
+
+function obtenerUbicacion(
+    complejo
+) {
+
+    if (!complejo) {
+
+        return "Ubicación no especificada";
+    }
+
+    const ciudad =
+        complejo.ciudad || "";
+
+    const provincia =
+        complejo.provincia || "";
+
+    if (
+        ciudad &&
+        provincia
+    ) {
+
+        return `${ciudad}, ${provincia}`;
+    }
+
+    return (
+        ciudad ||
+        provincia ||
+        complejo.direccion ||
+        "Ubicación no especificada"
+    );
+}
+
+
+/* ============================================================
+   OBTENER URL DE FOTO
+   ============================================================ */
+
+function obtenerUrlFoto(
+    foto
+) {
+
+    if (!foto) {
+
+        return "";
+    }
+
+    /*
+     * Si ya es una URL
+     */
+    if (
+        typeof foto === "string"
+    ) {
+
         return foto;
     }
 
-    if (foto?.dataUrl) {
+    /*
+     * URL devuelta por backend
+     */
+    if (
+        foto.url
+    ) {
+
+        if (
+            foto.url.startsWith(
+                "http://"
+            ) ||
+            foto.url.startsWith(
+                "https://"
+            )
+        ) {
+
+            return foto.url;
+        }
+
+        return (
+            API_URL.replace(
+                "/api",
+                ""
+            )
+            +
+            foto.url
+        );
+    }
+
+    /*
+     * Compatibilidad con imágenes
+     * antiguas del frontend
+     */
+    if (
+        foto.dataUrl
+    ) {
+
         return foto.dataUrl;
     }
 
     return "";
 }
 
-function obtenerImagenCancha(cancha) {
-    if (cancha.imagen) {
-        return obtenerUrlFoto(cancha.imagen) || IMAGEN_CANCHA_DEFAULT;
-    }
+
+/* ============================================================
+   IMAGEN PRINCIPAL DEL COMPLEJO
+   ============================================================ */
+
+function obtenerImagenCancha(
+    cancha
+) {
 
     if (
-        Array.isArray(cancha.fotos) &&
+        Array.isArray(
+            cancha.fotos
+        ) &&
         cancha.fotos.length > 0
     ) {
-        return obtenerUrlFoto(cancha.fotos[0]) || IMAGEN_CANCHA_DEFAULT;
+
+        const url =
+            obtenerUrlFoto(
+                cancha.fotos[0]
+            );
+
+        if (url) {
+
+            return url;
+        }
     }
 
-    return IMAGEN_CANCHA_DEFAULT;
+    return IMAGEN_DEFAULT;
 }
 
-function formatearTextoSimple(valor) {
-    if (!valor) {
-        return "";
-    }
 
-    return String(valor)
-        .replace(/-/g, " ")
-        .replace(/\b\w/g, letra => letra.toUpperCase());
-}
+/* ============================================================
+   RENDERIZAR CANCHAS
+   ============================================================ */
 
-function obtenerUbicacionCancha(cancha) {
-    if (cancha.ubicacion) {
-        return cancha.ubicacion;
-    }
+function mostrarCanchas(
+    lista
+) {
 
-    const ciudad = formatearTextoSimple(cancha.complejo?.ciudad);
-    const provincia = formatearTextoSimple(cancha.complejo?.provincia);
-
-    if (ciudad && provincia) {
-        return `${ciudad}, ${provincia}`;
-    }
-
-    return ciudad
-        || provincia
-        || cancha.complejo?.direccion
-        || "UbicaciÃ³n no especificada";
-}
-
-function normalizarPrecio(valor) {
-    if (
-        typeof valor === "number" &&
-        !Number.isNaN(valor)
-    ) {
-        return valor;
-    }
-
-    if (
-        typeof valor === "string" &&
-        valor.trim()
-    ) {
-        const numero = Number(
-            valor.replace(/[^\d]/g, "")
+    const listaCanchas =
+        document.getElementById(
+            "lista-canchas"
         );
 
-        return Number.isNaN(numero)
-            ? null
-            : numero;
+    if (!listaCanchas) {
+
+        return;
     }
 
-    return null;
-}
+    listaCanchas.innerHTML = "";
 
-function normalizarCanchaPublicada(cancha) {
-    const precio = normalizarPrecio(
-        cancha.precio || cancha.precioPorHora
-    );
-
-    return {
-        ...cancha,
-        empresa: cancha.empresa || cancha.complejo?.nombre || "Complejo deportivo",
-        ubicacion: obtenerUbicacionCancha(cancha),
-        calificacion: cancha.calificacion || "Nueva",
-        precio: precio,
-        precioPorHora: precio,
-        imagen: obtenerImagenCancha(cancha),
-        descripcion: cancha.descripcion || cancha.complejo?.descripcion || "Cancha publicada por TuCancha.",
-        horario: cancha.horario ||
-            cancha.horarioAtencion ||
-            cancha.complejo?.horarioAtencion ||
-            HORARIO_PREDETERMINADO,
-        horarioAtencion: cancha.horarioAtencion ||
-            cancha.horario ||
-            cancha.complejo?.horarioAtencion ||
-            HORARIO_PREDETERMINADO,
-        disponible: true,
-        publicada: true
-    };
-}
-
-function canchaEstaPublicada(cancha) {
-    const estado = cancha?.estado || "";
-
-    return cancha?.publicada === true ||
-        estado === "publicada" ||
-        estado === "aprobada";
-}
-
-function solicitudEstaAceptada(solicitud) {
-    const estado = solicitud?.estado || "";
-
-    return estado === "publicada" ||
-        estado === "aprobada";
-}
-
-function obtenerCanchasSolicitud(solicitud) {
     if (
-        Array.isArray(solicitud?.canchas) &&
-        solicitud.canchas.length > 0
+        !Array.isArray(lista) ||
+        lista.length === 0
     ) {
-        return solicitud.canchas;
+
+        mostrarMensaje(
+            "No hay canchas disponibles."
+        );
+
+        return;
     }
 
-    if (solicitud?.cancha) {
-        return [solicitud.cancha];
+    const limite =
+        Math.min(
+            cantidadMostrada,
+            lista.length
+        );
+
+    for (
+        let i = 0;
+        i < limite;
+        i++
+    ) {
+
+        const card =
+            crearCardCancha(
+                lista[i]
+            );
+
+        listaCanchas.appendChild(
+            card
+        );
     }
 
-    return [];
+    actualizarContador(
+        lista.length
+    );
 }
 
-function crearCanchaDesdeSolicitud(solicitud, cancha, index) {
-    return {
-        ...cancha,
-        id: cancha.id || solicitud.canchaId || `${solicitud.id}-cancha-${index + 1}`,
-        solicitudId: solicitud.id,
-        nombre: cancha.nombre || solicitud.complejo?.nombre || "Cancha publicada",
-        empresa: solicitud.complejo?.nombre || cancha.empresa || "Complejo deportivo",
-        ubicacion: cancha.ubicacion,
-        precio: cancha.precio ||
-            cancha.precioPorHora ||
-            solicitud.precio ||
-            solicitud.precioPorHora ||
-            solicitud.complejo?.precio ||
-            solicitud.complejo?.precioPorHora,
-        descripcion: cancha.descripcion ||
-            solicitud.descripcion ||
-            solicitud.complejo?.descripcion,
-        horario: cancha.horario ||
-            cancha.horarioAtencion ||
-            solicitud.horarioAtencion ||
-            solicitud.complejo?.horarioAtencion ||
-            HORARIO_PREDETERMINADO,
-        horarioAtencion: cancha.horarioAtencion ||
-            cancha.horario ||
-            solicitud.horarioAtencion ||
-            solicitud.complejo?.horarioAtencion ||
-            HORARIO_PREDETERMINADO,
-        complejo: {
-            ...(solicitud.complejo || {})
-        },
-        organizacion: {
-            ...(solicitud.organizacion || {})
-        },
-        prestaciones: solicitud.complejo?.prestaciones || [],
-        publicada: true,
-        estado: "publicada",
-        fechaPublicacion: solicitud.fechaPublicacion || solicitud.fechaSolicitud
-    };
-}
 
-function agregarCanchaPublicada(canchasPublicadas, cancha) {
-    const canchaNormalizada = normalizarCanchaPublicada(cancha);
+/* ============================================================
+   CREAR CARD
+   ============================================================ */
 
-    const existe = canchasPublicadas.some(
-        publicada =>
-            String(publicada.id) === String(canchaNormalizada.id) &&
-            String(publicada.solicitudId) === String(canchaNormalizada.solicitudId)
+function crearCardCancha(
+    cancha
+) {
+
+    const card =
+        document.createElement(
+            "article"
+        );
+
+    card.classList.add(
+        "cancha-card"
     );
 
-    if (!existe) {
-        canchasPublicadas.push(canchaNormalizada);
+
+    /* ========================================================
+       IMAGEN
+       ======================================================== */
+
+    const imagen =
+        document.createElement(
+            "img"
+        );
+
+    imagen.src =
+        obtenerImagenCancha(
+            cancha
+        );
+
+    imagen.alt =
+        cancha.nombre ||
+        "Cancha";
+
+    /*
+     * Si la imagen falla,
+     * mostramos la predeterminada.
+     */
+    imagen.addEventListener(
+        "error",
+        () => {
+
+            if (
+                imagen.src.indexOf(
+                    IMAGEN_DEFAULT
+                ) === -1
+            ) {
+
+                imagen.src =
+                    IMAGEN_DEFAULT;
+            }
+
+        }
+    );
+
+    card.appendChild(
+        imagen
+    );
+
+
+    /* ========================================================
+       CONTENIDO
+       ======================================================== */
+
+    const contenido =
+        document.createElement(
+            "div"
+        );
+
+    contenido.classList.add(
+        "cancha-card__body"
+    );
+
+
+    /* ========================================================
+       NOMBRE CANCHA
+       ======================================================== */
+
+    const nombre =
+        document.createElement(
+            "h3"
+        );
+
+    nombre.classList.add(
+        "cancha-card__title"
+    );
+
+    nombre.textContent =
+        cancha.nombre ||
+        "Cancha";
+
+    contenido.appendChild(
+        nombre
+    );
+
+
+    /* ========================================================
+       NOMBRE COMPLEJO
+       ======================================================== */
+
+    const empresa =
+        document.createElement(
+            "p"
+        );
+
+    empresa.classList.add(
+        "cancha-card__company"
+    );
+
+    empresa.textContent =
+        cancha.complejo
+            ?.nombreComplejo
+        ||
+        cancha.empresa
+        ||
+        "Complejo deportivo";
+
+    contenido.appendChild(
+        empresa
+    );
+
+
+    /* ========================================================
+       UBICACIÓN
+       ======================================================== */
+
+    const ubicacion =
+        document.createElement(
+            "p"
+        );
+
+    ubicacion.classList.add(
+        "cancha-card__location"
+    );
+
+    const iconoUbicacion =
+        document.createElement(
+            "i"
+        );
+
+    iconoUbicacion.classList.add(
+        "bi",
+        "bi-geo-alt-fill"
+    );
+
+    ubicacion.appendChild(
+        iconoUbicacion
+    );
+
+    ubicacion.append(
+        ` ${cancha.ubicacion}`
+    );
+
+    contenido.appendChild(
+        ubicacion
+    );
+
+
+    /* ========================================================
+       CALIFICACIÓN
+       ======================================================== */
+
+    const calificacion =
+        document.createElement(
+            "span"
+        );
+
+    calificacion.classList.add(
+        "cancha-card__rating"
+    );
+
+    calificacion.textContent =
+        "⭐ Nueva";
+
+    contenido.appendChild(
+        calificacion
+    );
+
+
+    /* ========================================================
+       PRECIO
+       ======================================================== */
+
+    const precio =
+        document.createElement(
+            "p"
+        );
+
+    precio.classList.add(
+        "cancha-card__price"
+    );
+
+    const precioNumerico =
+        Number(
+            cancha.precioHora
+        );
+
+    if (
+        Number.isFinite(
+            precioNumerico
+        )
+    ) {
+
+        precio.textContent =
+            `$${precioNumerico.toLocaleString(
+                "es-CO"
+            )} / hora`;
+
+    } else {
+
+        precio.textContent =
+            "Precio no especificado";
+    }
+
+    contenido.appendChild(
+        precio
+    );
+
+
+    /* ========================================================
+       BOTÓN RESERVAR
+       ======================================================== */
+
+    const botonReservar =
+        document.createElement(
+            "button"
+        );
+
+    botonReservar.type =
+        "button";
+
+    botonReservar.textContent =
+        "Reservar";
+
+    botonReservar.classList.add(
+        "cancha-card__button"
+    );
+
+    botonReservar.addEventListener(
+        "click",
+        () => {
+
+            /*
+             * Guardamos temporalmente
+             * la cancha seleccionada
+             * para reservas.
+             */
+            localStorage.setItem(
+                "cancha_seleccionada",
+                JSON.stringify(
+                    cancha
+                )
+            );
+
+            window.location.href =
+                "../html/reservas-cancha.html";
+        }
+    );
+
+    contenido.appendChild(
+        botonReservar
+    );
+
+
+    card.appendChild(
+        contenido
+    );
+
+    return card;
+}
+
+
+/* ============================================================
+   CONTADOR
+   ============================================================ */
+
+function actualizarContador(
+    cantidad
+) {
+
+    const cantidadCanchas =
+        document.querySelector(
+            ".canchas-list__header h2 span"
+        );
+
+    const resultados =
+        document.querySelector(
+            ".canchas-list__header p"
+        );
+
+    if (cantidadCanchas) {
+
+        cantidadCanchas.textContent =
+            cantidad;
+    }
+
+    if (resultados) {
+
+        resultados.textContent =
+            `${cantidad} resultados encontrados`;
     }
 }
 
-function obtenerCanchasPublicadas() {
-    const canchasPublicadas = [];
 
-try {
-    const datosPublicados = localStorage.getItem(CANCHAS_PUBLICADAS_KEY);
+/* ============================================================
+   BÚSQUEDA
+   ============================================================ */
 
-    if (datosPublicados) {
-        const publicaciones = JSON.parse(datosPublicados);
+function configurarBusqueda() {
 
-        if (Array.isArray(publicaciones)) {
-            publicaciones
-                .filter(canchaEstaPublicada)
-                .forEach(cancha =>
-                    agregarCanchaPublicada(canchasPublicadas, cancha)
+    const formulario =
+        document.querySelector(
+            ".canchas-search"
+        );
+
+    const input =
+        document.getElementById(
+            "buscar-cancha"
+        );
+
+    if (
+        !formulario ||
+        !input
+    ) {
+
+        return;
+    }
+
+    formulario.addEventListener(
+        "submit",
+        event => {
+
+            event.preventDefault();
+
+            const texto =
+                input.value
+                    .toLowerCase()
+                    .trim();
+
+            const resultado =
+                canchas.filter(
+                    cancha => {
+
+                        const nombre =
+                            String(
+                                cancha.nombre ||
+                                ""
+                            ).toLowerCase();
+
+                        const ubicacion =
+                            String(
+                                cancha.ubicacion ||
+                                ""
+                            ).toLowerCase();
+
+                        const complejo =
+                            String(
+                                cancha.empresa ||
+                                ""
+                            ).toLowerCase();
+
+                        return (
+                            nombre.includes(
+                                texto
+                            )
+                            ||
+                            ubicacion.includes(
+                                texto
+                            )
+                            ||
+                            complejo.includes(
+                                texto
+                            )
+                        );
+                    }
                 );
+
+            cantidadMostrada =
+                10;
+
+            mostrarCanchas(
+                resultado
+            );
         }
-    }
-} catch (error) {
-    console.error("Error leyendo canchas publicadas:", error);
+    );
 }
 
-try {
-    const datosSolicitudes = localStorage.getItem(SOLICITUDES_KEY);
 
-    if (datosSolicitudes) {
-        const solicitudes = JSON.parse(datosSolicitudes);
+/* ============================================================
+   FILTROS
+   ============================================================ */
 
-        if (Array.isArray(solicitudes)) {
-            solicitudes
-                .filter(solicitudEstaAceptada)
-                .forEach(solicitud => {
-                    obtenerCanchasSolicitud(solicitud)
-                        .forEach((cancha, index) => {
-                            agregarCanchaPublicada(
-                                canchasPublicadas,
-                                crearCanchaDesdeSolicitud(
-                                    solicitud,
-                                    cancha,
-                                    index
-                                )
-                            );
-                        });
-                });
-        }
-    }
-} catch (error) {
-    console.error("Error leyendo solicitudes aceptadas:", error);
-}
+function configurarFiltros() {
 
-    return canchasPublicadas;
-}
-
-// 2. Unimos las canchas publicadas en LocalStorage al array importado
-const canchasPublicadas = obtenerCanchasPublicadas();
-canchas.unshift(...canchasPublicadas);
-
-// 3. Selección de elementos del DOM
-const listaCanchas = document.getElementById("lista-canchas");
-let cantidadMostrada = 10;
-const botonVerMas = document.querySelector(".btn-ver-mas");
-const botonesFiltros = document.querySelectorAll(".canchas-filter");
-
-const botonUbicacion = botonesFiltros[0];
-const botonPrecio = botonesFiltros[1];
-const botonDisponibilidad = botonesFiltros[2];
-
-botonDisponibilidad.addEventListener("click", () => {
-    const menuExistente = document.querySelector(".menu-disponibilidad");
-
-    if (menuExistente) {
-        menuExistente.remove();
-        return;
-    }
-    const menuDisponibilidad = document.createElement("div");
-    menuDisponibilidad.classList.add("menu-disponibilidad");
-
-    botonDisponibilidad.parentElement.appendChild(menuDisponibilidad);
-
-    const opcionDisponible = document.createElement("button");
-    opcionDisponible.textContent = "Disponibles";
-
-    opcionDisponible.addEventListener("click", () => {
-        const canchasFiltradas = canchas.filter(cancha =>
-            cancha.disponible === true
+    const botones =
+        document.querySelectorAll(
+            ".canchas-filter"
         );
 
-        mostrarCanchas(canchasFiltradas);
-    });
+    if (
+        botones.length < 3
+    ) {
 
-    menuDisponibilidad.appendChild(opcionDisponible);
-
-});
-
-
-botonPrecio.addEventListener("click", () => {
-    const menuExistente = document.querySelector(".menu-precios");
-    if (menuExistente) {
-        menuExistente.remove();
         return;
     }
-    const menuPrecios = document.createElement("div");
-    menuPrecios.classList.add("menu-precios");
 
-    botonPrecio.parentElement.appendChild(menuPrecios);
+    /*
+     * UBICACIÓN
+     */
+    botones[0].addEventListener(
+        "click",
+        () => {
 
-    const opcionesPrecio = [
+            const ubicaciones =
+                [
+                    ...new Set(
+                        canchas.map(
+                            cancha =>
+                                cancha.ubicacion
+                        )
+                    )
+                ];
+
+            mostrarMenuFiltro(
+                botones[0],
+                "menu-ubicaciones",
+                ubicaciones
+            );
+        }
+    );
+
+
+    /*
+     * PRECIO
+     */
+    botones[1].addEventListener(
+        "click",
+        () => {
+
+            mostrarMenuPrecio(
+                botones[1]
+            );
+        }
+    );
+
+
+    /*
+     * DISPONIBILIDAD
+     */
+    botones[2].addEventListener(
+        "click",
+        () => {
+
+            const resultado =
+                canchas.filter(
+                    cancha =>
+                        String(
+                            cancha.estado
+                        ).toUpperCase()
+                        ===
+                        "ACTIVA"
+                );
+
+            cantidadMostrada =
+                10;
+
+            mostrarCanchas(
+                resultado
+            );
+        }
+    );
+}
+
+
+/* ============================================================
+   MENÚ UBICACIÓN
+   ============================================================ */
+
+function mostrarMenuFiltro(
+    boton,
+    clase,
+    opciones
+) {
+
+    const existente =
+        document.querySelector(
+            `.${clase}`
+        );
+
+    if (existente) {
+
+        existente.remove();
+
+        return;
+    }
+
+    const menu =
+        document.createElement(
+            "div"
+        );
+
+    menu.classList.add(
+        clase
+    );
+
+    opciones.forEach(
+        opcionTexto => {
+
+            const opcion =
+                document.createElement(
+                    "button"
+                );
+
+            opcion.type =
+                "button";
+
+            opcion.textContent =
+                opcionTexto;
+
+            opcion.addEventListener(
+                "click",
+                () => {
+
+                    const resultado =
+                        canchas.filter(
+                            cancha =>
+                                cancha.ubicacion ===
+                                opcionTexto
+                        );
+
+                    cantidadMostrada =
+                        10;
+
+                    mostrarCanchas(
+                        resultado
+                    );
+
+                    menu.remove();
+                }
+            );
+
+            menu.appendChild(
+                opcion
+            );
+        }
+    );
+
+    boton.parentElement.appendChild(
+        menu
+    );
+}
+
+
+/* ============================================================
+   MENÚ PRECIO
+   ============================================================ */
+
+function mostrarMenuPrecio(
+    boton
+) {
+
+    const existente =
+        document.querySelector(
+            ".menu-precios"
+        );
+
+    if (existente) {
+
+        existente.remove();
+
+        return;
+    }
+
+    const menu =
+        document.createElement(
+            "div"
+        );
+
+    menu.classList.add(
+        "menu-precios"
+    );
+
+    const opciones = [
         "Menos de $50.000",
         "$50.000 - $80.000",
         "Más de $80.000"
     ];
-    opcionesPrecio.forEach(opcionPrecio => {
-        const opcion = document.createElement("button");
-        opcion.textContent = opcionPrecio;
 
-        opcion.addEventListener("click", () => {
-            const canchasFiltradas = canchas.filter(cancha => {
-                if (opcionPrecio === "Menos de $50.000") {
-                    return cancha.precio < 50000;
+    opciones.forEach(
+        texto => {
+
+            const opcion =
+                document.createElement(
+                    "button"
+                );
+
+            opcion.type =
+                "button";
+
+            opcion.textContent =
+                texto;
+
+            opcion.addEventListener(
+                "click",
+                () => {
+
+                    let resultado =
+                        [];
+
+                    if (
+                        texto ===
+                        "Menos de $50.000"
+                    ) {
+
+                        resultado =
+                            canchas.filter(
+                                cancha =>
+                                    Number(
+                                        cancha.precioHora
+                                    )
+                                    < 50000
+                            );
+                    }
+
+                    else if (
+                        texto ===
+                        "$50.000 - $80.000"
+                    ) {
+
+                        resultado =
+                            canchas.filter(
+                                cancha => {
+
+                                    const precio =
+                                        Number(
+                                            cancha.precioHora
+                                        );
+
+                                    return (
+                                        precio >= 50000 &&
+                                        precio <= 80000
+                                    );
+                                }
+                            );
+                    }
+
+                    else if (
+                        texto ===
+                        "Más de $80.000"
+                    ) {
+
+                        resultado =
+                            canchas.filter(
+                                cancha =>
+                                    Number(
+                                        cancha.precioHora
+                                    )
+                                    > 80000
+                            );
+                    }
+
+                    cantidadMostrada =
+                        10;
+
+                    mostrarCanchas(
+                        resultado
+                    );
+
+                    menu.remove();
                 }
-                if (opcionPrecio === "$50.000 - $80.000") {
-                    return cancha.precio >= 50000 && cancha.precio <= 80000;
-                }
-                if (opcionPrecio === "Más de $80.000") {
-                    return cancha.precio > 80000;
-                }
+            );
+
+            menu.appendChild(
+                opcion
+            );
+        }
+    );
+
+    boton.parentElement.appendChild(
+        menu
+    );
+}
 
 
-            });
+/* ============================================================
+   VER MÁS
+   ============================================================ */
 
-            mostrarCanchas(canchasFiltradas);
+function configurarVerMas() {
 
-        });
+    const boton =
+        document.querySelector(
+            ".btn-ver-mas"
+        );
 
-        menuPrecios.appendChild(opcion);
-    });
+    if (!boton) {
 
-});
-
-botonUbicacion.addEventListener("click", () => {
-    const menuExistente = document.querySelector(".menu-ubicaciones");
-
-    if (menuExistente) {
-        menuExistente.remove();
         return;
     }
-    const ubicaciones = [...new Set(
-        canchas.map(cancha => cancha.ubicacion)
 
-    )];
+    boton.addEventListener(
+        "click",
+        () => {
 
-    const menuUbicaciones = document.createElement("div");
-    menuUbicaciones.classList.add("menu-ubicaciones");
-    botonUbicacion.parentElement.appendChild(menuUbicaciones);
-    ubicaciones.forEach(ubicacion => {
-        const opcion = document.createElement("button");
-        opcion.textContent = ubicacion;
+            cantidadMostrada += 10;
 
-        opcion.addEventListener("click", () => {
-            const canchasFiltradas = canchas.filter(cancha =>
-                cancha.ubicacion === ubicacion
+            mostrarCanchas(
+                canchas
             );
-            mostrarCanchas(canchasFiltradas);
-        });
-
-        menuUbicaciones.appendChild(opcion);
-    });
-
-});
-
-
-
-botonVerMas.addEventListener("click", () => {
-    cantidadMostrada = cantidadMostrada + 10;
-    mostrarCanchas(canchas);
-
-});
-
-const cantidadCanchas = document.querySelector(".canchas-list__header h2 span");
-const resultados = document.querySelector(".canchas-list__header p");
-const formularioBusqueda = document.querySelector(".canchas-search");
-const inputBusqueda = document.getElementById("buscar-cancha");
-
-formularioBusqueda.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const textoBuscado = inputBusqueda.value.toLocaleLowerCase().trim();
-    const canchasFiltradas = canchas.filter(cancha =>
-        cancha.nombre.toLowerCase().includes(textoBuscado) ||
-        cancha.ubicacion.toLowerCase().includes(textoBuscado)
-    );
-    mostrarCanchas(canchasFiltradas);
-});
-
-
-
-if (resultados) resultados.textContent = `${canchas.length} resultados encontrados`;
-if (cantidadCanchas) cantidadCanchas.textContent = canchas.length;
-
-// 4. Ciclo para renderizar la lista completa de canchas
-function mostrarCanchas(lista) {
-    listaCanchas.innerHTML = "";
-
-    for (let i = 0; i < cantidadMostrada && i < lista.length; i++) {
-        const card = document.createElement("article");
-        card.classList.add("cancha-card");
-
-        const imagen = document.createElement("img");
-        imagen.src = lista[i].imagen;
-        imagen.alt = lista[i].nombre;
-        card.appendChild(imagen);
-
-        const contenido = document.createElement("div");
-        contenido.classList.add("cancha-card__body");
-
-        const nombre = document.createElement("h3");
-        nombre.classList.add("cancha-card__title");
-        nombre.textContent = lista[i].nombre;
-        contenido.appendChild(nombre);
-
-        const empresa = document.createElement("p");
-        empresa.classList.add("cancha-card__company");
-        empresa.textContent = lista[i].empresa;
-        contenido.appendChild(empresa);
-
-        const ubicacion = document.createElement("p");
-        ubicacion.classList.add("cancha-card__location");
-
-        const iconoUbicacion = document.createElement("i");
-        iconoUbicacion.classList.add("bi", "bi-geo-alt-fill");
-        ubicacion.appendChild(iconoUbicacion);
-        ubicacion.append(" " + lista[i].ubicacion);
-        contenido.appendChild(ubicacion);
-
-        const calificacion = document.createElement("span");
-        calificacion.classList.add("cancha-card__rating");
-
-        const estrella = document.createElement("span");
-        estrella.textContent = "⭐️";
-        calificacion.appendChild(estrella);
-
-        const numeroCalificacion = document.createElement("span");
-        numeroCalificacion.textContent = lista[i].calificacion;
-        calificacion.appendChild(numeroCalificacion);
-        contenido.appendChild(calificacion);
-
-        const precio = document.createElement("p");
-        precio.classList.add("cancha-card__price");
-
-        if (typeof lista[i].precio === "number") {
-            precio.textContent = `$${lista[i].precio.toLocaleString("es-CO")} / hora`;
-        } else {
-            precio.textContent = "Precio no especificado";
         }
-        contenido.appendChild(precio);
-
-        // ============================================================
-        // BOTÓN RESERVAR (Dinámico para todas las canchas)
-        // ============================================================
-        const botonReservar = document.createElement("button");
-        botonReservar.textContent = "Reservar";
-        botonReservar.classList.add("cancha-card__button");
-
-        botonReservar.addEventListener("click", () => {
-            // Guarda los datos de la cancha elegida y redirige a la vista de reservas
-            localStorage.setItem("cancha_seleccionada", JSON.stringify(lista[i]));
-            window.location.href = "../html/reservas-cancha.html";
-        });
-
-        contenido.appendChild(botonReservar);
-        card.appendChild(contenido);
-
-        if (listaCanchas) listaCanchas.appendChild(card);
-    }
+    );
 }
-mostrarCanchas(canchas);
+
+
+/* ============================================================
+   MENSAJE
+   ============================================================ */
+
+function mostrarMensaje(
+    mensaje
+) {
+
+    const contenedor =
+        document.getElementById(
+            "lista-canchas"
+        );
+
+    if (!contenedor) {
+
+        return;
+    }
+
+    contenedor.innerHTML = `
+
+        <div class="canchas-empty-message">
+
+            <i class="bi bi-info-circle"></i>
+
+            <p>
+                ${mensaje}
+            </p>
+
+        </div>
+
+    `;
+}

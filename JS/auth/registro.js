@@ -105,7 +105,7 @@ registroForm.addEventListener("submit", async (event) => {
     };
     console.log(JSON.stringify(datos, null, 2));
     try {
-        const respuesta = await fetch("http://localhost:8080/api/usuarios", {
+        const respuesta = await fetch("https://tucanchabackend-production.up.railway.app/api/usuarios", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

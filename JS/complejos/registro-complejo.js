@@ -23,7 +23,7 @@ const SOLICITUDES_KEY = "tucancha_solicitudes_complejos";
 
 
 const HORARIO_PREDETERMINADO = "Lunes a domingo, 8:00 AM - 10:00 PM";
-const API_URL = "http://localhost:8080/api";
+const API_URL = "https://tucanchabackend-production.up.railway.app/api";
 
 // IDs reales creados por el backend
 let titularComplejoId = null;

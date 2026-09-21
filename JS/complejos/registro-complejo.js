@@ -3216,18 +3216,14 @@ async function guardarFotosEnBackend(fotos, token) {
    31. ELIMINAR CANCHA
    ============================================================ */
 
-function eliminarCancha(id) {
+async function eliminarCancha(id) {
 
-    const confirmar =
-        confirm(
-            "¿Seguro que deseas eliminar esta cancha?"
-        );
-
+    const confirmar = await window.showConfirm(
+        "¿Seguro que deseas eliminar esta cancha?"
+    );
 
     if (!confirmar) {
-
         return;
-
     }
 
 
@@ -4307,22 +4303,18 @@ function enviarSolicitud() {
    41. REINICIAR FORMULARIO
    ============================================================ */
 
-function reiniciarFormulario(
+async function reiniciarFormulario(
     preguntar = true
 ) {
 
     if (preguntar) {
 
-        const confirmar =
-            confirm(
-                "¿Seguro que deseas empezar de nuevo? Se eliminará el borrador actual."
-            );
-
+        const confirmar = await window.showConfirm(
+            "¿Seguro que deseas empezar de nuevo? Se eliminará el borrador actual."
+        );
 
         if (!confirmar) {
-
             return;
-
         }
 
     }

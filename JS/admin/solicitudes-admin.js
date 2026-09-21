@@ -983,14 +983,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 solicitud.complejo?.prestaciones || [],
 
             complejo:
-                {
-                    ...solicitud.complejo
-                },
+            {
+                ...solicitud.complejo
+            },
 
             organizacion:
-                {
-                    ...solicitud.organizacion
-                },
+            {
+                ...solicitud.organizacion
+            },
 
             publicada:
                 true,
@@ -1286,12 +1286,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <br>
 
-                ${
-                    solicitud
-                        ?.organizacion
-                        ?.telefono
-                    || "Sin teléfono"
-                }
+                ${solicitud
+                ?.organizacion
+                ?.telefono
+            || "Sin teléfono"
+            }
 
             </td>
 
@@ -1314,12 +1313,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <span
                     class="etiqueta-estado ${obtenerClaseEstado(
-                        estado
-                    )}"
+                estado
+            )}"
                 >
                     ${obtenerTextoEstado(
-                        estado
-                    )}
+                estado
+            )}
                 </span>
 
             </td>
@@ -1683,14 +1682,13 @@ document.addEventListener("DOMContentLoaded", () => {
             "tipo-cancha-detalle",
             `${obtenerNombreComplejo(
                 solicitud
-            )} · ${
-                cancha?.deporte
-                    ? formatearDeporte(
-                        cancha.deporte
-                    )
-                    : obtenerDeporte(
-                        solicitud
-                    )
+            )} · ${cancha?.deporte
+                ? formatearDeporte(
+                    cancha.deporte
+                )
+                : obtenerDeporte(
+                    solicitud
+                )
             }`
         );
 
@@ -1711,10 +1709,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         asignarTexto(
             "ciudad-detalle",
-            `${complejo.ciudad || ""}${
-                complejo.provincia
-                    ? ", " + complejo.provincia
-                    : ""
+            `${complejo.ciudad || ""}${complejo.provincia
+                ? ", " + complejo.provincia
+                : ""
             }`
         );
 
@@ -3042,7 +3039,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     botonRechazar?.addEventListener(
         "click",
-        () => {
+        async () => {
 
             if (
                 !idSolicitudSeleccionada
@@ -3052,19 +3049,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-
-            const confirmar =
-                confirm(
-                    "¿Estás seguro de que deseas rechazar esta solicitud?"
-                );
-
+            const confirmar = await window.showConfirm(
+                "¿Estás seguro de que deseas rechazar esta solicitud?"
+            );
 
             if (!confirmar) {
-
                 return;
-
             }
-
 
             cambiarEstadoSolicitud(
                 idSolicitudSeleccionada,

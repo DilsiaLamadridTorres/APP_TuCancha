@@ -57,12 +57,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // 4. Funcionalidad del botón Eliminar / Cancelar Reserva (Devuelve a canchas.html)
     const btnCancelar = document.getElementById("btn-cancelar-reserva");
     if (btnCancelar) {
-        btnCancelar.addEventListener("click", () => {
-            if (confirm("¿Estás seguro de que deseas cancelar esta reserva?")) {
-                localStorage.removeItem("reserva_seleccionada");
-                showToast("Reserva cancelada.", "success");
-                window.location.href = "canchas.html";
+        btnCancelar.addEventListener("click", async () => {
+            const confirmar = await window.showConfirm("¿Estás seguro de que deseas cancelar esta reserva?");
+
+            if (!confirmar) {
+                return;
             }
+
+            localStorage.removeItem("reserva_seleccionada");
+            showToast("Reserva cancelada.", "success");
+            window.location.href = "canchas.html";
         });
     }
 

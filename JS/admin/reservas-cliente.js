@@ -140,10 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (btnCancelar) {
-    btnCancelar.addEventListener("click", () => {
+    btnCancelar.addEventListener("click", async () => {
       if (!reservaSeleccionada) return;
 
-      const confirmar = confirm(
+      const confirmar = await window.showConfirm(
         "¿Seguro que deseas cancelar esta reserva? El horario quedará disponible."
       );
 

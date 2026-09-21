@@ -65,6 +65,7 @@ class DemoAuthProvider {
                 correo: correoNormalizado,
                 telefono,
                 passwordHash,
+                rol: "JUGADOR",
                 creadoEn: new Date().toISOString()
             }
         ];
@@ -223,13 +224,13 @@ class SupabaseAuthProvider {
         );
     }
     async logout(accessToken) {
-    return await this.request("/auth/v1/logout", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${accessToken}`
-        }
-    });
-}
+        return await this.request("/auth/v1/logout", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
+    }
 }
 
 
@@ -268,8 +269,14 @@ class AuthService {
         return this.provider.login(data);
     }
     logout() {
-    return this.provider.logout();
-}
+        const accessToken = sessionStorage.getItem("access_token");
+
+        if (typeof this.provider.logout !== "function") {
+            return Promise.resolve();
+        }
+
+        return this.provider.logout(accessToken);
+    }
 }
 
 

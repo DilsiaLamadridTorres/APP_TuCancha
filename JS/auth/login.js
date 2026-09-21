@@ -38,29 +38,13 @@ if (loginForm) {
             loginStatus.className =
                 "auth-status";
 
-            const respuesta = await fetch(
-                "http://localhost:8080/api/auth/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        correo: correo,
-                        password: contrasena
-                    })
-                }
-            );
+            const resultado = await window.authService.login({
+                correo,
+                contrasena
+            });
 
-            const resultado = await respuesta.json();
-
-            if (!respuesta.ok) {
-                throw new Error(
-                    resultado.message ||
-                    resultado.error ||
-                    "Correo o contraseña incorrectos."
-                );
-            }
+            const rol = resultado.rol || "JUGADOR";
+            const nombre = resultado.nombre || resultado.nombreCompleto || correo;
 
             // =========================================
             // GUARDAR INFORMACIÓN DEL USUARIO
@@ -68,14 +52,16 @@ if (loginForm) {
 
             sessionStorage.setItem(
                 "access_token",
-                resultado.token
+                resultado.access_token || resultado.token || resultado.id
             );
 
             sessionStorage.setItem(
                 "usuario",
                 JSON.stringify({
-                    nombre: resultado.nombre,
-                    rol: resultado.rol
+                    id: resultado.id,
+                    nombre,
+                    correo,
+                    rol
                 })
             );
 
@@ -115,7 +101,7 @@ if (loginForm) {
                 // Si no existe página anterior,
                 // usamos una ruta por defecto.
 
-                if (resultado.rol === "ADMIN") {
+                if (rol === "ADMIN") {
 
                     window.location.href =
                         "admin/inicio-admin.html";

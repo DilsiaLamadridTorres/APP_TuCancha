@@ -1,10 +1,23 @@
 const registroForm = document.querySelector("#registro-form");
 const registroStatus = document.querySelector("#registro-status");
 const registroSubmit = document.querySelector("#registro-submit");
+const connectionStatus = document.querySelector("#connection-status");
 const contrasena = document.getElementById("contrasena");
 const confirmarContrasenaInput = document.getElementById("confirmarContrasena");
 const mostrarContrasena = document.getElementById("mostrar-contrasena");
 const mostrarConfirmarContrasena = document.getElementById("mostrar-confirmar-contrasena");
+
+if (!window.authService) {
+    showStatus("El servicio de autenticación no está disponible.", "error");
+} else if (connectionStatus) {
+    window.authService.checkConnection()
+        .then((connection) => {
+            connectionStatus.textContent = connection.message;
+        })
+        .catch(() => {
+            connectionStatus.textContent = "Modo demostración activo.";
+        });
+}
 
 if (mostrarContrasena && contrasena) {
     mostrarContrasena.addEventListener("click", () => {
@@ -45,7 +58,7 @@ function setFieldError(field, message) {
         // Muestra/oculta el mensaje de error forzando 'd-block' (solución para campos envueltos en div)
         feedback.classList.toggle("d-block", hasError);
     }
-    
+
     return !hasError;
 }
 
@@ -97,31 +110,14 @@ registroForm.addEventListener("submit", async (event) => {
     showStatus("", "hidden");
 
     const datos = {
-        nombre: registroForm.elements.nombreCompleto.value.trim(),
+        nombreCompleto: registroForm.elements.nombreCompleto.value.trim(),
         correo: registroForm.elements.correo.value.trim(),
         telefono: registroForm.elements.telefono.value.trim(),
-        password: registroForm.elements.contrasena.value,
-        estado: registroForm.elements.terminos.checked
+        contrasena: registroForm.elements.contrasena.value
     };
-    console.log(JSON.stringify(datos, null, 2));
+
     try {
-        const respuesta = await fetch("http://localhost:8080/api/usuarios", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(datos)
-        });
-
-        const resultado = await respuesta.json();
-
-        if (!respuesta.ok) {
-            throw new Error(
-                typeof resultado === "string"
-                    ? resultado
-                    : "No se pudo crear la cuenta."
-            );
-        }
+        await window.authService.register(datos);
 
         showStatus("¡Cuenta creada correctamente!", "success");
 

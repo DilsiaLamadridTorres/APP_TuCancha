@@ -1,14 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Cargar los datos de la reserva guardados previamente en el localStorage
     const reservaGuardada = localStorage.getItem("reserva_seleccionada");
-    
+
     if (!reservaGuardada) {
         alert("No hay ninguna reserva en proceso.");
-        window.location.href = "../index.html"; 
+        window.location.href = "../index.html";
         return;
     }
 
-    const reserva = JSON.parse(reservaGuardada);
+    let reserva;
+
+    try {
+        reserva = JSON.parse(reservaGuardada);
+    } catch (error) {
+        localStorage.removeItem("reserva_seleccionada");
+        alert("La reserva guardada no es válida.");
+        window.location.href = "canchas.html";
+        return;
+    }
 
     // 2. Inyectar dinámicamente los datos en los elementos HTML con [data-field]
     Object.keys(reserva).forEach(key => {
@@ -52,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (confirm("¿Estás seguro de que deseas cancelar esta reserva?")) {
                 localStorage.removeItem("reserva_seleccionada");
                 alert("Reserva cancelada.");
-                window.location.href = "canchas.html"; 
+                window.location.href = "canchas.html";
             }
         });
     }
@@ -95,13 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
             reserva.metodoPago = metodoSeleccionado.value;
             reserva.estado = "Confirmada";
             reserva.fechaPago = new Date().toLocaleString("es-CO");
+            reserva.idReserva = `RES-${Date.now()}`;
 
             let misReservas = JSON.parse(localStorage.getItem("mis_reservas")) || [];
             misReservas.push(reserva);
             localStorage.setItem("mis_reservas", JSON.stringify(misReservas));
-
-            reserva.idReserva = `RES-${Date.now()}`;
-            reserva.estado = "Confirmada";
 
             // Limpiar la reserva temporal en proceso
             localStorage.removeItem("reserva_seleccionada");

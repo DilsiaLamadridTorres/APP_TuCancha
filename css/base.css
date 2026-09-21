@@ -95,7 +95,8 @@ main {
 .tuCancha-confirm-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(17, 24, 39, 0.45);
+    background: rgba(13, 17, 23, 0.68);
+    backdrop-filter: blur(3px);
     display: grid;
     place-items: center;
     padding: 1rem;
@@ -110,9 +111,11 @@ main {
 
 .tuCancha-confirm-modal {
     width: min(420px, 100%);
-    background: #fff;
+    background: rgba(24, 28, 36, 0.97);
+    color: #f3f4f6;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 1rem;
-    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.45);
     padding: 1.25rem 1.25rem 1rem;
     transform: translateY(8px);
     transition: transform .2s ease;
@@ -135,8 +138,8 @@ main {
     border-radius: 50%;
     display: grid;
     place-items: center;
-    background: rgba(13, 110, 253, 0.1);
-    color: #0d6efd;
+    background: rgba(249, 87, 0, 0.15);
+    color: #ff8a3d;
     font-size: 1.3rem;
 }
 
@@ -144,12 +147,12 @@ main {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 700;
-    color: #111827;
+    color: #fff;
 }
 
 .tuCancha-confirm-message {
     margin: 0 0 1rem;
-    color: #374151;
+    color: #e5e7eb;
     line-height: 1.5;
     font-size: .95rem;
 }
@@ -166,16 +169,23 @@ main {
     padding: .7rem 1rem;
     font-weight: 700;
     cursor: pointer;
+    transition: transform .15s ease, opacity .15s ease;
+}
+
+.tuCancha-confirm-btn:hover {
+    transform: translateY(-1px);
 }
 
 .tuCancha-confirm-btn--cancel {
-    background: #e5e7eb;
-    color: #111827;
+    background: #2b3038;
+    color: #f3f4f6;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .tuCancha-confirm-btn--confirm {
-    background: #f95700;
+    background: linear-gradient(135deg, #ff7a1a, #f95700);
     color: #fff;
+    box-shadow: 0 10px 20px rgba(249, 87, 0, 0.25);
 }
 
 .icono {

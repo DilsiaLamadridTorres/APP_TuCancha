@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       localStorage.setItem("mis_reservas", JSON.stringify(reservasActualizadas));
-      alert("Reserva cancelada correctamente.");
+      showToast("Reserva cancelada correctamente.", "success");
       window.location.reload();
     });
   }

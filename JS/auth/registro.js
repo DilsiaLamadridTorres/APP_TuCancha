@@ -74,9 +74,14 @@ function validateField(field) {
 
 function showStatus(message, type) {
     if (registroStatus) {
-        registroStatus.textContent = message;
-        registroStatus.className = `auth-status auth-status--${type}`;
+        registroStatus.textContent = "";
+        registroStatus.className = "auth-status auth-status--hidden";
     }
+
+    if (!message || !window.showToast) return;
+
+    const toastType = type === "success" ? "success" : type === "error" ? "error" : "warning";
+    window.showToast(message, toastType);
 }
 
 Object.keys(rules).forEach((name) => {

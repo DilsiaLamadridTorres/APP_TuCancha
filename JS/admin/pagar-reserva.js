@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const reservaGuardada = localStorage.getItem("reserva_seleccionada");
 
     if (!reservaGuardada) {
-        alert("No hay ninguna reserva en proceso.");
+        showToast("No hay ninguna reserva en proceso.", "warning");
         window.location.href = "../index.html";
         return;
     }
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
         reserva = JSON.parse(reservaGuardada);
     } catch (error) {
         localStorage.removeItem("reserva_seleccionada");
-        alert("La reserva guardada no es válida.");
+        showToast("La reserva guardada no es válida.", "error");
         window.location.href = "canchas.html";
         return;
     }
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btnCancelar.addEventListener("click", () => {
             if (confirm("¿Estás seguro de que deseas cancelar esta reserva?")) {
                 localStorage.removeItem("reserva_seleccionada");
-                alert("Reserva cancelada.");
+                showToast("Reserva cancelada.", "success");
                 window.location.href = "canchas.html";
             }
         });

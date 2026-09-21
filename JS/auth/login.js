@@ -17,11 +17,12 @@ if (loginForm) {
 
         if (!correo || !contrasena) {
 
-            loginStatus.textContent =
-                "Ingresa tu correo y contraseña.";
-
-            loginStatus.className =
-                "auth-status auth-status--error";
+            if (window.showToast) {
+                window.showToast("Ingresa tu correo y contraseña.", "error");
+            } else {
+                loginStatus.textContent = "Ingresa tu correo y contraseña.";
+                loginStatus.className = "auth-status auth-status--error";
+            }
 
             return;
         }
@@ -71,11 +72,17 @@ if (loginForm) {
             // MENSAJE DE ÉXITO
             // =========================================
 
-            loginStatus.textContent =
-                "Inicio de sesión exitoso.";
+            if (window.showToast) {
+                window.showToast("Inicio de sesión exitoso.", "success");
+            } else {
+                loginStatus.textContent = "Inicio de sesión exitoso.";
+                loginStatus.className = "auth-status auth-status--success";
+            }
 
-            loginStatus.className =
-                "auth-status auth-status--success";
+            if (loginStatus) {
+                loginStatus.textContent = "";
+                loginStatus.className = "auth-status auth-status--hidden";
+            }
 
             // =========================================
             // REDIRECCIÓN
@@ -132,12 +139,17 @@ if (loginForm) {
                 error
             );
 
-            loginStatus.textContent =
-                error.message ||
-                "No fue posible iniciar sesión.";
+            if (window.showToast) {
+                window.showToast(error.message || "No fue posible iniciar sesión.", "error");
+            } else {
+                loginStatus.textContent = error.message || "No fue posible iniciar sesión.";
+                loginStatus.className = "auth-status auth-status--error";
+            }
 
-            loginStatus.className =
-                "auth-status auth-status--error";
+            if (loginStatus) {
+                loginStatus.textContent = "";
+                loginStatus.className = "auth-status auth-status--hidden";
+            }
         }
     });
 }

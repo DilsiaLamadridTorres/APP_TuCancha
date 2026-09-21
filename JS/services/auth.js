@@ -1,10 +1,16 @@
 const token = sessionStorage.getItem("access_token");
 
 if (!token) {
-    sessionStorage.setItem(
-        "pagina_anterior",
-        window.location.pathname
-    );
+    const isLoginPage =
+        window.location.pathname.endsWith("/login.html") ||
+        window.location.pathname.endsWith("login.html");
 
-    window.location.href = "login.html";
+    if (!isLoginPage) {
+        sessionStorage.setItem(
+            "pagina_anterior",
+            window.location.pathname
+        );
+
+        window.location.href = "login.html";
+    }
 }

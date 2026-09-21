@@ -86,7 +86,14 @@ if (loginForm) {
                 const paginaAnterior =
                     sessionStorage.getItem("pagina_anterior");
 
-                if (paginaAnterior) {
+                const paginaAnteriorValida =
+                    paginaAnterior &&
+                    paginaAnterior !== "/html/login.html" &&
+                    paginaAnterior !== "login.html" &&
+                    !paginaAnterior.includes("login.html") &&
+                    paginaAnterior !== window.location.pathname;
+
+                if (paginaAnteriorValida) {
 
                     sessionStorage.removeItem(
                         "pagina_anterior"
@@ -98,8 +105,12 @@ if (loginForm) {
                     return;
                 }
 
-                // Si no existe página anterior,
-                // usamos una ruta por defecto.
+                sessionStorage.removeItem("pagina_anterior");
+
+                const rutaHome =
+                    window.location.pathname.includes("/html/")
+                        ? "../index.html"
+                        : "index.html";
 
                 if (rol === "ADMIN") {
 
@@ -109,7 +120,7 @@ if (loginForm) {
                 } else {
 
                     window.location.href =
-                        "reservas-cliente.html";
+                        rutaHome;
                 }
 
             }, 500);

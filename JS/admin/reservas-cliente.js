@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const contenedorAnteriores = document.getElementById("contenedor-anteriores");
   const panelDetalle = document.getElementById("panel-detalle");
   const btnCerrarDetalle = document.querySelector(".btn-cerrar");
+  const btnModificar = document.querySelector(".btn-modificar");
   const btnCancelar = document.getElementById("btn-cancelar-reserva");
   const filtros = document.querySelectorAll(".btn-filtro");
   const selectOrden = document.getElementById("select-orden");
@@ -246,6 +247,40 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnCerrarDetalle) {
     btnCerrarDetalle.addEventListener("click", () => {
       panelDetalle.style.display = "none";
+    });
+  }
+
+  if (btnModificar) {
+    btnModificar.addEventListener("click", () => {
+      if (!reservaSeleccionada) return;
+
+      const estado = String(reservaSeleccionada.estado || "").toLowerCase();
+      if (estado === "cancelada" || estado === "completada" || estado === "completadas") {
+        showToast("Solo puedes modificar una reserva activa o próxima.", "warning");
+        return;
+      }
+
+      const reservaParaEditar = {
+        ...reservaSeleccionada,
+        hora: reservaSeleccionada.hora || reservaSeleccionada.horario || "",
+        horario: reservaSeleccionada.hora || reservaSeleccionada.horario || ""
+      };
+
+      localStorage.setItem("reserva_modificar", JSON.stringify(reservaParaEditar));
+      localStorage.setItem("cancha_seleccionada", JSON.stringify({
+        id: reservaParaEditar.canchaId || reservaParaEditar.id || reservaParaEditar.idCancha,
+        nombre: reservaParaEditar.nombre,
+        ubicacion: reservaParaEditar.ubicacion,
+        imagen: reservaParaEditar.imagen,
+        precio: reservaParaEditar.precio,
+        descripcion: reservaParaEditar.descripcion || ""
+      }));
+
+      showToast("Preparando la reserva para editarla.", "info");
+
+      setTimeout(() => {
+        window.location.href = "reservas-cancha.html";
+      }, 500);
     });
   }
 

@@ -1,6 +1,15 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     const canchaGuardada = localStorage.getItem("cancha_seleccionada");
+    const reservaModificar = (() => {
+        try {
+            const item = localStorage.getItem("reserva_modificar");
+            return item ? JSON.parse(item) : null;
+        } catch (error) {
+            localStorage.removeItem("reserva_modificar");
+            return null;
+        }
+    })();
     let canchaSeleccionada = null;
     //console.log("Hola");
 
@@ -25,6 +34,35 @@ document.addEventListener("DOMContentLoaded", () => {
                     : `$ ${precioNumerico.toLocaleString("es-CO")}`;
             } else {
                 elemento.textContent = canchaSeleccionada[campo] || "No especificado";
+            }
+        });
+    } else if (reservaModificar) {
+        canchaSeleccionada = {
+            id: reservaModificar.canchaId || reservaModificar.idCancha || reservaModificar.id,
+            nombre: reservaModificar.nombre,
+            ubicacion: reservaModificar.ubicacion,
+            imagen: reservaModificar.imagen,
+            precio: reservaModificar.precio,
+            descripcion: reservaModificar.descripcion || ""
+        };
+        localStorage.setItem("cancha_seleccionada", JSON.stringify(canchaSeleccionada));
+
+        const elementosDinamicos = document.querySelectorAll("[data-field]");
+        elementosDinamicos.forEach(elemento => {
+            const campo = elemento.getAttribute("data-field");
+            if (elemento.tagName === "IMG") {
+                elemento.src = canchaSeleccionada[campo] || "../img/foto.canchas.jpg";
+                if (canchaSeleccionada.nombre) {
+                    elemento.alt = `Imagen de ${canchaSeleccionada.nombre}`;
+                }
+            }
+            if (campo === "precio") {
+                const precioNumerico = Number(canchaSeleccionada[campo]);
+                elemento.textContent = !canchaSeleccionada[campo] || Number.isNaN(precioNumerico)
+                    ? "Precio no especificado"
+                    : `$ ${precioNumerico.toLocaleString("es-CO")}`;
+            } else if (campo && canchaSeleccionada[campo] !== undefined && canchaSeleccionada[campo] !== null) {
+                elemento.textContent = canchaSeleccionada[campo];
             }
         });
     } else {
@@ -151,6 +189,45 @@ document.addEventListener("DOMContentLoaded", () => {
         return fechaComparar < hoy;
     }
 
+    function convertirFechaIso(fechaTexto) {
+        if (!fechaTexto) return "";
+
+        if (/^\d{4}-\d{2}-\d{2}$/.test(fechaTexto)) {
+            return fechaTexto;
+        }
+
+        const partes = fechaTexto.split(/[/-]/);
+        if (partes.length !== 3) return "";
+
+        const [dia, mes, anio] = partes.map((parte) => Number(parte));
+        if (!dia || !mes || !anio) return "";
+
+        const fecha = new Date(anio, mes - 1, dia);
+        if (Number.isNaN(fecha.getTime())) return "";
+
+        return `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, "0")}-${String(fecha.getDate()).padStart(2, "0")}`;
+    }
+
+    function preseleccionarReservaModificar() {
+        if (!reservaModificar) return;
+
+        const fechaIso = convertirFechaIso(reservaModificar.fecha);
+        if (!fechaIso) return;
+
+        const botonFecha = Array.from(document.querySelectorAll("#fechas button")).find((boton) => boton.dataset.fecha === fechaIso);
+        if (botonFecha && !botonFecha.disabled) {
+            botonFecha.click();
+
+            setTimeout(() => {
+                const horario = reservaModificar.hora || reservaModificar.horario;
+                const botonHorario = Array.from(document.querySelectorAll("#turnos button")).find((boton) => boton.textContent.trim() === horario);
+                if (botonHorario && !botonHorario.classList.contains("ocupado")) {
+                    botonHorario.click();
+                }
+            }, 0);
+        }
+    }
+
     function mostrarSemana() {
         const lunes = obtenerLunes(semanaActual);
         fechas.innerHTML = "";
@@ -161,6 +238,8 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             const botonFecha = document.createElement("button");
+            const fechaIso = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, "0")}-${String(fecha.getDate()).padStart(2, "0")}`;
+            botonFecha.dataset.fecha = fechaIso;
             const dia = document.createElement("span");
             dia.textContent =
                 fecha.toLocaleDateString("es-CO", {
@@ -228,6 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         actualizarTextoSemana(lunes);
+        preseleccionarReservaModificar();
     }
 
     function actualizarTextoSemana(lunes) {
@@ -434,6 +514,30 @@ document.addEventListener("DOMContentLoaded", () => {
             duracion: "1 hora",
             jugadores: "10 jugadores"
         };
+
+        if (reservaModificar) {
+            const reservas = JSON.parse(localStorage.getItem("mis_reservas") || "[]");
+            const index = reservas.findIndex((item) => item.idReserva === reservaModificar.idReserva);
+
+            if (index >= 0) {
+                reservas[index] = {
+                    ...reservas[index],
+                    ...reserva,
+                    idReserva: reservaModificar.idReserva,
+                    estado: "Confirmada",
+                    metodoPago: reservas[index].metodoPago || "Efectivo",
+                    fechaPago: new Date().toLocaleString("es-CO")
+                };
+                localStorage.setItem("mis_reservas", JSON.stringify(reservas));
+                localStorage.removeItem("reserva_modificar");
+                localStorage.removeItem("cancha_seleccionada");
+                showToast("Reserva modificada correctamente.", "success");
+                setTimeout(() => {
+                    window.location.href = "reservas-cliente.html";
+                }, 1000);
+                return;
+            }
+        }
 
         localStorage.setItem("reserva_seleccionada", JSON.stringify(reserva));
 

@@ -14,6 +14,28 @@ class AuthError extends Error {
 class DemoAuthProvider {
     constructor() {
         this.storageKey = "tucancha_demo_users";
+        this.ensureDefaultAdmin();
+    }
+
+    ensureDefaultAdmin() {
+        const users = this.users;
+
+        if (users.some((user) => user.rol === "ADMIN")) {
+            return;
+        }
+
+        this.users = [
+            ...users,
+            {
+                id: "admin-demo",
+                nombreCompleto: "Administrador TuCancha",
+                correo: "admin@tucancha.com",
+                telefono: "3001112233",
+                passwordHash: "admin123",
+                rol: "ADMIN",
+                creadoEn: new Date().toISOString()
+            }
+        ];
     }
 
     normalizeUser(user) {

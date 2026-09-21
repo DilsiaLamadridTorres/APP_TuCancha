@@ -1,26 +1,26 @@
-(function () {
-    const LOGIN_URL = "../login.html";
+// (function () {
+//     const LOGIN_URL = "../login.html";
 
-    function obtenerUsuarioActual() {
-        try {
-            return JSON.parse(
-                sessionStorage.getItem("usuario") || "null"
-            );
-        } catch (error) {
-            console.error(
-                "Error leyendo usuario admin:",
-                error
-            );
+//     function obtenerUsuarioActual() {
+//         try {
+//             return JSON.parse(
+//                 sessionStorage.getItem("usuario") || "null"
+//             );
+//         } catch (error) {
+//             console.error(
+//                 "Error leyendo usuario admin:",
+//                 error
+//             );
 
-            sessionStorage.removeItem("usuario");
+//             sessionStorage.removeItem("usuario");
 
-            return null;
-        }
-    }
+//             return null;
+//         }
+//     }
 
-    const usuario = obtenerUsuarioActual();
+//     const usuario = obtenerUsuarioActual();
 
-    if (!usuario || usuario.rol !== "admin") {
-        window.location.replace(LOGIN_URL);
-    }
-})();
+//     if (!usuario || usuario.rol !== "admin") {
+//         window.location.replace(LOGIN_URL);
+//     }
+// })();

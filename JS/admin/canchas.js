@@ -1,4 +1,4 @@
-const API_URL = "https://tucanchabackend-production.up.railway.app/api";
+const API_URL = "https://tucanchabackend-production-e5df.up.railway.app/api";
 
 const IMAGEN_DEFAULT = "../img/foto.canchas.jpg";
 

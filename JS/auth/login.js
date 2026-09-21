@@ -39,7 +39,7 @@ if (loginForm) {
                 "auth-status";
 
             const respuesta = await fetch(
-                "https://tucanchabackend-production.up.railway.app/api/auth/login",
+                "https://tucanchabackend-production-e5df.up.railway.app/api/auth/login",
                 {
                     method: "POST",
                     headers: {

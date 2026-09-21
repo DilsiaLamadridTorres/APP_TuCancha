@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const reservaGuardada = localStorage.getItem("reserva_seleccionada");
 
     if (!reservaGuardada) {
+<<<<<<< HEAD
         mostrarModal({
             titulo: "Sin reserva activa",
             mensaje: "No hay ninguna reserva en proceso. Regresa a la selección de canchas.",
@@ -14,10 +15,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 accion: () => window.location.href = "canchas.html"
             }]
         });
+=======
+        showToast("No hay ninguna reserva en proceso.", "warning");
+        window.location.href = "../index.html";
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
         return;
     }
 
-    const reserva = JSON.parse(reservaGuardada);
+    let reserva;
+
+    try {
+        reserva = JSON.parse(reservaGuardada);
+    } catch (error) {
+        localStorage.removeItem("reserva_seleccionada");
+        showToast("La reserva guardada no es válida.", "error");
+        window.location.href = "canchas.html";
+        return;
+    }
 
     // 2. Inyectar dinámicamente los datos en los elementos HTML con [data-field]
     Object.keys(reserva).forEach(key => {
@@ -61,12 +75,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // 4. Funcionalidad del botón Eliminar / Cancelar Reserva (Devuelve a canchas.html)
     const btnCancelar = document.getElementById("btn-cancelar-reserva");
     if (btnCancelar) {
-        btnCancelar.addEventListener("click", () => {
-            if (confirm("¿Estás seguro de que deseas cancelar esta reserva?")) {
-                localStorage.removeItem("reserva_seleccionada");
-                alert("Reserva cancelada.");
-                window.location.href = "canchas.html"; 
+        btnCancelar.addEventListener("click", async () => {
+            const confirmar = await window.showConfirm("¿Estás seguro de que deseas cancelar esta reserva?");
+
+            if (!confirmar) {
+                return;
             }
+
+            localStorage.removeItem("reserva_seleccionada");
+            showToast("Reserva cancelada.", "success");
+            window.location.href = "canchas.html";
         });
     }
 
@@ -125,6 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
             reserva.metodoPago = metodoSeleccionado.value;
             reserva.estado = "Confirmada";
             reserva.fechaPago = new Date().toLocaleString("es-CO");
+<<<<<<< HEAD
             reserva.idReserva = respuestaReserva?.id || respuestaReserva?.idReserva || `RES-${Date.now()}`;
 
             const misReservasGuardadas = JSON.parse(localStorage.getItem("mis_reservas") || "[]");
@@ -134,6 +153,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("mis_reservas", JSON.stringify(misReservasGuardadas));
             }
 
+=======
+            reserva.idReserva = `RES-${Date.now()}`;
+
+            let misReservas = JSON.parse(localStorage.getItem("mis_reservas")) || [];
+            misReservas.push(reserva);
+            localStorage.setItem("mis_reservas", JSON.stringify(misReservas));
+
+            // Limpiar la reserva temporal en proceso
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
             localStorage.removeItem("reserva_seleccionada");
 
             window.location.href = "reservas-cliente.html";

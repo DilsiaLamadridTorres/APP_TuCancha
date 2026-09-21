@@ -294,6 +294,7 @@ body {
   background-color: #bb2d3b;
 }
 
+<<<<<<< HEAD
 .contenedor-modificar {
     position: relative;
     width: 100%;
@@ -330,6 +331,22 @@ body {
     background: #272d38;
 }
 /* Responsive */
+=======
+.btn-cancelar-reserva:disabled {
+  background-color: #4b2026;
+  color: #c8aeb1;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.btn-cancelar-reserva:disabled:hover {
+  background-color: #4b2026;
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
 @media (max-width: 850px) {
   .contenedor-reservas {
     flex-direction: column;

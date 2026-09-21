@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mis Reservas - TuCancha</title>
+<<<<<<< HEAD
   <link rel="stylesheet" href="../css/reservas-cliente.css">
   <link rel="stylesheet" href="../css/modal.css">
   <style>
@@ -18,6 +20,13 @@
     .seccion-mis-reservas {
       flex: 1;
     }
+=======
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/reservas-cliente.css"> <!-- Ajusta la ruta a tu CSS si es diferente -->
+</head>
+
+<body>
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
 
     .filtros-reservas {
       display: flex;
@@ -42,7 +51,12 @@
 <body>
 
   <!-- Contenido Principal -->
+<<<<<<< HEAD
   <main class="contenedor-reservas">
+=======
+  <main class="contenedor-reservas" style="display: flex; gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto;">
+
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
     <a href="../index.html" class="btn-regresar-inicio">
       ← Regresar a inicio
     </a>
@@ -81,22 +95,27 @@
     </section>
 
     <!-- Sección Derecha: Panel de Detalle (Oculto por defecto mediante style="display: none;") -->
-    <aside class="detalle-reserva" id="panel-detalle" style="display: none; width: 350px; background: #181c24; padding: 20px; border-radius: 10px; height: fit-content; border: 1px solid #2a2f3a;">
+    <aside class="detalle-reserva" id="panel-detalle"
+      style="display: none; width: 350px; background: #181c24; padding: 20px; border-radius: 10px; height: fit-content; border: 1px solid #2a2f3a;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <h3 style="margin: 0; color: #fff;">Detalle de la reserva</h3>
-        <button class="btn-cerrar" style="background: transparent; border: 1px solid #555; color: #fff; border-radius: 4px; cursor: pointer; padding: 2px 8px;">✕</button>
+        <button class="btn-cerrar"
+          style="background: transparent; border: 1px solid #555; color: #fff; border-radius: 4px; cursor: pointer; padding: 2px 8px;">✕</button>
       </div>
 
       <!-- Imagen de la Cancha -->
-      <img data-field="imagen" src="" alt="Cancha" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">
-      
-      <span data-field="estado" class="badge-estado" style="background: #107c41; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px;">Confirmada</span>
+      <img data-field="imagen" src="" alt="Cancha"
+        style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">
+
+      <span data-field="estado" class="badge-estado"
+        style="background: #107c41; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px;">Confirmada</span>
 
       <h2 data-field="nombre" style="margin: 5px 0; color: #fff;">--</h2>
       <p style="color: #aaa; margin: 0 0 15px 0;">📍 <span data-field="ubicacion">--</span></p>
 
       <!-- Resumen de Fecha y Precio -->
-      <div style="background: #0f1217; padding: 12px; border-radius: 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+      <div
+        style="background: #0f1217; padding: 12px; border-radius: 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
         <div>
           <small style="color: #888;">Fecha</small>
           <div data-field="fecha" style="color: #fff; font-weight: bold;">--</div>
@@ -116,7 +135,8 @@
       </div>
 
       <!-- Información Complementaria -->
-      <h4 style="color: #fff; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">Información de la reserva</h4>
+      <h4 style="color: #fff; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">Información de
+        la reserva</h4>
       <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #ccc; font-size: 0.9rem;">
         <span>Número de reserva</span>
         <strong data-field="id" style="color: #fff;">--</strong>
@@ -131,9 +151,14 @@
       </div>
 
       <!-- Botón de Acción -->
+<<<<<<< HEAD
       <div class="contenedor-modificar">
 
     <button class="btn-modificar" type="button">
+=======
+      <button class="btn-modificar"
+        style="width: 100%; background: #f95700; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px;">
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
         ✏️ Modificar reserva
     </button>
 
@@ -159,7 +184,7 @@
 
 </div>
       <button id="btn-cancelar-reserva" class="btn-cancelar-reserva" type="button">
-           Cancelar reserva
+        Cancelar reserva
       </button>
     </aside>
 
@@ -182,8 +207,16 @@
 
     </div>
 
+<<<<<<< HEAD
 </div>
 <script src="../JS/utils/modal.js"></script>
  <script src="../JS/admin/reservas-cliente.js"></script>
+=======
+  <!-- Inclusión del script correspondiente -->
+  <script src="../JS/utils/helpers.js"></script>
+  <script src="../JS/services/auth.js"></script>
+  <script src="../JS/admin/reservas-cliente.js"></script>
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
 </body>
+
 </html>

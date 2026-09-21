@@ -23,7 +23,11 @@ const SOLICITUDES_KEY = "tucancha_solicitudes_complejos";
 
 
 const HORARIO_PREDETERMINADO = "Lunes a domingo, 8:00 AM - 10:00 PM";
+const API_URL = "http://localhost:8080/api";
 
+// IDs reales creados por el backend
+let titularComplejoId = null;
+let complejoId = null;
 
 /* ============================================================
    2. CREAR ESTADO INICIAL
@@ -36,8 +40,9 @@ function crearEstadoInicial() {
         organizacion: {
 
             nombreTitular: "",
-            telefono: "",
-            correo: ""
+            cedulaTitular: "",
+            telefonoTitular: "",
+            correoTitular: ""
 
         },
 
@@ -48,6 +53,8 @@ function crearEstadoInicial() {
             ciudad: "",
             direccion: "",
             telefono: "",
+            provinciaNombre: "",
+            ciudadNombre: "",
             prestaciones: []
 
         },
@@ -466,7 +473,6 @@ function mostrarPaso(numeroPaso) {
             ".form-step-content"
         );
 
-
     pasos.forEach(
         (paso, index) => {
 
@@ -478,15 +484,8 @@ function mostrarPaso(numeroPaso) {
         }
     );
 
-
     registroComplejo.pasoActual =
         numeroPaso;
-
-
-    /*
-        Registramos cuál ha sido el paso
-        más avanzado alcanzado.
-    */
 
     if (
         numeroPaso >
@@ -498,36 +497,85 @@ function mostrarPaso(numeroPaso) {
 
     }
 
-
     actualizarSidebar();
-
     actualizarProgreso();
 
-
     /*
-        Al entrar a revisión actualizamos
-        los datos automáticamente.
+        La pantalla de revision se alimenta exclusivamente
+        del estado almacenado en memoria. No vuelve a leer
+        inputs que ya fueron limpiados.
     */
-
     if (numeroPaso === 4) {
-
         actualizarRevision();
-
     }
 
+    /*
+        Al cambiar de paso se limpian los controles visuales.
+        Esto NO borra los registros de Supabase ni el estado
+        interno necesario para la revision.
+    */
+    limpiarCamposVisuales();
 
     guardarLocalStorage();
-
-
-    /*
-        Volvemos arriba del formulario.
-    */
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
 
+}
+
+
+/* ============================================================
+   9.5 LIMPIAR CAMPOS VISUALES
+   ============================================================ */
+
+function limpiarCamposVisuales() {
+
+    document
+        .querySelectorAll("input, select, textarea")
+        .forEach(elemento => {
+
+            if (elemento.type === "checkbox" || elemento.type === "radio") {
+
+                elemento.checked = false;
+
+            } else if (elemento.type === "file") {
+
+                elemento.value = "";
+
+            } else {
+
+                elemento.value = "";
+
+            }
+        });
+
+    document
+        .querySelectorAll(".prestation.active, .duration-option.active")
+        .forEach(elemento => {
+
+            elemento.classList.remove("active");
+
+        });
+
+    const preview = obtenerElemento("photoPreview");
+
+    if (preview) {
+        preview.innerHTML = "";
+    }
+
+    const errores = document.querySelectorAll(
+        ".field-error, #photosError, #durationError"
+    );
+
+    errores.forEach(error => error.remove());
+
+    document
+        .querySelectorAll(".input-error")
+        .forEach(elemento => {
+            elemento.classList.remove("input-error");
+        });
 }
 
 
@@ -901,13 +949,17 @@ function capturarOrganizacion() {
             obtenerValor(
                 "nombreTitular"
             ),
+        cedulaTitular:
+            obtenerValor(
+                "cedulaTitular"
+            ),
 
-        telefono:
+        telefonoTitular:
             obtenerValor(
                 "telefonoTitular"
             ),
 
-        correo:
+        correoTitular:
             obtenerValor(
                 "correoTitular"
             )
@@ -940,6 +992,14 @@ function validarOrganizacion() {
 
     }
 
+    if (
+        !validarRequerido(
+            "cedulaTitular",
+            "Cédula es obligatoria"
+        )
+    ) {
+        valido = false;
+    }
 
     if (
         !validarRequerido(
@@ -997,6 +1057,88 @@ function validarOrganizacion() {
     return true;
 
 }
+async function guardarTitularEnBackend() {
+
+    const datosTitular = {
+        nombreTitular: obtenerValor("nombreTitular"),
+        cedulaTitular: obtenerValor("cedulaTitular"),
+        correoTitular: obtenerValor("correoTitular"),
+        telefonoTitular: obtenerValor("telefonoTitular")
+    };
+
+    console.log(
+        "Enviando titular al backend:",
+        datosTitular
+    );
+
+    const response = await fetch(
+        `${API_URL}/titulares`,
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(datosTitular)
+        }
+    );
+
+    if (!response.ok) {
+
+        let mensaje =
+            "No fue posible registrar el titular.";
+
+        try {
+
+            const errorBackend =
+                await response.json();
+
+            mensaje =
+                errorBackend.message ||
+                errorBackend.error ||
+                mensaje;
+
+        } catch (error) {
+
+            console.error(
+                "No se pudo leer el error del backend:",
+                error
+            );
+        }
+
+        throw new Error(mensaje);
+    }
+
+    const titularCreado =
+        await response.json();
+
+    console.log(
+        "Titular creado:",
+        titularCreado
+    );
+
+    /*
+     * IMPORTANTE:
+     * Guardamos el ID generado por PostgreSQL/Supabase.
+     */
+    titularComplejoId =
+        titularCreado.id;
+
+    if (!titularComplejoId) {
+
+        throw new Error(
+            "El backend creó el titular pero no devolvió su ID."
+        );
+    }
+
+    console.log(
+        "ID titular:",
+        titularComplejoId
+    );
+
+    return titularCreado;
+}
 
 
 /* ============================================================
@@ -1046,6 +1188,16 @@ function capturarComplejo() {
         telefono:
             obtenerValor(
                 "telefonoComplejo"
+            ),
+
+        provinciaNombre:
+            obtenerTextoSelect(
+                "provincia"
+            ),
+
+        ciudadNombre:
+            obtenerTextoSelect(
+                "ciudad"
             ),
 
         prestaciones:
@@ -1157,6 +1309,112 @@ function validarComplejo() {
 
 
 /* ============================================================
+   20.1 GUARDAR COMPLEJO EN BACKEND
+   ============================================================ */
+
+async function guardarComplejoEnBackend() {
+
+    if (!titularComplejoId) {
+        throw new Error(
+            "No existe un titular registrado para asociar el complejo."
+        );
+    }
+
+    const token =
+        sessionStorage.getItem("access_token");
+
+    if (!token) {
+        throw new Error(
+            "No hay una sesión activa. Inicia sesión nuevamente."
+        );
+    }
+
+    const prestacionesSeleccionadas =
+        Array.from(
+            document.querySelectorAll(".prestation.active")
+        ).map(
+            boton => boton.dataset.value
+        );
+
+    const datosComplejo = {
+        nombreComplejo: obtenerValor("nombreComplejo"),
+        provincia: obtenerValor("provincia"),
+        ciudad: obtenerValor("ciudad"),
+        direccion: obtenerValor("direccion"),
+        telefonoComplejo: obtenerValor("telefonoComplejo"),
+        titularComplejoId: titularComplejoId,
+        estacionamiento: prestacionesSeleccionadas.includes("Estacionamiento"),
+        vestuario: prestacionesSeleccionadas.includes("Vestuario"),
+        asador: prestacionesSeleccionadas.includes("Asador"),
+        bar: prestacionesSeleccionadas.includes("Bar"),
+        duchas: prestacionesSeleccionadas.includes("Duchas"),
+        tv: prestacionesSeleccionadas.includes("TV"),
+        bufet: prestacionesSeleccionadas.includes("Bufet")
+    };
+
+    console.log(
+        "Enviando complejo:",
+        datosComplejo
+    );
+
+    const response =
+        await fetch(
+            `${API_URL}/complejos`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(datosComplejo)
+            }
+        );
+
+    if (!response.ok) {
+        let mensaje =
+            "No fue posible registrar el complejo.";
+
+        try {
+            const errorBackend =
+                await response.json();
+
+            mensaje =
+                errorBackend.message ||
+                errorBackend.error ||
+                mensaje;
+        } catch (error) {
+            console.error(error);
+        }
+
+        throw new Error(mensaje);
+    }
+
+    const complejoCreado =
+        await response.json();
+
+    console.log(
+        "Complejo creado:",
+        complejoCreado
+    );
+
+    complejoId =
+        complejoCreado.id;
+
+    if (!complejoId) {
+        throw new Error(
+            "El backend creó el complejo pero no devolvió su ID."
+        );
+    }
+
+    console.log(
+        "ID complejo:",
+        complejoId
+    );
+
+    return complejoCreado;
+}
+
+/* ============================================================
    21. RESTAURAR DATOS GUARDADOS
    ============================================================ */
 
@@ -1173,15 +1431,20 @@ function restaurarFormulario() {
                 .organizacion
                 .nombreTitular,
 
+        cedulaTitular:
+            registroComplejo
+                .organizacion
+                .cedulaTitular,
+
         telefonoTitular:
             registroComplejo
                 .organizacion
-                .telefono,
+                .telefonoTitular,
 
         correoTitular:
             registroComplejo
                 .organizacion
-                .correo
+                .correoTitular
 
     };
 
@@ -1940,7 +2203,7 @@ function convertirFotoBase64(file) {
 
                             resolve(
                                 dataUrlOptimizada.length <
-                                dataUrlOriginal.length
+                                    dataUrlOriginal.length
                                     ? dataUrlOptimizada
                                     : dataUrlOriginal
                             );
@@ -1992,25 +2255,12 @@ function convertirFotoBase64(file) {
 
 async function procesarFotos(archivos) {
 
-    /*
-        Como estamos trabajando con localStorage,
-        permitimos fotos originales grandes y luego
-        las optimizamos antes de guardarlas.
-    */
-
     const MAX_FOTOS = 4;
 
     const MAX_SIZE =
         8 * 1024 * 1024;
 
-
-    for (
-        const archivo of archivos
-    ) {
-
-        /*
-            Máximo 4 fotos.
-        */
+    for (const archivo of archivos) {
 
         if (
             fotosTemporales.length >=
@@ -2023,22 +2273,13 @@ async function procesarFotos(archivos) {
             );
 
             break;
-
         }
 
-
-        /*
-            Validar formato.
-        */
-
         const formatosPermitidos = [
-
             "image/jpeg",
             "image/png",
             "image/webp"
-
         ];
-
 
         if (
             !formatosPermitidos.includes(
@@ -2052,13 +2293,7 @@ async function procesarFotos(archivos) {
             );
 
             continue;
-
         }
-
-
-        /*
-            Validar peso.
-        */
 
         if (
             archivo.size >
@@ -2066,14 +2301,12 @@ async function procesarFotos(archivos) {
         ) {
 
             mostrarAlerta(
-                `${archivo.name} pesa mas de 8 MB. Usa una imagen mas liviana.`,
+                `${archivo.name} pesa más de 8 MB. Usa una imagen más liviana.`,
                 "warning"
             );
 
             continue;
-
         }
-
 
         try {
 
@@ -2082,9 +2315,7 @@ async function procesarFotos(archivos) {
                     archivo
                 );
 
-
             fotosTemporales.push({
-
                 nombre:
                     archivo.name,
 
@@ -2095,31 +2326,30 @@ async function procesarFotos(archivos) {
                         ? "image/jpeg"
                         : archivo.type,
 
+                archivo:
+                    archivo,
+
                 dataUrl:
                     base64
-
             });
 
             validarFotosCancha();
 
-
         } catch (error) {
 
-            console.error(error);
-
+            console.error(
+                "Error procesando foto:",
+                error
+            );
 
             mostrarAlerta(
                 `No se pudo cargar ${archivo.name}.`,
                 "error"
             );
-
         }
-
     }
 
-
     renderizarPreviewFotos();
-
 }
 
 
@@ -2227,45 +2457,44 @@ function eliminarFotoPreview(index) {
 
 function obtenerDataUrlFoto(foto) {
 
-    if (
-        typeof foto === "string"
-    ) {
-
+    if (typeof foto === "string") {
         return foto.trim();
-
     }
-
 
     if (
-        typeof foto?.dataUrl === "string"
+        typeof foto?.dataUrl === "string" &&
+        foto.dataUrl.trim()
     ) {
-
         return foto.dataUrl.trim();
-
     }
 
+    if (
+        typeof foto?.url === "string" &&
+        foto.url.trim()
+    ) {
+
+        const url = foto.url.trim();
+
+        if (
+            url.startsWith("http://") ||
+            url.startsWith("https://")
+        ) {
+            return url;
+        }
+
+        return `${API_URL.replace("/api", "")}${url}`;
+    }
 
     return "";
-
 }
-
 
 function canchaTieneFotos(cancha) {
 
     return (
-        Array.isArray(
-            cancha?.fotos
-        ) &&
-        cancha.fotos.some(
-            foto =>
-                obtenerDataUrlFoto(
-                    foto
-                ) !== ""
-        )
+        Array.isArray(cancha?.fotos) &&
+        cancha.fotos.length > 0
     );
-
 }
-
 
 function validarCanchasGuardadasConFotos() {
 
@@ -2274,44 +2503,96 @@ function validarCanchasGuardadasConFotos() {
             .canchas
             .find(
                 cancha =>
-                    !canchaTieneFotos(
-                        cancha
-                    )
+                    !canchaTieneFotos(cancha)
             );
-
 
     if (!canchaSinFotos) {
 
         return true;
-
     }
-
 
     mostrarAlerta(
         `${canchaSinFotos.nombre || "Una cancha"} debe tener al menos una foto antes de continuar.`,
-        "warning"
+        "warning",
+        "Foto pendiente"
     );
 
-
     return false;
-
 }
 
+
+/* ============================================================
+   29. VALIDAR CANCHA
+   ============================================================ */
+/* ============================================================
+   VALIDAR FOTOS DE LA CANCHA
+   ============================================================ */
+
+function validarFotosCancha() {
+
+    const errorAnterior =
+        obtenerElemento("photosError");
+
+    if (errorAnterior) {
+        errorAnterior.remove();
+    }
+
+    const upload =
+        document.querySelector(".photo-upload");
+
+    upload?.classList.remove("input-error");
+
+    /*
+     * Mientras estamos creando/editando una cancha,
+     * validamos las fotos seleccionadas temporalmente.
+     */
+    if (
+        Array.isArray(fotosTemporales) &&
+        fotosTemporales.length > 0
+    ) {
+        return true;
+    }
+
+    const contenedor =
+        document.querySelector(".court-photos");
+
+    if (contenedor) {
+
+        const error =
+            document.createElement("small");
+
+        error.id = "photosError";
+        error.className = "field-error";
+        error.textContent =
+            "Agrega al menos una foto de la cancha.";
+
+        contenedor.insertAdjacentElement(
+            "afterend",
+            error
+        );
+    }
+
+    upload?.classList.add("input-error");
+
+    return false;
+}
+/* ============================================================
+   VALIDAR PRECIO DE LAS CANCHAS GUARDADAS
+   ============================================================ */
 
 function canchaTienePrecio(cancha) {
 
     const valor =
-        cancha?.precioPorHora
-        || cancha?.precio;
+        cancha?.precioPorHora ??
+        cancha?.precio;
 
     const precio =
         Number(valor);
 
-
-    return Boolean(valor) &&
+    return (
         Number.isFinite(precio) &&
-        precio > 0;
-
+        precio > 0
+    );
 }
 
 
@@ -2322,122 +2603,28 @@ function validarCanchasGuardadasConPrecio() {
             .canchas
             .find(
                 cancha =>
-                    !canchaTienePrecio(
-                        cancha
-                    )
+                    !canchaTienePrecio(cancha)
             );
 
-
+    /*
+     * Todas las canchas tienen precio.
+     */
     if (!canchaSinPrecio) {
 
         return true;
-
     }
 
-
+    /*
+     * Encontramos una cancha sin precio.
+     */
     mostrarAlerta(
         `${canchaSinPrecio.nombre || "Una cancha"} debe tener precio por hora antes de continuar.`,
-        "warning"
+        "warning",
+        "Precio pendiente"
     );
 
-
     return false;
-
 }
-
-
-function validarFotosCancha() {
-
-    const errorAnterior =
-        obtenerElemento(
-            "photosError"
-        );
-
-
-    if (errorAnterior) {
-
-        errorAnterior.remove();
-
-    }
-
-
-    const upload =
-        document.querySelector(
-            ".photo-upload"
-        );
-
-
-    upload
-        ?.classList
-        .remove(
-            "input-error"
-        );
-
-
-    if (
-        canchaTieneFotos({
-
-            fotos:
-                fotosTemporales
-
-        })
-    ) {
-
-        return true;
-
-    }
-
-
-    const contenedor =
-        document.querySelector(
-            ".court-photos"
-        );
-
-
-    if (contenedor) {
-
-        const error =
-            document.createElement(
-                "small"
-            );
-
-
-        error.id =
-            "photosError";
-
-
-        error.className =
-            "field-error";
-
-
-        error.textContent =
-            "Agrega al menos una foto de la cancha.";
-
-
-        contenedor.insertAdjacentElement(
-            "afterend",
-            error
-        );
-
-    }
-
-
-    upload
-        ?.classList
-        .add(
-            "input-error"
-        );
-
-
-    return false;
-
-}
-
-
-/* ============================================================
-   29. VALIDAR CANCHA
-   ============================================================ */
-
 function validarCancha() {
 
     let valido = true;
@@ -2706,215 +2893,322 @@ function validarCancha() {
 function guardarCancha() {
 
     if (!validarCancha()) {
-
         return;
-
     }
 
-
-    const duraciones =
-
-        Array.from(
-
-            document.querySelectorAll(
-                ".duration-option.active"
-            )
-
-        ).map(
-
-            boton =>
-                boton.dataset.duration
-
+    const duracionSeleccionada =
+        document.querySelector(
+            ".duration-option.active"
         );
 
+    const duracionMinutos =
+        duracionSeleccionada
+            ? Number(
+                duracionSeleccionada.dataset.duration
+            )
+            : null;
 
     const precioPorHora =
         Number(
-            obtenerValor(
-                "courtPrice"
-            )
+            obtenerValor("courtPrice")
         );
-
 
     const datosCancha = {
-
-        nombre:
-            obtenerValor(
-                "courtName"
-            ),
-
-        deporte:
-            obtenerValor(
-                "courtSport"
-            ),
-
-        tipoPiso:
-            obtenerValor(
-                "courtFloor"
-            ),
-
-        largo:
-            Number(
-                obtenerValor(
-                    "courtLength"
-                )
-            ),
-
-        ancho:
-            Number(
-                obtenerValor(
-                    "courtWidth"
-                )
-            ),
-
-        precio:
-            precioPorHora,
-
-        precioPorHora:
-            precioPorHora,
-
-        horario:
-            HORARIO_PREDETERMINADO,
-
-        horarioAtencion:
-            HORARIO_PREDETERMINADO,
-
-        duraciones:
-            duraciones,
-
-        techada:
-            obtenerElemento(
-                "courtCovered"
-            )?.checked || false,
-
-        permiteOtrosDeportes:
-            obtenerElemento(
-                "otherSports"
-            )?.checked || false,
-
-        fotos:
-            [...fotosTemporales]
-
+        nombre: obtenerValor("courtName"),
+        deporte: obtenerValor("courtSport"),
+        tipoPiso: obtenerValor("courtFloor"),
+        largo: Number(obtenerValor("courtLength")),
+        ancho: Number(obtenerValor("courtWidth")),
+        precioPorHora: precioPorHora,
+        duracionMinutos: duracionMinutos,
+        techada: obtenerElemento("courtCovered")?.checked || false,
+        permiteOtrosDeportes: obtenerElemento("otherSports")?.checked || false,
+        fotos: [...fotosTemporales]
     };
 
+    const token = sessionStorage.getItem("access_token");
 
-    const canchasAnteriores =
-        JSON.parse(
-            JSON.stringify(
-                registroComplejo.canchas
-            )
-        );
+    if (!token) {
+        mostrarAlerta("No hay una sesión activa.", "error", "Sesión requerida");
+        return;
+    }
 
+    if (!complejoId) {
+        mostrarAlerta("No encontramos el complejo registrado.", "error", "Complejo no encontrado");
+        return;
+    }
 
-    let mensajeExito =
-        "La cancha fue agregada correctamente.";
+    const boton = obtenerElemento("btnSaveCourt");
 
-
-    let tituloExito =
-        "Cancha guardada";
-
-
-    /* ========================================================
-       EDITAR CANCHA EXISTENTE
-       ======================================================== */
-
-    if (
-        canchaEditandoId !== null
-    ) {
-
-        const indice =
-            registroComplejo
-                .canchas
-                .findIndex(
-                    cancha =>
-                        cancha.id ===
-                        canchaEditandoId
-                );
-
-
-        if (indice === -1) {
-
+    guardarCanchaEnBackend(datosCancha, token, boton)
+        .catch(error => {
+            console.error("Error registrando cancha:", error);
             mostrarAlerta(
-                "No se encontro la cancha que intentas editar.",
+                error.message || "No fue posible registrar la cancha.",
                 "error",
-                "Cancha no encontrada"
+                "Error"
             );
+        });
+}
 
-            return;
 
+/* ============================================================
+   30.1 GUARDAR CANCHA EN BACKEND Y SUS FOTOS
+   ============================================================ */
+
+async function guardarCanchaEnBackend(datosCancha, token, boton) {
+
+    try {
+
+        if (boton) {
+            boton.disabled = true;
+            boton.textContent = "Guardando...";
         }
 
+        const requestCancha = {
+            idComplejo: complejoId,
+            nombre: datosCancha.nombre,
+            deporte: datosCancha.deporte,
+            tipoPiso: datosCancha.tipoPiso,
+            largo: datosCancha.largo,
+            ancho: datosCancha.ancho,
+            precioHora: datosCancha.precioPorHora,
+            duracionMinutos: datosCancha.duracionMinutos,
+            techada: datosCancha.techada,
+            otrosDeportes: datosCancha.permiteOtrosDeportes
+        };
 
-        registroComplejo
-            .canchas[indice] = {
+        console.log("Enviando cancha:", requestCancha);
 
-                ...registroComplejo
-                    .canchas[indice],
-
-                ...datosCancha
-
-            };
-
-
-        mensajeExito =
-            "Los cambios de la cancha fueron guardados.";
-
-
-        tituloExito =
-            "Cancha actualizada";
-
-
-    } else {
-
-        /* ====================================================
-           CREAR NUEVA CANCHA
-           ==================================================== */
-
-        registroComplejo
-            .canchas
-            .push({
-
-                id:
-                    Date.now(),
-
-                ...datosCancha
-
-            });
-
-
-    }
-
-
-    const guardado =
-        guardarLocalStorage();
-
-
-    if (!guardado) {
-
-        registroComplejo.canchas =
-            canchasAnteriores;
-
-
-        mostrarAlerta(
-            "No fue posible guardar la cancha. Reduce el peso o la cantidad de fotos e intenta de nuevo.",
-            "error",
-            "Cancha no guardada"
+        const response = await fetch(
+            `${API_URL}/canchas`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(requestCancha)
+            }
         );
 
+        if (!response.ok) {
+            let mensaje = "No fue posible registrar la cancha.";
 
-        return;
+            try {
+                const errorBackend = await response.json();
+                mensaje = errorBackend.message || errorBackend.error || mensaje;
+            } catch (error) {
+                console.error(error);
+            }
 
+            throw new Error(mensaje);
+        }
+
+        const canchaCreada = await response.json();
+
+        console.log("Cancha creada:", canchaCreada);
+
+        const idCancha = canchaCreada.idCancha;
+
+        if (!idCancha) {
+            throw new Error(
+                "El backend creó la cancha pero no devolvió idCancha."
+            );
+        }
+
+        console.log("ID cancha:", idCancha);
+
+        let fotosGuardadas = [];
+
+        if (Array.isArray(fotosTemporales) && fotosTemporales.length > 0) {
+            fotosGuardadas = await guardarFotosEnBackend(
+                fotosTemporales,
+                token
+            );
+        }
+
+        const canchaLocal = {
+            id: idCancha,
+            idCancha: idCancha,
+            idComplejo: complejoId,
+            nombre: canchaCreada.nombre,
+            deporte: canchaCreada.deporte,
+            tipoPiso: canchaCreada.tipoPiso,
+            largo: canchaCreada.largo,
+            ancho: canchaCreada.ancho,
+            precioPorHora: canchaCreada.precioHora,
+            precio: canchaCreada.precioHora,
+            duracionMinutos: canchaCreada.duracionMinutos,
+            duraciones: canchaCreada.duracionMinutos
+                ? [String(canchaCreada.duracionMinutos)]
+                : [],
+            techada: canchaCreada.techada,
+            permiteOtrosDeportes: canchaCreada.otrosDeportes,
+            estado: canchaCreada.estado,
+            fotos: fotosGuardadas.map(foto => ({
+                idFoto: foto.idFoto,
+                nombre: foto.nombreArchivo,
+                tipo: foto.tipoContenido,
+                url: foto.url
+                    ? `${API_URL.replace("/api", "")}${foto.url}`
+                    : `${API_URL}/fotos/${foto.idFoto}`
+            }))
+        };
+
+        if (canchaEditandoId !== null) {
+            const indice = registroComplejo.canchas.findIndex(
+                cancha => cancha.id === canchaEditandoId
+            );
+
+            if (indice >= 0) {
+                registroComplejo.canchas[indice] = canchaLocal;
+            }
+        } else {
+            registroComplejo.canchas.push(canchaLocal);
+        }
+
+        guardarLocalStorage();
+
+        mostrarAlerta(
+            fotosGuardadas.length > 0
+                ? "La cancha y sus fotos fueron guardadas correctamente."
+                : "La cancha fue registrada correctamente.",
+            "success",
+            "Cancha guardada"
+        );
+
+        cerrarFormularioCancha();
+        renderizarCanchas();
+
+    } finally {
+
+        if (boton) {
+            boton.disabled = false;
+            boton.textContent = "Guardar cancha";
+        }
+    }
+}
+
+
+/* ============================================================
+   30.2 GUARDAR FOTOS
+   ============================================================ */
+
+async function guardarFotosEnBackend(fotos, token) {
+
+    if (!complejoId) {
+        throw new Error(
+            "No existe un complejo registrado para asociar las fotos."
+        );
     }
 
+    if (!Array.isArray(fotos) || fotos.length === 0) {
+        return [];
+    }
 
-    mostrarAlerta(
-        mensajeExito,
-        "success",
-        tituloExito
-    );
+    const fotosGuardadas = [];
 
-    cerrarFormularioCancha();
+    for (const foto of fotos) {
 
+        let archivo = foto?.archivo;
+
+        /*
+            Las fotos nuevas conservan el File original.
+            Solo usamos dataUrl como compatibilidad con datos antiguos.
+        */
+        if (!(archivo instanceof File)) {
+
+            if (!foto?.dataUrl) {
+                throw new Error(
+                    `No existe el archivo de la foto ${foto?.nombre || "seleccionada"}.`
+                );
+            }
+
+            const respuestaBlob =
+                await fetch(foto.dataUrl);
+
+            const blob =
+                await respuestaBlob.blob();
+
+            archivo =
+                new File(
+                    [blob],
+                    foto.nombre || "foto.jpg",
+                    {
+                        type:
+                            foto.tipo ||
+                            blob.type ||
+                            "image/jpeg"
+                    }
+                );
+        }
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "foto",
+            archivo,
+            archivo.name || foto.nombre || "foto.jpg"
+        );
+
+        console.log(
+            "Subiendo foto:",
+            archivo.name || foto.nombre
+        );
+
+        const response =
+            await fetch(
+                `${API_URL}/complejos/${complejoId}/fotos`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`
+                    },
+                    body: formData
+                }
+            );
+
+        if (!response.ok) {
+
+            let mensaje =
+                `No se pudo guardar la foto: ${archivo.name || foto.nombre}`;
+
+            try {
+                const errorBackend =
+                    await response.json();
+
+                mensaje =
+                    errorBackend.message ||
+                    errorBackend.error ||
+                    mensaje;
+
+            } catch (error) {
+                console.error(
+                    "No se pudo leer el error de la foto:",
+                    error
+                );
+            }
+
+            throw new Error(mensaje);
+        }
+
+        const fotoGuardada =
+            await response.json();
+
+        console.log(
+            "Foto guardada:",
+            fotoGuardada
+        );
+
+        fotosGuardadas.push(
+            fotoGuardada
+        );
+    }
+
+    return fotosGuardadas;
 }
 
 
@@ -2922,18 +3216,14 @@ function guardarCancha() {
    31. ELIMINAR CANCHA
    ============================================================ */
 
-function eliminarCancha(id) {
+async function eliminarCancha(id) {
 
-    const confirmar =
-        confirm(
-            "¿Seguro que deseas eliminar esta cancha?"
-        );
-
+    const confirmar = await window.showConfirm(
+        "¿Seguro que deseas eliminar esta cancha?"
+    );
 
     if (!confirmar) {
-
         return;
-
     }
 
 
@@ -3269,10 +3559,9 @@ function renderizarCanchas() {
 
                         <div class="saved-court-photos">
 
-                            ${
-                                fotosCancha
-                                    .map(
-                                        (dataUrl, index) => `
+                            ${fotosCancha
+                            .map(
+                                (dataUrl, index) => `
 
                                             <div class="saved-court-photo">
 
@@ -3284,9 +3573,9 @@ function renderizarCanchas() {
                                             </div>
 
                                         `
-                                    )
-                                    .join("")
-                            }
+                            )
+                            .join("")
+                        }
 
                         </div>
 
@@ -3314,8 +3603,8 @@ function renderizarCanchas() {
                             <span class="sport-badge">
 
                                 ${obtenerNombreDeporte(
-                                    cancha.deporte
-                                )}
+                    cancha.deporte
+                )}
 
                             </span>
 
@@ -3325,8 +3614,8 @@ function renderizarCanchas() {
                         <p>
 
                             ${obtenerNombrePiso(
-                                cancha.tipoPiso
-                            )}
+                    cancha.tipoPiso
+                )}
 
                             ·
 
@@ -3336,23 +3625,22 @@ function renderizarCanchas() {
                             &middot;
 
                             ${formatearPrecioCancha(
-                                cancha.precioPorHora
-                                || cancha.precio
-                            )}
+                    cancha.precioPorHora
+                    || cancha.precio
+                )}
 
                         </p>
 
 
                         <div class="saved-court-tags">
 
-                            ${
-                                tags
-                                    .map(
-                                        tag =>
-                                            `<span>${tag}</span>`
-                                    )
-                                    .join("")
-                            }
+                            ${tags
+                        .map(
+                            tag =>
+                                `<span>${tag}</span>`
+                        )
+                        .join("")
+                    }
 
                         </div>
 
@@ -3466,129 +3754,78 @@ function obtenerTextoSelect(id) {
 
 function actualizarRevision() {
 
-    capturarOrganizacion();
-
-    capturarComplejo();
-
-
-    /* ========================================================
-       TITULAR
-       ======================================================== */
-
     const datosTitular = {
-
         reviewOwnerName:
-            registroComplejo
-                .organizacion
-                .nombreTitular,
+            registroComplejo.organizacion.nombreTitular,
+
+        reviewOwnerCedula:
+            registroComplejo.organizacion.cedulaTitular,
 
         reviewOwnerPhone:
-            `+57 ${
-                registroComplejo
-                    .organizacion
-                    .telefono
-            }`,
+            registroComplejo.organizacion.telefonoTitular
+                ? `+57 ${registroComplejo.organizacion.telefonoTitular}`
+                : "—",
 
         reviewOwnerEmail:
-            registroComplejo
-                .organizacion
-                .correo
-
+            registroComplejo.organizacion.correoTitular
     };
 
-
-    Object.entries(
-        datosTitular
-    ).forEach(
+    Object.entries(datosTitular).forEach(
         ([id, valor]) => {
-
             const elemento =
                 obtenerElemento(id);
 
-
             if (elemento) {
-
                 elemento.textContent =
                     valor || "—";
-
             }
-
         }
     );
-
-
-    /* ========================================================
-       COMPLEJO
-       ======================================================== */
 
     const datosComplejo = {
-
         reviewComplexName:
-            registroComplejo
-                .complejo
-                .nombre,
+            registroComplejo.complejo.nombre,
 
         reviewProvince:
-            obtenerTextoSelect(
-                "provincia"
-            ),
+            registroComplejo.complejo.provinciaNombre ||
+            registroComplejo.complejo.provincia ||
+            "—",
 
         reviewCity:
-            obtenerTextoSelect(
-                "ciudad"
-            ),
+            registroComplejo.complejo.ciudadNombre ||
+            registroComplejo.complejo.ciudad ||
+            "—",
 
         reviewAddress:
-            registroComplejo
-                .complejo
-                .direccion,
+            registroComplejo.complejo.direccion,
 
         reviewComplexPhone:
-            `+57 ${
-                registroComplejo
-                    .complejo
-                    .telefono
-            }`,
+            registroComplejo.complejo.telefono
+                ? `+57 ${registroComplejo.complejo.telefono}`
+                : "—",
 
         reviewAmenities:
-
-            registroComplejo
-                .complejo
-                .prestaciones
-                .length > 0
-
-                ? registroComplejo
-                    .complejo
-                    .prestaciones
-                    .join(", ")
-
+            Array.isArray(
+                registroComplejo.complejo.prestaciones
+            ) &&
+                registroComplejo.complejo.prestaciones.length > 0
+                ? registroComplejo.complejo.prestaciones.join(", ")
                 : "Sin prestaciones cargadas"
-
     };
 
-
-    Object.entries(
-        datosComplejo
-    ).forEach(
+    Object.entries(datosComplejo).forEach(
         ([id, valor]) => {
-
             const elemento =
                 obtenerElemento(id);
 
-
             if (elemento) {
-
                 elemento.textContent =
                     valor || "—";
-
             }
-
         }
     );
 
-
     renderizarCanchasRevision();
-
 }
 
 
@@ -3639,21 +3876,21 @@ function renderizarCanchasRevision() {
                     <strong>
 
                         ${obtenerNombreDeporte(
-                            cancha.deporte
-                        )}
+                    cancha.deporte
+                )}
 
                         ·
 
                         ${obtenerNombrePiso(
-                            cancha.tipoPiso
-                        )}
+                    cancha.tipoPiso
+                )}
 
                         &middot;
 
                         ${formatearPrecioCancha(
-                            cancha.precioPorHora
-                            || cancha.precio
-                        )}
+                    cancha.precioPorHora
+                    || cancha.precio
+                )}
 
                     </strong>
 
@@ -3897,32 +4134,52 @@ function guardarSolicitudFinal(
 
 function enviarSolicitud() {
 
-    /*
-        Validamos nuevamente todo.
-    */
+    const titularCompleto =
+        Boolean(
+            registroComplejo.organizacion.nombreTitular &&
+            registroComplejo.organizacion.cedulaTitular &&
+            registroComplejo.organizacion.telefonoTitular &&
+            registroComplejo.organizacion.correoTitular &&
+            titularComplejoId
+        );
 
-    if (!validarOrganizacion()) {
+    if (!titularCompleto) {
 
-        mostrarPaso(1);
+        mostrarAlerta(
+            "No se encontró un titular registrado correctamente.",
+            "error",
+            "Titular no encontrado"
+        );
 
         return;
-
     }
 
+    const complejoCompleto =
+        Boolean(
+            registroComplejo.complejo.nombre &&
+            registroComplejo.complejo.provincia &&
+            registroComplejo.complejo.ciudad &&
+            registroComplejo.complejo.direccion &&
+            registroComplejo.complejo.telefono &&
+            Array.isArray(registroComplejo.complejo.prestaciones) &&
+            registroComplejo.complejo.prestaciones.length > 0 &&
+            complejoId
+        );
 
-    if (!validarComplejo()) {
+    if (!complejoCompleto) {
 
-        mostrarPaso(2);
+        mostrarAlerta(
+            "No se encontró el complejo registrado correctamente.",
+            "error",
+            "Complejo no encontrado"
+        );
 
         return;
-
     }
-
 
     if (
-        registroComplejo
-            .canchas
-            .length === 0
+        !Array.isArray(registroComplejo.canchas) ||
+        registroComplejo.canchas.length === 0
     ) {
 
         mostrarAlerta(
@@ -3930,169 +4187,96 @@ function enviarSolicitud() {
             "warning"
         );
 
-
         mostrarPaso(3);
-
-        return;
-
-    }
-
-
-    if (
-        !validarCanchasGuardadasConFotos()
-    ) {
-
-        mostrarPaso(3);
-
         renderizarCanchas();
-
         return;
-
     }
 
-
-    if (
-        !validarCanchasGuardadasConPrecio()
-    ) {
-
+    if (!validarCanchasGuardadasConFotos()) {
         mostrarPaso(3);
-
         renderizarCanchas();
-
         return;
-
     }
 
-
-    /* ========================================================
-       CÓMO NOS CONOCISTE
-       ======================================================== */
+    if (!validarCanchasGuardadasConPrecio()) {
+        mostrarPaso(3);
+        renderizarCanchas();
+        return;
+    }
 
     const howFoundUs =
-        obtenerElemento(
-            "howFoundUs"
-        );
+        obtenerElemento("howFoundUs");
 
-
-    if (
-        !howFoundUs ||
-        !howFoundUs.value
-    ) {
+    if (!howFoundUs || !howFoundUs.value) {
 
         mostrarError(
             howFoundUs,
             "Selecciona una opción."
         );
 
-
         mostrarAlerta(
             "Selecciona cómo conociste TuCancha.",
             "warning"
         );
 
-
         return;
-
     }
 
+    limpiarError(howFoundUs);
 
-    limpiarError(
-        howFoundUs
-    );
-
-
-    registroComplejo
-        .comoNosConociste =
+    registroComplejo.comoNosConociste =
         howFoundUs.value;
 
-
-    /* ========================================================
-       CREAR SOLICITUDES
-       ======================================================== */
+    guardarLocalStorage();
 
     const solicitudesCancha =
         crearSolicitudesPorCancha();
-
-
-    /* ========================================================
-       GUARDAR PARA ADMINISTRADOR
-       ======================================================== */
 
     const guardado =
         guardarSolicitudFinal(
             solicitudesCancha
         );
 
-
     if (!guardado) {
-
         return;
-
     }
-
-
-    /* ========================================================
-       JSON PARA CONSOLA
-       ======================================================== */
-
-    /*
-        Para la consola quitamos los Base64
-        gigantes de las imágenes.
-    */
 
     const solicitudesConsola =
         JSON.parse(
-            JSON.stringify(
-                solicitudesCancha
-            )
+            JSON.stringify(solicitudesCancha)
         );
 
-
-    solicitudesConsola
-        .forEach(
-            solicitud => {
-
-                solicitud
-                    .canchas
-                    .forEach(
-                        cancha => {
-
-                            cancha.fotos =
-                                cancha.fotos.map(
-                                    foto => ({
-
-                                        nombre:
-                                            foto.nombre,
-
-                                        tipo:
-                                            foto.tipo,
-
-                                        dataUrl:
-                                            "[imagen almacenada]"
-
-                                    })
-                                );
-
-                        }
-                    );
-
-            }
-        );
-
+    solicitudesConsola.forEach(
+        solicitud => {
+            solicitud.canchas.forEach(
+                cancha => {
+                    cancha.fotos =
+                        (cancha.fotos || []).map(
+                            foto => ({
+                                idFoto:
+                                    foto.idFoto,
+                                nombre:
+                                    foto.nombre || foto.nombreArchivo,
+                                tipo:
+                                    foto.tipo || foto.tipoContenido,
+                                url:
+                                    foto.url
+                            })
+                        );
+                }
+            );
+        }
+    );
 
     console.log(
         "=========================================="
     );
-
     console.log(
         "TUCANCHA - NUEVA SOLICITUD"
     );
-
     console.log(
         "=========================================="
     );
-
-
     console.log(
         JSON.stringify(
             solicitudesConsola,
@@ -4100,45 +4284,18 @@ function enviarSolicitud() {
             4
         )
     );
-
-
     console.log(
         "Solicitudes completas:",
         solicitudesCancha
     );
 
-
-    /* ========================================================
-       ELIMINAR BORRADOR
-       ======================================================== */
-
-    localStorage.removeItem(
-        STORAGE_KEY
-    );
-
-
-    /* ========================================================
-       ALERTA
-       ======================================================== */
-
     mostrarAlerta(
-        solicitudesCancha.length === 1
-            ? "La solicitud fue enviada correctamente y quedo pendiente de revision."
-            : `Se enviaron ${solicitudesCancha.length} solicitudes, una por cada cancha creada.`,
+        "La solicitud fue enviada correctamente.",
         "success",
-        solicitudesCancha.length === 1
-            ? "Solicitud enviada"
-            : "Solicitudes enviadas"
+        "Solicitud enviada"
     );
-
-
-    /*
-        Reiniciamos visualmente el formulario,
-        pero la solicitud enviada permanece guardada.
-    */
 
     reiniciarFormulario(false);
-
 }
 
 
@@ -4146,22 +4303,18 @@ function enviarSolicitud() {
    41. REINICIAR FORMULARIO
    ============================================================ */
 
-function reiniciarFormulario(
+async function reiniciarFormulario(
     preguntar = true
 ) {
 
     if (preguntar) {
 
-        const confirmar =
-            confirm(
-                "¿Seguro que deseas empezar de nuevo? Se eliminará el borrador actual."
-            );
-
+        const confirmar = await window.showConfirm(
+            "¿Seguro que deseas empezar de nuevo? Se eliminará el borrador actual."
+        );
 
         if (!confirmar) {
-
             return;
-
         }
 
     }
@@ -4337,9 +4490,8 @@ function configurarAutoguardado() {
     const camposOrganizacion = [
 
         "nombreTitular",
-
+        "cedulaTitular",
         "telefonoTitular",
-
         "correoTitular"
 
     ];
@@ -4467,19 +4619,84 @@ function configurarEventos() {
     )
         ?.addEventListener(
             "click",
-            () => {
+            async () => {
 
-                if (
-                    !validarOrganizacion()
-                ) {
+                // ===============================
+                // VALIDAR FORMULARIO
+                // ===============================
 
+                if (!validarOrganizacion()) {
                     return;
-
                 }
 
+                const boton =
+                    obtenerElemento(
+                        "btnContinueOrganization"
+                    );
 
-                mostrarPaso(2);
+                try {
 
+                    // ===============================
+                    // BLOQUEAR BOTÓN
+                    // ===============================
+
+                    if (boton) {
+
+                        boton.disabled = true;
+
+                        boton.innerHTML =
+                            `Guardando... <span>→</span>`;
+                    }
+
+                    // ===============================
+                    // GUARDAR EN SUPABASE
+                    // A TRAVÉS DEL BACKEND
+                    // ===============================
+
+                    const titular =
+                        await guardarTitularEnBackend();
+
+                    console.log(
+                        "Titular registrado correctamente:",
+                        titular
+                    );
+
+                    mostrarAlerta(
+                        "Los datos del titular fueron guardados correctamente.",
+                        "success",
+                        "Titular registrado"
+                    );
+
+                    // ===============================
+                    // PASAR AL COMPLEJO
+                    // ===============================
+
+                    mostrarPaso(2);
+
+                } catch (error) {
+
+                    console.error(
+                        "Error registrando titular:",
+                        error
+                    );
+
+                    mostrarAlerta(
+                        error.message ||
+                        "No fue posible registrar el titular.",
+                        "error",
+                        "Error al registrar"
+                    );
+
+                } finally {
+
+                    if (boton) {
+
+                        boton.disabled = false;
+
+                        boton.innerHTML =
+                            `Continuar <span>→</span>`;
+                    }
+                }
             }
         );
 
@@ -4494,8 +4711,6 @@ function configurarEventos() {
         ?.addEventListener(
             "click",
             () => {
-
-                capturarComplejo();
 
                 mostrarPaso(1);
 
@@ -4512,21 +4727,73 @@ function configurarEventos() {
     )
         ?.addEventListener(
             "click",
-            () => {
+            async () => {
 
-                if (
-                    !validarComplejo()
-                ) {
-
+                if (!validarComplejo()) {
                     return;
-
                 }
 
+                if (!titularComplejoId) {
+                    mostrarAlerta(
+                        "No encontramos el titular registrado.",
+                        "error",
+                        "Titular no encontrado"
+                    );
+                    mostrarPaso(1);
+                    return;
+                }
 
-                mostrarPaso(3);
+                const boton = obtenerElemento(
+                    "btnContinueComplex"
+                );
 
-                renderizarCanchas();
+                try {
 
+                    if (boton) {
+                        boton.disabled = true;
+                        boton.innerHTML =
+                            `Guardando... <span>→</span>`;
+                    }
+
+                    const complejo =
+                        await guardarComplejoEnBackend();
+
+                    console.log(
+                        "Complejo registrado correctamente:",
+                        complejo
+                    );
+
+                    mostrarAlerta(
+                        "El complejo fue registrado correctamente.",
+                        "success",
+                        "Complejo registrado"
+                    );
+
+                    mostrarPaso(3);
+                    renderizarCanchas();
+
+                } catch (error) {
+
+                    console.error(
+                        "Error registrando complejo:",
+                        error
+                    );
+
+                    mostrarAlerta(
+                        error.message ||
+                        "No fue posible registrar el complejo.",
+                        "error",
+                        "Error"
+                    );
+
+                } finally {
+
+                    if (boton) {
+                        boton.disabled = false;
+                        boton.innerHTML =
+                            `Continuar <span>→</span>`;
+                    }
+                }
             }
         );
 
@@ -4571,27 +4838,21 @@ function configurarEventos() {
                     );
 
                     return;
-
                 }
-
 
                 if (
                     !validarCanchasGuardadasConFotos()
                 ) {
 
                     return;
-
                 }
-
 
                 if (
                     !validarCanchasGuardadasConPrecio()
                 ) {
 
                     return;
-
                 }
-
 
                 mostrarPaso(4);
 
@@ -4654,12 +4915,8 @@ function configurarEventos() {
                             "active"
                         );
 
-
-                        capturarComplejo();
-
                     }
                 );
-
             }
         );
 
@@ -4679,26 +4936,31 @@ function configurarEventos() {
                     "click",
                     () => {
 
-                        boton.classList.toggle(
+                        document
+                            .querySelectorAll(
+                                ".duration-option"
+                            )
+                            .forEach(
+                                opcion =>
+                                    opcion.classList.remove(
+                                        "active"
+                                    )
+                            );
+
+                        boton.classList.add(
                             "active"
                         );
-
 
                         const error =
                             obtenerElemento(
                                 "durationError"
                             );
 
-
                         if (error) {
-
                             error.remove();
-
                         }
-
                     }
                 );
-
             }
         );
 
@@ -4960,7 +5222,7 @@ function configurarEventos() {
             () => {
 
                 enviarSolicitud();
-
+                window.location.href = "../index.html";
             }
         );
 
@@ -5040,10 +5302,10 @@ document.addEventListener(
 
 
         /* ====================================================
-           RESTAURAR CAMPOS
+           CAMPOS VISUALES LIMPIOS
            ==================================================== */
 
-        restaurarFormulario();
+        limpiarCamposVisuales();
 
 
         /* ====================================================

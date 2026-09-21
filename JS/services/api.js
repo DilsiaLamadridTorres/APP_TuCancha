@@ -14,18 +14,84 @@ class AuthError extends Error {
 class DemoAuthProvider {
     constructor() {
         this.storageKey = "tucancha_demo_users";
+        this.ensureDefaultAdmin();
+    }
+
+    ensureDefaultAdmin() {
+        const users = this.users;
+
+        if (users.some((user) => user.rol === "ADMIN")) {
+            return;
+        }
+
+        this.users = [
+            ...users,
+            {
+                id: "admin-demo",
+                nombreCompleto: "Administrador TuCancha",
+                correo: "admin@tucancha.com",
+                telefono: "3001112233",
+                passwordHash: "admin123",
+                rol: "ADMIN",
+                creadoEn: new Date().toISOString()
+            }
+        ];
+    }
+
+    normalizeUser(user) {
+        if (!user || typeof user !== "object") {
+            return null;
+        }
+
+        const correo = String(
+            user.correo ?? user.email ?? user.correoElectronico ?? ""
+        ).trim().toLowerCase();
+
+        if (!correo) {
+            return null;
+        }
+
+        const passwordHash = user.passwordHash ?? user.password ?? user.contrasenaHash ?? user.hash ?? "";
+
+        return {
+            id: user.id || crypto.randomUUID(),
+            nombreCompleto: user.nombreCompleto ?? user.nombre ?? user.name ?? "",
+            correo,
+            telefono: user.telefono ?? user.phone ?? "",
+            passwordHash: String(passwordHash),
+            rol: user.rol ?? "JUGADOR",
+            creadoEn: user.creadoEn || new Date().toISOString()
+        };
     }
 
     get users() {
-        return JSON.parse(
-            localStorage.getItem(this.storageKey) || "[]"
-        );
+        try {
+            const users = JSON.parse(
+                localStorage.getItem(this.storageKey) || "[]"
+            );
+
+            const normalizados = users
+                .map((user) => this.normalizeUser(user))
+                .filter(Boolean);
+
+            if (normalizados.length !== users.length) {
+                this.users = normalizados;
+            }
+
+            return normalizados;
+        } catch (error) {
+            return [];
+        }
     }
 
     set users(users) {
+        const usuariosValidos = (users || [])
+            .map((user) => this.normalizeUser(user))
+            .filter(Boolean);
+
         localStorage.setItem(
             this.storageKey,
-            JSON.stringify(users)
+            JSON.stringify(usuariosValidos)
         );
     }
 
@@ -42,7 +108,14 @@ class DemoAuthProvider {
         telefono,
         contrasena
     }) {
-        const correoNormalizado = correo.toLowerCase();
+        const correoNormalizado = String(correo || "").trim().toLowerCase();
+
+        if (!correoNormalizado) {
+            throw new AuthError(
+                "Ingresa un correo válido para continuar.",
+                "INVALID_EMAIL"
+            );
+        }
 
         if (
             this.users.some(
@@ -61,10 +134,11 @@ class DemoAuthProvider {
             ...this.users,
             {
                 id: crypto.randomUUID(),
-                nombreCompleto,
+                nombreCompleto: nombreCompleto || "",
                 correo: correoNormalizado,
-                telefono,
+                telefono: telefono || "",
                 passwordHash,
+                rol: "JUGADOR",
                 creadoEn: new Date().toISOString()
             }
         ];
@@ -76,12 +150,13 @@ class DemoAuthProvider {
     }
 
     async login({ correo, contrasena }) {
+        const correoNormalizado = String(correo || "").trim().toLowerCase();
         const passwordHash = await this.hash(contrasena);
 
         const user = this.users.find(
             (item) =>
-                item.correo === correo.toLowerCase() &&
-                item.passwordHash === passwordHash
+                item.correo === correoNormalizado &&
+                (item.passwordHash === passwordHash || item.passwordHash === String(contrasena))
         );
 
         if (!user) {
@@ -229,13 +304,13 @@ class SupabaseAuthProvider {
         );
     }
     async logout(accessToken) {
-    return await this.request("/auth/v1/logout", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${accessToken}`
-        }
-    });
-}
+        return await this.request("/auth/v1/logout", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
+    }
 }
 
 
@@ -248,8 +323,10 @@ class AuthService {
 
         const hasSupabaseConfig =
             config.provider === "supabase" &&
-            config.supabaseUrl &&
-            config.supabaseAnonKey;
+            typeof config.supabaseUrl === "string" &&
+            config.supabaseUrl.trim() &&
+            typeof config.supabaseAnonKey === "string" &&
+            config.supabaseAnonKey.trim();
 
         if (hasSupabaseConfig) {
             console.log("Usando Supabase");
@@ -273,7 +350,17 @@ class AuthService {
     login(data) {
         return this.provider.login(data);
     }
+<<<<<<< HEAD
     logout(accessToken = sessionStorage.getItem("access_token")) {
+=======
+    logout() {
+        const accessToken = sessionStorage.getItem("access_token");
+
+        if (typeof this.provider.logout !== "function") {
+            return Promise.resolve();
+        }
+
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
         return this.provider.logout(accessToken);
     }
 }

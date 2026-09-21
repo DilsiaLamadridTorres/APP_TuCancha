@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { backendApi } from "../services/backend-api.js";
 
 const ADMIN_USERS = [
@@ -52,6 +53,8 @@ async function obtenerUsuarioBackend(correo) {
     return usuario;
 }
 
+=======
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
 const loginForm = document.querySelector("#login-form");
 const btnVerContrasena = document.getElementById("btn-ver-contrasena");
 const iconoContrasena = document.getElementById("icono-contrasena");
@@ -70,39 +73,34 @@ if (btnVerContrasena && iconoContrasena) {
 
 if (loginForm) {
 
-    const loginStatus =
-        document.querySelector("#login-status");
+    const loginStatus = document.querySelector("#login-status");
 
     loginForm.addEventListener("submit", async (event) => {
 
         event.preventDefault();
 
-        const correo =
-            loginForm.correo.value.trim();
+        const correo = loginForm.correo.value.trim();
+        const contrasena = loginForm.contrasena.value;
 
-        const contrasena =
-            loginForm.contrasena.value;
-
-
-        /* =========================================
-           VALIDACIÓN
-           ========================================= */
+        // =========================================
+        // VALIDACIÓN
+        // =========================================
 
         if (!correo || !contrasena) {
 
-            loginStatus.textContent =
-                "Ingresa tu correo y contraseña.";
-
-            loginStatus.className =
-                "auth-status auth-status--error";
+            if (window.showToast) {
+                window.showToast("Ingresa tu correo y contraseña.", "error");
+            } else {
+                loginStatus.textContent = "Ingresa tu correo y contraseña.";
+                loginStatus.className = "auth-status auth-status--error";
+            }
 
             return;
         }
 
-
-        /* =========================================
-           INICIAR SESIÓN
-           ========================================= */
+        // =========================================
+        // INICIAR SESIÓN
+        // =========================================
 
         try {
 
@@ -112,33 +110,15 @@ if (loginForm) {
             loginStatus.className =
                 "auth-status";
 
-            const adminHardcodeado =
-                obtenerAdminHardcodeado(correo);
+            const resultado = await window.authService.login({
+                correo,
+                contrasena
+            });
 
-            if (adminHardcodeado) {
+            const rol = resultado.rol || "JUGADOR";
+            const nombre = resultado.nombre || resultado.nombreCompleto || correo;
 
-                if (
-                    contrasena !==
-                    adminHardcodeado.contrasena
-                ) {
-
-                    throw new Error(
-                        "Correo o contrasena incorrectos."
-                    );
-                }
-
-                const usuario = {
-
-                    nombre:
-                        adminHardcodeado.nombre,
-
-                    correo:
-                        adminHardcodeado.correo,
-
-                    rol:
-                        "admin"
-                };
-
+<<<<<<< HEAD
                 sessionStorage.setItem(
                     "usuario",
                     JSON.stringify(usuario)
@@ -165,21 +145,30 @@ if (loginForm) {
 
                 return;
             }
+=======
+            // =========================================
+            // GUARDAR INFORMACIÓN DEL USUARIO
+            // =========================================
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
 
-
-            const result =
-                await window.authService.login({
-                    correo,
-                    contrasena
-                });
-
-
-            console.log(
-                "Login exitoso:",
-                result
+            sessionStorage.setItem(
+                "access_token",
+                resultado.access_token || resultado.token || resultado.id
             );
 
+            sessionStorage.setItem(
+                "usuario",
+                JSON.stringify({
+                    id: resultado.id,
+                    nombre,
+                    correo,
+                    rol
+                })
+            );
 
+            console.log("Login exitoso:", resultado);
+
+<<<<<<< HEAD
             /* =====================================
                OBTENER DATOS DEL USUARIO
                ===================================== */
@@ -205,56 +194,71 @@ if (loginForm) {
                 loginStatus.textContent = error.message;
                 loginStatus.className = "auth-status auth-status--error";
                 return;
+=======
+            // =========================================
+            // MENSAJE DE ÉXITO
+            // =========================================
+
+            if (window.showToast) {
+                window.showToast("Inicio de sesión exitoso.", "success");
+            } else {
+                loginStatus.textContent = "Inicio de sesión exitoso.";
+                loginStatus.className = "auth-status auth-status--success";
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
             }
 
-
-            /* =====================================
-               GUARDAR USUARIO
-               ===================================== */
-
-            sessionStorage.setItem(
-                "usuario",
-                JSON.stringify(usuario)
-            );
-
-
-            /* =====================================
-               GUARDAR TOKEN DE SUPABASE
-               ===================================== */
-
-            if (result.access_token) {
-
-                sessionStorage.setItem(
-                    "access_token",
-                    result.access_token
-                );
+            if (loginStatus) {
+                loginStatus.textContent = "";
+                loginStatus.className = "auth-status auth-status--hidden";
             }
 
-
-            /* =====================================
-               MENSAJE DE ÉXITO
-               ===================================== */
-
-            loginStatus.textContent =
-                "Inicio de sesión exitoso.";
-
-            loginStatus.className =
-                "auth-status auth-status--success";
-
-
-            /* =====================================
-               REDIRECCIÓN
-               ===================================== */
+            // =========================================
+            // REDIRECCIÓN
+            // =========================================
 
             setTimeout(() => {
 
-                window.location.href =
-                    obtenerRutaPorRol(
-                        usuario.rol
+                const paginaAnterior =
+                    sessionStorage.getItem("pagina_anterior");
+
+                const paginaAnteriorValida =
+                    paginaAnterior &&
+                    paginaAnterior !== "/html/login.html" &&
+                    paginaAnterior !== "login.html" &&
+                    !paginaAnterior.includes("login.html") &&
+                    paginaAnterior !== window.location.pathname;
+
+                if (paginaAnteriorValida) {
+
+                    sessionStorage.removeItem(
+                        "pagina_anterior"
                     );
 
-            }, 500);
+                    window.location.href =
+                        paginaAnterior;
 
+                    return;
+                }
+
+                sessionStorage.removeItem("pagina_anterior");
+
+                const rutaHome =
+                    window.location.pathname.includes("/html/")
+                        ? "../index.html"
+                        : "index.html";
+
+                if (rol === "ADMIN") {
+
+                    window.location.href =
+                        "admin/inicio-admin.html";
+
+                } else {
+
+                    window.location.href =
+                        rutaHome;
+                }
+
+            }, 500);
 
         } catch (error) {
 
@@ -263,13 +267,67 @@ if (loginForm) {
                 error
             );
 
-            loginStatus.textContent =
-                error.message ||
-                "No fue posible iniciar sesión.";
+            if (window.showToast) {
+                window.showToast(error.message || "No fue posible iniciar sesión.", "error");
+            } else {
+                loginStatus.textContent = error.message || "No fue posible iniciar sesión.";
+                loginStatus.className = "auth-status auth-status--error";
+            }
 
-            loginStatus.className =
-                "auth-status auth-status--error";
+            if (loginStatus) {
+                loginStatus.textContent = "";
+                loginStatus.className = "auth-status auth-status--hidden";
+            }
         }
-
     });
 }
+<<<<<<< HEAD
+=======
+
+
+// ============================================================
+// MOSTRAR / OCULTAR CONTRASEÑA
+// ============================================================
+
+const inputContrasena =
+    document.getElementById("contrasena");
+
+const botonVerContrasena =
+    document.getElementById("btn-ver-contrasena");
+
+const iconoContrasena =
+    document.getElementById("icono-contrasena");
+
+
+if (botonVerContrasena) {
+
+    botonVerContrasena.addEventListener(
+        "click",
+        () => {
+
+            const estaOculta =
+                inputContrasena.type === "password";
+
+            inputContrasena.type =
+                estaOculta ? "text" : "password";
+
+            iconoContrasena.classList.toggle(
+                "bi-eye",
+                !estaOculta
+            );
+
+            iconoContrasena.classList.toggle(
+                "bi-eye-slash",
+                estaOculta
+            );
+
+            botonVerContrasena.setAttribute(
+                "aria-label",
+                estaOculta
+                    ? "Ocultar contraseña"
+                    : "Mostrar contraseña"
+            );
+        }
+    );
+}
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156

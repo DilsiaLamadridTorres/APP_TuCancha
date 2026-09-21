@@ -1,26 +1,15 @@
 (function () {
     const LOGIN_URL = "../login.html";
 
-    function obtenerUsuarioActual() {
-        try {
-            return JSON.parse(
-                sessionStorage.getItem("usuario") || "null"
-            );
-        } catch (error) {
-            console.error(
-                "Error leyendo usuario admin:",
-                error
-            );
+    let usuario = null;
 
-            sessionStorage.removeItem("usuario");
-
-            return null;
-        }
+    try {
+        usuario = JSON.parse(sessionStorage.getItem("usuario") || "null");
+    } catch (error) {
+        sessionStorage.removeItem("usuario");
     }
 
-    const usuario = obtenerUsuarioActual();
-
-    if (!usuario || usuario.rol !== "admin") {
+    if (!sessionStorage.getItem("access_token") || usuario?.rol !== "ADMIN") {
         window.location.replace(LOGIN_URL);
     }
 })();

@@ -31,11 +31,169 @@ main {
     flex: 1;
 }
 
-.icono{
+#tuCancha-toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    pointer-events: none;
+}
+
+.toast-notification {
+    width: min(360px, calc(100vw - 2rem));
+    background: #ffffff;
+    border-left: 5px solid #0d6efd;
+    border-radius: .9rem;
+    box-shadow: 0 16px 40px rgba(17, 24, 39, 0.18);
+    padding: .9rem 1rem;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity .25s ease, transform .25s ease;
+    pointer-events: auto;
+}
+
+.toast-notification.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast-notification--success {
+    border-left-color: #198754;
+}
+
+.toast-notification--error {
+    border-left-color: #dc3545;
+}
+
+.toast-notification--warning {
+    border-left-color: #fd7e14;
+}
+
+.toast-notification--info {
+    border-left-color: #0d6efd;
+}
+
+.toast-notification__header {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-weight: 700;
+    font-size: .85rem;
+    color: #1f2937;
+    margin-bottom: .35rem;
+}
+
+.toast-notification__body {
+    color: #374151;
+    font-size: .9rem;
+    line-height: 1.45;
+}
+
+.tuCancha-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 17, 23, 0.68);
+    backdrop-filter: blur(3px);
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity .2s ease;
+}
+
+.tuCancha-confirm-overlay.is-visible {
+    opacity: 1;
+}
+
+.tuCancha-confirm-modal {
+    width: min(420px, 100%);
+    background: rgba(24, 28, 36, 0.97);
+    color: #f3f4f6;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.45);
+    padding: 1.25rem 1.25rem 1rem;
+    transform: translateY(8px);
+    transition: transform .2s ease;
+}
+
+.tuCancha-confirm-overlay.is-visible .tuCancha-confirm-modal {
+    transform: translateY(0);
+}
+
+.tuCancha-confirm-header {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    margin-bottom: .9rem;
+}
+
+.tuCancha-confirm-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(249, 87, 0, 0.15);
+    color: #ff8a3d;
+    font-size: 1.3rem;
+}
+
+.tuCancha-confirm-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.tuCancha-confirm-message {
+    margin: 0 0 1rem;
+    color: #e5e7eb;
+    line-height: 1.5;
+    font-size: .95rem;
+}
+
+.tuCancha-confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: .75rem;
+}
+
+.tuCancha-confirm-btn {
+    border: none;
+    border-radius: .7rem;
+    padding: .7rem 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s ease, opacity .15s ease;
+}
+
+.tuCancha-confirm-btn:hover {
+    transform: translateY(-1px);
+}
+
+.tuCancha-confirm-btn--cancel {
+    background: #2b3038;
+    color: #f3f4f6;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tuCancha-confirm-btn--confirm {
+    background: linear-gradient(135deg, #ff7a1a, #f95700);
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(249, 87, 0, 0.25);
+}
+
+.icono {
     width: 50px;
     height: 50px;
     object-fit: contain;
 }
+
 /* ==========================================================
    TEXTO
 ========================================================== */
@@ -43,4 +201,3 @@ main {
 small {
     color: var(--color-gray);
 }
-

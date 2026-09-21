@@ -99,7 +99,7 @@
                 <!-- Dirección -->
                 <div class="venue-address">
                     <i class="bi bi-geo-alt-fill"></i>
-                    <span data-field="ubicacion">Cargando...                        
+                    <span data-field="ubicacion">Cargando...
                     </span>
                 </div>
             </div>
@@ -113,29 +113,34 @@
             <div class="venue-gallery">
                 <!-- Imagen principal -->
                 <div class="gallery-main">
-                    <img data-field="imagen" src="https://via.placeholder.com/800x450?text=Cargando+imagen..." alt="Cancha principal del complejo">
+                    <img data-field="imagen" src="https://via.placeholder.com/800x450?text=Cargando+imagen..."
+                        alt="Cancha principal del complejo">
                 </div>
                 <!-- Imágenes secundarias -->
                 <div class="gallery-secondary">
                     <div class="gallery-item">
-                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg" alt="Cancha deportiva">
+                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg"
+                            alt="Cancha deportiva">
                     </div>
                     <div class="gallery-item">
-                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg" alt="Instalaciones del complejo">
+                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg"
+                            alt="Instalaciones del complejo">
 
                     </div>
 
 
                     <div class="gallery-item">
 
-                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg" alt="Cancha iluminada">
+                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg"
+                            alt="Cancha iluminada">
 
                     </div>
 
 
                     <div class="gallery-item gallery-last">
 
-                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg" alt="Vista adicional del complejo">
+                        <img src="https://equiver.com.co/images/campos-futbol-microfutbol-grama-sintetica/campos-futbol-microfutbol-grama-sintetica-2.jpg"
+                            alt="Vista adicional del complejo">
 
 
                         <button type="button" class="btn-view-photos">
@@ -194,7 +199,7 @@
 
 
                     <p class="venue-description" data-field="descripcion">
-                       Cargando...
+                        Cargando...
                     </p>
 
                 </section>
@@ -251,7 +256,7 @@
                             </div>
 
                             <strong data-field="calificacion">
-                                
+
                             </strong>
 
                             <span>
@@ -425,7 +430,7 @@
 
                         <div class="court-detail-image">
 
-                            <img data-field="imagen"src="" alt="Cancha 1">
+                            <img data-field="imagen" src="" alt="Cancha 1">
 
                             <span class="court-sport-badge">
                                 Fútbol 5
@@ -631,7 +636,7 @@
                             </span>
 
                             <strong data-field="precio">
-                                
+
                             </strong>
 
                             <small>
@@ -741,6 +746,7 @@
             </div>
 
 
+<<<<<<< HEAD
         <section class="agenda">
             <h2>Semana del <span id="fecha-inicio"></span> al <span id="fecha-fin"></span></h2>
             <div class="navegacion-semana">
@@ -774,22 +780,58 @@
                  <!-- Aquí JavaScript mostrará la información de la cancha -->
             </div>
             <p> Fecha: <span id="fecha-reserva"></span></p>
+=======
+            <section class="agenda">
+                <h2>Semana del <span id="fecha-inicio"></span> al <span id="fecha-fin"></span></h2>
+                <div class="navegacion-semana">
+                    <button class="anterior">Anterior</button>
+                    <button class="siguiente">Siguiente</button>
+                </div>
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
 
-            <p>Horario:<span id="horario-reserva"></span></p>
+                <div class="turnos_disponibles">
+                    <h2>Turnos disponibles: <span id="cantidad-turnos">0</span></h2>
+                </div>
 
-               </section>
+                <div class="etiquetas">
+                    <button class="Disponible"></button>
+                    <span>Disponible</span>
+                    <button class="Reservado"></button>
+                    <span>Reservado</span>
+                    <button class="tu_seleccion"></button>
+                    <span>Tu selección</span>
+                </div>
 
-        <button class="reservar">
-            Reservar</button>
+
+                <div class="fechas-lista" id="fechas">
+                </div>
+
+                <div class="turnos-grid" id="turnos">
+                </div>
+
+                <section id="informacion_cancha">
+                    <h2>Detalle de la reserva</h2>
+                    <div id="detalle-cancha">
+                        <!-- Aquí JavaScript mostrará la información de la cancha -->
+                    </div>
+                    <p> Fecha: <span id="fecha-reserva"></span></p>
+
+                    <p>Horario:<span id="horario-reserva"></span></p>
+
+                </section>
+
+                <button class="reservar">
+                    Reservar</button>
+            </section>
+
+
         </section>
-
-
-       </section>
 
         <footer>
             <mi-footer></mi-footer>
         </footer>
     </main>
+<<<<<<< HEAD
   <div id="modal-tu-cancha" class="modal-overlay">
 
     <div class="modal-contenido">
@@ -818,6 +860,16 @@
     crossorigin="anonymous">
 </script>
 
+=======
+    <!-- SCRIPTS -->
+    <script src="../JS/utils/helpers.js"></script>
+    <script src="../JS/reservas/reserva.js"></script>
+    <script src="../JS/admin/navbar.js"></script>
+    <script src="../JS/admin/footer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+>>>>>>> 58f61cd81eb2d571429defeb0c3fefae0e253156
 </body>
 
 </html>

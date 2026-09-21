@@ -178,6 +178,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!panelDetalle || !reserva) return;
 
     reservaSeleccionada = reserva;
+    const reservaCancelada = String(reserva.estado || "").trim().toLowerCase() === "cancelada";
+    if (btnCancelar) {
+      btnCancelar.disabled = reservaCancelada;
+      btnCancelar.textContent = reservaCancelada ? "Reserva cancelada" : "Cancelar reserva";
+      btnCancelar.setAttribute("aria-disabled", String(reservaCancelada));
+    }
     const elementosDinamicos = panelDetalle.querySelectorAll("[data-field]");
 
     elementosDinamicos.forEach((elemento) => {
@@ -287,6 +293,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnCancelar) {
     btnCancelar.addEventListener("click", async () => {
       if (!reservaSeleccionada) return;
+
+      if (String(reservaSeleccionada.estado || "").trim().toLowerCase() === "cancelada") {
+        showToast("Esta reserva ya está cancelada.", "info");
+        return;
+      }
 
       const confirmar = await window.showConfirm(
         "¿Seguro que deseas cancelar esta reserva? El horario quedará disponible."

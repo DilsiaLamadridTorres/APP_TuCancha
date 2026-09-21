@@ -40,7 +40,7 @@ function crearEstadoInicial() {
         organizacion: {
 
             nombreTitular: "",
-            cedulaTitular:"",
+            cedulaTitular: "",
             telefonoTitular: "",
             correoTitular: ""
 
@@ -992,13 +992,13 @@ function validarOrganizacion() {
 
     }
 
-    if(
+    if (
         !validarRequerido(
             "cedulaTitular",
             "Cédula es obligatoria"
         )
-    ){
-        valido=false;
+    ) {
+        valido = false;
     }
 
     if (
@@ -1430,7 +1430,7 @@ function restaurarFormulario() {
             registroComplejo
                 .organizacion
                 .nombreTitular,
-        
+
         cedulaTitular:
             registroComplejo
                 .organizacion
@@ -2203,7 +2203,7 @@ function convertirFotoBase64(file) {
 
                             resolve(
                                 dataUrlOptimizada.length <
-                                dataUrlOriginal.length
+                                    dataUrlOriginal.length
                                     ? dataUrlOptimizada
                                     : dataUrlOriginal
                             );
@@ -3563,10 +3563,9 @@ function renderizarCanchas() {
 
                         <div class="saved-court-photos">
 
-                            ${
-                                fotosCancha
-                                    .map(
-                                        (dataUrl, index) => `
+                            ${fotosCancha
+                            .map(
+                                (dataUrl, index) => `
 
                                             <div class="saved-court-photo">
 
@@ -3578,9 +3577,9 @@ function renderizarCanchas() {
                                             </div>
 
                                         `
-                                    )
-                                    .join("")
-                            }
+                            )
+                            .join("")
+                        }
 
                         </div>
 
@@ -3608,8 +3607,8 @@ function renderizarCanchas() {
                             <span class="sport-badge">
 
                                 ${obtenerNombreDeporte(
-                                    cancha.deporte
-                                )}
+                    cancha.deporte
+                )}
 
                             </span>
 
@@ -3619,8 +3618,8 @@ function renderizarCanchas() {
                         <p>
 
                             ${obtenerNombrePiso(
-                                cancha.tipoPiso
-                            )}
+                    cancha.tipoPiso
+                )}
 
                             ·
 
@@ -3630,23 +3629,22 @@ function renderizarCanchas() {
                             &middot;
 
                             ${formatearPrecioCancha(
-                                cancha.precioPorHora
-                                || cancha.precio
-                            )}
+                    cancha.precioPorHora
+                    || cancha.precio
+                )}
 
                         </p>
 
 
                         <div class="saved-court-tags">
 
-                            ${
-                                tags
-                                    .map(
-                                        tag =>
-                                            `<span>${tag}</span>`
-                                    )
-                                    .join("")
-                            }
+                            ${tags
+                        .map(
+                            tag =>
+                                `<span>${tag}</span>`
+                        )
+                        .join("")
+                    }
 
                         </div>
 
@@ -3814,7 +3812,7 @@ function actualizarRevision() {
             Array.isArray(
                 registroComplejo.complejo.prestaciones
             ) &&
-            registroComplejo.complejo.prestaciones.length > 0
+                registroComplejo.complejo.prestaciones.length > 0
                 ? registroComplejo.complejo.prestaciones.join(", ")
                 : "Sin prestaciones cargadas"
     };
@@ -3882,21 +3880,21 @@ function renderizarCanchasRevision() {
                     <strong>
 
                         ${obtenerNombreDeporte(
-                            cancha.deporte
-                        )}
+                    cancha.deporte
+                )}
 
                         ·
 
                         ${obtenerNombrePiso(
-                            cancha.tipoPiso
-                        )}
+                    cancha.tipoPiso
+                )}
 
                         &middot;
 
                         ${formatearPrecioCancha(
-                            cancha.precioPorHora
-                            || cancha.precio
-                        )}
+                    cancha.precioPorHora
+                    || cancha.precio
+                )}
 
                     </strong>
 
@@ -4625,90 +4623,90 @@ function configurarEventos() {
        ======================================================== */
 
     obtenerElemento(
-    "btnContinueOrganization"
-)
-    ?.addEventListener(
-        "click",
-        async () => {
-
-            // ===============================
-            // VALIDAR FORMULARIO
-            // ===============================
-
-            if (!validarOrganizacion()) {
-                return;
-            }
-
-            const boton =
-                obtenerElemento(
-                    "btnContinueOrganization"
-                );
-
-            try {
+        "btnContinueOrganization"
+    )
+        ?.addEventListener(
+            "click",
+            async () => {
 
                 // ===============================
-                // BLOQUEAR BOTÓN
+                // VALIDAR FORMULARIO
                 // ===============================
 
-                if (boton) {
-
-                    boton.disabled = true;
-
-                    boton.innerHTML =
-                        `Guardando... <span>→</span>`;
+                if (!validarOrganizacion()) {
+                    return;
                 }
 
-                // ===============================
-                // GUARDAR EN SUPABASE
-                // A TRAVÉS DEL BACKEND
-                // ===============================
+                const boton =
+                    obtenerElemento(
+                        "btnContinueOrganization"
+                    );
 
-                const titular =
-                    await guardarTitularEnBackend();
+                try {
 
-                console.log(
-                    "Titular registrado correctamente:",
-                    titular
-                );
+                    // ===============================
+                    // BLOQUEAR BOTÓN
+                    // ===============================
 
-                mostrarAlerta(
-                    "Los datos del titular fueron guardados correctamente.",
-                    "success",
-                    "Titular registrado"
-                );
+                    if (boton) {
 
-                // ===============================
-                // PASAR AL COMPLEJO
-                // ===============================
+                        boton.disabled = true;
 
-                mostrarPaso(2);
+                        boton.innerHTML =
+                            `Guardando... <span>→</span>`;
+                    }
 
-            } catch (error) {
+                    // ===============================
+                    // GUARDAR EN SUPABASE
+                    // A TRAVÉS DEL BACKEND
+                    // ===============================
 
-                console.error(
-                    "Error registrando titular:",
-                    error
-                );
+                    const titular =
+                        await guardarTitularEnBackend();
 
-                mostrarAlerta(
-                    error.message ||
-                    "No fue posible registrar el titular.",
-                    "error",
-                    "Error al registrar"
-                );
+                    console.log(
+                        "Titular registrado correctamente:",
+                        titular
+                    );
 
-            } finally {
+                    mostrarAlerta(
+                        "Los datos del titular fueron guardados correctamente.",
+                        "success",
+                        "Titular registrado"
+                    );
 
-                if (boton) {
+                    // ===============================
+                    // PASAR AL COMPLEJO
+                    // ===============================
 
-                    boton.disabled = false;
+                    mostrarPaso(2);
 
-                    boton.innerHTML =
-                        `Continuar <span>→</span>`;
+                } catch (error) {
+
+                    console.error(
+                        "Error registrando titular:",
+                        error
+                    );
+
+                    mostrarAlerta(
+                        error.message ||
+                        "No fue posible registrar el titular.",
+                        "error",
+                        "Error al registrar"
+                    );
+
+                } finally {
+
+                    if (boton) {
+
+                        boton.disabled = false;
+
+                        boton.innerHTML =
+                            `Continuar <span>→</span>`;
+                    }
                 }
             }
-        }
-    );
+        );
 
 
     /* ========================================================
@@ -4830,44 +4828,44 @@ function configurarEventos() {
        ======================================================== */
 
     obtenerElemento(
-    "btnContinueCourt"
-)
-    ?.addEventListener(
-        "click",
-        () => {
+        "btnContinueCourt"
+    )
+        ?.addEventListener(
+            "click",
+            () => {
 
-            if (
-                registroComplejo
-                    .canchas
-                    .length === 0
-            ) {
+                if (
+                    registroComplejo
+                        .canchas
+                        .length === 0
+                ) {
 
-                mostrarAlerta(
-                    "Debes agregar al menos una cancha para continuar.",
-                    "warning"
-                );
+                    mostrarAlerta(
+                        "Debes agregar al menos una cancha para continuar.",
+                        "warning"
+                    );
 
-                return;
+                    return;
+                }
+
+                if (
+                    !validarCanchasGuardadasConFotos()
+                ) {
+
+                    return;
+                }
+
+                if (
+                    !validarCanchasGuardadasConPrecio()
+                ) {
+
+                    return;
+                }
+
+                mostrarPaso(4);
+
             }
-
-            if (
-                !validarCanchasGuardadasConFotos()
-            ) {
-
-                return;
-            }
-
-            if (
-                !validarCanchasGuardadasConPrecio()
-            ) {
-
-                return;
-            }
-
-            mostrarPaso(4);
-
-        }
-    );
+        );
 
 
     /* ========================================================

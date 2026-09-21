@@ -143,6 +143,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return lunes;
     }
 
+    function esFechaPasada(fecha) {
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        const fechaComparar = new Date(fecha);
+        fechaComparar.setHours(0, 0, 0, 0);
+        return fechaComparar < hoy;
+    }
+
     function mostrarSemana() {
         const lunes = obtenerLunes(semanaActual);
         fechas.innerHTML = "";
@@ -174,36 +182,44 @@ document.addEventListener("DOMContentLoaded", () => {
             botonFecha.appendChild(numero);
             botonFecha.appendChild(mes);
 
-            botonFecha.addEventListener("click", () => {
-                if (botonFechaSeleccionado !== null) {
-                    botonFechaSeleccionado.classList.remove(
+            const fechaPasada = esFechaPasada(fecha);
+
+            if (fechaPasada) {
+                botonFecha.disabled = true;
+                botonFecha.classList.add("ocupado");
+                botonFecha.setAttribute("aria-disabled", "true");
+            } else {
+                botonFecha.addEventListener("click", () => {
+                    if (botonFechaSeleccionado !== null) {
+                        botonFechaSeleccionado.classList.remove(
+                            "seleccionada"
+                        );
+                    }
+
+                    fechaSeleccionada = fecha;
+                    if (fechaReserva) {
+                        fechaReserva.textContent =
+                            fechaSeleccionada.toLocaleDateString(
+                                "es-CO"
+                            );
+                    }
+
+                    botonFecha.classList.add(
                         "seleccionada"
                     );
-                }
 
-                fechaSeleccionada = fecha;
-                if (fechaReserva) {
-                    fechaReserva.textContent =
-                        fechaSeleccionada.toLocaleDateString(
-                            "es-CO"
-                        );
-                }
+                    botonFechaSeleccionado =
+                        botonFecha;
 
-                botonFecha.classList.add(
-                    "seleccionada"
-                );
+                    mostrarHorarios();
 
-                botonFechaSeleccionado =
-                    botonFecha;
+                    console.log(
+                        "Fecha seleccionada:",
+                        fechaSeleccionada
+                    );
 
-                mostrarHorarios();
-
-                console.log(
-                    "Fecha seleccionada:",
-                    fechaSeleccionada
-                );
-
-            });
+                });
+            }
 
             fechas.appendChild(
                 botonFecha

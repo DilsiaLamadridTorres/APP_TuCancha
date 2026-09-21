@@ -25,7 +25,7 @@
 .auth-card__footer a { color: var(--bs-primary); font-weight: 700; }
 
 .auth-status, .connection-status {
-    display: none;
+    display:none;
     margin: 1rem 0 0;
     padding: .75rem 1rem;
     border-radius: .6rem;
@@ -67,4 +67,10 @@
     background: transparent;
     border-radius: 0 0.5rem 0.5rem 0 !important;
     z-index: 5;
+}
+
+#registro-submit:disabled {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    opacity: 1;
 }

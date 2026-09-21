@@ -47,50 +47,131 @@ class MiNavbar extends HTMLElement {
 
 
         /* =====================================================
-           OBTENER USUARIO
+           OBTENER USUARIO LOGUEADO
            ===================================================== */
-
-        const usuarioGuardado =
-            sessionStorage.getItem("usuario");
 
         let usuario = null;
 
-        if (usuarioGuardado) {
+        try {
 
-            try {
+            usuario = JSON.parse(
+                sessionStorage.getItem("usuario")
+            );
 
-                usuario =
-                    JSON.parse(usuarioGuardado);
+        } catch (error) {
 
-            } catch (error) {
+            usuario = null;
 
-                console.error(
-                    "Error leyendo usuario:",
-                    error
-                );
-
-                sessionStorage.removeItem("usuario");
-            }
         }
 
 
         /* =====================================================
-           CONFIGURAR BOTÓN DE USUARIO
+           VERIFICAR SI ES JUGADOR
            ===================================================== */
 
-        let nombreUsuario = "Únete";
+        const esJugador =
+            usuario &&
+            usuario.rol === "JUGADOR";
+        const esAdmin =
+            usuario &&
+            usuario.rol === "ADMIN";    
 
-        let rutaUsuario =
-            `${rutaPaginas}registro.html`;
+
+        /* =====================================================
+           CONSTRUIR BOTÓN DEL USUARIO
+           ===================================================== */
+
+        let botonUsuario = "";
 
 
-        if (usuario) {
+        if (!usuario) {
 
-            nombreUsuario =
-                usuario.nombre || "Usuario";
+            botonUsuario = `
+                <a
+                    href="${rutaPaginas}registro.html"
+                    class="btn btn-primary"
+                    id="btn-unete"
+                >
+                    Únete
+                </a>
+            `;
 
-            rutaUsuario =
-                `${rutaPaginas}pagar-reserva.html`;
+        } else {
+
+            botonUsuario = `
+                <div class="dropdown">
+
+                    <button
+                        class="btn btn-primary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        ${usuario.nombre}
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        ${
+                            esJugador
+                                ? `
+                                    <li>
+                                        <a
+                                            class="dropdown-item"
+                                            href="${rutaPaginas}reservas-cliente.html"
+                                        >
+                                            <i class="bi bi-calendar-check me-2"></i>
+                                            Mis reservas
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                `
+                                : ""
+                        }
+                        ${
+                        esAdmin
+                            ? `
+                                <li>
+                                    <a
+                                        class="dropdown-item"
+                                        href="${rutaPaginas}registro-complejo.html"
+                                    >
+                                        <i class="bi bi-building-add me-2"></i>
+                                        Registro complejo
+                                    </a>
+                                </li>
+                            `
+                            : ""
+                    }
+
+                    ${
+                        esJugador || esAdmin
+                            ? `
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            `
+                            : ""
+                    }
+
+                        <li>
+                            <button
+                                class="dropdown-item"
+                                type="button"
+                                id="btn-cerrar-sesion"
+                            >
+                                <i class="bi bi-box-arrow-right me-2"></i>
+                                Cerrar sesión
+                            </button>
+                        </li>
+
+                    </ul>
+
+                </div>
+            `;
         }
 
 
@@ -104,10 +185,7 @@ class MiNavbar extends HTMLElement {
 
                 <div class="container-fluid">
 
-
-                    <!-- =========================================
-                         LOGO
-                         ========================================= -->
+                    <!-- LOGO -->
 
                     <a
                         href="${rutaInicio}"
@@ -125,9 +203,7 @@ class MiNavbar extends HTMLElement {
                     </a>
 
 
-                    <!-- =========================================
-                         NOMBRE
-                         ========================================= -->
+                    <!-- NOMBRE -->
 
                     <div class="d-flex flex-column">
 
@@ -151,9 +227,7 @@ class MiNavbar extends HTMLElement {
                     </div>
 
 
-                    <!-- =========================================
-                         BOTÓN RESPONSIVE
-                         ========================================= -->
+                    <!-- BOTÓN RESPONSIVE -->
 
                     <button
                         class="navbar-toggler"
@@ -165,16 +239,12 @@ class MiNavbar extends HTMLElement {
                         aria-label="Abrir navegación"
                     >
 
-                        <span
-                            class="navbar-toggler-icon"
-                        ></span>
+                        <span class="navbar-toggler-icon"></span>
 
                     </button>
 
 
-                    <!-- =========================================
-                         LINKS
-                         ========================================= -->
+                    <!-- LINKS -->
 
                     <div
                         class="collapse navbar-collapse text-center"
@@ -185,10 +255,7 @@ class MiNavbar extends HTMLElement {
                             class="navbar-nav mx-auto text-center my-auto"
                         >
 
-
-                            <!-- =================================
-                                 INICIO
-                                 ================================= -->
+                            <!-- INICIO -->
 
                             <li class="nav-item">
 
@@ -206,9 +273,7 @@ class MiNavbar extends HTMLElement {
                             </li>
 
 
-                            <!-- =================================
-                                 CANCHAS
-                                 ================================= -->
+                            <!-- CANCHAS -->
 
                             <li class="nav-item">
 
@@ -226,17 +291,7 @@ class MiNavbar extends HTMLElement {
                             </li>
 
 
-                            ${usuario ? `
-                           <li class="nav-item">
-                          <a class="nav-link ${rutaActual === "reservas-cliente.html" ? "active" : " " }" href="${rutaPaginas}reservas-cliente.html">
-                            Mis reservas
-                           </a>
-                          </li>
-                           ` : ""}
-
-                            <!-- =================================
-                                 NOSOTROS
-                                 ================================= -->
+                            <!-- NOSOTROS -->
 
                             <li class="nav-item">
 
@@ -254,9 +309,7 @@ class MiNavbar extends HTMLElement {
                             </li>
 
 
-                            <!-- =================================
-                                 CONTACTO
-                                 ================================= -->
+                            <!-- CONTACTO -->
 
                             <li class="nav-item">
 
@@ -273,156 +326,113 @@ class MiNavbar extends HTMLElement {
 
                             </li>
 
-                        </ul>
+                        </ul>                      
 
+                        ${
+                        esAdmin
+                        ? `
+                        <li class="nav-item">
+                        <a
+                            class="nav-link ${
+                            rutaActual === "registro-complejo.html"
+                            ? "active"
+                            : ""
+                            }"
+                            href="${rutaPaginas}registro-complejo.html"
+                            >
+                            Registrar Complejo
+                        </a>
+                        </li>`: ""}
 
-                        <!-- =====================================
-                             USUARIO
-                             ===================================== -->
-<div class="d-flex align-items-center mx-5">
-  ${usuario ? `
-        <div class="dropdown">
-          <button
-            class="btn btn-primary dropdown-toggle"
-            type="button"
-            id="menuUsuario"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i class="bi bi-person-circle me-1"></i>
-            ${nombreUsuario}
-          </button>
+                        ${
+                        esJugador
+                        ? `
+                        <li class="nav-item">
+                        <a
+                            class="nav-link ${
+                            rutaActual === "reservas-cliente.html"
+                            ? "active"
+                            : ""
+                            }"
+                            href="${rutaPaginas}reservas-cliente.html"
+                            >
+                            Mis reservas
+                        </a>
+                        </li>`: ""}
 
-          <ul
-            class="dropdown-menu dropdown-menu-end dropdown-menu-dark"
-            aria-labelledby="menuUsuario"
-          >
-            <li>
-              <a class="dropdown-item" href="${rutaPaginas}reservas-cliente.html">
-                <i class="bi bi-calendar-check me-2"></i>
-                Mis reservas
-              </a>
-            </li>
+                        <!-- USUARIO -->
 
-            <li><hr class="dropdown-divider"></li>
+                        <div class="d-flex align-items-center mx-5">
 
-            <li>
-              <button
-                type="button"
-                id="btn-logout"
-                class="dropdown-item text-danger"
-              >
-                <i class="bi bi-box-arrow-right me-2"></i>
-                Cerrar sesión
-              </button>
-            </li>
-          </ul>
-        </div>
-      `
-      : `
-        <a href="${rutaPaginas}registro.html" class="btn btn-primary">
-          Únete
-        </a>
-      `
-  }
-</div>
+                            ${botonUsuario}
+
+                        </div>
 
                     </div>
 
                 </div>
 
             </nav>
-
         `;
+
+
+        /* =====================================================
+           GUARDAR PÁGINA ANTERIOR AL PULSAR "ÚNETE"
+           ===================================================== */
+
+        const botonUnete =
+            this.querySelector("#btn-unete");
+
+
+        if (botonUnete) {
+
+            botonUnete.addEventListener(
+                "click",
+                () => {
+
+                    sessionStorage.setItem(
+                        "pagina_anterior",
+                        window.location.pathname
+                    );
+
+                }
+            );
+
+        }
 
 
         /* =====================================================
            CERRAR SESIÓN
            ===================================================== */
 
-        const btnLogout =
-            this.querySelector("#btn-logout");
+        const botonCerrarSesion =
+            this.querySelector("#btn-cerrar-sesion");
 
 
-        if (btnLogout) {
+        if (botonCerrarSesion) {
 
-            btnLogout.addEventListener(
+            botonCerrarSesion.addEventListener(
                 "click",
-                async () => {
+                () => {
 
-                    btnLogout.disabled = true;
+                    sessionStorage.removeItem(
+                        "usuario"
+                    );
 
-                    btnLogout.textContent =
-                        "Cerrando sesión...";
+                    sessionStorage.removeItem(
+                        "access_token"
+                    );
 
+                    sessionStorage.removeItem(
+                        "pagina_anterior"
+                    );
 
-                    try {
-
-                        const token =
-                            sessionStorage.getItem(
-                                "access_token"
-                            );
-
-
-                        /* =====================================
-                           CERRAR SESIÓN EN SUPABASE
-                           ===================================== */
-
-                        if (token) {
-
-                            await fetch(
-                                `${window.TuCanchaConfig.supabaseUrl}/auth/v1/logout`,
-                                {
-                                    method: "POST",
-
-                                    headers: {
-                                        "apikey":
-                                            window.TuCanchaConfig
-                                                .supabaseAnonKey,
-
-                                        "Authorization":
-                                            `Bearer ${token}`,
-
-                                        "Content-Type":
-                                            "application/json"
-                                    }
-                                }
-                            );
-                        }
-
-
-                    } catch (error) {
-
-                        console.error(
-                            "Error al cerrar sesión:",
-                            error
-                        );
-
-                    } finally {
-
-                        /* ===============================
-                           LIMPIAR SESIÓN LOCAL
-                           =============================== */
-
-                        sessionStorage.removeItem(
-                            "usuario"
-                        );
-
-                        sessionStorage.removeItem(
-                            "access_token"
-                        );
-
-
-                        /* ===============================
-                           VOLVER AL INICIO
-                           =============================== */
-
-                        window.location.href =
-                            rutaInicio;
-                    }
+                    window.location.href =
+                        rutaInicio;
 
                 }
             );
+
         }
 
     }

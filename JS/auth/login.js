@@ -1,55 +1,19 @@
-const ADMIN_USERS = [
-    {
-        correo: "admin@tucancha.com",
-        contrasena: "admin2026*",
-        nombre: "Administrador"
-    }
-];
-
-function normalizarCorreo(correo) {
-    return correo.trim().toLowerCase();
-}
-
-function obtenerAdminHardcodeado(correo) {
-    return ADMIN_USERS.find(
-        (admin) =>
-            admin.correo === normalizarCorreo(correo)
-    );
-}
-
-function obtenerRolUsuario(correo) {
-    return obtenerAdminHardcodeado(correo)
-        ? "admin"
-        : "usuario";
-}
-
-function obtenerRutaPorRol(rol) {
-    return rol === "admin"
-        ? "admin/inicio-admin.html"
-        : "pagar-reserva.html";
-}
-
 const loginForm = document.querySelector("#login-form");
 
 if (loginForm) {
 
-    const loginStatus =
-        document.querySelector("#login-status");
+    const loginStatus = document.querySelector("#login-status");
 
     loginForm.addEventListener("submit", async (event) => {
 
         event.preventDefault();
 
-        const correo =
-            loginForm.correo.value.trim();
+        const correo = loginForm.correo.value.trim();
+        const contrasena = loginForm.contrasena.value;
 
-        const contrasena =
-            loginForm.contrasena.value;
-
-
-        /* =========================================
-           VALIDACIÓN
-           ========================================= */
+        // =========================================
+        // VALIDACIÓN
+        // =========================================
 
         if (!correo || !contrasena) {
 
@@ -62,10 +26,9 @@ if (loginForm) {
             return;
         }
 
-
-        /* =========================================
-           INICIAR SESIÓN
-           ========================================= */
+        // =========================================
+        // INICIAR SESIÓN
+        // =========================================
 
         try {
 
@@ -75,120 +38,52 @@ if (loginForm) {
             loginStatus.className =
                 "auth-status";
 
-            const adminHardcodeado =
-                obtenerAdminHardcodeado(correo);
-
-            if (adminHardcodeado) {
-
-                if (
-                    contrasena !==
-                    adminHardcodeado.contrasena
-                ) {
-
-                    throw new Error(
-                        "Correo o contrasena incorrectos."
-                    );
+            const respuesta = await fetch(
+                "http://localhost:8080/api/auth/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        correo: correo,
+                        password: contrasena
+                    })
                 }
-
-                const usuario = {
-
-                    nombre:
-                        adminHardcodeado.nombre,
-
-                    correo:
-                        adminHardcodeado.correo,
-
-                    rol:
-                        "admin"
-                };
-
-                sessionStorage.setItem(
-                    "usuario",
-                    JSON.stringify(usuario)
-                );
-
-                sessionStorage.removeItem(
-                    "access_token"
-                );
-
-                loginStatus.textContent =
-                    "Inicio de sesiÃ³n exitoso.";
-
-                loginStatus.className =
-                    "auth-status auth-status--success";
-
-                setTimeout(() => {
-
-                    window.location.href =
-                        obtenerRutaPorRol(
-                            usuario.rol
-                        );
-
-                }, 500);
-
-                return;
-            }
-
-
-            const result =
-                await window.authService.login({
-                    correo,
-                    contrasena
-                });
-
-
-            console.log(
-                "Login exitoso:",
-                result
             );
 
+            const resultado = await respuesta.json();
 
-            /* =====================================
-               OBTENER DATOS DEL USUARIO
-               ===================================== */
+            if (!respuesta.ok) {
+                throw new Error(
+                    resultado.message ||
+                    resultado.error ||
+                    "Correo o contraseña incorrectos."
+                );
+            }
 
-            const usuario = {
+            // =========================================
+            // GUARDAR INFORMACIÓN DEL USUARIO
+            // =========================================
 
-                nombre:
-                    result.user?.user_metadata
-                        ?.nombre_completo || correo,
-
-                correo:
-                    result.user?.email || correo,
-
-                rol:
-                    obtenerRolUsuario(
-                        result.user?.email || correo
-                    )
-            };
-
-
-            /* =====================================
-               GUARDAR USUARIO
-               ===================================== */
+            sessionStorage.setItem(
+                "access_token",
+                resultado.token
+            );
 
             sessionStorage.setItem(
                 "usuario",
-                JSON.stringify(usuario)
+                JSON.stringify({
+                    nombre: resultado.nombre,
+                    rol: resultado.rol
+                })
             );
 
+            console.log("Login exitoso:", resultado);
 
-            /* =====================================
-               GUARDAR TOKEN DE SUPABASE
-               ===================================== */
-
-            if (result.access_token) {
-
-                sessionStorage.setItem(
-                    "access_token",
-                    result.access_token
-                );
-            }
-
-
-            /* =====================================
-               MENSAJE DE ÉXITO
-               ===================================== */
+            // =========================================
+            // MENSAJE DE ÉXITO
+            // =========================================
 
             loginStatus.textContent =
                 "Inicio de sesión exitoso.";
@@ -196,20 +91,42 @@ if (loginForm) {
             loginStatus.className =
                 "auth-status auth-status--success";
 
-
-            /* =====================================
-               REDIRECCIÓN
-               ===================================== */
+            // =========================================
+            // REDIRECCIÓN
+            // =========================================
 
             setTimeout(() => {
 
-                window.location.href =
-                    obtenerRutaPorRol(
-                        usuario.rol
+                const paginaAnterior =
+                    sessionStorage.getItem("pagina_anterior");
+
+                if (paginaAnterior) {
+
+                    sessionStorage.removeItem(
+                        "pagina_anterior"
                     );
 
-            }, 500);
+                    window.location.href =
+                        paginaAnterior;
 
+                    return;
+                }
+
+                // Si no existe página anterior,
+                // usamos una ruta por defecto.
+
+                if (resultado.rol === "ADMIN") {
+
+                    window.location.href =
+                        "admin/inicio-admin.html";
+
+                } else {
+
+                    window.location.href =
+                        "reservas-cliente.html";
+                }
+
+            }, 500);
 
         } catch (error) {
 
@@ -225,40 +142,52 @@ if (loginForm) {
             loginStatus.className =
                 "auth-status auth-status--error";
         }
-
     });
 }
+
 
 // ============================================================
 // MOSTRAR / OCULTAR CONTRASEÑA
 // ============================================================
 
-const inputContrasena = document.getElementById("contrasena");
+const inputContrasena =
+    document.getElementById("contrasena");
 
-const botonVERContrasena = document.getElementById("btn-ver-contrasena");
+const botonVerContrasena =
+    document.getElementById("btn-ver-contrasena");
 
-const iconoContrasena = document.getElementById("icono-contrasena");
-
-botonVERContrasena.addEventListener("click", () => {
-
-    // Verificar si actualmente la contrasena esta oculta
-
-    const estaOculta = inputContrasena.type === "password";
+const iconoContrasena =
+    document.getElementById("icono-contrasena");
 
 
-    // cambiamos entre password y text
-    inputContrasena.type = estaOculta ? "text" : "password";
+if (botonVerContrasena) {
 
-    // cambiamos el icono
+    botonVerContrasena.addEventListener(
+        "click",
+        () => {
 
-    iconoContrasena.classList.toggle("bi-eye", !estaOculta);
+            const estaOculta =
+                inputContrasena.type === "password";
 
+            inputContrasena.type =
+                estaOculta ? "text" : "password";
 
-    iconoContrasena.classList.toggle("bi-eye-slash", estaOculta);
+            iconoContrasena.classList.toggle(
+                "bi-eye",
+                !estaOculta
+            );
 
-    //Cambiar descripcion del boton
+            iconoContrasena.classList.toggle(
+                "bi-eye-slash",
+                estaOculta
+            );
 
-    botonVERContrasena.setAttribute("aria-label", estaOculta ? "Ocultar contraseña" : "Mostrar contrOcultar Ocultar contraseña");
-
-
-});
+            botonVerContrasena.setAttribute(
+                "aria-label",
+                estaOculta
+                    ? "Ocultar contraseña"
+                    : "Mostrar contraseña"
+            );
+        }
+    );
+}

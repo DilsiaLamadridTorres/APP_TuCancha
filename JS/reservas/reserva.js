@@ -379,7 +379,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 "warning"
             );
 
-            window.location.href = "login.html";
+            sessionStorage.setItem(
+                "pagina_anterior",
+                window.location.pathname
+            );
+
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1200);
+
             return;
         }
 
